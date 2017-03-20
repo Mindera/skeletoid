@@ -1,4 +1,4 @@
-package com.mindera.barrote;
+package com.mindera.skeletoid;
 
 import org.junit.Test;
 
