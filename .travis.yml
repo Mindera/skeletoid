@@ -15,4 +15,7 @@ script:
 
   # Run initTests
   - ./gradlew test
-  
+
+licenses:
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
