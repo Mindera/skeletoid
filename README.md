@@ -1,4 +1,26 @@
 # Skeletoid
 A utils library for Android Applications made at Mindera
 
-[![Build Status](https://travis-ci.org/Mindera/skeletoid.svg)](https://travis-ci.org/Mindera/skeletoid)
+[![Build Status](https://travis-ci.org/Mindera/skeletoid.svg)](https://travis-ci.org/Mindera/skeletoid) [![Release](https://jitpack.io/v/mindera/skeletoid.svg)](https://jitpack.io/#mindera/skeletoid)
+
+
+## Usage
+
+The plugin is available in [JitPack](https://jitpack.io/). Just add the following to your buildscript dependencies:
+
+```groovy
+repositories {
+    maven {
+        url "https://jitpack.io"
+    }
+}
+
+```
+And add the following script to the app dependencies
+
+```groovy
+dependencies {
+    compile 'com.github.mindera:skeletoid:0.1'
+}
+```
+
