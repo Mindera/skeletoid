@@ -1,106 +1,247 @@
 package com.mindera.skeletoid.logs;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.mindera.skeletoid.generic.AndroidUtils;
+import com.mindera.skeletoid.logs.appenders.ILogAppender;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString;
 
 /**
- * Logger static class. It is used to abstract the Logger and have multiple possible implementations
- * It is used also to serve as static references for logging methods to be called.
+ * LOG main class. It contains all the logic and feeds the appenders
  */
-public class Logger {
+class Logger implements ILogger {
 
-    public enum PRIORITY {
-        VERBOSE, DEBUG, INFO, WARN, ERROR
+    private static final String LOG_TAG = "Logger";
+    /**
+     * Log format
+     */
+    private static final String LOG_FORMAT_4ARGS = "%s %s %s | %s";
+    /**
+     * Log format
+     */
+    private static final String LOG_FORMAT_3ARGS = "%s %s | %s";
+    /**
+     * Application TAG for logs
+     */
+    private final String PACKAGE_NAME;
+    /**
+     * Define if the method name invoking the log should be printed or not (via exception stack)
+     */
+    private boolean mAddMethodName = false;
+
+    /**
+     * Define if the method name invoking the log should be printed or not (via exception stack)
+     */
+    private boolean mAddPackageName = false;
+
+    /**
+     * List of appenders (it can be improved to an ArrayMap if we want to add the support lib as dependency
+     */
+    private Map<String, ILogAppender> mLogAppenders = new HashMap<>();
+
+    /**
+     * The logger itself
+     */
+
+    Logger(Context context) {
+        PACKAGE_NAME = AndroidUtils.getApplicationPackage(context);
     }
 
-    private static final String LOGGER = "Logger";
+    /**
+     * Enables or disables logging to console/logcat.
+     */
+    public List<String> addAppenders(Context context, List<ILogAppender> logAppenders) {
+        if (logAppenders == null || logAppenders.size() == 0) {
+            return new ArrayList<>();
+        }
 
-    private static volatile ILogger mInstance;
+        final List<String> appenderIds = new ArrayList<>();
 
-    //Default name, it will be replaced to packageName.log on getInstance method.
-    //It presents no problem, because this will be used only after the logger is instantiated.
-    private static String LOG_FILE_NAME = "debug.log";
+        for (ILogAppender logAppender : logAppenders) {
+            logAppender.enableAppender(context);
 
-    public static void init(Context context) {
-        getInstance(context, null);
+            final String loggerId = logAppender.getLoggerId();
+            appenderIds.add(loggerId);
+            mLogAppenders.put(loggerId, logAppender);
+        }
+        return appenderIds;
     }
 
-    public static void init(Context context, List<ILogAppender> enabledLogAppenders) {
-        getInstance(context, enabledLogAppenders);
-    }
 
-    public static ILogger getInstance(Context context, List<ILogAppender> enabledLogAppenders) {
-        ILogger result = mInstance;
-        if (result == null) {
-            synchronized (Logger.class) {
-                result = mInstance;
-                if (result == null) {
-                    final String packageName = AndroidUtils.getApplicationPackage(context);
-                    LOG_FILE_NAME = packageName + ".log";
+    /**
+     * Enables or disables logging to console/logcat.
+     */
+    public void disableAppenders(Context context, List<String> loggerIds) {
+        if (loggerIds == null || mLogAppenders.isEmpty()) {
+            return;
+        }
 
-                    mInstance = new LoggerImpl(context,
-                            enabledLogAppenders);
-                }
+        for (String logId : loggerIds) {
+            final ILogAppender logAppender = mLogAppenders.remove(logId);
+            if (logAppender != null) {
+                logAppender.disableAppender();
             }
         }
-        return mInstance;
     }
 
+    public void setMethodNameVisible(boolean visibility) {
+        mAddMethodName = visibility;
+    }
 
-    public static ILogger getInstance() {
-        if (mInstance == null) {
-            Log.e(LOGGER, "You MUST init() the Logger. I will crash now...");
+    private void pushLogToAppenders(LOG.PRIORITY type, Throwable t, String... log) {
+        for (Map.Entry<String, ILogAppender> entry : mLogAppenders.entrySet()) {
+            entry.getValue().log(type, t, log);
         }
-        return mInstance;
     }
 
+    @Override
+    public void log(String tag, LOG.PRIORITY type, String... text) {
+        if (mLogAppenders.isEmpty()) {
+            //nothing will be logged so no point in continuing
+            return;
+        }
 
-    public static void d(String tag, String text) {
-        getInstance().log(tag, PRIORITY.DEBUG, text);
+        if (tag == null || type == null || text == null) {
+            LOG.e(LOG_TAG, "Something is wrong, logger caught null -> " + tag + " - " + type + " - " + (text == null ? null : text.toString()));
+
+            return;
+        }
+
+        final String log = String.format(LOG_FORMAT_4ARGS, tag, getObjectHash(tag), getCurrentThreadId(), getLogString(text));
+
+        pushLogToAppenders(type, null, log);
     }
 
-    public static void e(String tag, String text) {
-        getInstance().log(tag, PRIORITY.ERROR, text);
+    @Override
+    public void log(String tag, LOG.PRIORITY type, Throwable t, String... text) {
+        if (mLogAppenders.isEmpty()) {
+            //nothing will be logged so no point in continuing
+            return;
+        }
+
+        String logString = getLogString(text);
+
+        if (tag == null || type == null || text == null || t == null) {
+            LOG.e(LOG_TAG, "Something is wrong, logger caught null -> " + logString);
+            return;
+        }
+
+        final String log = String.format(LOG_FORMAT_4ARGS, tag, getObjectHash(tag), getCurrentThreadId(), logString);
+
+        pushLogToAppenders(type, t, log);
     }
 
-    public static void v(String tag, String text) {
-        getInstance().log(tag, PRIORITY.VERBOSE, text);
+    public void log(Class<?> clazz, LOG.PRIORITY type, String... text) {
+        if (mLogAppenders.isEmpty()) {
+            //nothing will be logged so no point in continuing
+            return;
+        }
+
+        final String logString = getLogString(text);
+
+        if (clazz == null || type == null || text == null) {
+            LOG.e(LOG_TAG, "Something is wrong, logger caught null -> " + logString);
+            return;
+        }
+
+        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz), getCurrentThreadId(), logString);
+
+        pushLogToAppenders(type, null, log);
     }
 
-    public static void i(String tag, String text) {
-        getInstance().log(tag, PRIORITY.INFO, text);
+    public void log(Class<?> clazz, LOG.PRIORITY type, String text, Throwable t) {
+        if (mLogAppenders.isEmpty()) {
+            //nothing will be logged so no point in continuing
+            return;
+        }
+
+        final String logString = getLogString(text);
+
+        if (clazz == null || type == null || text == null || t == null) {
+            LOG.e(LOG_TAG, "Something is wrong, logger caught null -> " + logString);
+            return;
+        }
+
+        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz), getCurrentThreadId(), logString);
+        pushLogToAppenders(type, t, log);
     }
 
-    public static void w(String tag, String text) {
-        getInstance().log(tag, PRIORITY.WARN, text);
+    /**
+     * Get class name with ClassName pre appended.
+     *
+     * @param clazz Class to get the tag from
+     * @return Tag string
+     */
+    private String getTag(Class clazz) {
+        final StringBuilder stringBuilder = new StringBuilder();
+        if (mAddPackageName) {
+            stringBuilder.append(PACKAGE_NAME);
+            stringBuilder.append("/");
+        }
+
+        stringBuilder.append(clazz.getCanonicalName());
+
+        if (mAddMethodName) {
+            stringBuilder.append("." + getMethodName(clazz));
+        }
+
+        return stringBuilder.toString();
     }
 
-    public static void d(String tag, String text, Throwable t) {
-        getInstance().log(tag, PRIORITY.DEBUG, text, t);
+    /**
+     * Get class method name. This will only work when proguard is not active
+     *
+     * @param clazz The class being logged
+     */
+    private String getMethodName(Class clazz) {
+        int index = 0;
+        for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
+            index++;
+            if (ste.getClassName().equals(clazz.getName())) {
+                break;
+            }
+        }
+
+        final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        final String methodName;
+
+        if (stackTrace.length > index) {
+            methodName = stackTrace[index].getMethodName();
+        } else {
+            methodName = "UnknownMethod";
+        }
+
+        return methodName;
     }
 
-    public static void e(String tag, String text, Throwable t) {
-        getInstance().log(tag, PRIORITY.ERROR, text, t);
+    /**
+     * Gets the hashcode of the object sent
+     *
+     * @return The hashcode of the object in a printable string
+     */
+    private String getObjectHash(Object object) {
+        String hashCodeString;
+        if (object == null) {
+            hashCodeString = "[!!!NULL INSTANCE!!!] ";
+        } else {
+            hashCodeString = "[OID#" + object.hashCode() + "] ";
+        }
+
+        return hashCodeString;
     }
 
-    public static void v(String tag, String text, Throwable t) {
-        getInstance().log(tag, PRIORITY.VERBOSE, text, t);
-    }
-
-    public static void i(String tag, String text, Throwable t) {
-        getInstance().log(tag, PRIORITY.INFO, text, t);
-    }
-
-    public static void w(String tag, String text, Throwable t) {
-        getInstance().log(tag, PRIORITY.WARN, text, t);
-    }
-
-    public static String getFileLogPath(Context context) {
-        return context.getFilesDir().getPath() + File.separator + LOG_FILE_NAME;
+    /**
+     * Gets the current thread ID
+     *
+     * @return The current thread id in a printable string
+     */
+    private String getCurrentThreadId() {
+        return "[T# " + Thread.currentThread().getName() + "] ";
     }
 }

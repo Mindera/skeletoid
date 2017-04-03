@@ -1,8 +1,10 @@
-package com.mindera.skeletoid.logs;
+package com.mindera.skeletoid.logs.appenders;
 
 import android.content.Context;
 import android.util.Log;
 
+import com.mindera.skeletoid.generic.AndroidUtils;
+import com.mindera.skeletoid.logs.LOG;
 import com.mindera.skeletoid.threadpools.ThreadPoolUtils;
 
 import java.io.File;
@@ -16,6 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
 
+import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString;
+
 /**
  * Log appender for file
  */
@@ -24,20 +28,22 @@ public class LogFileAppender implements ILogAppender {
     private static final String LOG_TAG = "LogFileAppender";
 
     private static SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd HH:mm:ss.SSS");
-
+    /**
+     * Logcat logger tag
+     */
     private final String TAG;
     /**
-     * One MByte in byte
+     * Log ID
      */
-    private final int MBYTE_IN_BYTES = 1024 * 1024;
+    private final String LOG_ID = "LogFileAppender";
     /**
      * Size of the log file in MBytes
      */
-    private final int LOG_FILE_SIZE = 5;
+    private int mLogFileSize = 5;
     /**
      * Number of files to log (rolling appending)
      */
-    private final int NUMBER_OF_LOG_FILES = 1;
+    private int mNumberOfLogFiles = 1;
     /**
      * Whether or not logging to file is possible (don't change value! This is controlled automatically)
      */
@@ -51,17 +57,32 @@ public class LogFileAppender implements ILogAppender {
      */
     private java.util.concurrent.ThreadPoolExecutor mFileLoggingTP = null;
 
-    public LogFileAppender(String tag) {
+    //Default name, it will be replaced to packageName.log on constructor
+    //It presents no problem, because this will be used only after the logger is instantiated.
+    private static String LOG_FILE_NAME = "debug.log";
+    /**
+     * Minimum log level for this appender
+     */
+    private int mMinLogLevel = LOG.PRIORITY.VERBOSE.ordinal();
+
+    /**
+     * Contructor
+     *
+     * @param tag      Log tag
+     * @param fileName Log filename
+     */
+    public LogFileAppender(String tag, String fileName) {
         TAG = tag;
+        LOG_FILE_NAME = fileName + ".log";
     }
 
     /**
-     * Converts Logger level into FileHandler level
+     * Converts LOG level into FileHandler level
      *
-     * @param type Logger type
+     * @param type LOG type
      * @return FileHandler level
      */
-    private static Level getFileHandlerLevel(Logger.PRIORITY type) {
+    private static Level getFileHandlerLevel(LOG.PRIORITY type) {
 
         Level level;
 
@@ -73,6 +94,7 @@ public class LogFileAppender implements ILogAppender {
                 level = Level.WARNING;
                 break;
             case ERROR:
+            case FATAL:
                 level = Level.SEVERE;
                 break;
             case INFO:
@@ -89,9 +111,10 @@ public class LogFileAppender implements ILogAppender {
 
     @Override
     public void enableAppender(Context context) {
+        final int MBYTE_IN_BYTES = 1024 * 1024;
 
         try {
-            mFileHandler = new FileHandler(Logger.getFileLogPath(context), LOG_FILE_SIZE * MBYTE_IN_BYTES, NUMBER_OF_LOG_FILES, true);
+            mFileHandler = new FileHandler(AndroidUtils.getFileDirPath(context, File.separator + LOG_FILE_NAME), mLogFileSize * MBYTE_IN_BYTES, mNumberOfLogFiles, true);
             mFileHandler.setFormatter(new SimpleFormatter());
             mFileHandler.setFormatter(new Formatter() {
                 @Override
@@ -141,7 +164,10 @@ public class LogFileAppender implements ILogAppender {
     }
 
     @Override
-    public void log(final Logger.PRIORITY type, final String log, final Throwable t) {
+    public void log(final LOG.PRIORITY type, final Throwable t, final String... logs) {
+        if (type.ordinal() > mMinLogLevel) {
+            return;
+        }
 
         if (mCanWriteToFile) {
 
@@ -165,7 +191,7 @@ public class LogFileAppender implements ILogAppender {
                                 builder.append(TAG);
                                 builder.append("(").append(Thread.currentThread().getId()).append(")");
                                 builder.append(": ");
-                                builder.append(log);
+                                builder.append(getLogString(logs));
 
                                 final String logText = builder.toString();
 
@@ -177,7 +203,7 @@ public class LogFileAppender implements ILogAppender {
                                 mFileHandler.publish(logRecord);
 
                             } catch (Exception e) {
-
+                                Log.e(TAG, "Something is wrong", e);
                             }
                         }
                     }
@@ -187,14 +213,14 @@ public class LogFileAppender implements ILogAppender {
             } else {
                 //Fail directly to Android Log to avoid Stackoverflow
                 Log.e(LOG_TAG, "Error on submitToFileLoggingQueue: mFileLoggingTP is not available");
-                //Logger.e(LOG_TAG, "Error on submitToFileLoggingQueue: mFileLoggingTP is not available");
+                //LOG.e(LOG_TAG, "Error on submitToFileLoggingQueue: mFileLoggingTP is not available");
             }
 
         } else {
             mCanWriteToFile = false;
             //Fail directly to Android Log to avoid Stackoverflow
             Log.e(LOG_TAG, "Error on submitToFileLoggingQueue: Can't write to disk");
-            //Logger.e(LOG_TAG, "Error on submitToFileLoggingQueue: Can't write to disk");
+            //LOG.e(LOG_TAG, "Error on submitToFileLoggingQueue: Can't write to disk");
         }
     }
 
@@ -205,7 +231,7 @@ public class LogFileAppender implements ILogAppender {
      * @return List of logs files
      */
     public ArrayList<String> getListLogFiles(String logsPath) {
-        ArrayList<String> logFiles = new ArrayList<String>();
+        ArrayList<String> logFiles = new ArrayList<>();
 
         File logsDirectory = new File(logsPath);
         if (logsDirectory.exists()) {
@@ -219,5 +245,30 @@ public class LogFileAppender implements ILogAppender {
             }
         }
         return logFiles;
+    }
+
+
+    public void setLogFileSize(int LOG_FILE_SIZE) {
+        this.mLogFileSize = LOG_FILE_SIZE;
+    }
+
+    public void setNumberOfLogFiles(int NUMBER_OF_LOG_FILES) {
+        this.mNumberOfLogFiles = NUMBER_OF_LOG_FILES;
+    }
+
+
+    @Override
+    public int getMinLogLevel() {
+        return mMinLogLevel;
+    }
+
+    @Override
+    public void setMinLogLevel(LOG.PRIORITY minLogLevel) {
+        mMinLogLevel = minLogLevel.ordinal();
+    }
+
+    @Override
+    public String getLoggerId() {
+        return LOG_ID;
     }
 }

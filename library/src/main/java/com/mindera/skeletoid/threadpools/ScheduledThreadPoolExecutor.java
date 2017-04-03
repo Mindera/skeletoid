@@ -2,7 +2,7 @@
 package com.mindera.skeletoid.threadpools;
 
 
-import com.mindera.skeletoid.logs.Logger;
+import com.mindera.skeletoid.logs.LOG;
 
 import java.util.List;
 import java.util.Queue;
@@ -15,12 +15,6 @@ import java.util.concurrent.Future;
 public class ScheduledThreadPoolExecutor extends java.util.concurrent.ScheduledThreadPoolExecutor {
 
     private static final String LOG_TAG = "ScheduledThreadPoolExecutor";
-
-
-    /**
-     * Prefix of threads of a shutdown threadpool
-     */
-    private final String SHUTDOWN_THREAD = "SHUTDOWN";
 
     public ScheduledThreadPoolExecutor(int corePoolSize, NamedThreadFactory threadFactory) {
         super(corePoolSize, threadFactory);
@@ -36,16 +30,16 @@ public class ScheduledThreadPoolExecutor extends java.util.concurrent.ScheduledT
                 if (future.isDone())
                     future.get();
             } catch (CancellationException ce) {
-                Logger.e(LOG_TAG, "Task was cancelled: " + r.toString());
+                LOG.e(LOG_TAG, "Task was cancelled: " + r.toString());
             } catch (InterruptedException ie) {
-                Logger.e(LOG_TAG, "Task was interrupted: " + r.toString());
+                LOG.e(LOG_TAG, "Task was interrupted: " + r.toString());
                 Thread.currentThread().interrupt(); // ignore/reset
             } catch (Exception e) {
                 t = e.getCause();
             }
         }
         if (t != null)
-            Logger.e(LOG_TAG, "Uncaught exception on ThreadPool", t);
+            LOG.e(LOG_TAG, t, "Uncaught exception on ThreadPool");
     }
 
 
@@ -64,7 +58,9 @@ public class ScheduledThreadPoolExecutor extends java.util.concurrent.ScheduledT
     /**
      * Mark threads name after shutdown to provide accurate logs
      */
-    public void changeThreadsNameAfterShutdown() {
+    private void changeThreadsNameAfterShutdown() {
+        final String SHUTDOWN_THREAD = "SHUTDOWN";
+
         final NamedThreadFactory factory = (NamedThreadFactory) getThreadFactory();
         if (factory != null) {
             final Queue<Thread> threads = factory.getThreads();

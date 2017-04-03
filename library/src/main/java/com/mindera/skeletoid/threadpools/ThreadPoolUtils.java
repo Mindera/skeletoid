@@ -18,10 +18,9 @@ public class ThreadPoolUtils {
      * @return Thread Pool
      */
     public static java.util.concurrent.ThreadPoolExecutor getFixedThreadPool(final String threadPoolName, final int MAX_THREAD) {
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(MAX_THREAD, MAX_THREAD, 0L,
+        return new ThreadPoolExecutor(MAX_THREAD, MAX_THREAD, 0L,
                 TimeUnit.MILLISECONDS, new NamedThreadFactory(threadPoolName,
                 MAX_THREAD));
-        return threadPoolExecutor;
     }
 
     /**
@@ -32,10 +31,8 @@ public class ThreadPoolUtils {
      * @return Thread Pool
      */
     public static ScheduledThreadPoolExecutor getScheduledThreadPool(final String threadPoolName, final int MAX_THREAD) {
-        ScheduledThreadPoolExecutor threadPoolExecutor = new ScheduledThreadPoolExecutor(MAX_THREAD,
+        return new ScheduledThreadPoolExecutor(MAX_THREAD,
                 new NamedThreadFactory(threadPoolName, MAX_THREAD));
-
-        return threadPoolExecutor;
     }
 
     /**

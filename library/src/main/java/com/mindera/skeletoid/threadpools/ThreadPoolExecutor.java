@@ -2,7 +2,7 @@
 package com.mindera.skeletoid.threadpools;
 
 
-import com.mindera.skeletoid.logs.Logger;
+import com.mindera.skeletoid.logs.LOG;
 
 import java.util.Comparator;
 import java.util.List;
@@ -24,15 +24,12 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
     private static final String LOG_TAG = "ThreadPoolExecutor";
 
     /**
-     * Prefix of threads of a shutdown threadpool
+     * Runnable priority types (these are just helpers, another int value can be sent)
      */
-    private final String SHUTDOWN_THREAD = "SHUTDOWN";
-
-    /**
-     * Runnable priority types
-     */
-    public static final int HIGH_PRIORITY = 1;
-    public static final int STANDARD_PRIORITY = 0;
+    public static final int HIGH_PRIORITY = 3;
+    public static final int AVERAGE_PRIORITY = 2;
+    public static final int STANDARD_PRIORITY = 1;
+    public static final int LOW_PRIORITY = 0;
 
 
     /**
@@ -46,30 +43,30 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
      */
     public ThreadPoolExecutor(int corePoolSize, int maxPoolSize, long keepAlive, TimeUnit timeUnit,
                               final NamedThreadFactory threadFactory) {
-        super(corePoolSize, maxPoolSize, keepAlive, timeUnit, new PriorityBlockingQueue<Runnable>(11,
+        super(corePoolSize, maxPoolSize, keepAlive, timeUnit, new PriorityBlockingQueue<>(11,
                 new PriorityTaskComparator()), threadFactory);
     }
 
     @Override
     protected <T> RunnableFuture<T> newTaskFor(final Callable<T> callable) {
         if (callable instanceof Important)
-            return new PriorityTask<T>(((Important) callable).getPriority(), callable);
+            return new PriorityTask<>(((Important) callable).getPriority(), callable);
         else
-            return new PriorityTask<T>(0, callable);
+            return new PriorityTask<>(0, callable);
     }
 
     @Override
     protected <T> RunnableFuture<T> newTaskFor(final Runnable runnable, final T value) {
         if (runnable instanceof Important)
-            return new PriorityTask<T>(((Important) runnable).getPriority(), runnable, value);
+            return new PriorityTask<>(((Important) runnable).getPriority(), runnable, value);
         else
-            return new PriorityTask<T>(0, runnable, value);
+            return new PriorityTask<>(0, runnable, value);
     }
 
     @Override
     public void execute(Runnable task) {
         if (task == null) {
-            Logger.e(LOG_TAG, "Executing null runnable... ignoring");
+            LOG.e(LOG_TAG, "Executing null runnable... ignoring");
             return;
         }
 
@@ -84,7 +81,7 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
     @Override
     public Future<?> submit(final Runnable task) {
         if (task == null) {
-            Logger.e(LOG_TAG, "Submitting null runnable... ignoring");
+            LOG.e(LOG_TAG, "Submitting null runnable... ignoring");
             return null;
         }
         final RunnableFuture<Object> futureTask = newTaskFor(task, null);
@@ -101,9 +98,9 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
                 if (future.isDone())
                     future.get();
             } catch (CancellationException ce) {
-                Logger.e(LOG_TAG, "Task was cancelled: " + r.toString());
+                LOG.e(LOG_TAG, "Task was cancelled: " + r.toString());
             } catch (InterruptedException ie) {
-                Logger.e(LOG_TAG, "Task was interrupted: " + r.toString());
+                LOG.e(LOG_TAG, "Task was interrupted: " + r.toString());
                 Thread.currentThread().interrupt(); // ignore/reset
             } catch (Exception e) {
                 t = e.getCause();
@@ -111,7 +108,7 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
         }
 
         if (t != null)
-            Logger.e(LOG_TAG, "Uncaught exception on ThreadPool", t);
+            LOG.e(LOG_TAG, t, "Uncaught exception on ThreadPool");
     }
 
     @Override
@@ -129,7 +126,10 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
     /**
      * Mark threads name after shutdown to provide accurate logs
      */
-    public void changeThreadsNameAfterShutdown() {
+    private void changeThreadsNameAfterShutdown() {
+        final String SHUTDOWN_THREAD = "SHUTDOWN";
+
+
         final NamedThreadFactory factory = (NamedThreadFactory) getThreadFactory();
         if (factory != null) {
             final Queue<Thread> threads = factory.getThreads();
@@ -148,7 +148,7 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
     /**
      * Interface for Priority Tasks to Implement
      */
-    public interface Important {
+    private interface Important {
         int getPriority();
     }
 
@@ -161,7 +161,7 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
          * @param priority  Task priority
          * @param tCallable callable
          */
-        public PriorityTask(final int priority, final Callable<T> tCallable) {
+        private PriorityTask(final int priority, final Callable<T> tCallable) {
             super(tCallable);
 
             this.priority = priority;
@@ -174,7 +174,7 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
          * @param runnable Runnable
          * @param result   Task result
          */
-        public PriorityTask(final int priority, final Runnable runnable, final T result) {
+        private PriorityTask(final int priority, final Runnable runnable, final T result) {
             super(runnable, result);
 
             this.priority = priority;
