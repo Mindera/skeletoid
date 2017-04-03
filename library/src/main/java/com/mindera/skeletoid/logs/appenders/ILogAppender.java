@@ -1,6 +1,8 @@
-package com.mindera.skeletoid.logs;
+package com.mindera.skeletoid.logs.appenders;
 
 import android.content.Context;
+
+import com.mindera.skeletoid.logs.LOG;
 
 /**
  * Interface for all Log appenders
@@ -24,8 +26,13 @@ public interface ILogAppender {
      * Write a log
      *
      * @param type Type of log
-     * @param log  Log
      * @param t    Throwable (can be null)
+     * @param log  Log
      */
-    void log(Logger.PRIORITY type, String log, Throwable t);
+    void log(LOG.PRIORITY type, Throwable t, String... log);
+
+    /**
+     * Get LOG id (it should be unique)
+     */
+    String getLoggerId();
 }

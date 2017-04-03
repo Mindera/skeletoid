@@ -1,16 +1,19 @@
-package com.mindera.skeletoid.logs;
+package com.mindera.skeletoid.logs.appenders;
 
 import android.content.Context;
 import android.util.Log;
 
+import com.mindera.skeletoid.logs.LOG;
+
 import java.util.ArrayList;
+
+import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString;
 
 /**
  * Log appender for Logcat
  */
 public class LogcatAppender implements ILogAppender {
 
-    public static final int LOGGER_ID = 0;
     /**
      * The maximum number of chars to log in a single line.
      */
@@ -20,25 +23,38 @@ public class LogcatAppender implements ILogAppender {
      */
     private final boolean mSplitLinesAboveMaxLength = true;
 
+    /**
+     * Logcat logger tag
+     */
     public final String TAG;
+    /**
+     * LogAppender ID
+     */
+    private final String LOG_ID = "LogcatAppender";
 
+    /**
+     * Contructor
+     *
+     * @param tag Log tag
+     */
     public LogcatAppender(String tag) {
         TAG = tag;
     }
 
     @Override
     public void enableAppender(Context context) {
-
+        //Nothing needed here
     }
 
     @Override
     public void disableAppender() {
-
+        //Nothing needed here
     }
 
     @Override
-    public void log(Logger.PRIORITY type, String log, Throwable t) {
-        final ArrayList<String> logs = formatLog(log);
+    public void log(LOG.PRIORITY type, Throwable t, String... log) {
+        final String logString = getLogString(log);
+        final ArrayList<String> logs = formatLog(logString);
 
         for (String logText : logs) {
 
@@ -98,5 +114,11 @@ public class LogcatAppender implements ILogAppender {
             result.add(textToSplit.toString());
         }
         return result;
+    }
+
+
+    @Override
+    public String getLoggerId() {
+        return LOG_ID;
     }
 }

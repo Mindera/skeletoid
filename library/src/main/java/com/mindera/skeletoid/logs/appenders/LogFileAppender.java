@@ -1,8 +1,10 @@
-package com.mindera.skeletoid.logs;
+package com.mindera.skeletoid.logs.appenders;
 
 import android.content.Context;
 import android.util.Log;
 
+import com.mindera.skeletoid.generic.AndroidUtils;
+import com.mindera.skeletoid.logs.LOG;
 import com.mindera.skeletoid.threadpools.ThreadPoolUtils;
 
 import java.io.File;
@@ -24,8 +26,14 @@ public class LogFileAppender implements ILogAppender {
     private static final String LOG_TAG = "LogFileAppender";
 
     private static SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd HH:mm:ss.SSS");
-
+    /**
+     * Logcat logger tag
+     */
     private final String TAG;
+    /**
+     * Log ID
+     */
+    private final String LOG_ID = "LogFileAppender";
     /**
      * One MByte in byte
      */
@@ -51,17 +59,28 @@ public class LogFileAppender implements ILogAppender {
      */
     private java.util.concurrent.ThreadPoolExecutor mFileLoggingTP = null;
 
-    public LogFileAppender(String tag) {
+    //Default name, it will be replaced to packageName.log on constructor
+    //It presents no problem, because this will be used only after the logger is instantiated.
+    private static String LOG_FILE_NAME = "debug.log";
+
+    /**
+     * Contructor
+     *
+     * @param tag      Log tag
+     * @param fileName Log filename
+     */
+    public LogFileAppender(String tag, String fileName) {
         TAG = tag;
+        LOG_FILE_NAME = fileName + ".log";
     }
 
     /**
-     * Converts Logger level into FileHandler level
+     * Converts LOG level into FileHandler level
      *
-     * @param type Logger type
+     * @param type LOG type
      * @return FileHandler level
      */
-    private static Level getFileHandlerLevel(Logger.PRIORITY type) {
+    private static Level getFileHandlerLevel(LOG.PRIORITY type) {
 
         Level level;
 
@@ -91,7 +110,7 @@ public class LogFileAppender implements ILogAppender {
     public void enableAppender(Context context) {
 
         try {
-            mFileHandler = new FileHandler(Logger.getFileLogPath(context), LOG_FILE_SIZE * MBYTE_IN_BYTES, NUMBER_OF_LOG_FILES, true);
+            mFileHandler = new FileHandler(AndroidUtils.getFileDirPath(context, File.separator + LOG_FILE_NAME), LOG_FILE_SIZE * MBYTE_IN_BYTES, NUMBER_OF_LOG_FILES, true);
             mFileHandler.setFormatter(new SimpleFormatter());
             mFileHandler.setFormatter(new Formatter() {
                 @Override
@@ -141,7 +160,7 @@ public class LogFileAppender implements ILogAppender {
     }
 
     @Override
-    public void log(final Logger.PRIORITY type, final String log, final Throwable t) {
+    public void log(final LOG.PRIORITY type, final Throwable t, final String... log) {
 
         if (mCanWriteToFile) {
 
@@ -187,14 +206,14 @@ public class LogFileAppender implements ILogAppender {
             } else {
                 //Fail directly to Android Log to avoid Stackoverflow
                 Log.e(LOG_TAG, "Error on submitToFileLoggingQueue: mFileLoggingTP is not available");
-                //Logger.e(LOG_TAG, "Error on submitToFileLoggingQueue: mFileLoggingTP is not available");
+                //LOG.e(LOG_TAG, "Error on submitToFileLoggingQueue: mFileLoggingTP is not available");
             }
 
         } else {
             mCanWriteToFile = false;
             //Fail directly to Android Log to avoid Stackoverflow
             Log.e(LOG_TAG, "Error on submitToFileLoggingQueue: Can't write to disk");
-            //Logger.e(LOG_TAG, "Error on submitToFileLoggingQueue: Can't write to disk");
+            //LOG.e(LOG_TAG, "Error on submitToFileLoggingQueue: Can't write to disk");
         }
     }
 
@@ -219,5 +238,10 @@ public class LogFileAppender implements ILogAppender {
             }
         }
         return logFiles;
+    }
+
+    @Override
+    public String getLoggerId() {
+        return LOG_ID;
     }
 }

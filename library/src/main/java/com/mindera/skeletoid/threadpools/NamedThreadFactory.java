@@ -1,6 +1,6 @@
 package com.mindera.skeletoid.threadpools;
 
-import com.mindera.skeletoid.logs.Logger;
+import com.mindera.skeletoid.logs.LOG;
 
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -55,7 +55,7 @@ public class NamedThreadFactory implements ThreadFactory {
 
         int threadTotal = ThreadPoolUtils.mThreadTotal.incrementAndGet();
 
-        Logger.d(LOG_TAG, "Created one more thread: "
+        LOG.d(LOG_TAG, "Created one more thread: "
                 + threadName
                 + " | Total number of threads (currently): "
                 + threadTotal);
