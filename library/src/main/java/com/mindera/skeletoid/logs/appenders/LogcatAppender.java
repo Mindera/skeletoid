@@ -1,16 +1,19 @@
-package com.mindera.skeletoid.logs;
+package com.mindera.skeletoid.logs.appenders;
 
 import android.content.Context;
 import android.util.Log;
 
+import com.mindera.skeletoid.logs.LOG;
+
 import java.util.ArrayList;
+
+import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString;
 
 /**
  * Log appender for Logcat
  */
 public class LogcatAppender implements ILogAppender {
 
-    public static final int LOGGER_ID = 0;
     /**
      * The maximum number of chars to log in a single line.
      */
@@ -18,27 +21,47 @@ public class LogcatAppender implements ILogAppender {
     /**
      * To check if logcat should show the complete lines or just the first 4000 chars.
      */
-    private final boolean mSplitLinesAboveMaxLength = true;
+    private boolean mSplitLinesAboveMaxLength = true;
 
-    public final String TAG;
+    /**
+     * Logcat logger tag
+     */
+    private final String TAG;
+    /**
+     * LogAppender ID
+     */
+    private final String LOG_ID = "LogcatAppender";
+    /**
+     * Minimum log level for this appender
+     */
+    private int mMinLogLevel = LOG.PRIORITY.VERBOSE.ordinal();
 
+    /**
+     * Contructor
+     *
+     * @param tag Log tag
+     */
     public LogcatAppender(String tag) {
         TAG = tag;
     }
 
     @Override
     public void enableAppender(Context context) {
-
+        //Nothing needed here
     }
 
     @Override
     public void disableAppender() {
-
+        //Nothing needed here
     }
 
     @Override
-    public void log(Logger.PRIORITY type, String log, Throwable t) {
-        final ArrayList<String> logs = formatLog(log);
+    public void log(LOG.PRIORITY type, Throwable t, String... log) {
+        if(type.ordinal() > mMinLogLevel){
+            return;
+        }
+        final String logString = getLogString(log);
+        final ArrayList<String> logs = formatLog(logString);
 
         for (String logText : logs) {
 
@@ -58,8 +81,11 @@ public class LogcatAppender implements ILogAppender {
                 case INFO:
                     Log.i(TAG, logText, t);
                     break;
-                default:
+                case FATAL:
                     Log.wtf(TAG, logText, t);
+                    break;
+                default:
+                    Log.d(TAG, logText, t);
                     break;
             }
         }
@@ -73,7 +99,7 @@ public class LogcatAppender implements ILogAppender {
      */
     private ArrayList<String> formatLog(String text) {
 
-        final ArrayList<String> result = new ArrayList<String>();
+        final ArrayList<String> result = new ArrayList<>();
 
         StringBuilder textToSplit = new StringBuilder();
         if (text != null) {
@@ -99,4 +125,26 @@ public class LogcatAppender implements ILogAppender {
         }
         return result;
     }
+
+
+    public void setSplitLinesAboveMaxLength(boolean splitLinesAboveMaxLength) {
+        this.mSplitLinesAboveMaxLength = splitLinesAboveMaxLength;
+    }
+
+    @Override
+    public int getMinLogLevel() {
+        return mMinLogLevel;
+    }
+
+    @Override
+    public void setMinLogLevel(LOG.PRIORITY minLogLevel) {
+        this.mMinLogLevel = minLogLevel.ordinal();
+    }
+
+    @Override
+    public String getLoggerId() {
+        return LOG_ID;
+    }
+
+
 }

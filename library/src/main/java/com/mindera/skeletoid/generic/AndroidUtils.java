@@ -11,8 +11,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
 
-import com.mindera.skeletoid.logs.Logger;
-
 /**
  * Utility class for Android related info
  */
@@ -122,8 +120,8 @@ public class AndroidUtils {
                     info = context.getPackageManager().getPackageInfo(context.getPackageName(),
                             PackageManager.GET_META_DATA);
                 } catch (PackageManager.NameNotFoundException e) {
-                    //This has Log instead of Logger in purpose to avoid infinite loops on error cases of logger startup
-                    Logger.e(AndroidUtils.class.getSimpleName(), "getApplicationVersionName", e);
+                    //This has Log instead of LOG in purpose to avoid infinite loops on error cases of logger startup
+                    Log.e(AndroidUtils.class.getSimpleName(), "getApplicationVersionName", e);
                 }
 
                 mAppVersionName = info.versionName;
@@ -154,7 +152,7 @@ public class AndroidUtils {
                     mAppVersionCode = info.versionCode;
 
                 } catch (NameNotFoundException e) {
-                    //This has Log instead of Logger in purpose to avoid infinite loops on error cases of logger startup
+                    //This has Log instead of LOG in purpose to avoid infinite loops on error cases of logger startup
                     Log.e(AndroidUtils.class.getSimpleName(), "getApplicationVersionCode", e);
                 }
 
@@ -186,7 +184,7 @@ public class AndroidUtils {
                         mAppPackage = info.packageName;
 
                     } catch (Exception e) {
-                        //This has Log instead of Logger in purpose to avoid infinite loops on error cases of logger startup
+                        //This has Log instead of LOG in purpose to avoid infinite loops on error cases of logger startup
                         Log.e(AndroidUtils.class.getSimpleName(), "getApplicationPackage", e);
                     }
                 }
@@ -257,5 +255,25 @@ public class AndroidUtils {
                 .getSystemService(Context.TELEPHONY_SERVICE);
 
         return telephonyManager.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE;
+    }
+
+    /**
+     * Get File directory path
+     * @param context Context
+     * @param path path inside directory path
+     * @return Path needed
+     */
+    public static String getFileDirPath(Context context, String path) {
+        return context.getFilesDir().getPath() + path;
+    }
+
+    /**
+     * Get Cache directory path
+     * @param context Context
+     * @param path path inside cache path
+     * @return Path needed
+     */
+    public static String getCacheDirPath(Context context, String path) {
+        return context.getCacheDir().getPath() + path;
     }
 }
