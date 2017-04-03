@@ -1,10 +1,10 @@
 package com.mindera.skeletoid.logs;
 
+import java.util.List;
+
 import android.content.Context;
 
 import com.mindera.skeletoid.logs.appenders.ILogAppender;
-
-import java.util.List;
 
 /**
  * LOG interface
@@ -39,7 +39,8 @@ public interface ILogger {
 
     /**
      * Enable log appenders
-     * @param context Context
+     *
+     * @param context      Context
      * @param logAppenders Log appenders to enable
      * @return Ids of the logs enabled by their order
      */
@@ -48,7 +49,8 @@ public interface ILogger {
 
     /**
      * Disable log appenders
-     * @param context Context
+     *
+     * @param context   Context
      * @param loggerIds Log ids of each of the loggers enabled by the order sent
      */
     void disableAppenders(Context context, List<String> loggerIds);

@@ -111,7 +111,7 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
         }
 
         if (t != null)
-            LOG.e(LOG_TAG, "Uncaught exception on ThreadPool", t);
+            LOG.e(LOG_TAG, t, "Uncaught exception on ThreadPool");
     }
 
     @Override

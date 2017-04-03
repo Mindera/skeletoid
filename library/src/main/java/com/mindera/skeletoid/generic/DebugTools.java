@@ -10,7 +10,6 @@ import java.util.Map;
 public class DebugTools {
 
     public static void printAllStackTraces(Class<?> clazz) {
-
         LOG.d(clazz.toString(), "DUMPING ALL STACK TRACES");
 
         Map<Thread, StackTraceElement[]> liveThreads = Thread.getAllStackTraces();
@@ -19,6 +18,7 @@ public class DebugTools {
             StackTraceElement[] traceElements = liveThreads.get(thread);
             for (StackTraceElement traceElement : traceElements) {
                 LOG.d(clazz.toString(), "at " + traceElement);
+
             }
         }
     }
