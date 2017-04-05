@@ -59,7 +59,7 @@ public class LogFileAppender implements ILogAppender {
 
     //Default name, it will be replaced to packageName.log on constructor
     //It presents no problem, because this will be used only after the logger is instantiated.
-    private static String LOG_FILE_NAME = "debug.log";
+    private String LOG_FILE_NAME = "debug.log";
     /**
      * Minimum log level for this appender
      */
@@ -114,7 +114,7 @@ public class LogFileAppender implements ILogAppender {
         final int MBYTE_IN_BYTES = 1024 * 1024;
 
         try {
-            mFileHandler = new FileHandler(AndroidUtils.getFileDirPath(context, File.separator + LOG_FILE_NAME), mLogFileSize * MBYTE_IN_BYTES, mNumberOfLogFiles, true);
+            mFileHandler = new FileHandler(getFileLogPath(context), mLogFileSize * MBYTE_IN_BYTES, mNumberOfLogFiles, true);
             mFileHandler.setFormatter(new SimpleFormatter());
             mFileHandler.setFormatter(new Formatter() {
                 @Override
@@ -256,6 +256,9 @@ public class LogFileAppender implements ILogAppender {
         this.mNumberOfLogFiles = NUMBER_OF_LOG_FILES;
     }
 
+    public String getFileLogPath(Context context){
+        return AndroidUtils.getFileDirPath(context, File.separator + LOG_FILE_NAME);
+    }
 
     @Override
     public int getMinLogLevel() {
@@ -271,4 +274,5 @@ public class LogFileAppender implements ILogAppender {
     public String getLoggerId() {
         return LOG_ID;
     }
+
 }
