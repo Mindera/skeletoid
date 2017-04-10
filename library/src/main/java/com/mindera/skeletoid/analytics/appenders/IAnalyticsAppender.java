@@ -5,6 +5,9 @@ import android.content.Context;
 
 import java.util.Map;
 
+/**
+ * Interface for Analytics appenders
+ */
 public interface IAnalyticsAppender {
 
     /**
@@ -25,7 +28,7 @@ public interface IAnalyticsAppender {
      * @param screenName       Screen name
      * @param analyticsPayload generic analytics payload
      */
-    void trackEvent(String screenName, Map<String, String> analyticsPayload);
+    void trackEvent(String screenName, Map<String, Object> analyticsPayload);
 
     /**
      * Track app page hit
@@ -33,7 +36,7 @@ public interface IAnalyticsAppender {
      * @param screenName       Screen name
      * @param analyticsPayload generic analytics payload
      */
-    void trackPageHit(String screenName, Map<String, String> analyticsPayload);
+    void trackPageHit(String screenName, Map<String, Object> analyticsPayload);
 
     /**
      * Get Analytics id (it should be unique within AnalyticsAppenders)

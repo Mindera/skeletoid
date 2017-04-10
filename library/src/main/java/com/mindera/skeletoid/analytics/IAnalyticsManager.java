@@ -26,9 +26,9 @@ public interface IAnalyticsManager {
      * Disable analytics appenders
      *
      * @param context   Context
-     * @param loggerIds Log ids of each of the analytics enabled by the order sent
+     * @param analyticsIds Log ids of each of the analytics enabled by the order sent
      */
-    void disableAppenders(Context context, List<String> loggerIds);
+    void disableAppenders(Context context, List<String> analyticsIds);
 
     /**
      * Disable all analytics appenders
@@ -41,7 +41,7 @@ public interface IAnalyticsManager {
      * @param screenName       Screen name
      * @param analyticsPayload generic analytics payload
      */
-    void trackEvent(String screenName, Map<String, String> analyticsPayload);
+    void trackEvent(String screenName, Map<String, Object> analyticsPayload);
 
     /**
      * Track app page hit
@@ -49,5 +49,5 @@ public interface IAnalyticsManager {
      * @param screenName       Screen name
      * @param analyticsPayload generic analytics payload
      */
-    void trackPageHit(String screenName, Map<String, String> analyticsPayload);
+    void trackPageHit(String screenName, Map<String, Object> analyticsPayload);
 }
