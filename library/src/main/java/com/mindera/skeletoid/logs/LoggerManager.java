@@ -1,6 +1,7 @@
 package com.mindera.skeletoid.logs;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.mindera.skeletoid.generic.AndroidUtils;
 import com.mindera.skeletoid.logs.appenders.ILogAppender;
@@ -15,9 +16,9 @@ import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString;
 /**
  * LOG main class. It contains all the logic and feeds the appenders
  */
-class Logger implements ILogger {
+class LoggerManager implements ILoggerManager {
 
-    private static final String LOG_TAG = "Logger";
+    private static final String LOG_TAG = "LoggerManager";
     /**
      * Log format
      */
@@ -49,7 +50,7 @@ class Logger implements ILogger {
      * The logger itself
      */
 
-    Logger(Context context) {
+    LoggerManager(Context context) {
         PACKAGE_NAME = AndroidUtils.getApplicationPackage(context);
     }
 
@@ -67,6 +68,11 @@ class Logger implements ILogger {
             logAppender.enableAppender(context);
 
             final String loggerId = logAppender.getLoggerId();
+            
+            if (mLogAppenders.containsKey(loggerId)) {
+                Log.e(LOG_TAG, "Appender ERROR: Adding appender with the same ID: " + loggerId);
+                mLogAppenders.remove(loggerId).disableAppender();
+            }
             appenderIds.add(loggerId);
             mLogAppenders.put(loggerId, logAppender);
         }

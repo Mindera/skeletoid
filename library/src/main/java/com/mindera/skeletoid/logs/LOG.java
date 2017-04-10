@@ -20,10 +20,10 @@ public class LOG {
 
     private static final String LOGGER = "LOG";
 
-    private static volatile ILogger mInstance;
+    private static volatile ILoggerManager mInstance;
 
     /**
-     * Init the logger. This method MUST be called before using Logger
+     * Init the logger. This method MUST be called before using LoggerManager
      *
      * @param context
      */
@@ -32,7 +32,7 @@ public class LOG {
     }
 
     /**
-     * Init the logger. This method MUST be called before using Logger
+     * Init the logger. This method MUST be called before using LoggerManager
      *
      * @param context      Context app
      * @param logAppenders The log appenders to be started
@@ -47,13 +47,13 @@ public class LOG {
      * @param context
      * @return
      */
-    private static ILogger getInstance(Context context) {
-        ILogger result = mInstance;
+    private static ILoggerManager getInstance(Context context) {
+        ILoggerManager result = mInstance;
         if (result == null) {
             synchronized (LOG.class) {
                 result = mInstance;
                 if (result == null) {
-                    mInstance = new Logger(context);
+                    mInstance = new LoggerManager(context);
                 }
             }
         }
@@ -61,10 +61,10 @@ public class LOG {
     }
 
     /**
-     * Get Logger instance.
+     * Get LoggerManager instance.
      * @return
      */
-    private static ILogger getInstance() {
+    private static ILoggerManager getInstance() {
         if (mInstance == null) {
             Log.e(LOGGER, "You MUST init() the LOG. I will crash now...");
         }
