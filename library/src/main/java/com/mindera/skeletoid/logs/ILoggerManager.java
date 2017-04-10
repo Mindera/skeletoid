@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * LOG interface
  */
-public interface ILogger {
+public interface ILoggerManager {
 
     /**
      * Log to all log appenders
