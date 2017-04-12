@@ -3,6 +3,12 @@ A utils library for Android Applications made at Mindera
 
 [![Build Status](https://travis-ci.org/Mindera/skeletoid.svg)](https://travis-ci.org/Mindera/skeletoid) [![Release](https://jitpack.io/v/mindera/skeletoid.svg)](https://jitpack.io/#mindera/skeletoid)
 
+## Features
+* Analytics abstraction
+* Generic stuff
+* Logging abstraction
+* Threadppoling management 
+
 
 ## Usage
 
@@ -20,7 +26,11 @@ And add the following script to the app dependencies
 
 ```groovy
 dependencies {
-    compile 'com.github.mindera:skeletoid:0.1'
+    compile 'com.github.mindera:skeletoid:x.y.z'
 }
 ```
+
+
+## Plugins available
+* [Google Analytics appender](https://github.com/Mindera/skeletoid-googleanalytics)
 
