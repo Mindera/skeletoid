@@ -61,12 +61,21 @@ public class Analytics {
         return mInstance;
     }
 
-
-    public static void trackEvent(String screenName, Map<String, String> analyticsPayload) {
+    /**
+     * Track Event method - Analytics generic method to send an event with a payload
+     * @param screenName
+     * @param analyticsPayload
+     */
+    public static void trackEvent(String screenName, Map<String, Object> analyticsPayload) {
         getInstance().trackEvent(screenName, analyticsPayload);
     }
 
-    public static void trackPageHit(String screenName, Map<String, String> analyticsPayload) {
+    /**
+     * Track Page Hits - Analytics generic method to track page hits
+     * @param screenName
+     * @param analyticsPayload
+     */
+    public static void trackPageHit(String screenName, Map<String, Object> analyticsPayload) {
         getInstance().trackPageHit(screenName, analyticsPayload);
     }
 }
