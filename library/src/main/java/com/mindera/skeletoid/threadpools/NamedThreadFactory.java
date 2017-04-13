@@ -65,11 +65,11 @@ public class NamedThreadFactory implements ThreadFactory {
         return t;
     }
 
-    Queue<Thread> getThreads() {
+    protected Queue<Thread> getThreads() {
         return threads;
     }
 
-    void clearThreads() {
+    protected void clearThreads() {
         threads.clear();
     }
 }
