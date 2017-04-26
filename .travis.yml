@@ -29,3 +29,6 @@ script:
 
   # Run initTests
   - ./gradlew test
+
+  # Send coverage report to Codacy
+  - ./gradlew jacocoTestDebugUnitTestReportCodacyUpload
