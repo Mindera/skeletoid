@@ -1,8 +1,15 @@
 package com.mindera.skeletoid.generic;
 
+import android.support.annotation.VisibleForTesting;
+
 import java.util.Calendar;
 
-public class DateUtils {
+public final class DateUtils {
+
+    @VisibleForTesting
+    DateUtils() {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Check if a timestamp if from the same day or after
