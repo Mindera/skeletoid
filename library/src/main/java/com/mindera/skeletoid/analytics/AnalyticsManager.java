@@ -1,16 +1,14 @@
 package com.mindera.skeletoid.analytics;
 
+import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
+
 import android.content.Context;
 import android.util.Log;
-
-import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static android.provider.ContactsContract.Directory.PACKAGE_NAME;
 
 public class AnalyticsManager implements IAnalyticsManager {
 
@@ -65,7 +63,8 @@ public class AnalyticsManager implements IAnalyticsManager {
 
     @Override
     public void disableAllAppenders() {
-        for (String analyticsId : mAnalyticsAppenders.keySet()) {
+        List<String> appendersKeys = new ArrayList<>(mAnalyticsAppenders.keySet());
+        for (String analyticsId : appendersKeys) {
             final IAnalyticsAppender analyticsAppender = mAnalyticsAppenders.remove(analyticsId);
             if (analyticsAppender != null) {
                 analyticsAppender.disableAppender();
