@@ -3,14 +3,9 @@ package com.mindera.skeletoid.threadpools;
 /**
  * CallbackTask to help determine when a task is finished.
  */
-public class CallbackTask implements Runnable{
-
-    public interface ICallbackTask {
-        void taskComplete();
-    }
+public class CallbackTask implements Runnable {
 
     private final Runnable task;
-
     private final ICallbackTask callback;
 
     public CallbackTask(Runnable task, ICallbackTask callback) {
@@ -21,5 +16,10 @@ public class CallbackTask implements Runnable{
     public void run() {
         task.run();
         callback.taskComplete();
+    }
+
+    public interface ICallbackTask {
+
+        void taskComplete();
     }
 }
