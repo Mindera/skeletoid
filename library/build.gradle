@@ -19,11 +19,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
 
-    compile "com.android.support:support-v4:25.0.0"
+    compile "com.android.support:support-v4:25.3.1"
 
     // Unit tests
     testCompile 'junit:junit:4.12'
