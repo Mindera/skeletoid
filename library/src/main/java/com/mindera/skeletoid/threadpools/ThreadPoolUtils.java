@@ -1,14 +1,21 @@
 package com.mindera.skeletoid.threadpools;
 
+import android.support.annotation.VisibleForTesting;
+
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * An utils to create thread pools with readable names
  */
-public class ThreadPoolUtils {
+public final class ThreadPoolUtils {
 
     public static final AtomicInteger mThreadTotal = new AtomicInteger(0);
+
+    @VisibleForTesting
+    ThreadPoolUtils() {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Get ThreadPool with fixed number of threads
