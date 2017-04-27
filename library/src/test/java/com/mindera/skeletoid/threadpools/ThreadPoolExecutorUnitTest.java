@@ -19,7 +19,7 @@ public class ThreadPoolExecutorUnitTest {
     private ThreadPoolExecutor mThreadPoolExecutor;
 
     @Before
-    public void setup() {
+    public void setUp() {
         mThreadPoolExecutor = new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, KEEP_ALIVE, TIME_UNIT, THREAD_FACTORY);
     }
 
