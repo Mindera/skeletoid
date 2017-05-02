@@ -31,6 +31,16 @@ public class LOG {
         getInstance(context);
     }
 
+
+    /**
+     * Init the logger. This method MUST be called before using LoggerManager
+     *
+     * @param context
+     */
+    public static void init(Context context, String packageName) {
+        getInstance(context, packageName);
+    }
+
     /**
      * Init the logger. This method MUST be called before using LoggerManager
      *
@@ -41,19 +51,39 @@ public class LOG {
         return getInstance(context).addAppenders(context, logAppenders);
     }
 
+
+    /**
+     * Init the logger. This method MUST be called before using LoggerManager
+     *
+     * @param context      Context app
+     * @param packageName  Packagename
+     * @param logAppenders The log appenders to be started
+     */
+    public static List<String> init(Context context, String packageName, List<ILogAppender> logAppenders) {
+        return getInstance(packageName).addAppenders(context, logAppenders);
+    }
+
     /**
      * Obtain a instance of the logger to guarantee it's unique
      *
      * @param context
      * @return
      */
-    private static ILoggerManager getInstance(Context context) {
+    private static ILoggerManager getInstance(Context context, String packageName) {
+        if (context == null && packageName == null) {
+            throw new IllegalArgumentException("Context and packageName cannot both be null");
+        }
+
         ILoggerManager result = mInstance;
         if (result == null) {
             synchronized (LOG.class) {
                 result = mInstance;
                 if (result == null) {
-                    mInstance = new LoggerManager(context);
+                    if (packageName == null) {
+                        mInstance = new LoggerManager(context);
+                    } else {
+                        mInstance = new LoggerManager(packageName);
+                    }
                 }
             }
         }
@@ -61,7 +91,34 @@ public class LOG {
     }
 
     /**
+     * Obtain a instance of the logger to guarantee it's unique
+     *
+     * @param context
+     * @return
+     */
+    private static ILoggerManager getInstance(Context context) {
+        if (context == null) {
+            throw new IllegalArgumentException("Context cannot be null");
+        }
+        return getInstance(context, null);
+    }
+
+    /**
+     * Obtain a instance of the logger to guarantee it's unique
+     *
+     * @param packageName
+     * @return
+     */
+    private static ILoggerManager getInstance(String packageName) {
+        if (packageName == null) {
+            throw new IllegalArgumentException("PackageName cannot be null");
+        }
+        return getInstance(null, packageName);
+    }
+
+    /**
      * Get LoggerManager instance.
+     *
      * @return
      */
     private static ILoggerManager getInstance() {
@@ -73,7 +130,8 @@ public class LOG {
 
     /**
      * Log with a DEBUG level
-     * @param tag Tag
+     *
+     * @param tag  Tag
      * @param text List of strings
      */
     public static void d(String tag, String... text) {
@@ -82,7 +140,8 @@ public class LOG {
 
     /**
      * Log with a ERROR level
-     * @param tag Tag
+     *
+     * @param tag  Tag
      * @param text List of strings
      */
     public static void e(String tag, String... text) {
@@ -91,7 +150,8 @@ public class LOG {
 
     /**
      * Log with a VERBOSE level
-     * @param tag Tag
+     *
+     * @param tag  Tag
      * @param text List of strings
      */
     public static void v(String tag, String... text) {
@@ -100,7 +160,8 @@ public class LOG {
 
     /**
      * Log with a INFO level
-     * @param tag Tag
+     *
+     * @param tag  Tag
      * @param text List of strings
      */
     public static void i(String tag, String... text) {
@@ -109,7 +170,8 @@ public class LOG {
 
     /**
      * Log with a WARN level
-     * @param tag Tag
+     *
+     * @param tag  Tag
      * @param text List of strings
      */
     public static void w(String tag, String... text) {
@@ -118,7 +180,8 @@ public class LOG {
 
     /**
      * Log a What a Terrible Failure: Report an exception that should never happen.
-     * @param tag Tag
+     *
+     * @param tag  Tag
      * @param text List of strings
      */
     public static void wtf(String tag, String... text) {
@@ -127,8 +190,9 @@ public class LOG {
 
     /**
      * Log with a DEBUG level
-     * @param tag Tag
-     * @param t Throwable
+     *
+     * @param tag  Tag
+     * @param t    Throwable
      * @param text List of strings
      */
     public static void d(String tag, Throwable t, String... text) {
@@ -137,8 +201,9 @@ public class LOG {
 
     /**
      * Log with a ERROR level
-     * @param tag Tag
-     * @param t Throwable
+     *
+     * @param tag  Tag
+     * @param t    Throwable
      * @param text List of strings
      */
     public static void e(String tag, Throwable t, String... text) {
@@ -147,8 +212,9 @@ public class LOG {
 
     /**
      * Log with a VERBOSE level
-     * @param tag Tag
-     * @param t Throwable
+     *
+     * @param tag  Tag
+     * @param t    Throwable
      * @param text List of strings
      */
     public static void v(String tag, Throwable t, String... text) {
@@ -157,8 +223,9 @@ public class LOG {
 
     /**
      * Log with a INFO level
-     * @param tag Tag
-     * @param t Throwable
+     *
+     * @param tag  Tag
+     * @param t    Throwable
      * @param text List of strings
      */
     public static void i(String tag, Throwable t, String... text) {
@@ -167,8 +234,9 @@ public class LOG {
 
     /**
      * Log with a WARN level
-     * @param tag Tag
-     * @param t Throwable
+     *
+     * @param tag  Tag
+     * @param t    Throwable
      * @param text List of strings
      */
     public static void w(String tag, Throwable t, String... text) {
@@ -177,8 +245,9 @@ public class LOG {
 
     /**
      * Log a What a Terrible Failure: Report an exception that should never happen.
-     * @param tag Tag
-     * @param t Throwable
+     *
+     * @param tag  Tag
+     * @param t    Throwable
      * @param text List of strings
      */
     public static void wtf(String tag, Throwable t, String... text) {

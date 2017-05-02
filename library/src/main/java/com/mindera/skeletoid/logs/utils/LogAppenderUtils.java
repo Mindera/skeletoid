@@ -1,5 +1,7 @@
 package com.mindera.skeletoid.logs.utils;
 
+import static android.provider.ContactsContract.Directory.PACKAGE_NAME;
+
 /**
  * Abstract LOG Appender
  */
@@ -20,5 +22,79 @@ public class LogAppenderUtils {
             strBuilder.append(log);
         }
         return strBuilder.toString();
+    }
+
+
+    /**
+     * Get class name with ClassName pre appended.
+     *
+     * @param clazz Class to get the tag from
+     * @return Tag string
+     */
+    public static String getTag(Class clazz, boolean packageName, boolean methodName) {
+        final StringBuilder stringBuilder = new StringBuilder();
+        if (packageName) {
+            stringBuilder.append(PACKAGE_NAME);
+            stringBuilder.append("/");
+        }
+
+        stringBuilder.append(clazz.getCanonicalName());
+
+        if (methodName) {
+            stringBuilder.append("." + getMethodName(clazz));
+        }
+
+        return stringBuilder.toString();
+    }
+
+    /**
+     * Get class method name. This will only work when proguard is not active
+     *
+     * @param clazz The class being logged
+     */
+    public static String getMethodName(Class clazz) {
+        int index = 0;
+        for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
+            index++;
+            if (ste.getClassName().equals(clazz.getName())) {
+                break;
+            }
+        }
+
+        final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        final String methodName;
+
+        if (stackTrace.length > index) {
+            methodName = stackTrace[index].getMethodName();
+        } else {
+            methodName = "UnknownMethod";
+        }
+
+        return methodName;
+    }
+
+    /**
+     * Gets the hashcode of the object sent
+     *
+     * @return The hashcode of the object in a printable string
+     */
+    public static String getObjectHash(Object object) {
+        String hashCodeString;
+        if (object == null) {
+            hashCodeString = "[!!!NULL INSTANCE!!!] ";
+        } else {
+            hashCodeString = "[OID#" + object.hashCode() + "] ";
+        }
+
+        return hashCodeString;
+    }
+
+    /**
+     * Gets the current thread ID
+     *
+     * @return The current thread id in a printable string
+     */
+    public static String getCurrentThreadId() {
+        return "[T# " + Thread.currentThread().getName() + "] ";
     }
 }

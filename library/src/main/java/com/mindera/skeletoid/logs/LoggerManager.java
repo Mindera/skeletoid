@@ -11,7 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getCurrentThreadId;
 import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString;
+import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getObjectHash;
+import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getTag;
 
 /**
  * LOG main class. It contains all the logic and feeds the appenders
@@ -22,11 +25,11 @@ class LoggerManager implements ILoggerManager {
     /**
      * Log format
      */
-    private static final String LOG_FORMAT_4ARGS = "%s %s %s | %s";
+    public static final String LOG_FORMAT_4ARGS = "%s %s %s | %s";
     /**
      * Log format
      */
-    private static final String LOG_FORMAT_3ARGS = "%s %s | %s";
+    public static final String LOG_FORMAT_3ARGS = "%s %s | %s";
     /**
      * Application TAG for logs
      */
@@ -55,6 +58,13 @@ class LoggerManager implements ILoggerManager {
     }
 
     /**
+     * This is to be used on ONLY ON UNIT TESTS.
+     */
+    LoggerManager(String packageName) {
+        PACKAGE_NAME = packageName;
+    }
+
+    /**
      * Enables or disables logging to console/logcat.
      */
     public List<String> addAppenders(Context context, List<ILogAppender> logAppenders) {
@@ -71,7 +81,7 @@ class LoggerManager implements ILoggerManager {
             
             if (mLogAppenders.containsKey(loggerId)) {
                 Log.e(LOG_TAG, "Appender ERROR: Adding appender with the same ID: " + loggerId);
-                mLogAppenders.remove(loggerId).disableAppender();
+                continue;
             }
             appenderIds.add(loggerId);
             mLogAppenders.put(loggerId, logAppender);
@@ -92,6 +102,17 @@ class LoggerManager implements ILoggerManager {
             final ILogAppender logAppender = mLogAppenders.remove(logId);
             if (logAppender != null) {
                 logAppender.disableAppender();
+            }
+        }
+    }
+
+    @Override
+    public void disableAllAppenders() {
+        List<String> appendersKeys = new ArrayList<>(mLogAppenders.keySet());
+        for (String analyticsId : appendersKeys) {
+            final ILogAppender analyticsAppender = mLogAppenders.remove(analyticsId);
+            if (analyticsAppender != null) {
+                analyticsAppender.disableAppender();
             }
         }
     }
@@ -156,7 +177,7 @@ class LoggerManager implements ILoggerManager {
             return;
         }
 
-        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz), getCurrentThreadId(), logString);
+        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz, mAddPackageName, mAddMethodName), getCurrentThreadId(), logString);
 
         pushLogToAppenders(type, null, log);
     }
@@ -174,80 +195,7 @@ class LoggerManager implements ILoggerManager {
             return;
         }
 
-        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz), getCurrentThreadId(), logString);
+        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz, mAddPackageName, mAddMethodName), getCurrentThreadId(), logString);
         pushLogToAppenders(type, t, log);
-    }
-
-    /**
-     * Get class name with ClassName pre appended.
-     *
-     * @param clazz Class to get the tag from
-     * @return Tag string
-     */
-    private String getTag(Class clazz) {
-        final StringBuilder stringBuilder = new StringBuilder();
-        if (mAddPackageName) {
-            stringBuilder.append(PACKAGE_NAME);
-            stringBuilder.append("/");
-        }
-
-        stringBuilder.append(clazz.getCanonicalName());
-
-        if (mAddMethodName) {
-            stringBuilder.append("." + getMethodName(clazz));
-        }
-
-        return stringBuilder.toString();
-    }
-
-    /**
-     * Get class method name. This will only work when proguard is not active
-     *
-     * @param clazz The class being logged
-     */
-    private String getMethodName(Class clazz) {
-        int index = 0;
-        for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-            index++;
-            if (ste.getClassName().equals(clazz.getName())) {
-                break;
-            }
-        }
-
-        final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        final String methodName;
-
-        if (stackTrace.length > index) {
-            methodName = stackTrace[index].getMethodName();
-        } else {
-            methodName = "UnknownMethod";
-        }
-
-        return methodName;
-    }
-
-    /**
-     * Gets the hashcode of the object sent
-     *
-     * @return The hashcode of the object in a printable string
-     */
-    private String getObjectHash(Object object) {
-        String hashCodeString;
-        if (object == null) {
-            hashCodeString = "[!!!NULL INSTANCE!!!] ";
-        } else {
-            hashCodeString = "[OID#" + object.hashCode() + "] ";
-        }
-
-        return hashCodeString;
-    }
-
-    /**
-     * Gets the current thread ID
-     *
-     * @return The current thread id in a printable string
-     */
-    private String getCurrentThreadId() {
-        return "[T# " + Thread.currentThread().getName() + "] ";
     }
 }

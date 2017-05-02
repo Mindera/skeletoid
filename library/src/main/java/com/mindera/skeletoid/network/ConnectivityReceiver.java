@@ -82,6 +82,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
      * @param numberRetries Number of retries of this request.
      */
     public static void updateInternetStatus(final int numberRetries) {
+        //Should this be a threadpool instead of an asynctask?
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {

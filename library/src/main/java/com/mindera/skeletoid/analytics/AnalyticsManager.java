@@ -1,9 +1,9 @@
 package com.mindera.skeletoid.analytics;
 
-import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
-
 import android.content.Context;
-import android.util.Log;
+
+import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
+import com.mindera.skeletoid.logs.LOG;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,8 +37,8 @@ public class AnalyticsManager implements IAnalyticsManager {
             final String analyticsId = analyticsAppender.getAnalyticsId();
 
             if (mAnalyticsAppenders.containsKey(analyticsId)) {
-                Log.e(LOG_TAG, "Appender ERROR: Adding appender with the same ID: " + analyticsId);
-                mAnalyticsAppenders.remove(analyticsId).disableAppender();
+                LOG.e(LOG_TAG, "Appender ERROR: Adding appender with the same ID: " + analyticsId);
+                continue;
             }
 
             appenderIds.add(analyticsId);
