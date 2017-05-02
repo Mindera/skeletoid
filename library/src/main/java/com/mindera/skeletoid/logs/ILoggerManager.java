@@ -52,4 +52,10 @@ public interface ILoggerManager {
      * @param loggerIds Log ids of each of the loggers enabled by the order sent
      */
     void disableAppenders(Context context, List<String> loggerIds);
+
+
+    /**
+     * Disable all analytics appenders
+     */
+    void disableAllAppenders();
 }
