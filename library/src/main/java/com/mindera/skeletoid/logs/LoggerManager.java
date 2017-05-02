@@ -3,6 +3,7 @@ package com.mindera.skeletoid.logs;
 import android.content.Context;
 import android.util.Log;
 
+import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
 import com.mindera.skeletoid.generic.AndroidUtils;
 import com.mindera.skeletoid.logs.appenders.ILogAppender;
 
@@ -92,6 +93,17 @@ class LoggerManager implements ILoggerManager {
             final ILogAppender logAppender = mLogAppenders.remove(logId);
             if (logAppender != null) {
                 logAppender.disableAppender();
+            }
+        }
+    }
+
+    @Override
+    public void disableAllAppenders() {
+        List<String> appendersKeys = new ArrayList<>(mLogAppenders.keySet());
+        for (String analyticsId : appendersKeys) {
+            final ILogAppender analyticsAppender = mLogAppenders.remove(analyticsId);
+            if (analyticsAppender != null) {
+                analyticsAppender.disableAppender();
             }
         }
     }
