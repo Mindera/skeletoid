@@ -1,11 +1,11 @@
 package com.mindera.skeletoid.analytics;
 
-import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
-
-import org.junit.Ignore;
-import org.junit.Test;
-
 import android.content.Context;
+
+import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
+import com.mindera.skeletoid.logs.LOG;
+
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +20,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class AnalyticsManagerUnitTest {
+
+    private String mPackageName = "my.package.name";
+
 
     @Test
     public void testAddAppendersNull() {
@@ -73,7 +76,6 @@ public class AnalyticsManagerUnitTest {
     }
 
     @Test
-    @Ignore("Can't mock Log.d")
     public void testAddAppendersRepeated() {
         Context context = mock(Context.class);
 
@@ -88,6 +90,8 @@ public class AnalyticsManagerUnitTest {
         appenders.add(appenderA);
         appenders.add(appenderB1);
         appenders.add(appenderB2);
+
+        LOG.init(context, mPackageName);
 
         List<String> appendersIds = analyticsManager.addAppenders(context, appenders);
 
