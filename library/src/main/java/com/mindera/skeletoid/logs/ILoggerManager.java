@@ -5,6 +5,7 @@ import android.content.Context;
 import com.mindera.skeletoid.logs.appenders.ILogAppender;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * LOG interface
@@ -43,7 +44,7 @@ public interface ILoggerManager {
      * @param logAppenders Log appenders to enable
      * @return Ids of the logs enabled by their order
      */
-    List<String> addAppenders(Context context, List<ILogAppender> logAppenders);
+    Set<String> addAppenders(Context context, List<ILogAppender> logAppenders);
 
 
     /**
@@ -51,11 +52,12 @@ public interface ILoggerManager {
      * @param context Context
      * @param loggerIds Log ids of each of the loggers enabled by the order sent
      */
-    void disableAppenders(Context context, List<String> loggerIds);
+    void removeAppenders(Context context, Set<String> loggerIds);
 
 
     /**
-     * Disable all analytics appenders
+     * Disable all log appenders
      */
-    void disableAllAppenders();
+    void removeAllAppenders();
+
 }

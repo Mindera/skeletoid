@@ -6,6 +6,7 @@ import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Analytics interface
@@ -19,7 +20,7 @@ public interface IAnalyticsManager {
      * @param analyticsAppenders Log appenders to enable
      * @return Ids of the logs enabled by their order
      */
-    List<String> addAppenders(Context context, List<IAnalyticsAppender> analyticsAppenders);
+    Set<String> addAppenders(Context context, List<IAnalyticsAppender> analyticsAppenders);
 
 
     /**
@@ -28,12 +29,12 @@ public interface IAnalyticsManager {
      * @param context   Context
      * @param analyticsIds Log ids of each of the analytics enabled by the order sent
      */
-    void disableAppenders(Context context, List<String> analyticsIds);
+    void removeAppenders(Context context, Set<String> analyticsIds);
 
     /**
      * Disable all analytics appenders
      */
-    void disableAllAppenders();
+    void removeAllAppenders();
 
     /**
      * Track app event

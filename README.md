@@ -1,5 +1,8 @@
 # Skeletoid
-An utils library for Android Applications made at Mindera
+An utils library for Android Applications made at Mindera.
+
+Why should you use it?
+Instead of copy pasting the same utils packages to each new project (and not having improvements propagated), just have this lib to help you! 
 
 [![Build Status](https://travis-ci.org/Mindera/skeletoid.svg)](https://travis-ci.org/Mindera/skeletoid)
 [![Release](https://jitpack.io/v/mindera/skeletoid.svg)](https://jitpack.io/#mindera/skeletoid)
@@ -45,7 +48,7 @@ or page hit:
 1. Init:
 
     ```java  
-    Log.init(context);
+    LOG.init(context);
     ```
 
 2. Add appenders:

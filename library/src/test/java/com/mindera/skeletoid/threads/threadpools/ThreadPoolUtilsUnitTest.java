@@ -1,4 +1,4 @@
-package com.mindera.skeletoid.threadpools;
+package com.mindera.skeletoid.threads.threadpools;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static com.mindera.skeletoid.threadpools.ThreadPoolUtils.mThreadTotal;
+import static com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils.mThreadTotal;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;

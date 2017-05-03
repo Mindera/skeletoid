@@ -1,5 +1,5 @@
 
-package com.mindera.skeletoid.threadpools;
+package com.mindera.skeletoid.threads.threadpools;
 
 
 import com.mindera.skeletoid.logs.LOG;

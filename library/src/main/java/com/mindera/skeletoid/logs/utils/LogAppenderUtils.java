@@ -20,6 +20,7 @@ public class LogAppenderUtils {
         StringBuilder strBuilder = new StringBuilder();
         for (String log : logs) {
             strBuilder.append(log);
+            strBuilder.append(" ");
         }
         return strBuilder.toString();
     }
@@ -89,12 +90,5 @@ public class LogAppenderUtils {
         return hashCodeString;
     }
 
-    /**
-     * Gets the current thread ID
-     *
-     * @return The current thread id in a printable string
-     */
-    public static String getCurrentThreadId() {
-        return "[T# " + Thread.currentThread().getName() + "] ";
-    }
+
 }

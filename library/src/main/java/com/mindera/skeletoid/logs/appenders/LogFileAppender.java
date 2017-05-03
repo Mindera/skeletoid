@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.mindera.skeletoid.generic.AndroidUtils;
 import com.mindera.skeletoid.logs.LOG;
-import com.mindera.skeletoid.threadpools.ThreadPoolUtils;
+import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

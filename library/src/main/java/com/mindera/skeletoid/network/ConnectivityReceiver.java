@@ -5,18 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 
 import com.mindera.skeletoid.logs.LOG;
+import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.Executor;
 
 /**
  * This class updates the state of the connection according to real http requests to Google
- *
  * It's just a helper class and shouldn't be directly accessed, but via the Connectivity class
- *
  * To use it must have a Receiver defined in the Manifest:
  * <pre>
  * {@code
@@ -33,6 +32,9 @@ import java.net.URL;
 public class ConnectivityReceiver extends BroadcastReceiver {
 
     private static final String LOG_TAG = "ConnectivityReceiver";
+
+    private static Executor threadPool = ThreadPoolUtils.getFixedThreadPool("Connectivity Worker", 1);
+
     /**
      * Var to control if the network was reachable before
      */
@@ -51,6 +53,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     private static final int HTTP_201 = 201;
 
     private static final long ONE_SECOND = 1000;
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -82,10 +85,10 @@ public class ConnectivityReceiver extends BroadcastReceiver {
      * @param numberRetries Number of retries of this request.
      */
     public static void updateInternetStatus(final int numberRetries) {
-        //Should this be a threadpool instead of an asynctask?
-        new AsyncTask<Void, Void, Void>() {
+        threadPool.execute(new Runnable() {
             @Override
-            protected Void doInBackground(Void... params) {
+            public void run() {
+
                 int retries = numberRetries;
                 do {
                     try {
@@ -121,8 +124,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
                     }
 
                 } while (retries > 0);
-                return null;
             }
-        }.execute();
+        });
     }
 }
