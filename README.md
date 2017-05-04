@@ -66,6 +66,43 @@ Instead of copy pasting the same utils packages to each new project (and not hav
    ```
 
 
+### Connectivity
+
+Determine real connectivity: both if the device is connected to a network and if it has internet access
+
+To be able to do that, you'll need to add to the app's manifest:
+
+   ```android
+    <receiver android:name="com.mindera.skeletoid.network.ConnectivityReceiver">
+     <intent-filter>
+     <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+     <action android:name="android.net.wifi.STATE_CHANGE"/>
+     <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE"/>
+     </intent-filter>
+     </receiver>
+   ```
+ 
+And then you can just check via:
+
+   ```java
+   boolean isConnectedAndWithInternet = Connectivity.isConnectedAndWithInternetAvailable(context);
+   ```
+   
+If you want to be notified via callback:
+   
+   ```java
+      Connectivity.setConnectivityCallback(callback);
+   ```
+   
+
+_Note: To be able to determine the real connectivity, a request to google.com will be made each time the device connects to a network. You need of course to have the INTERNET permission on the Manifest (if you didn't, you wouldn't need this anyway)._
+
+You can change the host to be called via:
+
+```java
+   Connectivity.updateConnectivityValidationAddress(uri);
+   ```
+
 ### Thread pooling management
 
 Just use the the ThreadPoolExecutor and ScheduledThreadPool executor the same as you normally use.

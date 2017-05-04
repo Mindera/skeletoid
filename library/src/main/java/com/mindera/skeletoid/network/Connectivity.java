@@ -4,12 +4,20 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+
 /**
  * Class to validate if we are connected to a network and if we have internet access.
  */
 public class Connectivity {
 
 //    private static final String LOG_TAG = "Connectivity";
+
+
+    private Connectivity() {
+
+    }
 
     /**
      * Validates if we are connected to a network and if we have real internet access
@@ -56,5 +64,38 @@ public class Connectivity {
                 Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
         return ni != null && ni.getType() == ConnectivityManager.TYPE_WIFI;
+    }
+
+    /**
+     * Add a callback to receive connectivity updates
+     * @param connectivityCallback
+     */
+    public static void setConnectivityCallback(ConnectivityReceiver.ConnectivityCallback connectivityCallback) {
+        ConnectivityReceiver.mConnectivityCallback = connectivityCallback;
+    }
+
+    /**
+     * Remove the callback to receive connectivity updates
+     */
+    public static void removeConnectivityCallback() {
+        ConnectivityReceiver.mConnectivityCallback = null;
+    }
+
+    /**
+     * Update url to check internet status
+     *
+     * @param uri With a valid URI
+     * @throws MalformedURLException When the URI is invalid
+     */
+    public static void updateConnectivityValidationAddress(URI uri) throws MalformedURLException {
+        try {
+            //Validate URL
+            String host = uri.getHost();
+            ConnectivityReceiver.mInternetAddress = "http://" + host;
+            ConnectivityReceiver.mInternetHttpValidationAddress = "http://" + host.substring(0, host.indexOf("."));
+            ConnectivityReceiver.mInternetHttpsValidationAddress = "https://" + host.substring(0, host.indexOf("."));
+        } catch (Exception e) {
+            throw new MalformedURLException();
+        }
     }
 }
