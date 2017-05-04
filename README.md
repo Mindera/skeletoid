@@ -11,7 +11,9 @@ Instead of copy pasting the same utils packages to each new project (and not hav
 
 ## Features
 ### Analytics abstraction
-Have multiple implementation of analytics, with a common interface. This way you can add/remove/enable/disable analytics seamlessly.
+Have multiple implementation of analytics, with a common interface. **Send an event once, and get it push to every appender.** 
+
+This way you can add/remove/enable/disable appenders seamlessly.
 You can have multiple Analytic appenders, you can event implement your own. We provide the the Google Analytics appender as a plugin. 
 
 1. Init:
@@ -40,8 +42,10 @@ You can have multiple Analytic appenders, you can event implement your own. We p
 
 
 ### Logging abstraction
-Have multiple implementation of logs, with a common interface. This way you can add/remove/enable/disable logs seamlessly.
-You can have multiple log appenders, you can event implement your own. We provide the out-of-the-box: LogCat and LogToFile 
+Have multiple implementation of logs, with a common interface. **Log once, propagate it to multiple appenders.** 
+
+This way you can add/remove/enable/disable appenders seamlessly.
+You can have multiple log appenders, you can event implement your own. We provide the out-of-the-box: LogCat and LogToFile (Rolling Appending)
 
 1. Init:
 
@@ -51,7 +55,7 @@ You can have multiple log appenders, you can event implement your own. We provid
 
 2. Add appenders:
     You can have multiple log appenders, you can event implement your own.
-      Out of the box we provide the LogCat appender and File appender.
+      Here are the LogCat appender and File appender.
 
     ```java
     List<ILogAppender> appenders = new ArrayList();
@@ -60,7 +64,7 @@ You can have multiple log appenders, you can event implement your own. We provid
     Analytics.addAppenders(appenders);
     ```
 
-3. Then log things:
+3. Then log things and have each appender write the log:
 
    ```java
    LOG.d("TAG","Text");
