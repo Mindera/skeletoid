@@ -24,16 +24,11 @@ An utils library for Android Applications made at Mindera
     Analytics.addAppenders(appenders);
     ```
     
-
-3. Post events:
-
-Then invoke an event:
+3. Then track an event or page hit:
 
    ```java
    Analytics.trackEvent(screenName, analyticsPayload);
    ```
-
-or page hit:
 
    ```java
    Analytics.trackPageHit(screenName, analyticsPayload);
@@ -58,11 +53,8 @@ or page hit:
     appenders.add(new LogFileAppender("TAG", "MyFile"));
     Analytics.addAppenders(appenders);
     ```
-    
 
-3. Post events:
-
-Then log things:
+3. Then log things:
 
    ```java
    LOG.d("TAG","Text");
