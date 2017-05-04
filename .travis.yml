@@ -31,4 +31,4 @@ script:
   - ./gradlew test
 
   # Send coverage report to Codacy
-  - $TRAVIS_BRANCH == "master" && ./gradlew jacocoTestDebugUnitTestReportCodacyUpload
+  - ./gradlew jacocoTestDebugUnitTestReportCodacyUpload
