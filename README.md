@@ -75,16 +75,16 @@ You can have multiple log appenders, you can event implement your own. We provid
 
 
 ### Connectivity
-Determine real device connectivity: if the device is connected to a network and if it really has internet access
+Determine real device connectivity: if the device is connected to a network and if it really has internet access.
 To be able to do that, you'll need to add to the app's manifest:
 
    ```android
      <receiver android:name="com.mindera.skeletoid.network.ConnectivityReceiver">
-      <intent-filter>
-      <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-      <action android:name="android.net.wifi.STATE_CHANGE"/>
-      <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE"/>
-      </intent-filter>
+       <intent-filter>
+         <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+         <action android:name="android.net.wifi.STATE_CHANGE"/>
+         <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE"/>
+       </intent-filter>
      </receiver>
    ```
  
@@ -98,6 +98,12 @@ If you want to be notified via callback:
    
    ```java
       Connectivity.setConnectivityCallback(callback);
+   ```
+
+Remember to avoid leaks. If you need you can:
+
+```java
+      Connectivity.removeConnectivityCallback();
    ```
    
 
