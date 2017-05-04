@@ -1,13 +1,14 @@
 # Skeletoid
 An utils library for Android Applications made at Mindera.
 
-Why should you use it?
-Instead of copy pasting the same utils packages to each new project (and not having improvements propagated), just have this lib to help you! 
-
 [![Build Status](https://travis-ci.org/Mindera/skeletoid.svg)](https://travis-ci.org/Mindera/skeletoid)
 [![Release](https://jitpack.io/v/mindera/skeletoid.svg)](https://jitpack.io/#mindera/skeletoid)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/86fd0ce3d3314d4f93999f98dbd96f26)](https://www.codacy.com/app/Skeletoid/skeletoid?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Mindera/skeletoid&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/86fd0ce3d3314d4f93999f98dbd96f26)](https://www.codacy.com/app/Skeletoid/skeletoid?utm_source=github.com&utm_medium=referral&utm_content=Mindera/skeletoid&utm_campaign=Badge_Coverage)
+
+### Why should you use it?
+Instead of copy pasting the same utils packages to each new project (and not having improvements propagated), just have this lib to help you! 
+
 
 ## Features
 ### Analytics abstraction
@@ -74,16 +75,16 @@ You can have multiple log appenders, you can event implement your own. We provid
 
 
 ### Connectivity
-Determine real device connectivity: if the device is connected to a network and if it really has internet access
+Determine real device connectivity: if the device is connected to a network and if it really has internet access.
 To be able to do that, you'll need to add to the app's manifest:
 
    ```android
      <receiver android:name="com.mindera.skeletoid.network.ConnectivityReceiver">
-      <intent-filter>
-      <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-      <action android:name="android.net.wifi.STATE_CHANGE"/>
-      <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE"/>
-      </intent-filter>
+       <intent-filter>
+         <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+         <action android:name="android.net.wifi.STATE_CHANGE"/>
+         <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE"/>
+       </intent-filter>
      </receiver>
    ```
  
@@ -97,6 +98,12 @@ If you want to be notified via callback:
    
    ```java
       Connectivity.setConnectivityCallback(callback);
+   ```
+
+Remember to avoid leaks. If you need you can:
+
+```java
+      Connectivity.removeConnectivityCallback();
    ```
    
 
