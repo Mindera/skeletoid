@@ -11,6 +11,8 @@ Instead of copy pasting the same utils packages to each new project (and not hav
 
 ## Features
 ### Analytics abstraction
+Have multiple implementation of analytics, with a common interface. This way you can add/remove/enable/disable analytics seamlessly.
+You can have multiple Analytic appenders, you can event implement your own. We provide the the Google Analytics appender as a plugin. 
 
 1. Init:
 
@@ -19,8 +21,7 @@ Instead of copy pasting the same utils packages to each new project (and not hav
     ```
 
 2. Add appenders:
-    You can have multiple Analytic appenders, you can event implement your own.
-      Check the Google Analytics plugin for an out-of-the-box Analytics appender.
+    
 
     ```java
     List<IAnalyticsAppender> appenders ...
@@ -39,6 +40,8 @@ Instead of copy pasting the same utils packages to each new project (and not hav
 
 
 ### Logging abstraction
+Have multiple implementation of logs, with a common interface. This way you can add/remove/enable/disable logs seamlessly.
+You can have multiple log appenders, you can event implement your own. We provide the out-of-the-box: LogCat and LogToFile 
 
 1. Init:
 
@@ -53,7 +56,7 @@ Instead of copy pasting the same utils packages to each new project (and not hav
     ```java
     List<ILogAppender> appenders = new ArrayList();
     appenders.add(new LogcatAppender("TAG")); 
-    appenders.add(new LogFileAppender("TAG", "MyFile"));
+    appenders.add(new LogFileAppender("TAG", "MyFileName"));
     Analytics.addAppenders(appenders);
     ```
 
@@ -67,25 +70,23 @@ Instead of copy pasting the same utils packages to each new project (and not hav
 
 
 ### Connectivity
-
-Determine real connectivity: both if the device is connected to a network and if it has internet access
-
+Determine real device connectivity: if the device is connected to a network and if it really has internet access
 To be able to do that, you'll need to add to the app's manifest:
 
    ```android
-    <receiver android:name="com.mindera.skeletoid.network.ConnectivityReceiver">
-     <intent-filter>
-     <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-     <action android:name="android.net.wifi.STATE_CHANGE"/>
-     <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE"/>
-     </intent-filter>
+     <receiver android:name="com.mindera.skeletoid.network.ConnectivityReceiver">
+      <intent-filter>
+      <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+      <action android:name="android.net.wifi.STATE_CHANGE"/>
+      <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE"/>
+      </intent-filter>
      </receiver>
    ```
  
 And then you can just check via:
 
    ```java
-   boolean isConnectedAndWithInternet = Connectivity.isConnectedAndWithInternetAvailable(context);
+     boolean isConnectedAndWithInternet = Connectivity.isConnectedAndWithInternetAvailable(context);
    ```
    
 If you want to be notified via callback:
@@ -104,17 +105,13 @@ You can change the host to be called via:
    ```
 
 ### Thread pooling management
-
-Just use the the ThreadPoolExecutor and ScheduledThreadPool executor the same as you normally use.
-
-Advantages:
-- Have threads with proper naming
-- Log the exceptions thrown in threadpool threads.
-- Have task priority in threadpool (just extend PriorityTask)
+With this you can use the the ThreadPoolExecutor and ScheduledThreadPool executor the same as you normally use, so why use it?
+- Have threads of each ThreadPool with the naming you want
+- Log the exceptions thrown in threadpool threads
+- Have task priority in threadpool (just have your own Runnables extend PriorityTask)
 
 
 ## Usage
-
 
 The plugin is available in [JitPack](https://jitpack.io/). Just add the following to your buildscript dependencies:
 
