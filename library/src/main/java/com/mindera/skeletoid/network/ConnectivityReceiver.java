@@ -11,7 +11,8 @@ import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.concurrent.Executor;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * This class updates the state of the connection according to real http requests to Google
@@ -33,7 +34,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
     private static final String LOG_TAG = "ConnectivityReceiver";
 
-    private static Executor threadPool = ThreadPoolUtils.getFixedThreadPool("Connectivity Worker", 1);
+    private static ThreadPoolExecutor threadPool = ThreadPoolUtils.getFixedThreadPool("Connectivity Worker", 1);
 
     /**
      * Var to control if the network was reachable before
@@ -43,10 +44,11 @@ public class ConnectivityReceiver extends BroadcastReceiver {
      * Var that contains the current state of connectivity
      */
     protected static volatile boolean isInternetAvailable = false;
+    protected static volatile boolean isInWiFi = false;
 
-    private static final String mInternetAddress = "http://www.google.com";
-    private static final String mInternetHttpValidationAddress = "http://www.google";
-    private static final String mInternetHttpsValidationAddress = "https://www.google";
+    protected static String mInternetAddress = "http://www.google.com";
+    protected static String mInternetHttpValidationAddress = "http://www.google";
+    protected static String mInternetHttpsValidationAddress = "https://www.google";
     private static final int mInternetValidationTimeout = 1000;
 
     private static final int HTTP_200 = 200;
@@ -54,6 +56,17 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
     private static final long ONE_SECOND = 1000;
 
+    protected static ConnectivityCallback mConnectivityCallback = null;
+
+    public interface ConnectivityCallback {
+
+        void connectivityUpdate(boolean isConnectedToANetwork, boolean networkHasInternetAccess, boolean isNetworkWiFi);
+
+    }
+
+    private ConnectivityReceiver() {
+
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -64,18 +77,33 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
         boolean isReachable = networkInfo != null && networkInfo.isConnected();
 
-        if (isReachable) {
-            updateInternetStatus(3);
-        }
-        isInternetAvailable = isReachable;
+        // This variable can change from true to false in background via validateInternetStatus()
+        // Use case: You have connection, but no internet
+        isInternetAvailable = false;
+        isInWiFi = networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
 
         if (mPreviousReachableState == null || mPreviousReachableState != isReachable) {
 
             mPreviousReachableState = isReachable;
 
-            //TODO PUSH LOCAL BROADCAST WITH NEW STATE OR ADD POSSIBILITY TO ADD CALLBACK
-
             LOG.d(LOG_TAG, "Connectivity changed " + isReachable);
+        }
+
+        if (isReachable) {
+            validateInternetStatus(3);
+        } else {
+            notifyConnectionStatus();
+        }
+
+
+    }
+
+    /**
+     * Invoke the connectivity callback if one is set
+     */
+    private static void notifyConnectionStatus() {
+        if (mConnectivityCallback != null) {
+            mConnectivityCallback.connectivityUpdate(mPreviousReachableState, isInternetAvailable, isInWiFi);
         }
     }
 
@@ -84,7 +112,13 @@ public class ConnectivityReceiver extends BroadcastReceiver {
      *
      * @param numberRetries Number of retries of this request.
      */
-    public static void updateInternetStatus(final int numberRetries) {
+    public static void validateInternetStatus(final int numberRetries) {
+        //Avoid having multiple internet updates running, let just the last run
+        BlockingQueue<Runnable> tasksQueue = threadPool.getQueue();
+        if (!tasksQueue.isEmpty()) {
+            tasksQueue.clear();
+        }
+
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
@@ -98,7 +132,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
                         isInternetAvailable =
                                 conn.getResponseCode() == HTTP_200 || conn.getResponseCode() == HTTP_201;
 
-                        LOG.d(LOG_TAG, "Response code -> " + conn.getResponseCode());
+                        LOG.v(LOG_TAG, "Response code -> " + conn.getResponseCode());
 
                         isInternetAvailable &= conn
                                 .getURL().toString()
@@ -106,15 +140,15 @@ public class ConnectivityReceiver extends BroadcastReceiver {
                                 .getURL().toString()
                                 .startsWith(mInternetHttpsValidationAddress);
 
-                        LOG.d(LOG_TAG, "URL -> ", conn.getURL().toString());
+                        LOG.v(LOG_TAG, "URL -> ", conn.getURL().toString());
 
                         conn.disconnect();
 
                         if (isInternetAvailable) {
-                            LOG.d(LOG_TAG, "INTERNET IS AVAILABLE");
+                            LOG.v(LOG_TAG, "INTERNET IS AVAILABLE");
                             retries = 0;
                         } else {
-                            LOG.d(LOG_TAG, "INTERNET IS NOT AVAILABLE");
+                            LOG.v(LOG_TAG, "INTERNET IS NOT AVAILABLE");
                             retries--;
                             Thread.sleep(ONE_SECOND);
                         }
@@ -124,7 +158,10 @@ public class ConnectivityReceiver extends BroadcastReceiver {
                     }
 
                 } while (retries > 0);
+
+                notifyConnectionStatus();
             }
+
         });
     }
 }
