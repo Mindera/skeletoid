@@ -20,6 +20,7 @@ public class LogAppenderUtils {
         StringBuilder strBuilder = new StringBuilder();
         for (String log : logs) {
             strBuilder.append(log);
+            strBuilder.append(" ");
         }
         return strBuilder.toString();
     }
@@ -54,14 +55,15 @@ public class LogAppenderUtils {
      */
     public static String getMethodName(Class clazz) {
         int index = 0;
-        for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-            index++;
+        final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+
+        for (StackTraceElement ste : stackTrace) {
             if (ste.getClassName().equals(clazz.getName())) {
                 break;
             }
+            index++;
         }
 
-        final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         final String methodName;
 
         if (stackTrace.length > index) {
@@ -89,12 +91,5 @@ public class LogAppenderUtils {
         return hashCodeString;
     }
 
-    /**
-     * Gets the current thread ID
-     *
-     * @return The current thread id in a printable string
-     */
-    public static String getCurrentThreadId() {
-        return "[T# " + Thread.currentThread().getName() + "] ";
-    }
+
 }

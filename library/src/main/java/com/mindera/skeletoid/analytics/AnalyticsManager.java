@@ -7,8 +7,10 @@ import com.mindera.skeletoid.logs.LOG;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class AnalyticsManager implements IAnalyticsManager {
 
@@ -24,12 +26,12 @@ public class AnalyticsManager implements IAnalyticsManager {
     }
 
     @Override
-    public List<String> addAppenders(Context context, List<IAnalyticsAppender> analyticsAppenders) {
+    public Set<String> addAppenders(Context context, List<IAnalyticsAppender> analyticsAppenders) {
         if (analyticsAppenders == null || analyticsAppenders.size() == 0) {
-            return new ArrayList<>();
+            return new HashSet<>();
         }
 
-        final List<String> appenderIds = new ArrayList<>();
+        final Set<String> appenderIds = new HashSet<>();
 
         for (IAnalyticsAppender analyticsAppender : analyticsAppenders) {
             analyticsAppender.enableAppender(context);
@@ -37,8 +39,9 @@ public class AnalyticsManager implements IAnalyticsManager {
             final String analyticsId = analyticsAppender.getAnalyticsId();
 
             if (mAnalyticsAppenders.containsKey(analyticsId)) {
-                LOG.e(LOG_TAG, "Appender ERROR: Adding appender with the same ID: " + analyticsId);
-                continue;
+                IAnalyticsAppender oldAnalyticsAppender = mAnalyticsAppenders.remove(analyticsId);
+                oldAnalyticsAppender.disableAppender();
+                LOG.e(LOG_TAG, "Replacing Analytics Appender with ID: " + analyticsId);
             }
 
             appenderIds.add(analyticsId);
@@ -48,7 +51,7 @@ public class AnalyticsManager implements IAnalyticsManager {
     }
 
     @Override
-    public void disableAppenders(Context context, List<String> analyticsIds) {
+    public void removeAppenders(Context context, Set<String> analyticsIds) {
         if (analyticsIds == null || mAnalyticsAppenders.isEmpty()) {
             return;
         }
@@ -62,7 +65,7 @@ public class AnalyticsManager implements IAnalyticsManager {
     }
 
     @Override
-    public void disableAllAppenders() {
+    public void removeAllAppenders() {
         List<String> appendersKeys = new ArrayList<>(mAnalyticsAppenders.keySet());
         for (String analyticsId : appendersKeys) {
             final IAnalyticsAppender analyticsAppender = mAnalyticsAppenders.remove(analyticsId);

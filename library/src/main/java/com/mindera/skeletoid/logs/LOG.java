@@ -1,11 +1,11 @@
 package com.mindera.skeletoid.logs;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.mindera.skeletoid.logs.appenders.ILogAppender;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * LOG static class. It is used to abstract the LOG and have multiple possible implementations
@@ -47,7 +47,7 @@ public class LOG {
      * @param context      Context app
      * @param logAppenders The log appenders to be started
      */
-    public static List<String> init(Context context, List<ILogAppender> logAppenders) {
+    public static Set<String> init(Context context, List<ILogAppender> logAppenders) {
         return getInstance(context).addAppenders(context, logAppenders);
     }
 
@@ -59,8 +59,51 @@ public class LOG {
      * @param packageName  Packagename
      * @param logAppenders The log appenders to be started
      */
-    public static List<String> init(Context context, String packageName, List<ILogAppender> logAppenders) {
+    public static Set<String> init(Context context, String packageName, List<ILogAppender> logAppenders) {
         return getInstance(packageName).addAppenders(context, logAppenders);
+    }
+
+
+    /**
+     * Deinit the logger
+     * This method can be called if the LOG is not needed any longer on the app.
+     */
+    public static void deinit(Context context) {
+        if (mInstance != null) {
+            getInstance().removeAllAppenders();
+            mInstance = null;
+        }
+    }
+
+
+    /**
+     * Enable log appenders
+     *
+     * @param context      Context
+     * @param logAppenders Log appenders to enable
+     * @return Ids of the logs enabled by their order
+     */
+    public static Set<String> addAppenders(Context context, List<ILogAppender> logAppenders) {
+        return getInstance().addAppenders(context, logAppenders);
+    }
+
+    /**
+     * Disable log appenders
+     *
+     * @param context   Context
+     * @param loggerIds Log ids of each of the loggers enabled by the order sent
+     */
+    public static void removeAppenders(Context context, Set<String> loggerIds) {
+        getInstance().removeAppenders(context, loggerIds);
+    }
+
+    /**
+     * Set method name visible in logs (careful this is a HEAVY operation)
+     *
+     * @param visibility true if enabled
+     */
+    public static void setMethodNameVisible(boolean visibility) {
+        getInstance().setMethodNameVisible(visibility);
     }
 
     /**
@@ -123,7 +166,7 @@ public class LOG {
      */
     private static ILoggerManager getInstance() {
         if (mInstance == null) {
-            Log.e(LOGGER, "You MUST init() the LOG. I will crash now...");
+            throw new IllegalStateException("You MUST init() the LOG.");
         }
         return mInstance;
     }
@@ -255,32 +298,13 @@ public class LOG {
     }
 
     /**
-     * Enable log appenders
+     * Return true if initialized
      *
-     * @param context      Context
-     * @param logAppenders Log appenders to enable
-     * @return Ids of the logs enabled by their order
+     * @return true if initialized
      */
-    public static List<String> addAppenders(Context context, List<ILogAppender> logAppenders) {
-        return getInstance().addAppenders(context, logAppenders);
+    public static boolean isInitialized() {
+        return mInstance != null;
     }
 
-    /**
-     * Disable log appenders
-     *
-     * @param context   Context
-     * @param loggerIds Log ids of each of the loggers enabled by the order sent
-     */
-    public static void disableAppenders(Context context, List<String> loggerIds) {
-        getInstance().disableAppenders(context, loggerIds);
-    }
 
-    /**
-     * Set method name visible in logs (careful this is a HEAVY operation)
-     *
-     * @param visibility true if enabled
-     */
-    public static void setMethodNameVisible(boolean visibility) {
-        getInstance().setMethodNameVisible(visibility);
-    }
 }

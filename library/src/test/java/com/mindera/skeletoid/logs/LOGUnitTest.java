@@ -5,57 +5,67 @@ import android.content.Context;
 import com.mindera.skeletoid.logs.appenders.ILogAppender;
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils;
 
+import org.junit.After;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static com.mindera.skeletoid.logs.LoggerManager.LOG_FORMAT_4ARGS;
 import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getObjectHash;
 import static com.mindera.skeletoid.threads.utils.ThreadUtils.getCurrentThreadName;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class LoggerManagerUnitTest {
+public class LOGUnitTest {
 
     private String mPackageName = "my.package.name";
     private final String TAG = "TAG";
     private final String TEXT = "Text";
 
-    @Test
-    public void testAddAppendersNull() {
+    @After
+    public void cleanupLOG() {
         Context context = mock(Context.class);
+        LOG.deinit(context);
+    }
 
-        LoggerManager loggerManager = new LoggerManager(mPackageName);
-        Set<String> appendersIds = loggerManager.addAppenders(context, null);
+    @Test(expected = IllegalArgumentException.class)
+    public void testInitContextAndPackageNameNullFail() {
+        List<ILogAppender> appenders = new ArrayList<>();
 
-        assertNotNull(appendersIds);
-        assertEquals(0, appendersIds.size());
+        ILogAppender appenderA = mockAppender("A");
+        ILogAppender appenderB = mockAppender("B");
+        ILogAppender appenderC = mockAppender("C");
+
+        appenders.add(appenderA);
+        appenders.add(appenderB);
+        appenders.add(appenderC);
+
+        LOG.init(null, null, appenders);
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testInitContextNullFail() {
+        List<ILogAppender> appenders = new ArrayList<>();
+
+        ILogAppender appenderA = mockAppender("A");
+        ILogAppender appenderB = mockAppender("B");
+        ILogAppender appenderC = mockAppender("C");
+
+        appenders.add(appenderA);
+        appenders.add(appenderB);
+        appenders.add(appenderC);
+
+        LOG.init(null, appenders);
+
     }
 
     @Test
-    public void testAddAppendersEmpty() {
+    public void testInit() {
         Context context = mock(Context.class);
-
-        LoggerManager loggerManager = new LoggerManager(mPackageName);
-        Set<String> appendersIds = loggerManager.addAppenders(context, new ArrayList<ILogAppender>());
-
-        assertNotNull(appendersIds);
-        assertEquals(0, appendersIds.size());
-    }
-
-    @Test
-    public void testAddAppenders() {
-        Context context = mock(Context.class);
-
-        LoggerManager loggerManager = new LoggerManager(mPackageName);
 
         List<ILogAppender> appenders = new ArrayList<>();
 
@@ -67,64 +77,17 @@ public class LoggerManagerUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        Set<String> appendersIds = loggerManager.addAppenders(context, appenders);
+        LOG.init(context, mPackageName);
+        LOG.addAppenders(context, appenders);
 
         verify(appenderA, times(1)).enableAppender(context);
         verify(appenderB, times(1)).enableAppender(context);
         verify(appenderC, times(1)).enableAppender(context);
-
-        assertNotNull(appendersIds);
-        assertEquals(3, appendersIds.size());
-        assertTrue(appendersIds.contains("A"));
-        assertTrue(appendersIds.contains("B"));
-        assertTrue(appendersIds.contains("C"));
     }
 
     @Test
-    public void testAddAppendersRepeated() {
+    public void testInitWithAppenders() {
         Context context = mock(Context.class);
-
-        LoggerManager loggerManager = new LoggerManager(mPackageName);
-
-        List<ILogAppender> appenders = new ArrayList<>();
-
-        ILogAppender appenderA = mockAppender("A");
-        ILogAppender appenderB1 = mockAppender("B");
-        ILogAppender appenderB2 = mockAppender("B");
-
-        appenders.add(appenderA);
-        appenders.add(appenderB1);
-        appenders.add(appenderB2);
-
-        Set<String> appendersIds = loggerManager.addAppenders(context, appenders);
-
-        assertNotNull(appendersIds);
-        assertEquals(2, appendersIds.size());
-        assertTrue(appendersIds.contains("A"));
-        assertTrue(appendersIds.contains("B"));
-    }
-
-    @Test
-    public void testDisableAppendersNull() {
-        Context context = mock(Context.class);
-
-        LoggerManager loggerManager = new LoggerManager(mPackageName);
-        loggerManager.removeAppenders(context, null);
-    }
-
-    @Test
-    public void testDisableAppendersEmpty() {
-        Context context = mock(Context.class);
-
-        LoggerManager loggerManager = new LoggerManager(mPackageName);
-        loggerManager.removeAppenders(context, new HashSet<String>());
-    }
-
-    @Test
-    public void testDisableAppenders() {
-        Context context = mock(Context.class);
-
-        LoggerManager loggerManager = new LoggerManager(mPackageName);
 
         List<ILogAppender> appenders = new ArrayList<>();
 
@@ -136,44 +99,18 @@ public class LoggerManagerUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        Set<String> appendersIds = loggerManager.addAppenders(context, appenders);
+        LOG.init(context, mPackageName, appenders);
 
-        loggerManager.removeAppenders(context, appendersIds);
-        verify(appenderA, times(1)).disableAppender();
-        verify(appenderB, times(1)).disableAppender();
-        verify(appenderC, times(1)).disableAppender();
+        verify(appenderA, times(1)).enableAppender(context);
+        verify(appenderB, times(1)).enableAppender(context);
+        verify(appenderC, times(1)).enableAppender(context);
     }
 
-    @Test
-    public void testRemoveAllAppenders() {
-        Context context = mock(Context.class);
-
-        LoggerManager loggerManager = new LoggerManager(mPackageName);
-
-        List<ILogAppender> appenders = new ArrayList<>();
-
-        ILogAppender appenderA = mockAppender("A");
-        ILogAppender appenderB = mockAppender("B");
-        ILogAppender appenderC = mockAppender("C");
-
-        appenders.add(appenderA);
-        appenders.add(appenderB);
-        appenders.add(appenderC);
-
-        loggerManager.addAppenders(context, appenders);
-
-        loggerManager.removeAllAppenders();
-        verify(appenderA, times(1)).disableAppender();
-        verify(appenderB, times(1)).disableAppender();
-        verify(appenderC, times(1)).disableAppender();
-    }
 
     @Test
     public void testDebugLog() {
         Context context = mock(Context.class);
 
-        LoggerManager loggerManager = new LoggerManager(mPackageName);
-
         List<ILogAppender> appenders = new ArrayList<>();
 
         ILogAppender appenderA = mockAppender("A");
@@ -184,10 +121,11 @@ public class LoggerManagerUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        loggerManager.addAppenders(context, appenders);
+        LOG.init(context, mPackageName, appenders);
 
-        loggerManager.log(TAG, LOG.PRIORITY.DEBUG, TEXT);
+        LOG.d(TAG, TEXT);
 
+        //This is ugly.. but I don't see another way.
         final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         verify(appenderA, times(1)).log(LOG.PRIORITY.DEBUG, null, log);
@@ -199,8 +137,6 @@ public class LoggerManagerUnitTest {
     public void testErrorLog() {
         Context context = mock(Context.class);
 
-        LoggerManager loggerManager = new LoggerManager(mPackageName);
-
         List<ILogAppender> appenders = new ArrayList<>();
 
         ILogAppender appenderA = mockAppender("A");
@@ -211,10 +147,11 @@ public class LoggerManagerUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        loggerManager.addAppenders(context, appenders);
+        LOG.init(context, mPackageName, appenders);
 
-        loggerManager.log(TAG, LOG.PRIORITY.ERROR, TEXT);
+        LOG.e(TAG, TEXT);
 
+        //This is ugly.. but I don't see another way.
         final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         verify(appenderA, times(1)).log(LOG.PRIORITY.ERROR, null, log);
@@ -226,7 +163,6 @@ public class LoggerManagerUnitTest {
     public void testWarnLog() {
         Context context = mock(Context.class);
 
-        LoggerManager loggerManager = new LoggerManager(mPackageName);
         List<ILogAppender> appenders = new ArrayList<>();
 
         ILogAppender appenderA = mockAppender("A");
@@ -237,10 +173,11 @@ public class LoggerManagerUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        loggerManager.addAppenders(context, appenders);
+        LOG.init(context, mPackageName, appenders);
 
-        loggerManager.log(TAG, LOG.PRIORITY.WARN, TEXT);
+        LOG.w(TAG, TEXT);
 
+        //This is ugly.. but I don't see another way.
         final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         verify(appenderA, times(1)).log(LOG.PRIORITY.WARN, null, log);
@@ -252,7 +189,6 @@ public class LoggerManagerUnitTest {
     public void testFatalLog() {
         Context context = mock(Context.class);
 
-        LoggerManager loggerManager = new LoggerManager(mPackageName);
         List<ILogAppender> appenders = new ArrayList<>();
 
         ILogAppender appenderA = mockAppender("A");
@@ -263,10 +199,10 @@ public class LoggerManagerUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        loggerManager.addAppenders(context, appenders);
+        LOG.init(context, mPackageName, appenders);
 
-        loggerManager.log(TAG, LOG.PRIORITY.FATAL, TEXT);
-
+        LOG.wtf(TAG, TEXT);
+        //This is ugly.. but I don't see another way.
         final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         verify(appenderA, times(1)).log(LOG.PRIORITY.FATAL, null, log);
@@ -278,7 +214,6 @@ public class LoggerManagerUnitTest {
     public void testInfoLog() {
         Context context = mock(Context.class);
 
-        LoggerManager loggerManager = new LoggerManager(mPackageName);
         List<ILogAppender> appenders = new ArrayList<>();
 
         ILogAppender appenderA = mockAppender("A");
@@ -289,10 +224,10 @@ public class LoggerManagerUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        loggerManager.addAppenders(context, appenders);
+        LOG.init(context, mPackageName, appenders);
 
-        loggerManager.log(TAG, LOG.PRIORITY.INFO, TEXT);
-
+        LOG.i(TAG, TEXT);
+        //This is ugly.. but I don't see another way.
         final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         verify(appenderA, times(1)).log(LOG.PRIORITY.INFO, null, log);
@@ -302,10 +237,9 @@ public class LoggerManagerUnitTest {
 
 
     @Test
-    public void testVerboseLog() {
+    public void testDebugWithExceptionLog() {
         Context context = mock(Context.class);
 
-        LoggerManager loggerManager = new LoggerManager(mPackageName);
         List<ILogAppender> appenders = new ArrayList<>();
 
         ILogAppender appenderA = mockAppender("A");
@@ -316,21 +250,126 @@ public class LoggerManagerUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        loggerManager.addAppenders(context, appenders);
+        LOG.init(context, mPackageName, appenders);
 
-        loggerManager.log(TAG, LOG.PRIORITY.VERBOSE, TEXT);
-
+        Exception e = new Exception();
+        LOG.d(TAG, e, TEXT);
+        //This is ugly.. but I don't see another way.
         final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
-        verify(appenderA, times(1)).log(LOG.PRIORITY.VERBOSE, null, log);
-        verify(appenderB, times(1)).log(LOG.PRIORITY.VERBOSE, null, log);
-        verify(appenderC, times(1)).log(LOG.PRIORITY.VERBOSE, null, log);
+        verify(appenderA, times(1)).log(LOG.PRIORITY.DEBUG, e, log);
+        verify(appenderB, times(1)).log(LOG.PRIORITY.DEBUG, e, log);
+        verify(appenderC, times(1)).log(LOG.PRIORITY.DEBUG, e, log);
     }
 
-    private ILogAppender mockAppender(String analyticsId) {
+    @Test
+    public void testErrorWithExceptionLog() {
+        Context context = mock(Context.class);
+
+        List<ILogAppender> appenders = new ArrayList<>();
+
+        ILogAppender appenderA = mockAppender("A");
+        ILogAppender appenderB = mockAppender("B");
+        ILogAppender appenderC = mockAppender("C");
+
+        appenders.add(appenderA);
+        appenders.add(appenderB);
+        appenders.add(appenderC);
+
+        LOG.init(context, mPackageName, appenders);
+
+        Exception e = new Exception();
+        LOG.e(TAG, e, TEXT);
+        //This is ugly.. but I don't see another way.
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+
+        verify(appenderA, times(1)).log(LOG.PRIORITY.ERROR, e, log);
+        verify(appenderB, times(1)).log(LOG.PRIORITY.ERROR, e, log);
+        verify(appenderC, times(1)).log(LOG.PRIORITY.ERROR, e, log);
+    }
+
+    @Test
+    public void testWarnWithExceptionLog() {
+        Context context = mock(Context.class);
+
+        List<ILogAppender> appenders = new ArrayList<>();
+
+        ILogAppender appenderA = mockAppender("A");
+        ILogAppender appenderB = mockAppender("B");
+        ILogAppender appenderC = mockAppender("C");
+
+        appenders.add(appenderA);
+        appenders.add(appenderB);
+        appenders.add(appenderC);
+
+        LOG.init(context, mPackageName, appenders);
+
+        Exception e = new Exception();
+        LOG.w(TAG, e, TEXT);
+        //This is ugly.. but I don't see another way.
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+
+        verify(appenderA, times(1)).log(LOG.PRIORITY.WARN, e, log);
+        verify(appenderB, times(1)).log(LOG.PRIORITY.WARN, e, log);
+        verify(appenderC, times(1)).log(LOG.PRIORITY.WARN, e, log);
+    }
+
+    @Test
+    public void testFatalWithExceptionLog() {
+        Context context = mock(Context.class);
+
+        List<ILogAppender> appenders = new ArrayList<>();
+
+        ILogAppender appenderA = mockAppender("A");
+        ILogAppender appenderB = mockAppender("B");
+        ILogAppender appenderC = mockAppender("C");
+
+        appenders.add(appenderA);
+        appenders.add(appenderB);
+        appenders.add(appenderC);
+
+        LOG.init(context, mPackageName, appenders);
+
+        Exception e = new Exception();
+        LOG.wtf(TAG, e, TEXT);
+        //This is ugly.. but I don't see another way.
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+
+        verify(appenderA, times(1)).log(LOG.PRIORITY.FATAL, e, log);
+        verify(appenderB, times(1)).log(LOG.PRIORITY.FATAL, e, log);
+        verify(appenderC, times(1)).log(LOG.PRIORITY.FATAL, e, log);
+    }
+
+    @Test
+    public void testInfoWithExceptionLog() {
+        Context context = mock(Context.class);
+
+        List<ILogAppender> appenders = new ArrayList<>();
+
+        ILogAppender appenderA = mockAppender("A");
+        ILogAppender appenderB = mockAppender("B");
+        ILogAppender appenderC = mockAppender("C");
+
+        appenders.add(appenderA);
+        appenders.add(appenderB);
+        appenders.add(appenderC);
+
+        LOG.init(context, mPackageName, appenders);
+
+        Exception e = new Exception();
+        LOG.i(TAG, e, TEXT);
+        //This is ugly.. but I don't see another way.
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+
+        verify(appenderA, times(1)).log(LOG.PRIORITY.INFO, e, log);
+        verify(appenderB, times(1)).log(LOG.PRIORITY.INFO, e, log);
+        verify(appenderC, times(1)).log(LOG.PRIORITY.INFO, e, log);
+    }
+
+    private ILogAppender mockAppender(String loggerId) {
         ILogAppender appender = mock(ILogAppender.class);
 
-        when(appender.getLoggerId()).thenReturn(analyticsId);
+        when(appender.getLoggerId()).thenReturn(loggerId);
 
         return appender;
     }

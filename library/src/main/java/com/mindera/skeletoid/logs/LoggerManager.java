@@ -1,20 +1,21 @@
 package com.mindera.skeletoid.logs;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.mindera.skeletoid.generic.AndroidUtils;
 import com.mindera.skeletoid.logs.appenders.ILogAppender;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getCurrentThreadId;
 import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString;
 import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getObjectHash;
 import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getTag;
+import static com.mindera.skeletoid.threads.utils.ThreadUtils.getCurrentThreadName;
 
 /**
  * LOG main class. It contains all the logic and feeds the appenders
@@ -67,22 +68,24 @@ class LoggerManager implements ILoggerManager {
     /**
      * Enables or disables logging to console/logcat.
      */
-    public List<String> addAppenders(Context context, List<ILogAppender> logAppenders) {
+    public Set<String> addAppenders(Context context, List<ILogAppender> logAppenders) {
         if (logAppenders == null || logAppenders.size() == 0) {
-            return new ArrayList<>();
+            return new HashSet<>();
         }
 
-        final List<String> appenderIds = new ArrayList<>();
+        final Set<String> appenderIds = new HashSet<>();
 
         for (ILogAppender logAppender : logAppenders) {
-            logAppender.enableAppender(context);
 
             final String loggerId = logAppender.getLoggerId();
-            
+
             if (mLogAppenders.containsKey(loggerId)) {
-                Log.e(LOG_TAG, "Appender ERROR: Adding appender with the same ID: " + loggerId);
-                continue;
+                log(LOG_TAG, LOG.PRIORITY.ERROR, "Replacing Log Appender with ID: " + loggerId);
+                ILogAppender oldLogAppender = mLogAppenders.remove(loggerId);
+                oldLogAppender.disableAppender();
             }
+
+            logAppender.enableAppender(context);
             appenderIds.add(loggerId);
             mLogAppenders.put(loggerId, logAppender);
         }
@@ -93,7 +96,7 @@ class LoggerManager implements ILoggerManager {
     /**
      * Enables or disables logging to console/logcat.
      */
-    public void disableAppenders(Context context, List<String> loggerIds) {
+    public void removeAppenders(Context context, Set<String> loggerIds) {
         if (loggerIds == null || mLogAppenders.isEmpty()) {
             return;
         }
@@ -107,7 +110,7 @@ class LoggerManager implements ILoggerManager {
     }
 
     @Override
-    public void disableAllAppenders() {
+    public void removeAllAppenders() {
         List<String> appendersKeys = new ArrayList<>(mLogAppenders.keySet());
         for (String analyticsId : appendersKeys) {
             final ILogAppender analyticsAppender = mLogAppenders.remove(analyticsId);
@@ -140,7 +143,7 @@ class LoggerManager implements ILoggerManager {
             return;
         }
 
-        final String log = String.format(LOG_FORMAT_4ARGS, tag, getObjectHash(tag), getCurrentThreadId(), getLogString(text));
+        final String log = String.format(LOG_FORMAT_4ARGS, tag, getObjectHash(tag), getCurrentThreadName(), getLogString(text));
 
         pushLogToAppenders(type, null, log);
     }
@@ -159,7 +162,7 @@ class LoggerManager implements ILoggerManager {
             return;
         }
 
-        final String log = String.format(LOG_FORMAT_4ARGS, tag, getObjectHash(tag), getCurrentThreadId(), logString);
+        final String log = String.format(LOG_FORMAT_4ARGS, tag, getObjectHash(tag), getCurrentThreadName(), logString);
 
         pushLogToAppenders(type, t, log);
     }
@@ -177,7 +180,7 @@ class LoggerManager implements ILoggerManager {
             return;
         }
 
-        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz, mAddPackageName, mAddMethodName), getCurrentThreadId(), logString);
+        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz, mAddPackageName, mAddMethodName), getCurrentThreadName(), logString);
 
         pushLogToAppenders(type, null, log);
     }
@@ -195,7 +198,7 @@ class LoggerManager implements ILoggerManager {
             return;
         }
 
-        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz, mAddPackageName, mAddMethodName), getCurrentThreadId(), logString);
+        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz, mAddPackageName, mAddMethodName), getCurrentThreadName(), logString);
         pushLogToAppenders(type, t, log);
     }
 }

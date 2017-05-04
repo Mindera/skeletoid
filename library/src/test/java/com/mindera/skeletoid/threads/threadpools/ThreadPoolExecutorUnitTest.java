@@ -1,4 +1,4 @@
-package com.mindera.skeletoid.threadpools;
+package com.mindera.skeletoid.threads.threadpools;
 
 import org.junit.Before;
 import org.junit.Test;

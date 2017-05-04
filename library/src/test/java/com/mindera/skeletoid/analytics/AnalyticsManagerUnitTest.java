@@ -9,11 +9,14 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -29,7 +32,7 @@ public class AnalyticsManagerUnitTest {
         Context context = mock(Context.class);
 
         AnalyticsManager analyticsManager = new AnalyticsManager();
-        List<String> appendersIds = analyticsManager.addAppenders(context, null);
+        Set<String> appendersIds = analyticsManager.addAppenders(context, null);
 
         assertNotNull(appendersIds);
         assertEquals(0, appendersIds.size());
@@ -40,7 +43,7 @@ public class AnalyticsManagerUnitTest {
         Context context = mock(Context.class);
 
         AnalyticsManager analyticsManager = new AnalyticsManager();
-        List<String> appendersIds = analyticsManager.addAppenders(context, new ArrayList<IAnalyticsAppender>());
+        Set<String> appendersIds = analyticsManager.addAppenders(context, new ArrayList<IAnalyticsAppender>());
 
         assertNotNull(appendersIds);
         assertEquals(0, appendersIds.size());
@@ -62,7 +65,7 @@ public class AnalyticsManagerUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        List<String> appendersIds = analyticsManager.addAppenders(context, appenders);
+        Set<String> appendersIds = analyticsManager.addAppenders(context, appenders);
 
         verify(appenderA, times(1)).enableAppender(context);
         verify(appenderB, times(1)).enableAppender(context);
@@ -70,9 +73,9 @@ public class AnalyticsManagerUnitTest {
 
         assertNotNull(appendersIds);
         assertEquals(3, appendersIds.size());
-        assertEquals("A", appendersIds.get(0));
-        assertEquals("B", appendersIds.get(1));
-        assertEquals("C", appendersIds.get(2));
+        assertTrue(appendersIds.contains("A"));
+        assertTrue(appendersIds.contains("B"));
+        assertTrue(appendersIds.contains("C"));
     }
 
     @Test
@@ -91,14 +94,14 @@ public class AnalyticsManagerUnitTest {
         appenders.add(appenderB1);
         appenders.add(appenderB2);
 
+        //We must initialize the LOG since it prints an error
         LOG.init(context, mPackageName);
-
-        List<String> appendersIds = analyticsManager.addAppenders(context, appenders);
+        Set<String> appendersIds = analyticsManager.addAppenders(context, appenders);
 
         assertNotNull(appendersIds);
         assertEquals(2, appendersIds.size());
-        assertEquals("A", appendersIds.get(0));
-        assertEquals("B", appendersIds.get(1));
+        assertTrue(appendersIds.contains("A"));
+        assertTrue(appendersIds.contains("B"));
     }
 
     @Test
@@ -106,7 +109,7 @@ public class AnalyticsManagerUnitTest {
         Context context = mock(Context.class);
 
         AnalyticsManager analyticsManager = new AnalyticsManager();
-        analyticsManager.disableAppenders(context, null);
+        analyticsManager.removeAppenders(context, null);
     }
 
     @Test
@@ -114,7 +117,7 @@ public class AnalyticsManagerUnitTest {
         Context context = mock(Context.class);
 
         AnalyticsManager analyticsManager = new AnalyticsManager();
-        analyticsManager.disableAppenders(context, new ArrayList<String>());
+        analyticsManager.removeAppenders(context, new HashSet<String>());
     }
 
     @Test
@@ -133,9 +136,9 @@ public class AnalyticsManagerUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        List<String> appendersIds = analyticsManager.addAppenders(context, appenders);
+        Set<String> appendersIds = analyticsManager.addAppenders(context, appenders);
 
-        analyticsManager.disableAppenders(context, appendersIds);
+        analyticsManager.removeAppenders(context, appendersIds);
         verify(appenderA, times(1)).disableAppender();
         verify(appenderB, times(1)).disableAppender();
         verify(appenderC, times(1)).disableAppender();
@@ -159,7 +162,7 @@ public class AnalyticsManagerUnitTest {
 
         analyticsManager.addAppenders(context, appenders);
 
-        analyticsManager.disableAllAppenders();
+        analyticsManager.removeAllAppenders();
         verify(appenderA, times(1)).disableAppender();
         verify(appenderB, times(1)).disableAppender();
         verify(appenderC, times(1)).disableAppender();

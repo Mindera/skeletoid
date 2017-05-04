@@ -6,6 +6,7 @@ import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 public class Analytics {
@@ -28,7 +29,7 @@ public class Analytics {
      * @param context            Context app
      * @param analyticsAppenders The analytics appenders to be started
      */
-    public static List<String> init(Context context, List<IAnalyticsAppender> analyticsAppenders) {
+    public static Set<String> init(Context context, List<IAnalyticsAppender> analyticsAppenders) {
         return getInstance().addAppenders(context, analyticsAppenders);
     }
 
@@ -38,7 +39,7 @@ public class Analytics {
      */
     public static void deinit(Context context) {
         if (mInstance != null) {
-            getInstance().disableAllAppenders();
+            getInstance().removeAllAppenders();
             mInstance = null;
         }
     }
@@ -62,6 +63,34 @@ public class Analytics {
     }
 
     /**
+     * Enable analytics appenders
+     *
+     * @param context      Context
+     * @param analyticsAppenders Analytics appenders to enable
+     * @return Ids of the analytics appenders enabled by their order
+     */
+    public static Set<String> addAppenders(Context context, List<IAnalyticsAppender> analyticsAppenders) {
+        return getInstance().addAppenders(context, analyticsAppenders);
+    }
+
+    /**
+     * Disable analytics appenders
+     *
+     * @param context   Context
+     * @param analyticsIds Analytics ids of each of the analytics appenders disabled by the order sent
+     */
+    public static void removeAppenders(Context context, Set<String> analyticsIds) {
+        getInstance().removeAppenders(context, analyticsIds);
+    }
+
+    /**
+     * Remove all analytics appenders
+     */
+    public static void removeAllAppenders() {
+        getInstance().removeAllAppenders();
+    }
+
+    /**
      * Track Event method - Analytics generic method to send an event with a payload
      * @param screenName
      * @param analyticsPayload
@@ -78,4 +107,13 @@ public class Analytics {
     public static void trackPageHit(String screenName, Map<String, Object> analyticsPayload) {
         getInstance().trackPageHit(screenName, analyticsPayload);
     }
+
+    /**
+     * Return true if initialized
+     * @return true if initialized
+     */
+    public static boolean isInitialized() {
+        return mInstance != null;
+    }
+
 }
