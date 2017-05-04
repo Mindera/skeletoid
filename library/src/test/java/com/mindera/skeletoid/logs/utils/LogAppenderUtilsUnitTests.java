@@ -14,7 +14,7 @@ public class LogAppenderUtilsUnitTests {
 
     @Test
     public void testGetMethodName() {
-        assertEquals(LogAppenderUtils.getMethodName(LogAppenderUtilsUnitTests.class), "invoke0");
+        assertEquals(LogAppenderUtils.getMethodName(LogAppenderUtilsUnitTests.class), "testGetMethodName");
     }
 
     @Test

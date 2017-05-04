@@ -55,14 +55,15 @@ public class LogAppenderUtils {
      */
     public static String getMethodName(Class clazz) {
         int index = 0;
-        for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-            index++;
+        final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+
+        for (StackTraceElement ste : stackTrace) {
             if (ste.getClassName().equals(clazz.getName())) {
                 break;
             }
+            index++;
         }
 
-        final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         final String methodName;
 
         if (stackTrace.length > index) {
