@@ -1,10 +1,18 @@
 package com.mindera.skeletoid.logs.utils;
 
 
+import android.support.annotation.VisibleForTesting;
+
 /**
  * Abstract LOG Appender
  */
 public class LogAppenderUtils {
+
+    @VisibleForTesting
+    LogAppenderUtils() {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * Convert log array to string
      *
