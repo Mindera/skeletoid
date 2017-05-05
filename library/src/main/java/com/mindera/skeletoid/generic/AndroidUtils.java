@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
+import android.support.annotation.VisibleForTesting;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -35,6 +36,11 @@ public class AndroidUtils {
      * Cached app package
      */
     private static String mAppPackage = null;
+
+    @VisibleForTesting
+    AndroidUtils() {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Get the device's manufacturer and model name
