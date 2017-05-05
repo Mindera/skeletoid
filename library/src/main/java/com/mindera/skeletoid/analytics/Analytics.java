@@ -1,8 +1,9 @@
 package com.mindera.skeletoid.analytics;
 
-import android.content.Context;
-
 import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
+
+import android.content.Context;
+import android.support.annotation.VisibleForTesting;
 
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,11 @@ public class Analytics {
     private static final String TAG = "Analytics";
 
     private static volatile IAnalyticsManager mInstance;
+
+    @VisibleForTesting
+    Analytics() {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Init the analytics engine. This method MUST be called before using Analytics

@@ -1,12 +1,12 @@
 package com.mindera.skeletoid.analytics;
 
-import android.content.Context;
-
 import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
 import com.mindera.skeletoid.logs.LOG;
 
 import org.junit.After;
 import org.junit.Test;
+
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -32,8 +33,18 @@ public class AnalyticsUnitTest {
         Analytics.deinit(null);
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void testConstructor() {
+        new Analytics();
+    }
+
     @Test
     public void testInit() {
+        Analytics.init();
+    }
+
+    @Test
+    public void testInitWithParams() {
         Context context = mock(Context.class);
 
         List<IAnalyticsAppender> appenders = new ArrayList<>();
@@ -50,6 +61,13 @@ public class AnalyticsUnitTest {
         LOG.init(context);
         Analytics.init(context, appenders);
 
+        assertTrue(Analytics.isInitialized());
+    }
+
+    @Test
+    public void testIsInitialized() {
+        assertFalse(Analytics.isInitialized());
+        Analytics.init();
         assertTrue(Analytics.isInitialized());
     }
 
@@ -77,7 +95,6 @@ public class AnalyticsUnitTest {
         verify(appenderB, times(1)).disableAppender();
         verify(appenderC, times(1)).disableAppender();
     }
-
 
     @Test
     public void testAddAppenders() {
@@ -169,7 +186,6 @@ public class AnalyticsUnitTest {
     @Test
     public void testRemoveAllAppenders() {
         Context context = mock(Context.class);
-
 
         List<IAnalyticsAppender> appenders = new ArrayList<>();
 
