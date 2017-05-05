@@ -34,7 +34,7 @@ class LoggerManager implements ILoggerManager {
     /**
      * Application TAG for logs
      */
-    private final String PACKAGE_NAME;
+    protected final String PACKAGE_NAME;
     /**
      * Define if the method name invoking the log should be printed or not (via exception stack)
      */
@@ -180,7 +180,7 @@ class LoggerManager implements ILoggerManager {
             return;
         }
 
-        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz, mAddPackageName, mAddMethodName), getCurrentThreadName(), logString);
+        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz, mAddPackageName, PACKAGE_NAME, mAddMethodName), getCurrentThreadName(), logString);
 
         pushLogToAppenders(type, null, log);
     }
@@ -198,7 +198,7 @@ class LoggerManager implements ILoggerManager {
             return;
         }
 
-        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz, mAddPackageName, mAddMethodName), getCurrentThreadName(), logString);
+        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz, mAddPackageName, PACKAGE_NAME, mAddMethodName), getCurrentThreadName(), logString);
         pushLogToAppenders(type, t, log);
     }
 }
