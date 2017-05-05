@@ -1,6 +1,5 @@
 package com.mindera.skeletoid.logs.utils;
 
-import static android.provider.ContactsContract.Directory.PACKAGE_NAME;
 
 /**
  * Abstract LOG Appender
@@ -32,10 +31,10 @@ public class LogAppenderUtils {
      * @param clazz Class to get the tag from
      * @return Tag string
      */
-    public static String getTag(Class clazz, boolean packageName, boolean methodName) {
+    public static String getTag(Class clazz, boolean usePackageName, String packageName, boolean methodName) {
         final StringBuilder stringBuilder = new StringBuilder();
-        if (packageName) {
-            stringBuilder.append(PACKAGE_NAME);
+        if (usePackageName) {
+            stringBuilder.append(packageName);
             stringBuilder.append("/");
         }
 

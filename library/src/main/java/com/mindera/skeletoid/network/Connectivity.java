@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.mindera.skeletoid.generic.StringUtils;
+
 import java.net.MalformedURLException;
 import java.net.URI;
 
@@ -68,6 +70,7 @@ public class Connectivity {
 
     /**
      * Add a callback to receive connectivity updates
+     *
      * @param connectivityCallback
      */
     public static void setConnectivityCallback(ConnectivityReceiver.ConnectivityCallback connectivityCallback) {
@@ -87,15 +90,15 @@ public class Connectivity {
      * @param uri With a valid URI
      * @throws MalformedURLException When the URI is invalid
      */
-    public static void updateConnectivityValidationAddress(URI uri) throws MalformedURLException {
+    public static void updateConnectivityValidationAddress(URI uri) {
         try {
             //Validate URL
             String host = uri.getHost();
             ConnectivityReceiver.mInternetAddress = "http://" + host;
-            ConnectivityReceiver.mInternetHttpValidationAddress = "http://" + host.substring(0, host.indexOf("."));
-            ConnectivityReceiver.mInternetHttpsValidationAddress = "https://" + host.substring(0, host.indexOf("."));
+            ConnectivityReceiver.mInternetHttpValidationAddress = "http://" + host.substring(0, StringUtils.ordinalIndexOf(host, ".", 2));
+            ConnectivityReceiver.mInternetHttpsValidationAddress = "https://" + host.substring(0, StringUtils.ordinalIndexOf(host, ".", 2));
         } catch (Exception e) {
-            throw new MalformedURLException();
+            throw new IllegalArgumentException("URI is invalid");
         }
     }
 }
