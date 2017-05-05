@@ -1,13 +1,13 @@
 package com.mindera.skeletoid.logs.utils;
 
+import com.mindera.skeletoid.generic.AndroidUtils;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.FileProvider;
-
-import com.mindera.skeletoid.generic.AndroidUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -38,6 +38,11 @@ import java.util.ArrayList;
  */
 public class ShareLogFilesUtils {
 
+    @VisibleForTesting
+    ShareLogFilesUtils() {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * Class to be able to share LogFileAppender generated files
      *
@@ -50,7 +55,7 @@ public class ShareLogFilesUtils {
         File file = new File(getFileLogPath(activity.getApplicationContext()));
 
         final Uri uri = FileProvider.getUriForFile(activity, activity.getPackageName(), file);
-        ArrayList<Uri> uris = new ArrayList<Uri>();
+        ArrayList<Uri> uris = new ArrayList<>();
         uris.add(uri);
 
         final Intent intent;

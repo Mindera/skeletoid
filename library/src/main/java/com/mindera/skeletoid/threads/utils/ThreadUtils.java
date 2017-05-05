@@ -1,7 +1,13 @@
 package com.mindera.skeletoid.threads.utils;
 
+import android.support.annotation.VisibleForTesting;
 
 public class ThreadUtils {
+
+    @VisibleForTesting
+    ThreadUtils() {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Gets the current thread name

@@ -1,8 +1,6 @@
 package com.mindera.skeletoid.logs.utils;
 
-
 import com.mindera.skeletoid.generic.AndroidUtils;
-import com.mindera.skeletoid.generic.StringUtils;
 
 import org.junit.Test;
 
@@ -49,12 +47,14 @@ public class LogAppenderUtilsUnitTests {
 
     @Test
     public void testGetTagWithPackageNameAndMethodName() {
-        assertEquals(mPackageName + "/" + LogAppenderUtilsUnitTests.class.getCanonicalName() + ".testGetTagWithPackageNameAndMethodName", LogAppenderUtils.getTag(LogAppenderUtilsUnitTests.class, true, mPackageName, true));
+        assertEquals(mPackageName + "/" + LogAppenderUtilsUnitTests.class.getCanonicalName() + ".testGetTagWithPackageNameAndMethodName",
+                LogAppenderUtils.getTag(LogAppenderUtilsUnitTests.class, true, mPackageName, true));
     }
 
     @Test
     public void testGetTagWithMethodName() {
-        assertEquals(LogAppenderUtilsUnitTests.class.getCanonicalName() + ".testGetTagWithMethodName", LogAppenderUtils.getTag(LogAppenderUtilsUnitTests.class, false, mPackageName, true));
+        assertEquals(LogAppenderUtilsUnitTests.class.getCanonicalName() + ".testGetTagWithMethodName",
+                LogAppenderUtils.getTag(LogAppenderUtilsUnitTests.class, false, mPackageName, true));
     }
 
     @Test
