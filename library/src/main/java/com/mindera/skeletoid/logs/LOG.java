@@ -178,7 +178,10 @@ public class LOG {
      * @param text List of strings
      */
     public static void d(String tag, String... text) {
-        getInstance().log(tag, PRIORITY.DEBUG, text);
+        if (mInstance == null) {
+            return;
+        }
+        mInstance.log(tag, PRIORITY.DEBUG, text);
     }
 
     /**
@@ -188,7 +191,10 @@ public class LOG {
      * @param text List of strings
      */
     public static void e(String tag, String... text) {
-        getInstance().log(tag, PRIORITY.ERROR, text);
+        if (mInstance == null) {
+            return;
+        }
+        mInstance.log(tag, PRIORITY.ERROR, text);
     }
 
     /**
@@ -198,7 +204,10 @@ public class LOG {
      * @param text List of strings
      */
     public static void v(String tag, String... text) {
-        getInstance().log(tag, PRIORITY.VERBOSE, text);
+        if (mInstance == null) {
+            return;
+        }
+        mInstance.log(tag, PRIORITY.VERBOSE, text);
     }
 
     /**
@@ -208,7 +217,10 @@ public class LOG {
      * @param text List of strings
      */
     public static void i(String tag, String... text) {
-        getInstance().log(tag, PRIORITY.INFO, text);
+        if (mInstance == null) {
+            return;
+        }
+        mInstance.log(tag, PRIORITY.INFO, text);
     }
 
     /**
@@ -218,7 +230,10 @@ public class LOG {
      * @param text List of strings
      */
     public static void w(String tag, String... text) {
-        getInstance().log(tag, PRIORITY.WARN, text);
+        if (mInstance == null) {
+            return;
+        }
+        mInstance.log(tag, PRIORITY.WARN, text);
     }
 
     /**
@@ -228,7 +243,10 @@ public class LOG {
      * @param text List of strings
      */
     public static void wtf(String tag, String... text) {
-        getInstance().log(tag, PRIORITY.FATAL, text);
+        if (mInstance == null) {
+            return;
+        }
+        mInstance.log(tag, PRIORITY.FATAL, text);
     }
 
     /**
@@ -239,7 +257,10 @@ public class LOG {
      * @param text List of strings
      */
     public static void d(String tag, Throwable t, String... text) {
-        getInstance().log(tag, PRIORITY.DEBUG, t, text);
+        if (mInstance == null) {
+            return;
+        }
+        mInstance.log(tag, PRIORITY.DEBUG, t, text);
     }
 
     /**
@@ -250,7 +271,10 @@ public class LOG {
      * @param text List of strings
      */
     public static void e(String tag, Throwable t, String... text) {
-        getInstance().log(tag, PRIORITY.ERROR, t, text);
+        if (mInstance == null) {
+            return;
+        }
+        mInstance.log(tag, PRIORITY.ERROR, t, text);
     }
 
     /**
@@ -261,7 +285,10 @@ public class LOG {
      * @param text List of strings
      */
     public static void v(String tag, Throwable t, String... text) {
-        getInstance().log(tag, PRIORITY.VERBOSE, t, text);
+        if (mInstance == null) {
+            return;
+        }
+        mInstance.log(tag, PRIORITY.VERBOSE, t, text);
     }
 
     /**
@@ -272,7 +299,10 @@ public class LOG {
      * @param text List of strings
      */
     public static void i(String tag, Throwable t, String... text) {
-        getInstance().log(tag, PRIORITY.INFO, t, text);
+        if (mInstance == null) {
+            return;
+        }
+        mInstance.log(tag, PRIORITY.INFO, t, text);
     }
 
     /**
@@ -283,7 +313,10 @@ public class LOG {
      * @param text List of strings
      */
     public static void w(String tag, Throwable t, String... text) {
-        getInstance().log(tag, PRIORITY.WARN, t, text);
+        if (mInstance == null) {
+            return;
+        }
+        mInstance.log(tag, PRIORITY.WARN, t, text);
     }
 
     /**
@@ -294,7 +327,10 @@ public class LOG {
      * @param text List of strings
      */
     public static void wtf(String tag, Throwable t, String... text) {
-        getInstance().log(tag, PRIORITY.FATAL, t, text);
+        if (mInstance == null) {
+            return;
+        }
+        mInstance.log(tag, PRIORITY.FATAL, t, text);
     }
 
     /**
