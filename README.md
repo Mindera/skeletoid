@@ -11,6 +11,87 @@ Instead of copy pasting the same utils packages to each new project (and not hav
 
 
 ## Features
+
+### Logging abstraction
+Have multiple implementation of logs, with a common interface. **Log once, propagate it to multiple appenders.** 
+
+This way you can add/remove/enable/disable appenders seamlessly.
+You can have multiple log appenders, you can event implement your own. We provide the out-of-the-box: LogCat and LogToFile (Rolling Appending)
+
+1. Init (if you don't call this, every call to LOG will be ignored):
+
+  ```java  
+    LOG.init(context);
+  ```
+
+2. Add appenders:
+    You can have multiple log appenders, you can event implement your own.
+      Here are the LogCat appender and File appender.
+
+  ```java
+    List<ILogAppender> appenders = new ArrayList();
+    appenders.add(new LogcatAppender("TAG")); 
+    appenders.add(new LogFileAppender("TAG", "MyFileName"));
+    Analytics.addAppenders(appenders);
+  ```
+
+3. Then log things and have each appender write the log:
+
+ ```java
+   LOG.d("TAG","Text");
+   LOG.e("TAG", new Exception(), "Omg");
+   LOG.wtf("TAG", new Exception(), "This", "accepts", "endless", "strings");
+ ```
+
+
+### Connectivity
+Determine real device connectivity: if the device is connected to a network and if it really has internet access.
+To be able to do that, you'll need to add to the app's manifest:
+
+ ```android
+     <receiver android:name="com.mindera.skeletoid.network.ConnectivityReceiver">
+       <intent-filter>
+         <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+         <action android:name="android.net.wifi.STATE_CHANGE"/>
+         <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE"/>
+       </intent-filter>
+     </receiver>
+ ```
+ 
+And then you can just check via:
+
+ ```java
+     boolean isConnectedAndWithInternet = Connectivity.isConnectedAndWithInternetAvailable(context);
+ ```
+   
+If you want to be notified via callback:
+   
+ ```java
+     Connectivity.setConnectivityCallback(callback);
+ ```
+
+Remember to avoid leaks. If you need you can:
+
+```java
+   Connectivity.removeConnectivityCallback();
+```
+   
+
+_Note: To be able to determine the real connectivity, a request to google.com will be made each time the device connects to a network. You need of course to have the INTERNET permission on the Manifest (if you didn't, you wouldn't need this anyway)._
+
+You can change the host to be called via:
+
+```java
+   Connectivity.updateConnectivityValidationAddress(uri);
+```
+
+### Thread pooling management
+With this you can use the the ThreadPoolExecutor and ScheduledThreadPool executor the same as you normally use, so why use it?
+- Have threads of each ThreadPool with the naming you want
+- Log the exceptions thrown in threadpool threads
+- Have task priority in threadpool (just have your own Runnables extend PriorityTask)
+
+
 ### Analytics abstraction
 Have multiple implementation of analytics, with a common interface. **Send an event once, and get it push to every appender.** 
 
@@ -40,87 +121,6 @@ You can have multiple Analytic appenders, you can event implement your own. We p
    ```java
    Analytics.trackPageHit(screenName, analyticsPayload);
    ```
-
-
-### Logging abstraction
-Have multiple implementation of logs, with a common interface. **Log once, propagate it to multiple appenders.** 
-
-This way you can add/remove/enable/disable appenders seamlessly.
-You can have multiple log appenders, you can event implement your own. We provide the out-of-the-box: LogCat and LogToFile (Rolling Appending)
-
-1. Init:
-
-    ```java  
-    LOG.init(context);
-    ```
-
-2. Add appenders:
-    You can have multiple log appenders, you can event implement your own.
-      Here are the LogCat appender and File appender.
-
-    ```java
-    List<ILogAppender> appenders = new ArrayList();
-    appenders.add(new LogcatAppender("TAG")); 
-    appenders.add(new LogFileAppender("TAG", "MyFileName"));
-    Analytics.addAppenders(appenders);
-    ```
-
-3. Then log things and have each appender write the log:
-
-   ```java
-   LOG.d("TAG","Text");
-   LOG.e("TAG", new Exception(), "Omg");
-   LOG.wtf("TAG", new Exception(), "This", "accepts", "endless", "strings");
-   ```
-
-
-### Connectivity
-Determine real device connectivity: if the device is connected to a network and if it really has internet access.
-To be able to do that, you'll need to add to the app's manifest:
-
-   ```android
-     <receiver android:name="com.mindera.skeletoid.network.ConnectivityReceiver">
-       <intent-filter>
-         <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-         <action android:name="android.net.wifi.STATE_CHANGE"/>
-         <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE"/>
-       </intent-filter>
-     </receiver>
-   ```
- 
-And then you can just check via:
-
-   ```java
-     boolean isConnectedAndWithInternet = Connectivity.isConnectedAndWithInternetAvailable(context);
-   ```
-   
-If you want to be notified via callback:
-   
-   ```java
-      Connectivity.setConnectivityCallback(callback);
-   ```
-
-Remember to avoid leaks. If you need you can:
-
-```java
-      Connectivity.removeConnectivityCallback();
-   ```
-   
-
-_Note: To be able to determine the real connectivity, a request to google.com will be made each time the device connects to a network. You need of course to have the INTERNET permission on the Manifest (if you didn't, you wouldn't need this anyway)._
-
-You can change the host to be called via:
-
-```java
-   Connectivity.updateConnectivityValidationAddress(uri);
-   ```
-
-### Thread pooling management
-With this you can use the the ThreadPoolExecutor and ScheduledThreadPool executor the same as you normally use, so why use it?
-- Have threads of each ThreadPool with the naming you want
-- Log the exceptions thrown in threadpool threads
-- Have task priority in threadpool (just have your own Runnables extend PriorityTask)
-
 
 ## Usage
 
