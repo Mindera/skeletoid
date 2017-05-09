@@ -32,7 +32,7 @@ You can have multiple log appenders, you can event implement your own. We provid
     List<ILogAppender> appenders = new ArrayList();
     appenders.add(new LogcatAppender("TAG")); 
     appenders.add(new LogFileAppender("TAG", "MyFileName"));
-    Analytics.addAppenders(appenders);
+    LOG.addAppenders(appenders);
   ```
 
 3. Then log things and have each appender write the log:
