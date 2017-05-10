@@ -1,5 +1,7 @@
 package com.mindera.skeletoid.generic;
 
+import android.support.annotation.VisibleForTesting;
+
 import com.mindera.skeletoid.logs.LOG;
 
 import java.util.Map;
@@ -8,6 +10,11 @@ import java.util.Map;
  * Class to provide debug only methods and utilities that should NOT be used in production
  */
 public class DebugTools {
+
+    @VisibleForTesting
+    DebugTools() {
+        throw new UnsupportedOperationException();
+    }
 
     public static void printAllStackTraces(Class<?> clazz) {
 

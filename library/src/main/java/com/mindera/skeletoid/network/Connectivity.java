@@ -3,6 +3,7 @@ package com.mindera.skeletoid.network;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.VisibleForTesting;
 
 import com.mindera.skeletoid.generic.StringUtils;
 
@@ -17,8 +18,9 @@ public class Connectivity {
 //    private static final String LOG_TAG = "Connectivity";
 
 
-    private Connectivity() {
-
+    @VisibleForTesting
+    Connectivity() {
+        throw new UnsupportedOperationException();
     }
 
     /**

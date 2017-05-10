@@ -17,7 +17,7 @@ public class LogcatAppender implements ILogAppender {
     /**
      * The maximum number of chars to log in a single line.
      */
-    private final int MAX_LINE_LENGTH = 4000;
+    private int MAX_LINE_LENGTH = 4000;
     /**
      * To check if logcat should show the complete lines or just the first 4000 chars.
      */
@@ -42,6 +42,9 @@ public class LogcatAppender implements ILogAppender {
      * @param tag Log tag
      */
     public LogcatAppender(String tag) {
+        if (tag == null) {
+            throw new IllegalArgumentException("TAG cannot be null");
+        }
         TAG = tag;
     }
 
@@ -57,7 +60,7 @@ public class LogcatAppender implements ILogAppender {
 
     @Override
     public void log(LOG.PRIORITY type, Throwable t, String... log) {
-        if(type.ordinal() > mMinLogLevel){
+        if (type.ordinal() > mMinLogLevel) {
             return;
         }
         final String logString = getLogString(log);
@@ -97,7 +100,7 @@ public class LogcatAppender implements ILogAppender {
      * @param text The log text
      * @return A list of lines to log
      */
-    private ArrayList<String> formatLog(String text) {
+    protected ArrayList<String> formatLog(String text) {
 
         final ArrayList<String> result = new ArrayList<>();
 
@@ -136,7 +139,14 @@ public class LogcatAppender implements ILogAppender {
         return mMinLogLevel;
     }
 
-    @Override
+    protected void setMaxLineLength(int maxLineLength) {
+        this.MAX_LINE_LENGTH = maxLineLength;
+    }
+
+    protected int getMaxLineLength() {
+        return MAX_LINE_LENGTH;
+    }
+
     public void setMinLogLevel(LOG.PRIORITY minLogLevel) {
         this.mMinLogLevel = minLogLevel.ordinal();
     }

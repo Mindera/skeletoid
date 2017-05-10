@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.VisibleForTesting;
 
 import com.mindera.skeletoid.logs.LOG;
 import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils;
@@ -61,11 +62,11 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     public interface ConnectivityCallback {
 
         void connectivityUpdate(boolean isConnectedToANetwork, boolean networkHasInternetAccess, boolean isNetworkWiFi);
-
     }
 
-    private ConnectivityReceiver() {
-
+    @VisibleForTesting
+    ConnectivityReceiver() {
+        throw new UnsupportedOperationException();
     }
 
     @Override

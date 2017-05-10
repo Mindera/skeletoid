@@ -1,6 +1,8 @@
 package com.mindera.skeletoid.network;
 
 
+import com.mindera.skeletoid.generic.StringUtils;
+
 import org.junit.Test;
 
 import java.net.URI;
@@ -9,6 +11,11 @@ import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 public class ConnectivityUnitTests {
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testConstructor() {
+        new Connectivity();
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void testIsConnectedAndWithInternetAvailableWithNullArguments() {
