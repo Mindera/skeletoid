@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 public class LogcatAppenderUnitTest {
 
@@ -34,26 +32,26 @@ public class LogcatAppenderUnitTest {
         assertEquals("LogcatAppender", logcatAppender.getLoggerId());
     }
 
-    @Test
-    public void testEnableAppender() {
-        Context context = mock(Context.class);
-
-        LogcatAppender logcatAppender = new LogcatAppender(mPackageName);
-        logcatAppender.enableAppender(context);
-
-        verify(logcatAppender, times(1)).enableAppender(context);
-    }
-
-
-    @Test
-    public void testDisableAppender() {
-        Context context = mock(Context.class);
-
-        LogcatAppender logcatAppender = new LogcatAppender(mPackageName);
-        logcatAppender.disableAppender();
-
-        verify(logcatAppender, times(1)).disableAppender();
-    }
+//    @Test
+//    public void testEnableAppender() {
+//        Context context = mock(Context.class);
+//
+//        LogcatAppender logcatAppender = new LogcatAppender(mPackageName);
+//        logcatAppender.enableAppender(context);
+//
+//        verify(logcatAppender, times(1)).enableAppender(context);
+//    }
+//
+//
+//    @Test
+//    public void testDisableAppender() {
+//        Context context = mock(Context.class);
+//
+//        LogcatAppender logcatAppender = new LogcatAppender(mPackageName);
+//        logcatAppender.disableAppender();
+//
+//        verify(logcatAppender, times(1)).disableAppender();
+//    }
 
 
     @Test
@@ -70,6 +68,12 @@ public class LogcatAppenderUnitTest {
             add("[Chunk 1 of 2] ab");
             add("[Chunk 2 of 2] cd");
         }}, logcatAppender.formatLog("abcd"));
+
+        assertEquals(new ArrayList<String>() {{
+            add("[Chunk 1 of 3] ab");
+            add("[Chunk 2 of 3] cd");
+            add("[Chunk 3 of 3] e");
+        }}, logcatAppender.formatLog("abcde"));
     }
 
 

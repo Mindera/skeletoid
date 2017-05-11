@@ -62,7 +62,7 @@ public class LogFileAppender implements ILogAppender {
     /**
      * Minimum log level for this appender
      */
-    private int mMinLogLevel = LOG.PRIORITY.VERBOSE.ordinal();
+    private LOG.PRIORITY mMinLogLevel = LOG.PRIORITY.VERBOSE;
 
     /**
      * Contructor
@@ -71,15 +71,19 @@ public class LogFileAppender implements ILogAppender {
      * @param fileName Log filename
      */
     public LogFileAppender(String tag, String fileName) {
-        if (tag == null || fileName == null) {
-            throw new IllegalArgumentException("TAG and fileName cannot be null");
+        if (tag == null) {
+            throw new IllegalArgumentException("TAG cannot be null");
+        }
+
+        if (fileName == null) {
+            throw new IllegalArgumentException("FileName cannot be null");
+        }
+
+        if (!isFilenameValid(fileName)) {
+            throw new IllegalArgumentException("Invalid fileName");
         }
 
         LOG_FILE_NAME = fileName + ".log";
-
-        if (isFilenameValid(LOG_FILE_NAME)) {
-            throw new IllegalArgumentException("Invalid fileName");
-        }
 
         TAG = tag;
     }
@@ -91,14 +95,7 @@ public class LogFileAppender implements ILogAppender {
      * @return true if it is, false if not
      */
     protected boolean isFilenameValid(String fileName) {
-        File f = new File(fileName);
-        try {
-            f.getCanonicalPath();
-            f.deleteOnExit();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return fileName.matches("\\w+");
     }
 
     /**
@@ -107,7 +104,7 @@ public class LogFileAppender implements ILogAppender {
      * @param type LOG type
      * @return FileHandler level
      */
-    private static Level getFileHandlerLevel(LOG.PRIORITY type) {
+    private Level getFileHandlerLevel(LOG.PRIORITY type) {
 
         Level level;
 
@@ -190,7 +187,7 @@ public class LogFileAppender implements ILogAppender {
 
     @Override
     public void log(final LOG.PRIORITY type, final Throwable t, final String... logs) {
-        if (type.ordinal() > mMinLogLevel) {
+        if (type.ordinal() > mMinLogLevel.ordinal()) {
             return;
         }
 
@@ -253,7 +250,8 @@ public class LogFileAppender implements ILogAppender {
         builder.append(type.name().charAt(0));
         builder.append("/");
         builder.append(TAG);
-        builder.append("(").append(Thread.currentThread().getId()).append(")");
+        builder.append("(").append(Thread.currentThread().getId());
+        builder.append(")");
         builder.append(": ");
         builder.append(getLogString(logs));
 
@@ -288,7 +286,6 @@ public class LogFileAppender implements ILogAppender {
 //        return logFiles;
 //    }
 
-
     public void setLogFileSize(int LOG_FILE_SIZE) {
         this.mLogFileSize = LOG_FILE_SIZE;
     }
@@ -310,13 +307,17 @@ public class LogFileAppender implements ILogAppender {
     }
 
     @Override
-    public int getMinLogLevel() {
+    public LOG.PRIORITY getMinLogLevel() {
         return mMinLogLevel;
     }
 
     @Override
     public void setMinLogLevel(LOG.PRIORITY minLogLevel) {
-        mMinLogLevel = minLogLevel.ordinal();
+        mMinLogLevel = minLogLevel;
+    }
+
+    public boolean canWriteToFile() {
+        return mCanWriteToFile && mFileHandler != null;
     }
 
     @Override

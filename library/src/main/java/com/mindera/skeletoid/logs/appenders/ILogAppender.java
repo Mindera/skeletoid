@@ -35,7 +35,7 @@ public interface ILogAppender {
      * Get appender minimum log level
      * @return
      */
-    int getMinLogLevel();
+    LOG.PRIORITY getMinLogLevel();
 
     /**
      * Set appender minimum log level

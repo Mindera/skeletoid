@@ -1,8 +1,6 @@
 package com.mindera.skeletoid.network;
 
 
-import com.mindera.skeletoid.generic.StringUtils;
-
 import org.junit.Test;
 
 import java.net.URI;
