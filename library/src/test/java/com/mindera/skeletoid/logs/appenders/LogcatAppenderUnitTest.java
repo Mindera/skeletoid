@@ -1,21 +1,17 @@
 package com.mindera.skeletoid.logs.appenders;
 
-import android.content.Context;
-
 import com.mindera.skeletoid.logs.LOG;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 public class LogcatAppenderUnitTest {
 
     private String mPackageName = "my.package.name";
-    private final String TAG = "TAG";
-    private final String TEXT = "Text";
 
 
     @Test(expected = IllegalArgumentException.class)
@@ -25,8 +21,6 @@ public class LogcatAppenderUnitTest {
 
     @Test
     public void testConstructor() {
-        Context context = mock(Context.class);
-
         LogcatAppender logcatAppender = new LogcatAppender(mPackageName);
 
         assertEquals("LogcatAppender", logcatAppender.getLoggerId());
@@ -58,22 +52,23 @@ public class LogcatAppenderUnitTest {
     public void testFormatLog() {
         LogcatAppender logcatAppender = new LogcatAppender(mPackageName);
 
-        assertEquals(new ArrayList<String>() {{
-            add("abc");
-        }}, logcatAppender.formatLog("abc"));
+        List<String> logs = new ArrayList();
+        logs.add("abc");
+
+        assertEquals(logs, logcatAppender.formatLog("abc"));
+        logs.clear();
 
         logcatAppender.setMaxLineLength(2);
+        logs.add("[Chunk 1 of 2] ab");
+        logs.add("[Chunk 2 of 2] cd");
+        assertEquals(logs, logcatAppender.formatLog("abcd"));
+        logs.clear();
 
-        assertEquals(new ArrayList<String>() {{
-            add("[Chunk 1 of 2] ab");
-            add("[Chunk 2 of 2] cd");
-        }}, logcatAppender.formatLog("abcd"));
-
-        assertEquals(new ArrayList<String>() {{
-            add("[Chunk 1 of 3] ab");
-            add("[Chunk 2 of 3] cd");
-            add("[Chunk 3 of 3] e");
-        }}, logcatAppender.formatLog("abcde"));
+        logcatAppender.setMaxLineLength(2);
+        logs.add("[Chunk 1 of 3] ab");
+        logs.add("[Chunk 2 of 3] cd");
+        logs.add("[Chunk 3 of 3] e");
+        assertEquals(logs, logcatAppender.formatLog("abcde"));
     }
 
 

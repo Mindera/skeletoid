@@ -1,7 +1,5 @@
 package com.mindera.skeletoid.logs.appenders;
 
-import android.content.Context;
-
 import com.mindera.skeletoid.logs.LOG;
 
 import org.junit.Test;
@@ -9,7 +7,6 @@ import org.junit.Test;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 
 public class LogFileAppenderUnitTest {
 
@@ -19,25 +16,25 @@ public class LogFileAppenderUnitTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorAllNull() {
-        LogFileAppender appender = new LogFileAppender(null, null);
+        new LogFileAppender(null, null);
 
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorPackageNameNull() {
-        LogFileAppender appender = new LogFileAppender(null, FILE_NAME);
+        new LogFileAppender(null, FILE_NAME);
 
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorFileNameInvalid() {
-        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, "*");
+        new LogFileAppender(PACKAGE_NAME, "*");
 
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorFileNameNull() {
-        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, null);
+        new LogFileAppender(PACKAGE_NAME, null);
 
     }
 
@@ -81,8 +78,6 @@ public class LogFileAppenderUnitTest {
 
     @Test
     public void testDisableAppender() {
-        Context context = mock(Context.class);
-
         LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
         appender.disableAppender();
 
