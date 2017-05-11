@@ -10,6 +10,11 @@ import static org.mockito.Mockito.mock;
 
 public class ConnectivityUnitTests {
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void testConstructor() {
+        new Connectivity();
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testIsConnectedAndWithInternetAvailableWithNullArguments() {
         Connectivity.isConnectedAndWithInternetAvailable(null);

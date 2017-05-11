@@ -6,6 +6,7 @@ import android.util.Log;
 import com.mindera.skeletoid.logs.LOG;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString;
 
@@ -17,7 +18,7 @@ public class LogcatAppender implements ILogAppender {
     /**
      * The maximum number of chars to log in a single line.
      */
-    private final int MAX_LINE_LENGTH = 4000;
+    private int MAX_LINE_LENGTH = 4000;
     /**
      * To check if logcat should show the complete lines or just the first 4000 chars.
      */
@@ -34,7 +35,7 @@ public class LogcatAppender implements ILogAppender {
     /**
      * Minimum log level for this appender
      */
-    private int mMinLogLevel = LOG.PRIORITY.VERBOSE.ordinal();
+    private LOG.PRIORITY mMinLogLevel = LOG.PRIORITY.VERBOSE;
 
     /**
      * Contructor
@@ -42,6 +43,9 @@ public class LogcatAppender implements ILogAppender {
      * @param tag Log tag
      */
     public LogcatAppender(String tag) {
+        if (tag == null) {
+            throw new IllegalArgumentException("TAG cannot be null");
+        }
         TAG = tag;
     }
 
@@ -57,11 +61,11 @@ public class LogcatAppender implements ILogAppender {
 
     @Override
     public void log(LOG.PRIORITY type, Throwable t, String... log) {
-        if(type.ordinal() > mMinLogLevel){
+        if (type.ordinal() > mMinLogLevel.ordinal()) {
             return;
         }
         final String logString = getLogString(log);
-        final ArrayList<String> logs = formatLog(logString);
+        final List<String> logs = formatLog(logString);
 
         for (String logText : logs) {
 
@@ -97,31 +101,30 @@ public class LogcatAppender implements ILogAppender {
      * @param text The log text
      * @return A list of lines to log
      */
-    private ArrayList<String> formatLog(String text) {
+    protected List<String> formatLog(String text) {
+        final List<String> result = new ArrayList<>();
 
-        final ArrayList<String> result = new ArrayList<>();
-
-        StringBuilder textToSplit = new StringBuilder();
-        if (text != null) {
-            textToSplit.append(text);
+        if (text == null || text.isEmpty()) {
+            return result;
         }
 
-        if (textToSplit.length() > MAX_LINE_LENGTH) {
+        if (text.length() > MAX_LINE_LENGTH) {
             if (mSplitLinesAboveMaxLength) {
 
-                int chunkCount = textToSplit.length() / MAX_LINE_LENGTH;
-                for (int i = 0; i <= chunkCount; i++) {
-                    int max = MAX_LINE_LENGTH * (i + 1);
-                    if (max >= textToSplit.length()) {
-                        result.add("[Chunk " + i + " of " + chunkCount + "]  " + textToSplit.substring(4000 * i));
+                int chunkCount = (int) Math.ceil(1f * text.length() / MAX_LINE_LENGTH );
+                for (int i = 1; i <= chunkCount; i++) {
+                    int max = MAX_LINE_LENGTH * i;
+                    if (max < text.length()) {
+                        result.add("[Chunk " + i + " of " + chunkCount + "] " + text.substring(MAX_LINE_LENGTH * (i - 1), max));
                     } else {
-                        result.add("[Chunk " + i + " of " + chunkCount + "]  " + textToSplit.substring(4000 * i, max));
+                        result.add("[Chunk " + i + " of " + chunkCount + "] " + text.substring(MAX_LINE_LENGTH * (i - 1)));
+
                     }
                 }
             }
 
         } else {
-            result.add(textToSplit.toString());
+            result.add(text);
         }
         return result;
     }
@@ -131,14 +134,25 @@ public class LogcatAppender implements ILogAppender {
         this.mSplitLinesAboveMaxLength = splitLinesAboveMaxLength;
     }
 
-    @Override
-    public int getMinLogLevel() {
-        return mMinLogLevel;
+    public boolean isSplitLinesAboveMaxLength() {
+        return mSplitLinesAboveMaxLength;
     }
 
     @Override
+    public LOG.PRIORITY getMinLogLevel() {
+        return mMinLogLevel;
+    }
+
+    protected void setMaxLineLength(int maxLineLength) {
+        this.MAX_LINE_LENGTH = maxLineLength;
+    }
+
+    protected int getMaxLineLength() {
+        return MAX_LINE_LENGTH;
+    }
+
     public void setMinLogLevel(LOG.PRIORITY minLogLevel) {
-        this.mMinLogLevel = minLogLevel.ordinal();
+        this.mMinLogLevel = minLogLevel;
     }
 
     @Override

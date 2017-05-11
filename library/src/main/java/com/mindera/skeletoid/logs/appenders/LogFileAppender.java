@@ -9,7 +9,6 @@ import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.FileHandler;
@@ -63,7 +62,7 @@ public class LogFileAppender implements ILogAppender {
     /**
      * Minimum log level for this appender
      */
-    private int mMinLogLevel = LOG.PRIORITY.VERBOSE.ordinal();
+    private LOG.PRIORITY mMinLogLevel = LOG.PRIORITY.VERBOSE;
 
     /**
      * Contructor
@@ -72,8 +71,31 @@ public class LogFileAppender implements ILogAppender {
      * @param fileName Log filename
      */
     public LogFileAppender(String tag, String fileName) {
-        TAG = tag;
+        if (tag == null) {
+            throw new IllegalArgumentException("TAG cannot be null");
+        }
+
+        if (fileName == null) {
+            throw new IllegalArgumentException("FileName cannot be null");
+        }
+
+        if (!isFilenameValid(fileName)) {
+            throw new IllegalArgumentException("Invalid fileName");
+        }
+
         LOG_FILE_NAME = fileName + ".log";
+
+        TAG = tag;
+    }
+
+    /**
+     * Check if fileName is valid
+     *
+     * @param fileName fileName
+     * @return true if it is, false if not
+     */
+    protected boolean isFilenameValid(String fileName) {
+        return fileName.matches("\\w+");
     }
 
     /**
@@ -82,7 +104,7 @@ public class LogFileAppender implements ILogAppender {
      * @param type LOG type
      * @return FileHandler level
      */
-    private static Level getFileHandlerLevel(LOG.PRIORITY type) {
+    private Level getFileHandlerLevel(LOG.PRIORITY type) {
 
         Level level;
 
@@ -165,7 +187,7 @@ public class LogFileAppender implements ILogAppender {
 
     @Override
     public void log(final LOG.PRIORITY type, final Throwable t, final String... logs) {
-        if (type.ordinal() > mMinLogLevel) {
+        if (type.ordinal() > mMinLogLevel.ordinal()) {
             return;
         }
 
@@ -183,17 +205,7 @@ public class LogFileAppender implements ILogAppender {
                             Level level = getFileHandlerLevel(type);
 
                             try {
-                                final StringBuilder builder = new StringBuilder();
-                                builder.append(dateFormatter.format(new Date()));
-                                builder.append(": ");
-                                builder.append(type.name().charAt(0));
-                                builder.append("/");
-                                builder.append(TAG);
-                                builder.append("(").append(Thread.currentThread().getId()).append(")");
-                                builder.append(": ");
-                                builder.append(getLogString(logs));
-
-                                final String logText = builder.toString();
+                                String logText = formatLog(type, t, logs);
 
                                 LogRecord logRecord = new LogRecord(level, logText);
                                 if (t != null) {
@@ -225,28 +237,54 @@ public class LogFileAppender implements ILogAppender {
     }
 
     /**
-     * Get list of file logs
+     * Formats the log
      *
-     * @param logsPath Path to the logs folder
-     * @return List of logs files
+     * @param type Type of log
+     * @param t    Throwable (can be null)
+     * @param logs Log
      */
-    public ArrayList<String> getListLogFiles(String logsPath) {
-        ArrayList<String> logFiles = new ArrayList<>();
+    protected String formatLog(final LOG.PRIORITY type, final Throwable t, final String... logs) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(dateFormatter.format(new Date()));
+        builder.append(": ");
+        builder.append(type.name().charAt(0));
+        builder.append("/");
+        builder.append(TAG);
+        builder.append("(").append(Thread.currentThread().getId());
+        builder.append(")");
+        builder.append(": ");
+        builder.append(getLogString(logs));
 
-        File logsDirectory = new File(logsPath);
-        if (logsDirectory.exists()) {
-            String[] fileList = logsDirectory.list();
-            if (fileList != null && fileList.length != 0) {
-                for (String file : fileList) {
-                    if (file.contains(".log")) {
-                        logFiles.add(file);
-                    }
-                }
-            }
-        }
-        return logFiles;
+        return builder.toString();
+
     }
 
+//    /**
+//     * Get list of file logs
+//     *
+//     * @param logsPath Path to the logs folder
+//     * @return List of logs files
+//     */
+//    public ArrayList<String> getListLogFiles(String logsPath) {
+//        if (logsPath == null || logsPath.isEmpty()) {
+//            return null;
+//        }
+//
+//        ArrayList<String> logFiles = new ArrayList<>();
+//
+//        File logsDirectory = new File(logsPath);
+//        if (logsDirectory.exists()) {
+//            String[] fileList = logsDirectory.list();
+//            if (fileList != null && fileList.length != 0) {
+//                for (String file : fileList) {
+//                    if (file.contains(".log")) {
+//                        logFiles.add(file);
+//                    }
+//                }
+//            }
+//        }
+//        return logFiles;
+//    }
 
     public void setLogFileSize(int LOG_FILE_SIZE) {
         this.mLogFileSize = LOG_FILE_SIZE;
@@ -256,18 +294,30 @@ public class LogFileAppender implements ILogAppender {
         this.mNumberOfLogFiles = NUMBER_OF_LOG_FILES;
     }
 
-    public String getFileLogPath(Context context){
+    public int getLogFileSize() {
+        return mLogFileSize;
+    }
+
+    public int getNumberOfLogFiles() {
+        return mNumberOfLogFiles;
+    }
+
+    public String getFileLogPath(Context context) {
         return AndroidUtils.getFileDirPath(context, File.separator + LOG_FILE_NAME);
     }
 
     @Override
-    public int getMinLogLevel() {
+    public LOG.PRIORITY getMinLogLevel() {
         return mMinLogLevel;
     }
 
     @Override
     public void setMinLogLevel(LOG.PRIORITY minLogLevel) {
-        mMinLogLevel = minLogLevel.ordinal();
+        mMinLogLevel = minLogLevel;
+    }
+
+    public boolean canWriteToFile() {
+        return mCanWriteToFile && mFileHandler != null;
     }
 
     @Override

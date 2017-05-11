@@ -22,7 +22,7 @@ public class LogAppenderUtilsUnitTests {
 
     @Test
     public void testGetLogStringNull() {
-        assertEquals("", LogAppenderUtils.getLogString(null));
+        assertEquals("", LogAppenderUtils.getLogString(new String[0]));
     }
 
     @Test
