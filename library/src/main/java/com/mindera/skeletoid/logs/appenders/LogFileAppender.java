@@ -187,7 +187,7 @@ public class LogFileAppender implements ILogAppender {
 
     @Override
     public void log(final LOG.PRIORITY type, final Throwable t, final String... logs) {
-        if (type.ordinal() > mMinLogLevel.ordinal()) {
+        if (type.ordinal() < mMinLogLevel.ordinal()) {
             return;
         }
 

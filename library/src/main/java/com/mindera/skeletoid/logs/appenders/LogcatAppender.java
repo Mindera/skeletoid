@@ -61,7 +61,7 @@ public class LogcatAppender implements ILogAppender {
 
     @Override
     public void log(LOG.PRIORITY type, Throwable t, String... log) {
-        if (type.ordinal() > mMinLogLevel.ordinal()) {
+        if (type.ordinal() < mMinLogLevel.ordinal()) {
             return;
         }
         final String logString = getLogString(log);
