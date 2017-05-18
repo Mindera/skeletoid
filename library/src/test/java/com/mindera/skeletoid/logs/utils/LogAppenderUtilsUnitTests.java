@@ -59,7 +59,7 @@ public class LogAppenderUtilsUnitTests {
 
     @Test
     public void testGetObjectHash() {
-        assertEquals("[OID#" + this.hashCode() + "] ", LogAppenderUtils.getObjectHash(this));
+        assertEquals("[LogAppenderUtilsUnitTests#" + this.hashCode() + "] ", LogAppenderUtils.getObjectHash(this));
     }
 
     @Test
