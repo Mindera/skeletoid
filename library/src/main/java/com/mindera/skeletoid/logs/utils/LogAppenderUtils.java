@@ -94,7 +94,7 @@ public class LogAppenderUtils {
         } else {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("[");
-            stringBuilder.append(object.getClass().getCanonicalName());
+            stringBuilder.append(object.getClass().getSimpleName());
             stringBuilder.append("#");
             stringBuilder.append(object.hashCode());
             stringBuilder.append("] ");
