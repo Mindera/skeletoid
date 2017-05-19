@@ -1,6 +1,5 @@
 package com.mindera.skeletoid.logs.utils;
 
-
 import android.support.annotation.VisibleForTesting;
 
 /**
@@ -32,14 +31,14 @@ public class LogAppenderUtils {
         return strBuilder.toString();
     }
 
-
     /**
      * Get class name with ClassName pre appended.
      *
      * @param clazz Class to get the tag from
      * @return Tag string
      */
-    public static String getTag(Class clazz, boolean usePackageName, String packageName, boolean methodName) {
+    public static String getTag(Class clazz, boolean usePackageName, String packageName,
+            boolean methodName) {
         final StringBuilder stringBuilder = new StringBuilder();
         if (usePackageName) {
             stringBuilder.append(packageName);
@@ -49,7 +48,8 @@ public class LogAppenderUtils {
         stringBuilder.append(clazz.getCanonicalName());
 
         if (methodName) {
-            stringBuilder.append("." + getMethodName(clazz));
+            stringBuilder.append(".");
+            stringBuilder.append(getMethodName(clazz));
         }
 
         return stringBuilder.toString();
@@ -92,7 +92,14 @@ public class LogAppenderUtils {
         if (object == null) {
             hashCodeString = "[!!!NULL INSTANCE!!!] ";
         } else {
-            hashCodeString = "[OID#" + object.hashCode() + "] ";
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("[");
+            stringBuilder.append(object.getClass().getSimpleName());
+            stringBuilder.append("#");
+            stringBuilder.append(object.hashCode());
+            stringBuilder.append("] ");
+
+            hashCodeString = stringBuilder.toString();
         }
 
         return hashCodeString;
