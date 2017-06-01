@@ -1,11 +1,11 @@
 package com.mindera.skeletoid.logs.appenders;
 
-import android.content.Context;
-import android.util.Log;
-
 import com.mindera.skeletoid.generic.AndroidUtils;
 import com.mindera.skeletoid.logs.LOG;
 import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils;
+
+import android.content.Context;
+import android.util.Log;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -44,9 +44,10 @@ public class LogFileAppender implements ILogAppender {
      */
     private int mNumberOfLogFiles = 1;
     /**
-     * Whether or not logging to file is possible (don't change value! This is controlled automatically)
+     * Whether or not logging to file is possible (don't change value! This is controlled
+     * automatically)
      */
-    private boolean mCanWriteToFile = false;
+    private volatile boolean mCanWriteToFile = false;
     /**
      * FileHandler logger: To write to file *
      */
@@ -132,31 +133,34 @@ public class LogFileAppender implements ILogAppender {
     }
 
     @Override
-    public void enableAppender(Context context) {
+    public void enableAppender(final Context context) {
         final int MBYTE_IN_BYTES = 1024 * 1024;
 
-        try {
-            mFileHandler = new FileHandler(getFileLogPath(context), mLogFileSize * MBYTE_IN_BYTES, mNumberOfLogFiles, true);
-            mFileHandler.setFormatter(new SimpleFormatter());
-            mFileHandler.setFormatter(new Formatter() {
-                @Override
-                public String format(LogRecord logRecord) {
-                    return logRecord.getMessage() + "\n";
+        mFileLoggingTP = ThreadPoolUtils.getFixedThreadPool("LogToFileTP", 1);
+
+        mFileLoggingTP.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mFileHandler = new FileHandler(getFileLogPath(context),
+                            mLogFileSize * MBYTE_IN_BYTES, mNumberOfLogFiles, true);
+                    mFileHandler.setFormatter(new SimpleFormatter());
+                    mFileHandler.setFormatter(new Formatter() {
+                        @Override
+                        public String format(LogRecord logRecord) {
+                            return logRecord.getMessage() + "\n";
+                        }
+                    });
+
+                    mCanWriteToFile = true;
+
+                } catch (Throwable e) {
+                    mCanWriteToFile = false;
+                    LOG.e(LOG_TAG, e, "Logging to file startup error");
                 }
-            });
+            }
+        });
 
-            // Always set mCanWriteToFile to true before mLogConfiguration.logToFile() being true to avoid concurrency problems (or at
-            // the same time)
-            mCanWriteToFile = true;
-
-            mFileLoggingTP = ThreadPoolUtils.getFixedThreadPool("LogToFileTP", 1);
-
-        } catch (Throwable e) {
-            Log.e(LOG_TAG, "Logging to file startup error", e);
-            // Always set mLogConfiguration.logToFile() to false before mCanWriteToFile being false to avoid concurrency problems (or
-            // at the same time)
-            mCanWriteToFile = false;
-        }
     }
 
     @Override
@@ -167,8 +171,6 @@ public class LogFileAppender implements ILogAppender {
             mFileHandler = null;
         }
 
-        // Always set mLogConfiguration.logToFile() to false before mCanWriteToFile being false to avoid concurrency problems (or at
-        // the same time)
         mCanWriteToFile = false;
 
         if (mFileLoggingTP != null) {
@@ -191,49 +193,41 @@ public class LogFileAppender implements ILogAppender {
             return;
         }
 
-        if (mCanWriteToFile) {
+        if (!mCanWriteToFile) {
+            Log.e(LOG_TAG, "Cannot write to file");
+            return;
+        }
 
-            if (mFileLoggingTP != null
-                    && !mFileLoggingTP.isTerminating()
-                    && !mFileLoggingTP.isTerminated()
-                    && !mFileLoggingTP.isShutdown()) {
+        if (!isThreadPoolRunning()) {
+            mCanWriteToFile = false;
+            LOG.e(LOG_TAG, "Error on submitToFileLoggingQueue: mFileLoggingTP is not available");
+        }
 
-                mFileLoggingTP.submit(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mFileHandler != null) {
-                            Level level = getFileHandlerLevel(type);
+        mFileLoggingTP.submit(new Runnable() {
+            @Override
+            public void run() {
+                if (mFileHandler != null) {
+                    Level level = getFileHandlerLevel(type);
 
-                            try {
-                                String logText = formatLog(type, t, logs);
+                    try {
+                        String logText = formatLog(type, t, logs);
 
-                                LogRecord logRecord = new LogRecord(level, logText);
-                                if (t != null) {
-                                    logRecord.setThrown(t);
-                                }
-
-                                mFileHandler.publish(logRecord);
-
-                            } catch (Exception e) {
-                                Log.e(TAG, "Something is wrong", e);
-                            }
+                        LogRecord logRecord = new LogRecord(level, logText);
+                        if (t != null) {
+                            logRecord.setThrown(t);
                         }
+
+                        mFileHandler.publish(logRecord);
+
+                    } catch (Exception e) {
+                        Log.e(TAG, "Something is wrong", e);
                     }
-
-                });
-
-            } else {
-                //Fail directly to Android Log to avoid Stackoverflow
-                Log.e(LOG_TAG, "Error on submitToFileLoggingQueue: mFileLoggingTP is not available");
-                //LOG.e(LOG_TAG, "Error on submitToFileLoggingQueue: mFileLoggingTP is not available");
+                }
             }
 
-        } else {
-            mCanWriteToFile = false;
-            //Fail directly to Android Log to avoid Stackoverflow
-            Log.e(LOG_TAG, "Error on submitToFileLoggingQueue: Can't write to disk");
-            //LOG.e(LOG_TAG, "Error on submitToFileLoggingQueue: Can't write to disk");
-        }
+        });
+
+
     }
 
     /**
@@ -325,4 +319,10 @@ public class LogFileAppender implements ILogAppender {
         return LOG_ID;
     }
 
+    public boolean isThreadPoolRunning() {
+        return mFileLoggingTP != null
+                && !mFileLoggingTP.isTerminating()
+                && !mFileLoggingTP.isTerminated()
+                && !mFileLoggingTP.isShutdown();
+    }
 }
