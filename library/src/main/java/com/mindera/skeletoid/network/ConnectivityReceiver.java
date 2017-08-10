@@ -63,10 +63,6 @@ public class ConnectivityReceiver extends BroadcastReceiver {
         void connectivityUpdate(boolean isConnectedToANetwork, boolean networkHasInternetAccess, boolean isNetworkWiFi);
     }
 
-    ConnectivityReceiver() {
-        super();
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
 
