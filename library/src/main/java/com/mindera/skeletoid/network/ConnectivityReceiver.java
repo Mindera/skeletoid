@@ -75,7 +75,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
         // This variable can change from true to false in background via validateInternetStatus()
         // Use case: You have connection, but no internet
         isInternetAvailable = false;
-        isInWiFi = networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+        isInWiFi = networkInfo != null ? networkInfo.getType() == ConnectivityManager.TYPE_WIFI : false;
 
         if (mPreviousReachableState == null || mPreviousReachableState != isReachable) {
 
