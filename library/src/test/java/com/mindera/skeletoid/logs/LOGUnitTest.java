@@ -1,12 +1,12 @@
 package com.mindera.skeletoid.logs;
 
-import android.content.Context;
-
 import com.mindera.skeletoid.logs.appenders.ILogAppender;
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils;
 
 import org.junit.After;
 import org.junit.Test;
+
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,7 @@ import java.util.List;
 import static com.mindera.skeletoid.logs.LoggerManager.LOG_FORMAT_4ARGS;
 import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getObjectHash;
 import static com.mindera.skeletoid.threads.utils.ThreadUtils.getCurrentThreadName;
+import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -83,6 +84,7 @@ public class LOGUnitTest {
         verify(appenderA, times(1)).enableAppender(context);
         verify(appenderB, times(1)).enableAppender(context);
         verify(appenderC, times(1)).enableAppender(context);
+        assertTrue(LOG.isInitialized());
     }
 
     @Test
@@ -364,6 +366,58 @@ public class LOGUnitTest {
         verify(appenderA, times(1)).log(LOG.PRIORITY.INFO, e, log);
         verify(appenderB, times(1)).log(LOG.PRIORITY.INFO, e, log);
         verify(appenderC, times(1)).log(LOG.PRIORITY.INFO, e, log);
+    }
+
+
+    @Test
+    public void testVerboseWithExceptionLog() {
+        Context context = mock(Context.class);
+
+        List<ILogAppender> appenders = new ArrayList<>();
+
+        ILogAppender appenderA = mockAppender("A");
+        ILogAppender appenderB = mockAppender("B");
+        ILogAppender appenderC = mockAppender("C");
+
+        appenders.add(appenderA);
+        appenders.add(appenderB);
+        appenders.add(appenderC);
+
+        LOG.init(context, mPackageName, appenders);
+
+        Exception e = new Exception();
+        LOG.v(TAG, e, TEXT);
+        //This is ugly.. but I don't see another way.
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+
+        verify(appenderA, times(1)).log(LOG.PRIORITY.VERBOSE, e, log);
+        verify(appenderB, times(1)).log(LOG.PRIORITY.VERBOSE, e, log);
+        verify(appenderC, times(1)).log(LOG.PRIORITY.VERBOSE, e, log);
+    }
+
+    @Test
+    public void testVerboseLog() {
+        Context context = mock(Context.class);
+
+        List<ILogAppender> appenders = new ArrayList<>();
+
+        ILogAppender appenderA = mockAppender("A");
+        ILogAppender appenderB = mockAppender("B");
+        ILogAppender appenderC = mockAppender("C");
+
+        appenders.add(appenderA);
+        appenders.add(appenderB);
+        appenders.add(appenderC);
+
+        LOG.init(context, mPackageName, appenders);
+
+        LOG.v(TAG, TEXT);
+        //This is ugly.. but I don't see another way.
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+
+        verify(appenderA, times(1)).log(LOG.PRIORITY.VERBOSE, null, log);
+        verify(appenderB, times(1)).log(LOG.PRIORITY.VERBOSE, null, log);
+        verify(appenderC, times(1)).log(LOG.PRIORITY.VERBOSE, null, log);
     }
 
     private ILogAppender mockAppender(String loggerId) {

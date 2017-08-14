@@ -1,11 +1,14 @@
 package com.mindera.skeletoid.network;
 
-
 import org.junit.Test;
+
+import android.content.Context;
+import android.net.NetworkInfo;
 
 import java.net.URI;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 
 public class ConnectivityUnitTests {
@@ -27,10 +30,22 @@ public class ConnectivityUnitTests {
 
     }
 
+    @Test
+    public void testIsConnected() {
+        Context context  = mock(Context.class);
+        assertFalse(Connectivity.isConnected(context));
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testIsConnectedToWIFIWithNullArguments() {
         Connectivity.isConnectedToWIFI(null);
 
+    }
+
+    @Test
+    public void testIsConnectedToWIFI() {
+        Context context  = mock(Context.class);
+        assertFalse(Connectivity.isConnectedToWIFI(context));
     }
 
     @Test

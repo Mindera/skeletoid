@@ -38,6 +38,7 @@ public class ScheduledThreadPoolExecutor extends java.util.concurrent.ScheduledT
                 t = e.getCause();
             }
         }
+
         if (t != null)
             LOG.e(LOG_TAG, t, "Uncaught exception on ThreadPool");
     }

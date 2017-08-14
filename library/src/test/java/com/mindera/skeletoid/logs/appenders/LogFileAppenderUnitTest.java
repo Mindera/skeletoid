@@ -4,9 +4,12 @@ import com.mindera.skeletoid.logs.LOG;
 
 import org.junit.Test;
 
+import android.content.Context;
+
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class LogFileAppenderUnitTest {
 
@@ -64,16 +67,16 @@ public class LogFileAppenderUnitTest {
         assertEquals("LogFileAppender", appender.getLoggerId());
     }
 
-//    @Test
-//    public void testEnableAppender() {
-//        Context context = mock(Context.class);
-//
-//        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
-//
-//        appender.enableAppender(context);
-//
-//        assertTrue(appender.canWriteToFile());
-//    }
+    @Test
+    public void testEnableAppender() {
+        Context context = mock(Context.class);
+
+        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
+
+        appender.enableAppender(context);
+
+        assertFalse(appender.canWriteToFile());
+    }
 
 
     @Test
@@ -84,7 +87,6 @@ public class LogFileAppenderUnitTest {
         assertFalse(appender.canWriteToFile());
 
     }
-
 
 //    @Test
 //    public void testFormatLog() {

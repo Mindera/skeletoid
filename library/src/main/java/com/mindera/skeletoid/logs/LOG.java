@@ -1,8 +1,8 @@
 package com.mindera.skeletoid.logs;
 
-import android.content.Context;
-
 import com.mindera.skeletoid.logs.appenders.ILogAppender;
+
+import android.content.Context;
 
 import java.util.List;
 import java.util.Set;
@@ -18,7 +18,7 @@ public class LOG {
         VERBOSE, DEBUG, INFO, ERROR, WARN, FATAL
     }
 
-    private static final String LOGGER = "LOG";
+//    private static final String LOGGER = "LOG";
 
     private static volatile ILoggerManager mInstance;
 

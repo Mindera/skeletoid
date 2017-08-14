@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class Analytics {
 
-    private static final String TAG = "Analytics";
+//    private static final String TAG = "Analytics";
 
     private static volatile IAnalyticsManager mInstance;
 

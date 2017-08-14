@@ -7,6 +7,7 @@ import android.content.Context;
 import java.io.File;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -37,5 +38,11 @@ public class AndroidUtilsUnitTests {
         when(file.getPath()).thenReturn("com.mindera.skeletoid");
 
         assertEquals("com.mindera.skeletoid/dir", AndroidUtils.getFileDirPath(context, "/dir"));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testDeviceName() {
+
+        assertNotNull(AndroidUtils.getDeviceName());
     }
 }

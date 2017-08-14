@@ -75,10 +75,4 @@ public class ShareLogFilesUtilsUnitTests {
         assertNotNull(titleArgument.getValue());
 //        assertEquals("intentChooserTitle", titleArgument.getValue());
     }
-
-    @Test
-    public void testSendLogsMultiple() {
-
-    }
-
 }
