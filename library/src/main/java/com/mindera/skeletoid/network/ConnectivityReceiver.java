@@ -34,7 +34,8 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
     private static final String LOG_TAG = "ConnectivityReceiver";
 
-    private static ThreadPoolExecutor threadPool = ThreadPoolUtils.getFixedThreadPool("Connectivity Worker", 1);
+    private static ThreadPoolExecutor threadPool = ThreadPoolUtils
+            .getFixedThreadPool("Connectivity Worker", 1);
 
     /**
      * Var to control if the network was reachable before
@@ -60,7 +61,8 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
     public interface ConnectivityCallback {
 
-        void connectivityUpdate(boolean isConnectedToANetwork, boolean networkHasInternetAccess, boolean isNetworkWiFi);
+        void connectivityUpdate(boolean isConnectedToANetwork, boolean networkHasInternetAccess,
+                boolean isNetworkWiFi);
     }
 
     @Override
@@ -68,14 +70,19 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
         final ConnectivityManager connMgr = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
-        final NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        NetworkInfo networkInfo = null;
+        if (connMgr != null) {
+            networkInfo = connMgr.getActiveNetworkInfo();
+        }
 
         boolean isReachable = networkInfo != null && networkInfo.isConnected();
 
         // This variable can change from true to false in background via validateInternetStatus()
         // Use case: You have connection, but no internet
         isInternetAvailable = false;
-        isInWiFi = networkInfo != null ? networkInfo.getType() == ConnectivityManager.TYPE_WIFI : false;
+        isInWiFi = networkInfo != null ? networkInfo.getType() == ConnectivityManager.TYPE_WIFI
+                : false;
 
         if (mPreviousReachableState == null || mPreviousReachableState != isReachable) {
 
@@ -98,7 +105,8 @@ public class ConnectivityReceiver extends BroadcastReceiver {
      */
     private static void notifyConnectionStatus() {
         if (mConnectivityCallback != null) {
-            mConnectivityCallback.connectivityUpdate(mPreviousReachableState, isInternetAvailable, isInWiFi);
+            mConnectivityCallback
+                    .connectivityUpdate(mPreviousReachableState, isInternetAvailable, isInWiFi);
         }
     }
 
@@ -125,7 +133,8 @@ public class ConnectivityReceiver extends BroadcastReceiver {
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                         conn.setReadTimeout(mInternetValidationTimeout);
                         isInternetAvailable =
-                                conn.getResponseCode() == HTTP_200 || conn.getResponseCode() == HTTP_201;
+                                conn.getResponseCode() == HTTP_200
+                                        || conn.getResponseCode() == HTTP_201;
 
                         LOG.v(LOG_TAG, "Response code -> " + conn.getResponseCode());
 

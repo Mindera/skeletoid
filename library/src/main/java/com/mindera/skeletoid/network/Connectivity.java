@@ -1,11 +1,11 @@
 package com.mindera.skeletoid.network;
 
+import com.mindera.skeletoid.generic.StringUtils;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.VisibleForTesting;
-
-import com.mindera.skeletoid.generic.StringUtils;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -16,7 +16,6 @@ import java.net.URI;
 public class Connectivity {
 
 //    private static final String LOG_TAG = "Connectivity";
-
 
     @VisibleForTesting
     Connectivity() {
@@ -50,6 +49,11 @@ public class Connectivity {
         }
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
                 Context.CONNECTIVITY_SERVICE);
+
+        if (cm == null) {
+            return false;
+        }
+
         NetworkInfo ni = cm.getActiveNetworkInfo();
         return ni != null;
     }
@@ -66,16 +70,20 @@ public class Connectivity {
         }
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
                 Context.CONNECTIVITY_SERVICE);
+
+        if (cm == null) {
+            return false;
+        }
+
         NetworkInfo ni = cm.getActiveNetworkInfo();
         return ni != null && ni.getType() == ConnectivityManager.TYPE_WIFI;
     }
 
     /**
      * Add a callback to receive connectivity updates
-     *
-     * @param connectivityCallback
      */
-    public static void setConnectivityCallback(ConnectivityReceiver.ConnectivityCallback connectivityCallback) {
+    public static void setConnectivityCallback(
+            ConnectivityReceiver.ConnectivityCallback connectivityCallback) {
         ConnectivityReceiver.mConnectivityCallback = connectivityCallback;
     }
 
@@ -97,8 +105,10 @@ public class Connectivity {
             //Validate URL
             String host = uri.getHost();
             ConnectivityReceiver.mInternetAddress = "http://" + host;
-            ConnectivityReceiver.mInternetHttpValidationAddress = "http://" + host.substring(0, StringUtils.ordinalIndexOf(host, ".", 2));
-            ConnectivityReceiver.mInternetHttpsValidationAddress = "https://" + host.substring(0, StringUtils.ordinalIndexOf(host, ".", 2));
+            ConnectivityReceiver.mInternetHttpValidationAddress = "http://" + host
+                    .substring(0, StringUtils.ordinalIndexOf(host, ".", 2));
+            ConnectivityReceiver.mInternetHttpsValidationAddress = "https://" + host
+                    .substring(0, StringUtils.ordinalIndexOf(host, ".", 2));
         } catch (Exception e) {
             throw new IllegalArgumentException("URI is invalid");
         }

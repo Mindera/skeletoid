@@ -51,7 +51,8 @@ public class ShareLogFilesUtils {
      * @param subjectTitle       Subject title (for email)
      * @param bodyText           Body text
      */
-    public static void sendLogs(Activity activity, String intentChooserTitle, String subjectTitle, String bodyText) {
+    public static void sendLogs(Activity activity, String intentChooserTitle, String subjectTitle,
+            String bodyText) {
         File file = new File(getFileLogPath(activity.getApplicationContext()));
 
         final Uri uri = FileProvider.getUriForFile(activity, activity.getPackageName(), file);
@@ -59,13 +60,16 @@ public class ShareLogFilesUtils {
         uris.add(uri);
 
         final Intent intent;
-        if (uris.size() == 1) {
-            intent = new Intent(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_STREAM, uris.get(0));
-        } else {
-            intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-        }
+
+        //TODO Currently this only supports 1 file. The code commented would support multiple.
+//        if (uris.size() == 1) {
+        intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_STREAM, uris.get(0));
+//        }
+//        else {
+//            intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+//            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+//        }
 //        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{""});
         intent.putExtra(Intent.EXTRA_SUBJECT, subjectTitle);
 

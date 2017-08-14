@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
 
 public class NamedThreadFactoryUnitTest {
 
@@ -13,6 +14,16 @@ public class NamedThreadFactoryUnitTest {
 
         assertNotNull(namedThreadFactory.getThreads());
         assertEquals(0, namedThreadFactory.getThreads().size());
+    }
+
+    @Test
+    public void testNewThreads() {
+        Runnable runnable = mock(Runnable.class);
+        NamedThreadFactory namedThreadFactory = new NamedThreadFactory("name", 10);
+        Thread thread = namedThreadFactory.newThread(runnable);
+
+        assertNotNull(thread);
+        assertEquals(1, namedThreadFactory.getThreads().size());
     }
 
     @Test

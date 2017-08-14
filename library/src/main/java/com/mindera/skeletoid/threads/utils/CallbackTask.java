@@ -5,15 +5,6 @@ package com.mindera.skeletoid.threads.utils;
  */
 public class CallbackTask implements Runnable {
 
-
-    /**
-     * Interface to receive callback when the runnable finishes
-     */
-    public interface ICallbackTask {
-
-        void taskComplete();
-    }
-
     /**
      * The "real" runnable
      */
@@ -22,6 +13,14 @@ public class CallbackTask implements Runnable {
      * The callback reference
      */
     private final ICallbackTask callback;
+
+    /**
+     * Interface to receive callback when the runnable finishes
+     */
+    public interface ICallbackTask {
+
+        void taskComplete();
+    }
 
     /**
      * Constructor

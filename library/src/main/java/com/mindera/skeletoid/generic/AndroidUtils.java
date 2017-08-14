@@ -118,20 +118,18 @@ public class AndroidUtils {
      */
     public static String getApplicationVersionName(Context context) {
 
-        if (mAppVersionName == null) {
-            if (context != null) {
+        if (mAppVersionName == null && context != null) {
 
-                PackageInfo info = null;
-                try {
-                    info = context.getPackageManager().getPackageInfo(context.getPackageName(),
-                            PackageManager.GET_META_DATA);
-                } catch (PackageManager.NameNotFoundException e) {
-                    //This has Log instead of LOG in purpose to avoid infinite loops on error cases of logger startup
-                    Log.e(AndroidUtils.class.getSimpleName(), "getApplicationVersionName", e);
-                }
-
-                mAppVersionName = info.versionName;
+            PackageInfo info = null;
+            try {
+                info = context.getPackageManager().getPackageInfo(context.getPackageName(),
+                        PackageManager.GET_META_DATA);
+            } catch (PackageManager.NameNotFoundException e) {
+                //This has Log instead of LOG in purpose to avoid infinite loops on error cases of logger startup
+                Log.e(AndroidUtils.class.getSimpleName(), "getApplicationVersionName", e);
             }
+
+            mAppVersionName = info.versionName;
         }
 
         return mAppVersionName;
@@ -146,22 +144,18 @@ public class AndroidUtils {
      */
     public static int getApplicationVersionCode(Context context) {
 
-        if (mAppVersionCode < 0) {
+        if (mAppVersionCode < 0 && context != null) {
 
-            if (context != null) {
+            try {
+                PackageInfo info = context.getPackageManager()
+                        .getPackageInfo(context.getPackageName(),
+                                PackageManager.GET_META_DATA);
 
-                try {
-                    PackageInfo info = context.getPackageManager()
-                            .getPackageInfo(context.getPackageName(),
-                                    PackageManager.GET_META_DATA);
+                mAppVersionCode = info.versionCode;
 
-                    mAppVersionCode = info.versionCode;
-
-                } catch (NameNotFoundException e) {
-                    //This has Log instead of LOG in purpose to avoid infinite loops on error cases of logger startup
-                    Log.e(AndroidUtils.class.getSimpleName(), "getApplicationVersionCode", e);
-                }
-
+            } catch (NameNotFoundException e) {
+                //This has Log instead of LOG in purpose to avoid infinite loops on error cases of logger startup
+                Log.e(AndroidUtils.class.getSimpleName(), "getApplicationVersionCode", e);
             }
         }
 
@@ -176,23 +170,21 @@ public class AndroidUtils {
      */
     public static String getApplicationPackage(Context context) {
 
-        if (mAppPackage == null) {
+        if (mAppPackage == null && context != null) {
 
-            if (context != null) {
-                mAppPackage = context.getApplicationContext().getPackageName();
+            mAppPackage = context.getApplicationContext().getPackageName();
 
-                if (mAppPackage != null) {
-                    try {
-                        PackageInfo info = context.getPackageManager()
-                                .getPackageInfo(context.getPackageName(),
-                                        PackageManager.GET_META_DATA);
+            if (mAppPackage != null) {
+                try {
+                    PackageInfo info = context.getPackageManager()
+                            .getPackageInfo(context.getPackageName(),
+                                    PackageManager.GET_META_DATA);
 
-                        mAppPackage = info.packageName;
+                    mAppPackage = info.packageName;
 
-                    } catch (Exception e) {
-                        //This has Log instead of LOG in purpose to avoid infinite loops on error cases of logger startup
-                        Log.e(AndroidUtils.class.getSimpleName(), "getApplicationPackage", e);
-                    }
+                } catch (Exception e) {
+                    //This has Log instead of LOG in purpose to avoid infinite loops on error cases of logger startup
+                    Log.e(AndroidUtils.class.getSimpleName(), "getApplicationPackage", e);
                 }
             }
         }
@@ -265,8 +257,9 @@ public class AndroidUtils {
 
     /**
      * Get File directory path
+     *
      * @param context Context
-     * @param path path inside directory path
+     * @param path    path inside directory path
      * @return Path needed
      */
     public static String getFileDirPath(Context context, String path) {
@@ -275,8 +268,9 @@ public class AndroidUtils {
 
     /**
      * Get Cache directory path
+     *
      * @param context Context
-     * @param path path inside cache path
+     * @param path    path inside cache path
      * @return Path needed
      */
     public static String getCacheDirPath(Context context, String path) {

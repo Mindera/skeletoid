@@ -4,10 +4,15 @@ import com.mindera.skeletoid.logs.LOG;
 
 import org.junit.Test;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class LogcatAppenderUnitTest {
 
@@ -26,26 +31,24 @@ public class LogcatAppenderUnitTest {
         assertEquals("LogcatAppender", logcatAppender.getLoggerId());
     }
 
-//    @Test
-//    public void testEnableAppender() {
-//        Context context = mock(Context.class);
-//
-//        LogcatAppender logcatAppender = new LogcatAppender(mPackageName);
-//        logcatAppender.enableAppender(context);
-//
-//        verify(logcatAppender, times(1)).enableAppender(context);
-//    }
-//
-//
-//    @Test
-//    public void testDisableAppender() {
-//        Context context = mock(Context.class);
-//
-//        LogcatAppender logcatAppender = new LogcatAppender(mPackageName);
-//        logcatAppender.disableAppender();
-//
-//        verify(logcatAppender, times(1)).disableAppender();
-//    }
+    @Test
+    public void testEnableAppender() {
+        Context context = mock(Context.class);
+
+        LogcatAppender logcatAppender = mock(LogcatAppender.class);
+        logcatAppender.enableAppender(context);
+
+        verify(logcatAppender, times(1)).enableAppender(context);
+    }
+
+
+    @Test
+    public void testDisableAppender() {
+        LogcatAppender logcatAppender = mock(LogcatAppender.class);
+        logcatAppender.disableAppender();
+
+        verify(logcatAppender, times(1)).disableAppender();
+    }
 
 
     @Test
@@ -53,6 +56,9 @@ public class LogcatAppenderUnitTest {
         LogcatAppender logcatAppender = new LogcatAppender(mPackageName);
 
         List<String> logs = new ArrayList();
+
+        assertEquals(logs, logcatAppender.formatLog(null));
+
         logs.add("abc");
 
         assertEquals(logs, logcatAppender.formatLog("abc"));
