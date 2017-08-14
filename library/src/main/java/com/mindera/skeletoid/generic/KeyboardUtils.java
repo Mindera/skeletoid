@@ -12,6 +12,10 @@ public class KeyboardUtils {
      * Using for example getActivity() from a Fragment WON'T work.
      */
     public static void hideKeyboard(Activity activity) {
+        if(activity == null){
+            throw new IllegalArgumentException("Activity cannot be null");
+        }
+
         InputMethodManager imm = (InputMethodManager) activity
                 .getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.
@@ -30,6 +34,14 @@ public class KeyboardUtils {
      * @param view    A view
      */
     public static void hideKeyboardFrom(Context context, View view) {
+        if(context == null){
+            throw new IllegalArgumentException("Context cannot be null");
+        }
+
+        if(view == null){
+            throw new IllegalArgumentException("View cannot be null");
+        }
+
         InputMethodManager imm = (InputMethodManager) context
                 .getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
