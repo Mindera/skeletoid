@@ -3,7 +3,6 @@ package com.mindera.skeletoid.network;
 import org.junit.Test;
 
 import android.content.Context;
-import android.net.NetworkInfo;
 
 import java.net.URI;
 

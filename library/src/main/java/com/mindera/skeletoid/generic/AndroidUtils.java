@@ -4,7 +4,6 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.support.annotation.VisibleForTesting;
 import android.telephony.TelephonyManager;
@@ -17,6 +16,7 @@ import android.view.WindowManager;
  */
 public class AndroidUtils {
 
+    protected static final String APP_NAME = "App";
     /**
      * Cached device name
      */
@@ -30,12 +30,12 @@ public class AndroidUtils {
     /**
      * Cached app version code
      */
-    private static int mAppVersionCode = -1;
+    protected static int mAppVersionCode = -1;
 
     /**
      * Cached app package
      */
-    private static String mAppPackage = null;
+    protected static String mAppPackage = null;
 
     @VisibleForTesting
     AndroidUtils() {
@@ -96,6 +96,10 @@ public class AndroidUtils {
     public static String getDeviceResolution(Context context) {
 
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        if (wm == null) {
+            return null;
+        }
+
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
         float density = context.getResources().getDisplayMetrics().densityDpi;
@@ -153,7 +157,7 @@ public class AndroidUtils {
 
                 mAppVersionCode = info.versionCode;
 
-            } catch (NameNotFoundException e) {
+            } catch (Exception e) {
                 //This has Log instead of LOG in purpose to avoid infinite loops on error cases of logger startup
                 Log.e(AndroidUtils.class.getSimpleName(), "getApplicationVersionCode", e);
             }
@@ -200,8 +204,21 @@ public class AndroidUtils {
      * @return true if it is, false if not.
      */
     public static boolean isServiceRunning(Context context, Class<?> serviceClass) {
+        if(context == null){
+            throw new IllegalArgumentException("Context cannot be null");
+        }
+
+        if(serviceClass == null){
+            throw new IllegalArgumentException("Class cannot be null");
+        }
+
         ActivityManager manager = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
+
+        if(manager == null){
+            return false;
+        }
+
         for (ActivityManager.RunningServiceInfo service : manager
                 .getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
@@ -220,7 +237,7 @@ public class AndroidUtils {
      */
     public static String getApplicationName(Context context) {
 
-        String label = "App";
+        String label = APP_NAME;
         try {
             int stringId = context.getApplicationInfo().labelRes;
             label = context.getString(stringId);
@@ -237,6 +254,10 @@ public class AndroidUtils {
      * @return true if it is, false if not
      */
     public static boolean checkIfPackageIsInstalled(Context context, String targetPackage) {
+        if(context == null){
+            throw new IllegalArgumentException("Context cannot be null");
+        }
+
         PackageManager pm = context.getPackageManager();
         try {
             pm.getPackageInfo(targetPackage, PackageManager.GET_META_DATA);
@@ -249,10 +270,14 @@ public class AndroidUtils {
     }
 
     public static boolean isPhoneAvailable(Context context) {
+        if(context == null){
+            throw new IllegalArgumentException("Context cannot be null");
+        }
+
         TelephonyManager telephonyManager = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
 
-        return telephonyManager.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE;
+        return telephonyManager != null && telephonyManager.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE;
     }
 
     /**

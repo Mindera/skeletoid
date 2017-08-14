@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.concurrent.TimeUnit;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 public class ThreadPoolExecutorUnitTest {
@@ -29,5 +30,25 @@ public class ThreadPoolExecutorUnitTest {
         assertEquals(MAX_POOL_SIZE, mThreadPoolExecutor.getMaximumPoolSize());
         assertEquals(KEEP_ALIVE, mThreadPoolExecutor.getKeepAliveTime(TIME_UNIT));
         assertEquals(THREAD_FACTORY, mThreadPoolExecutor.getThreadFactory());
+    }
+
+
+    @Test
+    public void testThreadPoolInitialization() {
+        assertEquals(CORE_POOL_SIZE, mThreadPoolExecutor.getCorePoolSize());
+    }
+
+
+    @Test
+    public void testShutdownThreadPool() {
+        mThreadPoolExecutor.shutdown();
+        assertTrue(mThreadPoolExecutor.isShutdown());
+    }
+
+
+    @Test
+    public void testShutdownNowThreadPool() {
+        mThreadPoolExecutor.shutdownNow();
+        assertTrue(mThreadPoolExecutor.isShutdown());
     }
 }
