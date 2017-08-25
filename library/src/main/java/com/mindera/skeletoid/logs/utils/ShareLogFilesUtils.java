@@ -81,7 +81,7 @@ public class ShareLogFilesUtils {
         intent.putExtra(Intent.EXTRA_SUBJECT, subjectTitle);
 
         // Add emails to show on to: field
-        if (emails != null || emails.length > 0) {
+        if (emails != null && emails.length > 0) {
             intent.putExtra(Intent.EXTRA_EMAIL, emails);
         }
 
