@@ -94,6 +94,8 @@ public class ShareLogFilesUtils {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.putExtra(Intent.EXTRA_STREAM, uri);
             intent.setType(activity.getContentResolver().getType(uri));
+        } else {
+            intent.setType("text/plain");
         }
         activity.startActivity(Intent.createChooser(intent, intentChooserTitle));
     }
