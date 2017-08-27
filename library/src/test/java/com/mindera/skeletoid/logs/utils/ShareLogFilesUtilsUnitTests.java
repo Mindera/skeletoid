@@ -64,7 +64,7 @@ public class ShareLogFilesUtilsUnitTests {
         ArgumentCaptor<Intent> intentArgument = ArgumentCaptor.forClass(Intent.class);
         ArgumentCaptor<String> titleArgument = ArgumentCaptor.forClass(String.class);
 
-        ShareLogFilesUtils.sendLogs(activity, "intentChooserTitle", "subjectTitle", "bodyText");
+        ShareLogFilesUtils.sendLogs(activity, "intentChooserTitle", "subjectTitle", "bodyText", file);
 
         verifyStatic();
         Intent.createChooser(intentArgument.capture(), titleArgument.capture());
