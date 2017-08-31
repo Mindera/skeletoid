@@ -29,6 +29,20 @@ import java.util.concurrent.ThreadPoolExecutor;
  * </receiver>
  * }
  * </pre>
+ * On Android N and afterwards, in order to save battery declaring the receiver on the Manifest
+ * will not have the desired behaviour. In order to correctly trigger the BroadcastReceiver it 
+ * should be registered programmatically:
+ * <pre>
+ * {@code
+ * IntentFilter filter = new IntentFilter();
+ * filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+ * filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+ * filter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+ *
+ * ConnectivityReceiver receiver = new ConnectivityReceiver();
+ * registerReceiver(receiver, filter);
+ * }
+ * </pre>
  */
 public class ConnectivityReceiver extends BroadcastReceiver {
 

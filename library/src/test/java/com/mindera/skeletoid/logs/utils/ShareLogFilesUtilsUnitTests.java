@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.content.FileProvider;
+import android.test.mock.MockContentResolver;
 
 import java.io.File;
 
@@ -47,12 +48,14 @@ public class ShareLogFilesUtilsUnitTests {
         Activity activity = mock(Activity.class);
         Context context = mock(Context.class);
         File file = mock(File.class);
+        MockContentResolver resolver = new MockContentResolver();
 
         when(file.getPath()).thenReturn("/com/mindera/skeletoid");
 
         when(activity.getFilesDir()).thenReturn(file);
         when(activity.getPackageName()).thenReturn("com.mindera.skeletoid");
         when(activity.getApplicationContext()).thenReturn(context);
+        when(activity.getContentResolver()).thenReturn(resolver);
         when(context.getFilesDir()).thenReturn(file);
 
         Uri uri = mock(Uri.class);
@@ -64,7 +67,7 @@ public class ShareLogFilesUtilsUnitTests {
         ArgumentCaptor<Intent> intentArgument = ArgumentCaptor.forClass(Intent.class);
         ArgumentCaptor<String> titleArgument = ArgumentCaptor.forClass(String.class);
 
-        ShareLogFilesUtils.sendLogs(activity, "intentChooserTitle", "subjectTitle", "bodyText");
+        ShareLogFilesUtils.sendLogs(activity, "intentChooserTitle", "subjectTitle", "bodyText", new String[0], file);
 
         verifyStatic();
         Intent.createChooser(intentArgument.capture(), titleArgument.capture());
