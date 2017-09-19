@@ -1,9 +1,10 @@
 package com.mindera.skeletoid.analytics;
 
-import android.content.Context;
-
 import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
 import com.mindera.skeletoid.logs.LOG;
+
+import android.app.Activity;
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,16 +77,16 @@ public class AnalyticsManager implements IAnalyticsManager {
     }
 
     @Override
-    public void trackEvent(String screenName, Map<String, Object> analyticsPayload) {
+    public void trackEvent(String screenName, Map<String, String> analyticsPayload) {
         for (Map.Entry<String, IAnalyticsAppender> entry : mAnalyticsAppenders.entrySet()) {
             entry.getValue().trackEvent(screenName, analyticsPayload);
         }
     }
 
     @Override
-    public void trackPageHit(String screenName, Map<String, Object> analyticsPayload) {
+    public void trackPageHit(Activity activity, String screenName, String screenClassOverride, Map<String, String> analyticsPayload) {
         for (Map.Entry<String, IAnalyticsAppender> entry : mAnalyticsAppenders.entrySet()) {
-            entry.getValue().trackPageHit(screenName, analyticsPayload);
+            entry.getValue().trackPageHit(activity, screenName, screenClassOverride, analyticsPayload);
         }
     }
 }

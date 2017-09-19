@@ -1,8 +1,9 @@
 package com.mindera.skeletoid.analytics;
 
-import android.content.Context;
-
 import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
+
+import android.app.Activity;
+import android.content.Context;
 
 import java.util.List;
 import java.util.Map;
@@ -22,11 +23,10 @@ public interface IAnalyticsManager {
      */
     Set<String> addAppenders(Context context, List<IAnalyticsAppender> analyticsAppenders);
 
-
     /**
      * Disable analytics appenders
      *
-     * @param context   Context
+     * @param context      Context
      * @param analyticsIds Log ids of each of the analytics enabled by the order sent
      */
     void removeAppenders(Context context, Set<String> analyticsIds);
@@ -42,13 +42,15 @@ public interface IAnalyticsManager {
      * @param screenName       Screen name
      * @param analyticsPayload generic analytics payload
      */
-    void trackEvent(String screenName, Map<String, Object> analyticsPayload);
+    void trackEvent(String screenName, Map<String, String> analyticsPayload);
 
     /**
      * Track app page hit
      *
-     * @param screenName       Screen name
-     * @param analyticsPayload generic analytics payload
+     * @param activity            Activity that represent
+     * @param screenName          Screen name
+     * @param screenClassOverride Screen class override name
+     * @param analyticsPayload    Generic analytics payload
      */
-    void trackPageHit(String screenName, Map<String, Object> analyticsPayload);
+    void trackPageHit(Activity activity, String screenName, String screenClassOverride, Map<String, String> analyticsPayload);
 }
