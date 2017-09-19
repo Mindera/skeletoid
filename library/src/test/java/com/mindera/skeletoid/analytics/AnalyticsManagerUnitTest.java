@@ -1,11 +1,12 @@
 package com.mindera.skeletoid.analytics;
 
-import android.content.Context;
-
 import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
 import com.mindera.skeletoid.logs.LOG;
 
 import org.junit.Test;
+
+import android.app.Activity;
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +26,6 @@ import static org.mockito.Mockito.when;
 public class AnalyticsManagerUnitTest {
 
     private String mPackageName = "my.package.name";
-
 
     @Test
     public void testAddAppendersNull() {
@@ -186,7 +186,7 @@ public class AnalyticsManagerUnitTest {
 
         analyticsManager.addAppenders(context, appenders);
 
-        Map<String, Object> analyticsPayload = new HashMap<>();
+        Map<String, String> analyticsPayload = new HashMap<>();
         analyticsPayload.put("A", "A1");
         analyticsPayload.put("B", "B1");
         analyticsPayload.put("C", "C1");
@@ -216,7 +216,7 @@ public class AnalyticsManagerUnitTest {
 
         analyticsManager.addAppenders(context, appenders);
 
-        Map<String, Object> analyticsPayload = new HashMap<>();
+        Map<String, String> analyticsPayload = new HashMap<>();
         analyticsPayload.put("A", "A1");
         analyticsPayload.put("B", "B1");
         analyticsPayload.put("C", "C1");
@@ -226,6 +226,37 @@ public class AnalyticsManagerUnitTest {
         verify(appenderA, times(1)).trackPageHit("test", analyticsPayload);
         verify(appenderB, times(1)).trackPageHit("test", analyticsPayload);
         verify(appenderC, times(1)).trackPageHit("test", analyticsPayload);
+    }
+
+    @Test
+    public void testTrackPageHitOverload() {
+        Context context = mock(Context.class);
+        Activity activity = mock(Activity.class);
+
+        AnalyticsManager analyticsManager = new AnalyticsManager();
+
+        List<IAnalyticsAppender> appenders = new ArrayList<>();
+
+        IAnalyticsAppender appenderA = mockAppender("A");
+        IAnalyticsAppender appenderB = mockAppender("B");
+        IAnalyticsAppender appenderC = mockAppender("C");
+
+        appenders.add(appenderA);
+        appenders.add(appenderB);
+        appenders.add(appenderC);
+
+        analyticsManager.addAppenders(context, appenders);
+
+        Map<String, String> analyticsPayload = new HashMap<>();
+        analyticsPayload.put("A", "A1");
+        analyticsPayload.put("B", "B1");
+        analyticsPayload.put("C", "C1");
+
+        analyticsManager.trackPageHit(activity, "test", "screen class", analyticsPayload);
+
+        verify(appenderA, times(1)).trackPageHit(activity, "test", "screen class", analyticsPayload);
+        verify(appenderB, times(1)).trackPageHit(activity, "test", "screen class", analyticsPayload);
+        verify(appenderC, times(1)).trackPageHit(activity, "test", "screen class", analyticsPayload);
     }
 
     private IAnalyticsAppender mockAppender(String analyticsId) {

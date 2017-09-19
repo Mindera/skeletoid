@@ -2,13 +2,13 @@ package com.mindera.skeletoid.analytics;
 
 import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.VisibleForTesting;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 
 public class Analytics {
 
@@ -23,7 +23,6 @@ public class Analytics {
 
     /**
      * Init the analytics engine. This method MUST be called before using Analytics
-     *
      */
     public static void init() {
         getInstance();
@@ -52,8 +51,6 @@ public class Analytics {
 
     /**
      * Obtain a instance of the analytics to guarantee it's unique
-     *
-     * @return
      */
     private static IAnalyticsManager getInstance() {
         IAnalyticsManager result = mInstance;
@@ -71,7 +68,7 @@ public class Analytics {
     /**
      * Enable analytics appenders
      *
-     * @param context      Context
+     * @param context            Context
      * @param analyticsAppenders Analytics appenders to enable
      * @return Ids of the analytics appenders enabled by their order
      */
@@ -82,7 +79,7 @@ public class Analytics {
     /**
      * Disable analytics appenders
      *
-     * @param context   Context
+     * @param context      Context
      * @param analyticsIds Analytics ids of each of the analytics appenders disabled by the order sent
      */
     public static void removeAppenders(Context context, Set<String> analyticsIds) {
@@ -98,24 +95,39 @@ public class Analytics {
 
     /**
      * Track Event method - Analytics generic method to send an event with a payload
-     * @param screenName
-     * @param analyticsPayload
+     *
+     * @param screenName       Name of screen
+     * @param analyticsPayload Generic analytics payload
      */
-    public static void trackEvent(String screenName, Map<String, Object> analyticsPayload) {
+    public static void trackEvent(String screenName, Map<String, String> analyticsPayload) {
         getInstance().trackEvent(screenName, analyticsPayload);
     }
 
     /**
      * Track Page Hits - Analytics generic method to track page hits
-     * @param screenName
-     * @param analyticsPayload
+     *
+     * @param screenName       Name of screen
+     * @param analyticsPayload Generic analytics payload
      */
-    public static void trackPageHit(String screenName, Map<String, Object> analyticsPayload) {
+    public static void trackPageHit(String screenName, Map<String, String> analyticsPayload) {
         getInstance().trackPageHit(screenName, analyticsPayload);
     }
 
     /**
-     * Return true if initialized
+     * Track Page Hits - Analytics generic method to track page hits
+     *
+     * @param activity            Activity that represent
+     * @param screenName          Name of screen
+     * @param screenClassOverride Screen name class override
+     * @param analyticsPayload    Generic analytics payload
+     */
+    public static void trackPageHit(Activity activity, String screenName, String screenClassOverride, Map<String, String> analyticsPayload) {
+        getInstance().trackPageHit(activity, screenName, screenClassOverride, analyticsPayload);
+    }
+
+    /**
+     * Check if the analytics service is initialized
+     *
      * @return true if initialized
      */
     public static boolean isInitialized() {
