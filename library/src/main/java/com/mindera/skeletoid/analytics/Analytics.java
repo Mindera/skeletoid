@@ -1,10 +1,10 @@
 package com.mindera.skeletoid.analytics;
 
-import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
-
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.VisibleForTesting;
+
+import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
 
 import java.util.List;
 import java.util.Map;
@@ -114,6 +114,26 @@ public class Analytics {
     public static void trackPageHit(Activity activity, String screenName, String screenClassOverride, Map<String, String> analyticsPayload) {
         getInstance().trackPageHit(activity, screenName, screenClassOverride, analyticsPayload);
     }
+
+    /**
+     * Sets the user ID
+     *
+     * @param userID ID of the user
+     */
+    public static void setUserID(String userID) {
+        getInstance().setUserID(userID);
+    }
+
+    /**
+     * Sets a custom property of the user
+     *
+     * @param name  Property name
+     * @param value Property value
+     */
+    public static void setUserProperty(String name, String value) {
+        getInstance().setUserProperty(name, value);
+    }
+
 
     /**
      * Check if the analytics service is initialized

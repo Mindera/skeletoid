@@ -44,4 +44,19 @@ public interface IAnalyticsAppender {
      * Get Analytics id (it should be unique within AnalyticsAppenders)
      */
     String getAnalyticsId();
+
+    /**
+     * Sets the user ID
+     *
+     * @param userID ID of the user
+     */
+    void setUserID(String userID);
+
+    /**
+     * Sets a custom property of the user
+     *
+     * @param name  Property name
+     * @param value Property value
+     */
+    void setUserProperty(String name, String value);
 }

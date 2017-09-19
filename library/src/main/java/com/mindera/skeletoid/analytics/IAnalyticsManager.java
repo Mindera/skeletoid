@@ -53,4 +53,20 @@ public interface IAnalyticsManager {
      * @param analyticsPayload    Generic analytics payload
      */
     void trackPageHit(Activity activity, String screenName, String screenClassOverride, Map<String, String> analyticsPayload);
+
+    /**
+     * Sets the user ID
+     *
+     * @param userID ID of the user
+     */
+    void setUserID(String userID);
+
+    /**
+     * Sets a custom property of the user
+     *
+     * @param name  Property name
+     * @param value Property value
+     */
+    void setUserProperty(String name, String value);
+
 }

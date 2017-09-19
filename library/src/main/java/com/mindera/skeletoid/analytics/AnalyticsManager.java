@@ -89,6 +89,18 @@ public class AnalyticsManager implements IAnalyticsManager {
             appender.trackPageHit(activity, screenName, screenClassOverride, analyticsPayload);
         }
     }
+
+    @Override
+    public void setUserID(String userID) {
+        for (IAnalyticsAppender appender : mAnalyticsAppenders.values()) {
+            appender.setUserID(userID);
+        }
+    }
+
+    @Override
+    public void setUserProperty(String name, String value) {
+        for (IAnalyticsAppender appender : mAnalyticsAppenders.values()) {
+            appender.setUserProperty(name, value);
         }
     }
 }
