@@ -1,9 +1,9 @@
 package com.mindera.skeletoid.analytics;
 
-import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
-
 import android.app.Activity;
 import android.content.Context;
+
+import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
 
 import java.util.List;
 import java.util.Map;
@@ -39,10 +39,10 @@ public interface IAnalyticsManager {
     /**
      * Track app event
      *
-     * @param screenName       Screen name
-     * @param analyticsPayload generic analytics payload
+     * @param eventName        Event name
+     * @param analyticsPayload Generic analytics payload
      */
-    void trackEvent(String screenName, Map<String, String> analyticsPayload);
+    void trackEvent(String eventName, Map<String, String> analyticsPayload);
 
     /**
      * Track app page hit

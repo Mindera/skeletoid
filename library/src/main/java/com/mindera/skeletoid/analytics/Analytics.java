@@ -96,11 +96,11 @@ public class Analytics {
     /**
      * Track Event method - Analytics generic method to send an event with a payload
      *
-     * @param screenName       Name of screen
+     * @param eventName        Event name
      * @param analyticsPayload Generic analytics payload
      */
-    public static void trackEvent(String screenName, Map<String, String> analyticsPayload) {
-        getInstance().trackEvent(screenName, analyticsPayload);
+    public static void trackEvent(String eventName, Map<String, String> analyticsPayload) {
+        getInstance().trackEvent(eventName, analyticsPayload);
     }
 
     /**

@@ -25,10 +25,10 @@ public interface IAnalyticsAppender {
     /**
      * Track app event
      *
-     * @param screenName       Screen name
-     * @param analyticsPayload generic analytics payload
+     * @param eventName        Event name
+     * @param analyticsPayload Generic analytics payload
      */
-    void trackEvent(String screenName, Map<String, String> analyticsPayload);
+    void trackEvent(String eventName, Map<String, String> analyticsPayload);
 
     /**
      * Track app page hit
