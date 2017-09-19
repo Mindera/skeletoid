@@ -223,7 +223,7 @@ public class AnalyticsUnitTest {
 
         Analytics.init(context, appenders);
 
-        Map<String, String> analyticsPayload = new HashMap<>();
+        Map<String, Object> analyticsPayload = new HashMap<>();
         analyticsPayload.put("A", "A1");
         analyticsPayload.put("B", "B1");
         analyticsPayload.put("C", "C1");
@@ -252,16 +252,11 @@ public class AnalyticsUnitTest {
 
         Analytics.init(context, appenders);
 
-        Map<String, String> analyticsPayload = new HashMap<>();
-        analyticsPayload.put("A", "A1");
-        analyticsPayload.put("B", "B1");
-        analyticsPayload.put("C", "C1");
+        Analytics.trackPageHit(activity, "test", "screen class");
 
-        Analytics.trackPageHit(activity, "test", "screen class", analyticsPayload);
-
-        verify(appenderA, times(1)).trackPageHit(activity, "test", "screen class", analyticsPayload);
-        verify(appenderB, times(1)).trackPageHit(activity, "test", "screen class", analyticsPayload);
-        verify(appenderC, times(1)).trackPageHit(activity, "test", "screen class", analyticsPayload);
+        verify(appenderA, times(1)).trackPageHit(activity, "test", "screen class");
+        verify(appenderB, times(1)).trackPageHit(activity, "test", "screen class");
+        verify(appenderC, times(1)).trackPageHit(activity, "test", "screen class");
     }
 
     @Test

@@ -77,16 +77,16 @@ public class AnalyticsManager implements IAnalyticsManager {
     }
 
     @Override
-    public void trackEvent(String eventName, Map<String, String> analyticsPayload) {
+    public void trackEvent(String eventName, Map<String, Object> analyticsPayload) {
         for (IAnalyticsAppender appender : mAnalyticsAppenders.values()) {
             appender.trackEvent(eventName, analyticsPayload);
         }
     }
 
     @Override
-    public void trackPageHit(Activity activity, String screenName, String screenClassOverride, Map<String, String> analyticsPayload) {
+    public void trackPageHit(Activity activity, String screenName, String screenClassOverride) {
         for (IAnalyticsAppender appender : mAnalyticsAppenders.values()) {
-            appender.trackPageHit(activity, screenName, screenClassOverride, analyticsPayload);
+            appender.trackPageHit(activity, screenName, screenClassOverride);
         }
     }
 
