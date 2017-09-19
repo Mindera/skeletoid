@@ -84,9 +84,9 @@ public class AnalyticsManager implements IAnalyticsManager {
     }
 
     @Override
-    public void trackPageHit(Activity activity, String screenName, String screenClassOverride, Map<String, Object> analyticsPayload) {
+    public void trackPageHit(Activity activity, String screenName, String screenClassOverride) {
         for (IAnalyticsAppender appender : mAnalyticsAppenders.values()) {
-            appender.trackPageHit(activity, screenName, screenClassOverride, analyticsPayload);
+            appender.trackPageHit(activity, screenName, screenClassOverride);
         }
     }
 

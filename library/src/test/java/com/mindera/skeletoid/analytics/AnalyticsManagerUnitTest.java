@@ -217,16 +217,11 @@ public class AnalyticsManagerUnitTest {
 
         analyticsManager.addAppenders(context, appenders);
 
-        Map<String, Object> analyticsPayload = new HashMap<>();
-        analyticsPayload.put("A", "A1");
-        analyticsPayload.put("B", "B1");
-        analyticsPayload.put("C", "C1");
+        analyticsManager.trackPageHit(activity, "test", "screen class");
 
-        analyticsManager.trackPageHit(activity, "test", "screen class", analyticsPayload);
-
-        verify(appenderA, times(1)).trackPageHit(activity, "test", "screen class", analyticsPayload);
-        verify(appenderB, times(1)).trackPageHit(activity, "test", "screen class", analyticsPayload);
-        verify(appenderC, times(1)).trackPageHit(activity, "test", "screen class", analyticsPayload);
+        verify(appenderA, times(1)).trackPageHit(activity, "test", "screen class");
+        verify(appenderB, times(1)).trackPageHit(activity, "test", "screen class");
+        verify(appenderC, times(1)).trackPageHit(activity, "test", "screen class");
     }
 
     @Test

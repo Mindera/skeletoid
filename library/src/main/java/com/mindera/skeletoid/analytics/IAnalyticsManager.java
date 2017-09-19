@@ -50,9 +50,8 @@ public interface IAnalyticsManager {
      * @param activity            Activity that represent
      * @param screenName          Screen name
      * @param screenClassOverride Screen class override name
-     * @param analyticsPayload    Generic analytics payload
      */
-    void trackPageHit(Activity activity, String screenName, String screenClassOverride, Map<String, Object> analyticsPayload);
+    void trackPageHit(Activity activity, String screenName, String screenClassOverride);
 
     /**
      * Sets the user ID
