@@ -115,11 +115,11 @@ You can have multiple Analytic appenders, you can event implement your own. We p
 3. Then track an event or page hit:
 
    ```java
-   Analytics.trackEvent(screenName, analyticsPayload);
+   Analytics.trackEvent(eventName, analyticsPayload);
    ```
 
    ```java
-   Analytics.trackPageHit(screenName, analyticsPayload);
+   Analytics.trackPageHit(activity, screenName, screenClassOverride, analyticsPayload);
    ```
 
 ## Usage
