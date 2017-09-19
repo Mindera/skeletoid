@@ -25,10 +25,10 @@ public interface IAnalyticsAppender {
     /**
      * Track app event
      *
-     * @param screenName       Screen name
-     * @param analyticsPayload generic analytics payload
+     * @param eventName        Event name
+     * @param analyticsPayload Generic analytics payload
      */
-    void trackEvent(String screenName, Map<String, String> analyticsPayload);
+    void trackEvent(String eventName, Map<String, String> analyticsPayload);
 
     /**
      * Track app page hit
@@ -44,4 +44,19 @@ public interface IAnalyticsAppender {
      * Get Analytics id (it should be unique within AnalyticsAppenders)
      */
     String getAnalyticsId();
+
+    /**
+     * Sets the user ID
+     *
+     * @param userID ID of the user
+     */
+    void setUserID(String userID);
+
+    /**
+     * Sets a custom property of the user
+     *
+     * @param name  Property name
+     * @param value Property value
+     */
+    void setUserProperty(String name, String value);
 }

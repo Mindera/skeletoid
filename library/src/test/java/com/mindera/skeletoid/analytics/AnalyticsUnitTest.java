@@ -1,13 +1,13 @@
 package com.mindera.skeletoid.analytics;
 
+import android.app.Activity;
+import android.content.Context;
+
 import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
 import com.mindera.skeletoid.logs.LOG;
 
 import org.junit.After;
 import org.junit.Test;
-
-import android.app.Activity;
-import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -262,6 +262,57 @@ public class AnalyticsUnitTest {
         verify(appenderA, times(1)).trackPageHit(activity, "test", "screen class", analyticsPayload);
         verify(appenderB, times(1)).trackPageHit(activity, "test", "screen class", analyticsPayload);
         verify(appenderC, times(1)).trackPageHit(activity, "test", "screen class", analyticsPayload);
+    }
+
+    @Test
+    public void testSetUserID() {
+        Context context = mock(Context.class);
+
+        List<IAnalyticsAppender> appenders = new ArrayList<>();
+
+        IAnalyticsAppender appenderA = mockAppender("A");
+        IAnalyticsAppender appenderB = mockAppender("B");
+        IAnalyticsAppender appenderC = mockAppender("C");
+
+        appenders.add(appenderA);
+        appenders.add(appenderB);
+        appenders.add(appenderC);
+
+        Analytics.init(context, appenders);
+
+        Analytics.setUserID("1234");
+
+        verify(appenderA, times(1)).setUserID("1234");
+        verify(appenderB, times(1)).setUserID("1234");
+        verify(appenderC, times(1)).setUserID("1234");
+    }
+
+    @Test
+    public void testSetUserProperty() {
+        Context context = mock(Context.class);
+
+        List<IAnalyticsAppender> appenders = new ArrayList<>();
+
+        IAnalyticsAppender appenderA = mockAppender("A");
+        IAnalyticsAppender appenderB = mockAppender("B");
+        IAnalyticsAppender appenderC = mockAppender("C");
+
+        appenders.add(appenderA);
+        appenders.add(appenderB);
+        appenders.add(appenderC);
+
+        Analytics.init(context, appenders);
+
+        Analytics.setUserProperty("name", "banana");
+        Analytics.setUserProperty("age", "30");
+
+        verify(appenderA, times(1)).setUserProperty("name", "banana");
+        verify(appenderB, times(1)).setUserProperty("name", "banana");
+        verify(appenderC, times(1)).setUserProperty("name", "banana");
+
+        verify(appenderA, times(1)).setUserProperty("age", "30");
+        verify(appenderB, times(1)).setUserProperty("age", "30");
+        verify(appenderC, times(1)).setUserProperty("age", "30");
     }
 
     private IAnalyticsAppender mockAppender(String analyticsId) {

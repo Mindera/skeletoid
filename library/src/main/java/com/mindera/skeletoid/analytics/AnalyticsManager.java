@@ -1,10 +1,10 @@
 package com.mindera.skeletoid.analytics;
 
-import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
-import com.mindera.skeletoid.logs.LOG;
-
 import android.app.Activity;
 import android.content.Context;
+
+import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
+import com.mindera.skeletoid.logs.LOG;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,16 +77,30 @@ public class AnalyticsManager implements IAnalyticsManager {
     }
 
     @Override
-    public void trackEvent(String screenName, Map<String, String> analyticsPayload) {
-        for (Map.Entry<String, IAnalyticsAppender> entry : mAnalyticsAppenders.entrySet()) {
-            entry.getValue().trackEvent(screenName, analyticsPayload);
+    public void trackEvent(String eventName, Map<String, String> analyticsPayload) {
+        for (IAnalyticsAppender appender : mAnalyticsAppenders.values()) {
+            appender.trackEvent(eventName, analyticsPayload);
         }
     }
 
     @Override
     public void trackPageHit(Activity activity, String screenName, String screenClassOverride, Map<String, String> analyticsPayload) {
-        for (Map.Entry<String, IAnalyticsAppender> entry : mAnalyticsAppenders.entrySet()) {
-            entry.getValue().trackPageHit(activity, screenName, screenClassOverride, analyticsPayload);
+        for (IAnalyticsAppender appender : mAnalyticsAppenders.values()) {
+            appender.trackPageHit(activity, screenName, screenClassOverride, analyticsPayload);
+        }
+    }
+
+    @Override
+    public void setUserID(String userID) {
+        for (IAnalyticsAppender appender : mAnalyticsAppenders.values()) {
+            appender.setUserID(userID);
+        }
+    }
+
+    @Override
+    public void setUserProperty(String name, String value) {
+        for (IAnalyticsAppender appender : mAnalyticsAppenders.values()) {
+            appender.setUserProperty(name, value);
         }
     }
 }
