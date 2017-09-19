@@ -99,7 +99,7 @@ public class Analytics {
      * @param eventName        Event name
      * @param analyticsPayload Generic analytics payload
      */
-    public static void trackEvent(String eventName, Map<String, String> analyticsPayload) {
+    public static void trackEvent(String eventName, Map<String, Object> analyticsPayload) {
         getInstance().trackEvent(eventName, analyticsPayload);
     }
 
@@ -111,7 +111,7 @@ public class Analytics {
      * @param screenClassOverride Screen name class override
      * @param analyticsPayload    Generic analytics payload
      */
-    public static void trackPageHit(Activity activity, String screenName, String screenClassOverride, Map<String, String> analyticsPayload) {
+    public static void trackPageHit(Activity activity, String screenName, String screenClassOverride, Map<String, Object> analyticsPayload) {
         getInstance().trackPageHit(activity, screenName, screenClassOverride, analyticsPayload);
     }
 
