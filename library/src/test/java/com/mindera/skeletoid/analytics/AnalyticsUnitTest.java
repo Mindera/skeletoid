@@ -238,34 +238,6 @@ public class AnalyticsUnitTest {
     @Test
     public void testTrackPageHit() {
         Context context = mock(Context.class);
-
-        List<IAnalyticsAppender> appenders = new ArrayList<>();
-
-        IAnalyticsAppender appenderA = mockAppender("A");
-        IAnalyticsAppender appenderB = mockAppender("B");
-        IAnalyticsAppender appenderC = mockAppender("C");
-
-        appenders.add(appenderA);
-        appenders.add(appenderB);
-        appenders.add(appenderC);
-
-        Analytics.init(context, appenders);
-
-        Map<String, String> analyticsPayload = new HashMap<>();
-        analyticsPayload.put("A", "A1");
-        analyticsPayload.put("B", "B1");
-        analyticsPayload.put("C", "C1");
-
-        Analytics.trackPageHit("test", analyticsPayload);
-
-        verify(appenderA, times(1)).trackPageHit("test", analyticsPayload);
-        verify(appenderB, times(1)).trackPageHit("test", analyticsPayload);
-        verify(appenderC, times(1)).trackPageHit("test", analyticsPayload);
-    }
-
-    @Test
-    public void testTrackPageHitOverload() {
-        Context context = mock(Context.class);
         Activity activity = mock(Activity.class);
 
         List<IAnalyticsAppender> appenders = new ArrayList<>();

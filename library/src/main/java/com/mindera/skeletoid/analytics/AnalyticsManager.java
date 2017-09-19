@@ -84,13 +84,6 @@ public class AnalyticsManager implements IAnalyticsManager {
     }
 
     @Override
-    public void trackPageHit(String screenName, Map<String, String> analyticsPayload) {
-        for (Map.Entry<String, IAnalyticsAppender> entry : mAnalyticsAppenders.entrySet()) {
-            entry.getValue().trackPageHit(screenName, analyticsPayload);
-        }
-    }
-
-    @Override
     public void trackPageHit(Activity activity, String screenName, String screenClassOverride, Map<String, String> analyticsPayload) {
         for (Map.Entry<String, IAnalyticsAppender> entry : mAnalyticsAppenders.entrySet()) {
             entry.getValue().trackPageHit(activity, screenName, screenClassOverride, analyticsPayload);

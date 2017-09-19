@@ -47,14 +47,6 @@ public interface IAnalyticsManager {
     /**
      * Track app page hit
      *
-     * @param screenName       Screen name
-     * @param analyticsPayload generic analytics payload
-     */
-    void trackPageHit(String screenName, Map<String, String> analyticsPayload);
-
-    /**
-     * Track app page hit
-     *
      * @param activity            Activity that represent
      * @param screenName          Screen name
      * @param screenClassOverride Screen class override name

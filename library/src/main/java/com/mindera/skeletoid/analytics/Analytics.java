@@ -106,16 +106,6 @@ public class Analytics {
     /**
      * Track Page Hits - Analytics generic method to track page hits
      *
-     * @param screenName       Name of screen
-     * @param analyticsPayload Generic analytics payload
-     */
-    public static void trackPageHit(String screenName, Map<String, String> analyticsPayload) {
-        getInstance().trackPageHit(screenName, analyticsPayload);
-    }
-
-    /**
-     * Track Page Hits - Analytics generic method to track page hits
-     *
      * @param activity            Activity that represent
      * @param screenName          Name of screen
      * @param screenClassOverride Screen name class override
