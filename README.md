@@ -144,5 +144,7 @@ dependencies {
 
 
 ## Plugins available
-* [Google Analytics appender](https://github.com/Mindera/skeletoid-googleanalytics)
+* [Kotlin Extensions](https://github.com/Mindera/skeletoid-kt-extensions)
 * [Firebase Analytics appender](https://github.com/Mindera/skeletoid-firebase-analytics)
+* [Google Analytics appender](https://github.com/Mindera/skeletoid-googleanalytics)
+
