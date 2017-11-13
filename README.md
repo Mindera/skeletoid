@@ -142,9 +142,10 @@ dependencies {
 }
 ```
 
+## Standalones available
+* [Kotlin Extensions](https://github.com/Mindera/skeletoid-kt-extensions)
 
 ## Plugins available
-* [Kotlin Extensions](https://github.com/Mindera/skeletoid-kt-extensions)
 * [Firebase Analytics appender](https://github.com/Mindera/skeletoid-firebase-analytics)
 * [Google Analytics appender](https://github.com/Mindera/skeletoid-googleanalytics)
 
