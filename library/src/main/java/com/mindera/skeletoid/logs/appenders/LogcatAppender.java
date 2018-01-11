@@ -160,5 +160,20 @@ public class LogcatAppender implements ILogAppender {
         return LOG_ID;
     }
 
+    @Override
+    public boolean addMethodName() {
+        return false;
+    }
+
+    @Override
+    public boolean addCodePathName() {
+        return true;
+    }
+
+    @Override
+    public boolean addPackageName() {
+        return false;
+    }
+
 
 }

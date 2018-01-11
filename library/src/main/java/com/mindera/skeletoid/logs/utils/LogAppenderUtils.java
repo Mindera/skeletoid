@@ -58,7 +58,7 @@ public class LogAppenderUtils {
         }
 
         if (consolePath) {
-            stringBuilder.append(getConsoleCodePath());
+            stringBuilder.append(getConsoleCodePath(clazz));
         }
 
 

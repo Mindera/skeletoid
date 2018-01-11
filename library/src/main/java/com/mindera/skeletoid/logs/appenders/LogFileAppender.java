@@ -1,11 +1,11 @@
 package com.mindera.skeletoid.logs.appenders;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.mindera.skeletoid.generic.AndroidUtils;
 import com.mindera.skeletoid.logs.LOG;
 import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils;
-
-import android.content.Context;
-import android.util.Log;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -317,6 +317,21 @@ public class LogFileAppender implements ILogAppender {
     @Override
     public String getLoggerId() {
         return LOG_ID;
+    }
+
+    @Override
+    public boolean addMethodName() {
+        return false;
+    }
+
+    @Override
+    public boolean addCodePathName() {
+        return false;
+    }
+
+    @Override
+    public boolean addPackageName() {
+        return false;
     }
 
     public boolean isThreadPoolRunning() {
