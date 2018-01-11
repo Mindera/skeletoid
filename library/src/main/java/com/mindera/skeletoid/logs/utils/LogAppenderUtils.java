@@ -2,15 +2,10 @@ package com.mindera.skeletoid.logs.utils;
 
 import android.support.annotation.VisibleForTesting;
 
-import java.util.regex.Pattern;
-
 /**
  * Abstract LOG Appender
  */
 public class LogAppenderUtils {
-
-    private static final int CALL_STACK_INDEX = 4;
-    private static final Pattern ANONYMOUS_CLASS = Pattern.compile("(\\$\\d+)+$");
 
     @VisibleForTesting
     LogAppenderUtils() {
