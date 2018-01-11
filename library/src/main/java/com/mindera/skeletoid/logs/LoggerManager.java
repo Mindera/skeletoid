@@ -35,15 +35,6 @@ class LoggerManager implements ILoggerManager {
      * Application TAG for logs
      */
     protected final String PACKAGE_NAME;
-    /**
-     * Define if the method name invoking the log should be printed or not (via exception stack)
-     */
-    private boolean mAddMethodName = false;
-
-    /**
-     * Define if the method name invoking the log should be printed or not (via exception stack)
-     */
-    private boolean mAddPackageName = false;
 
     /**
      * List of appenders (it can be improved to an ArrayMap if we want to add the support lib as dependency
@@ -120,10 +111,6 @@ class LoggerManager implements ILoggerManager {
         }
     }
 
-    public void setMethodNameVisible(boolean visibility) {
-        mAddMethodName = visibility;
-    }
-
     private void pushLogToAppenders(LOG.PRIORITY type, Throwable t, String... log) {
         for (Map.Entry<String, ILogAppender> entry : mLogAppenders.entrySet()) {
             entry.getValue().log(type, t, log);
@@ -164,7 +151,10 @@ class LoggerManager implements ILoggerManager {
 
         final String log = String.format(LOG_FORMAT_4ARGS, tag, getObjectHash(tag), getCurrentThreadName(), logString);
 
-        pushLogToAppenders(type, t, log);
+        for (Map.Entry<String, ILogAppender> entry : mLogAppenders.entrySet()) {
+            entry.getValue().log(type, t, log);
+        }
+
     }
 
     public void log(Class<?> clazz, LOG.PRIORITY type, String... text) {
@@ -180,9 +170,14 @@ class LoggerManager implements ILoggerManager {
             return;
         }
 
-        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz, mAddPackageName, PACKAGE_NAME, mAddMethodName), getCurrentThreadName(), logString);
 
-        pushLogToAppenders(type, null, log);
+        //Due to each of the log appenders having a specific configuration, each of the them need to provide it for the string to be build :-\
+        for (Map.Entry<String, ILogAppender> entry : mLogAppenders.entrySet()) {
+            entry.getValue().log(type, null, String.format(LOG_FORMAT_3ARGS, getTag(clazz,
+                    entry.getValue().addPackageName(), PACKAGE_NAME, entry.getValue().addMethodName(),
+                    entry.getValue().addCodePathName()), getCurrentThreadName(), logString));
+        }
+
     }
 
     public void log(Class<?> clazz, LOG.PRIORITY type, String text, Throwable t) {
@@ -198,7 +193,11 @@ class LoggerManager implements ILoggerManager {
             return;
         }
 
-        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz, mAddPackageName, PACKAGE_NAME, mAddMethodName), getCurrentThreadName(), logString);
-        pushLogToAppenders(type, t, log);
+        //Due to each of the log appenders having a specific configuration, each of the them need to provide it for the string to be build :-\
+        for (Map.Entry<String, ILogAppender> entry : mLogAppenders.entrySet()) {
+            entry.getValue().log(type, t, String.format(LOG_FORMAT_3ARGS, getTag(clazz,
+                    entry.getValue().addPackageName(), PACKAGE_NAME, entry.getValue().addMethodName(),
+                    entry.getValue().addCodePathName()), getCurrentThreadName(), logString));
+        }
     }
 }

@@ -2,10 +2,15 @@ package com.mindera.skeletoid.logs.utils;
 
 import android.support.annotation.VisibleForTesting;
 
+import java.util.regex.Pattern;
+
 /**
  * Abstract LOG Appender
  */
 public class LogAppenderUtils {
+
+    private static final int CALL_STACK_INDEX = 4;
+    private static final Pattern ANONYMOUS_CLASS = Pattern.compile("(\\$\\d+)+$");
 
     @VisibleForTesting
     LogAppenderUtils() {
@@ -38,7 +43,7 @@ public class LogAppenderUtils {
      * @return Tag string
      */
     public static String getTag(Class clazz, boolean usePackageName, String packageName,
-            boolean methodName) {
+                                boolean methodName, boolean consolePath) {
         final StringBuilder stringBuilder = new StringBuilder();
         if (usePackageName) {
             stringBuilder.append(packageName);
@@ -51,6 +56,11 @@ public class LogAppenderUtils {
             stringBuilder.append(".");
             stringBuilder.append(getMethodName(clazz));
         }
+
+        if (consolePath) {
+            stringBuilder.append(getConsoleCodePath());
+        }
+
 
         return stringBuilder.toString();
     }
@@ -83,10 +93,42 @@ public class LogAppenderUtils {
     }
 
     /**
+     * Get AndroidStudio code path so it's clickable on the console logs
+     *
+     * @return code path
+     */
+    public static String getConsoleCodePath(Class clazz) {
+        int index = 0;
+
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+
+        for (StackTraceElement ste : stackTrace) {
+            if (ste.getClassName().equals(clazz.getName())) {
+                break;
+            }
+            index++;
+        }
+
+//        final String methodName;
+        int lineNumber = 0;
+
+        if (stackTrace.length > index) {
+//            methodName = stackTrace[index].getMethodName();
+            lineNumber = stackTrace[index].getLineNumber();
+//        } else {
+//            methodName = "UnknownMethod";
+        }
+
+        return ".(" + clazz + ".java:" + lineNumber + ") - ";
+    }
+
+
+    /**
      * Gets the hashcode of the object sent
      *
      * @return The hashcode of the object in a printable string
      */
+
     public static String getObjectHash(Object object) {
         String hashCodeString;
         if (object == null) {

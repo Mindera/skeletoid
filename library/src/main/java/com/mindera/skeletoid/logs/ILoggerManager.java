@@ -32,13 +32,6 @@ public interface ILoggerManager {
     void log(String tag, LOG.PRIORITY priority, Throwable t, String... text);
 
     /**
-     * Set method name visible in logs (careful this is a HEAVY operation)
-     *
-     * @param visibility true if enabled
-     */
-    void setMethodNameVisible(boolean visibility);
-
-    /**
      * Enable log appenders
      * @param context Context
      * @param logAppenders Log appenders to enable

@@ -49,4 +49,20 @@ public interface ILogAppender {
      * are used
      */
     String getLoggerId();
+
+    /**
+     * Define if the method name invoking the log should be printed or not (via exception stack)
+     */
+    boolean addMethodName();
+
+    /**
+     * Define if Class.number name should be printed or not (via exception stack)
+     */
+    boolean addCodePathName();
+
+    /**
+     * Define if the method name invoking the log should be printed or not (via exception stack)
+     */
+    boolean addPackageName();
+
 }
