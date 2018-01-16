@@ -1,7 +1,5 @@
 package com.mindera.skeletoid.generic;
 
-import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils;
-
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
