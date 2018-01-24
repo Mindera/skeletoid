@@ -1,11 +1,11 @@
 package com.mindera.skeletoid.logs.appenders;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.mindera.skeletoid.generic.AndroidUtils;
 import com.mindera.skeletoid.logs.LOG;
 import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils;
-
-import android.content.Context;
-import android.util.Log;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -49,6 +49,11 @@ public class LogFileAppender implements ILogAppender {
      */
     private volatile boolean mCanWriteToFile = false;
     /**
+     * Whether or not logging to file is possible (don't change value! This is controlled
+     * automatically)
+     */
+    private boolean mWriteToExternal = false;
+    /**
      * FileHandler logger: To write to file *
      */
     private FileHandler mFileHandler = null;
@@ -65,6 +70,7 @@ public class LogFileAppender implements ILogAppender {
      */
     private LOG.PRIORITY mMinLogLevel = LOG.PRIORITY.VERBOSE;
 
+
     /**
      * Contructor
      *
@@ -72,6 +78,16 @@ public class LogFileAppender implements ILogAppender {
      * @param fileName Log filename
      */
     public LogFileAppender(String tag, String fileName) {
+        this(tag, fileName, false);
+    }
+
+    /**
+     * Contructor
+     *
+     * @param tag      Log tag
+     * @param fileName Log filename
+     */
+    public LogFileAppender(String tag, String fileName, boolean writeToExternalStorage) {
         if (tag == null) {
             throw new IllegalArgumentException("TAG cannot be null");
         }
@@ -83,6 +99,8 @@ public class LogFileAppender implements ILogAppender {
         if (!isFilenameValid(fileName)) {
             throw new IllegalArgumentException("Invalid fileName");
         }
+
+        mWriteToExternal = writeToExternalStorage;
 
         LOG_FILE_NAME = fileName + ".log";
 
@@ -297,7 +315,13 @@ public class LogFileAppender implements ILogAppender {
     }
 
     public String getFileLogPath(Context context) {
-        return AndroidUtils.getFileDirPath(context, File.separator + LOG_FILE_NAME);
+        String path;
+        if (mWriteToExternal) {
+            path = AndroidUtils.getExternalPublicDirectory(context, File.separator + LOG_FILE_NAME);
+        } else {
+            path = AndroidUtils.getFileDirPath(context, File.separator + LOG_FILE_NAME);
+        }
+        return path;
     }
 
     @Override

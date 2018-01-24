@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Environment;
 import android.support.annotation.VisibleForTesting;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
@@ -204,18 +205,18 @@ public class AndroidUtils {
      * @return true if it is, false if not.
      */
     public static boolean isServiceRunning(Context context, Class<?> serviceClass) {
-        if(context == null){
+        if (context == null) {
             throw new IllegalArgumentException("Context cannot be null");
         }
 
-        if(serviceClass == null){
+        if (serviceClass == null) {
             throw new IllegalArgumentException("Class cannot be null");
         }
 
         ActivityManager manager = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
 
-        if(manager == null){
+        if (manager == null) {
             return false;
         }
 
@@ -254,7 +255,7 @@ public class AndroidUtils {
      * @return true if it is, false if not
      */
     public static boolean checkIfPackageIsInstalled(Context context, String targetPackage) {
-        if(context == null){
+        if (context == null) {
             throw new IllegalArgumentException("Context cannot be null");
         }
 
@@ -270,7 +271,7 @@ public class AndroidUtils {
     }
 
     public static boolean isPhoneAvailable(Context context) {
-        if(context == null){
+        if (context == null) {
             throw new IllegalArgumentException("Context cannot be null");
         }
 
@@ -294,11 +295,23 @@ public class AndroidUtils {
     /**
      * Get Cache directory path
      *
-     * @param context Context
-     * @param path    path inside cache path
+     * @param context              Context
+     * @param separatorAndFilename filename
      * @return Path needed
      */
-    public static String getCacheDirPath(Context context, String path) {
-        return context.getCacheDir().getPath() + path;
+    public static String getCacheDirPath(Context context, String separatorAndFilename) {
+        return context.getCacheDir().getPath() + separatorAndFilename;
+    }
+
+
+    /**
+     * Get External Storage directory path
+     *
+     * @param context              Context
+     * @param separatorAndFilename filename
+     * @return Path needed
+     */
+    public static String getExternalPublicDirectory(Context context, String separatorAndFilename) {
+        return Environment.getExternalStorageDirectory().getPath() + separatorAndFilename;
     }
 }
