@@ -13,9 +13,9 @@ object DeviceUtils {
         get() = Build.VERSION.RELEASE ?: ""
 
     /**
-     * Get the device's manufacturer and model name
+     * Get the device's brand name
      *
-     * @return String with the device's manufacturer and model name or empty String if not found
+     * @return String with the device's brand name or empty String if not found
      */
     val brand: String
         get() = Build.BRAND ?: ""
