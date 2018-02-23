@@ -1,8 +1,7 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 apply plugin: 'jacoco-android'
 apply plugin: "io.github.ddimtirov.codacy"
-
-
 
 android {
     compileSdkVersion 26
@@ -28,6 +27,7 @@ android {
 dependencies {
 
     compile "com.android.support:support-v4:26.0.1"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Unit tests
     testCompile 'junit:junit:4.12'
