@@ -18,10 +18,6 @@ import android.view.WindowManager;
 public class AndroidUtils {
 
     protected static final String APP_NAME = "App";
-    /**
-     * Cached device name
-     */
-    private static String mDeviceName = null;
 
     /**
      * Cached app version name
@@ -46,46 +42,46 @@ public class AndroidUtils {
     /**
      * Get the device's manufacturer and model name
      *
+     * @deprecated Use DeviceUtils.name instead
+     *
      * @return String with the device's manufacturer and model name
      */
+    @Deprecated()
     public static String getDeviceName() {
-        if (mDeviceName == null) {
-            String manufacturer = Build.MANUFACTURER;
-            String model = Build.MODEL;
-            if (model.startsWith(manufacturer)) {
-                mDeviceName = model;
-            } else {
-                mDeviceName = manufacturer + " " + model;
-            }
-        }
-        return mDeviceName;
+        return DeviceUtils.INSTANCE.getName();
     }
 
     /**
      * Get the device's manufacturer and model name
      *
+     * @deprecated Use DeviceUtils.device instead
+     *
      * @return String with the device's manufacturer and model name
      */
     public static String getDeviceBrand() {
-        return Build.BRAND != null ? Build.BRAND : "";
+        return DeviceUtils.INSTANCE.getBrand();
     }
 
     /**
      * Get installed OS release name
      *
+     * @deprecated Use DeviceUtils.osRelease instead
+     *
      * @return String with the installed OS release version
      */
     public static String getOSReleaseVersion() {
-        return Build.VERSION.RELEASE;
+        return DeviceUtils.INSTANCE.getOsRelease();
     }
 
     /**
      * Get installed OS SDK version
      *
+     * @deprecated Use DeviceUtils.sdkVersion instead
+     *
      * @return String with the installed OS SDK version
      */
     public static int getOSSDKVersion() {
-        return Build.VERSION.SDK_INT;
+        return DeviceUtils.INSTANCE.getSdkVersion();
     }
 
     /**
