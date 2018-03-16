@@ -173,6 +173,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
                     } catch (Exception ex) {
                         LOG.e(LOG_TAG, ex, "ConnectivityReceiver isConnected");
                         isInternetAvailable = false;
+                        break;
                     }
 
                 } while (retries > 0);
