@@ -2,6 +2,7 @@ package com.mindera.skeletoid.analytics;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 
 import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
@@ -100,6 +101,16 @@ public class Analytics {
      * @param analyticsPayload Generic analytics payload
      */
     public static void trackEvent(String eventName, Map<String, Object> analyticsPayload) {
+        getInstance().trackEvent(eventName, analyticsPayload);
+    }
+
+    /**
+     * Track Event method - Analytics generic method to send an event with a payload
+     *
+     * @param eventName        Event name
+     * @param analyticsPayload Generic analytics payload
+     */
+    public static void trackEvent(String eventName, Bundle analyticsPayload) {
         getInstance().trackEvent(eventName, analyticsPayload);
     }
 

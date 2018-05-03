@@ -2,6 +2,7 @@ package com.mindera.skeletoid.analytics;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 
 import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
 
@@ -43,6 +44,14 @@ public interface IAnalyticsManager {
      * @param analyticsPayload Generic analytics payload
      */
     void trackEvent(String eventName, Map<String, Object> analyticsPayload);
+
+    /**
+     * Track app event
+     *
+     * @param eventName        Event name
+     * @param analyticsPayload Generic analytics payload
+     */
+    void trackEvent(String eventName, Bundle analyticsPayload);
 
     /**
      * Track app page hit

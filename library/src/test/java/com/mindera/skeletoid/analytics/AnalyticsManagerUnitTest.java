@@ -2,10 +2,12 @@ package com.mindera.skeletoid.analytics;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 
 import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
 import com.mindera.skeletoid.logs.LOG;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -25,14 +27,19 @@ import static org.mockito.Mockito.when;
 
 public class AnalyticsManagerUnitTest {
 
-    private String mPackageName = "my.package.name";
+    private static final String mPackageName = "my.package.name";
+
+    private Context mContext;
+
+    @Before
+    public void setUp() {
+        mContext = mock(Context.class);
+    }
 
     @Test
     public void testAddAppendersNull() {
-        Context context = mock(Context.class);
-
         AnalyticsManager analyticsManager = new AnalyticsManager();
-        Set<String> appendersIds = analyticsManager.addAppenders(context, null);
+        Set<String> appendersIds = analyticsManager.addAppenders(mContext, null);
 
         assertNotNull(appendersIds);
         assertEquals(0, appendersIds.size());
@@ -40,10 +47,8 @@ public class AnalyticsManagerUnitTest {
 
     @Test
     public void testAddAppendersEmpty() {
-        Context context = mock(Context.class);
-
         AnalyticsManager analyticsManager = new AnalyticsManager();
-        Set<String> appendersIds = analyticsManager.addAppenders(context, new ArrayList<IAnalyticsAppender>());
+        Set<String> appendersIds = analyticsManager.addAppenders(mContext, new ArrayList<IAnalyticsAppender>());
 
         assertNotNull(appendersIds);
         assertEquals(0, appendersIds.size());
@@ -51,8 +56,6 @@ public class AnalyticsManagerUnitTest {
 
     @Test
     public void testAddAppenders() {
-        Context context = mock(Context.class);
-
         AnalyticsManager analyticsManager = new AnalyticsManager();
 
         List<IAnalyticsAppender> appenders = new ArrayList<>();
@@ -65,11 +68,11 @@ public class AnalyticsManagerUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        Set<String> appendersIds = analyticsManager.addAppenders(context, appenders);
+        Set<String> appendersIds = analyticsManager.addAppenders(mContext, appenders);
 
-        verify(appenderA, times(1)).enableAppender(context);
-        verify(appenderB, times(1)).enableAppender(context);
-        verify(appenderC, times(1)).enableAppender(context);
+        verify(appenderA, times(1)).enableAppender(mContext);
+        verify(appenderB, times(1)).enableAppender(mContext);
+        verify(appenderC, times(1)).enableAppender(mContext);
 
         assertNotNull(appendersIds);
         assertEquals(3, appendersIds.size());
@@ -80,8 +83,6 @@ public class AnalyticsManagerUnitTest {
 
     @Test
     public void testAddAppendersRepeated() {
-        Context context = mock(Context.class);
-
         AnalyticsManager analyticsManager = new AnalyticsManager();
 
         List<IAnalyticsAppender> appenders = new ArrayList<>();
@@ -95,8 +96,8 @@ public class AnalyticsManagerUnitTest {
         appenders.add(appenderB2);
 
         //We must initialize the LOG since it prints an error
-        LOG.init(context, mPackageName);
-        Set<String> appendersIds = analyticsManager.addAppenders(context, appenders);
+        LOG.init(mContext, mPackageName);
+        Set<String> appendersIds = analyticsManager.addAppenders(mContext, appenders);
 
         assertNotNull(appendersIds);
         assertEquals(2, appendersIds.size());
@@ -106,24 +107,18 @@ public class AnalyticsManagerUnitTest {
 
     @Test
     public void testDisableAppendersNull() {
-        Context context = mock(Context.class);
-
         AnalyticsManager analyticsManager = new AnalyticsManager();
-        analyticsManager.removeAppenders(context, null);
+        analyticsManager.removeAppenders(mContext, null);
     }
 
     @Test
     public void testDisableAppendersEmpty() {
-        Context context = mock(Context.class);
-
         AnalyticsManager analyticsManager = new AnalyticsManager();
-        analyticsManager.removeAppenders(context, new HashSet<String>());
+        analyticsManager.removeAppenders(mContext, new HashSet<String>());
     }
 
     @Test
     public void testDisableAppenders() {
-        Context context = mock(Context.class);
-
         AnalyticsManager analyticsManager = new AnalyticsManager();
 
         List<IAnalyticsAppender> appenders = new ArrayList<>();
@@ -136,9 +131,9 @@ public class AnalyticsManagerUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        Set<String> appendersIds = analyticsManager.addAppenders(context, appenders);
+        Set<String> appendersIds = analyticsManager.addAppenders(mContext, appenders);
 
-        analyticsManager.removeAppenders(context, appendersIds);
+        analyticsManager.removeAppenders(mContext, appendersIds);
         verify(appenderA, times(1)).disableAppender();
         verify(appenderB, times(1)).disableAppender();
         verify(appenderC, times(1)).disableAppender();
@@ -146,8 +141,6 @@ public class AnalyticsManagerUnitTest {
 
     @Test
     public void testDisableAllAppenders() {
-        Context context = mock(Context.class);
-
         AnalyticsManager analyticsManager = new AnalyticsManager();
 
         List<IAnalyticsAppender> appenders = new ArrayList<>();
@@ -160,7 +153,7 @@ public class AnalyticsManagerUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        analyticsManager.addAppenders(context, appenders);
+        analyticsManager.addAppenders(mContext, appenders);
 
         analyticsManager.removeAllAppenders();
         verify(appenderA, times(1)).disableAppender();
@@ -170,8 +163,6 @@ public class AnalyticsManagerUnitTest {
 
     @Test
     public void testTrackEvent() {
-        Context context = mock(Context.class);
-
         AnalyticsManager analyticsManager = new AnalyticsManager();
 
         List<IAnalyticsAppender> appenders = new ArrayList<>();
@@ -184,7 +175,7 @@ public class AnalyticsManagerUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        analyticsManager.addAppenders(context, appenders);
+        analyticsManager.addAppenders(mContext, appenders);
 
         Map<String, Object> analyticsPayload = new HashMap<>();
         analyticsPayload.put("A", "A1");
@@ -199,8 +190,35 @@ public class AnalyticsManagerUnitTest {
     }
 
     @Test
+    public void testTrackEventWithBundle() {
+        AnalyticsManager analyticsManager = new AnalyticsManager();
+
+        List<IAnalyticsAppender> appenders = new ArrayList<>();
+
+        IAnalyticsAppender appenderA = mockAppender("A");
+        IAnalyticsAppender appenderB = mockAppender("B");
+        IAnalyticsAppender appenderC = mockAppender("C");
+
+        appenders.add(appenderA);
+        appenders.add(appenderB);
+        appenders.add(appenderC);
+
+        analyticsManager.addAppenders(mContext, appenders);
+
+        Bundle analyticsPayload = new Bundle();
+        analyticsPayload.putString("A", "A1");
+        analyticsPayload.putString("B", "B1");
+        analyticsPayload.putString("C", "C1");
+
+        analyticsManager.trackEvent("test", analyticsPayload);
+
+        verify(appenderA, times(1)).trackEvent("test", analyticsPayload);
+        verify(appenderB, times(1)).trackEvent("test", analyticsPayload);
+        verify(appenderC, times(1)).trackEvent("test", analyticsPayload);
+    }
+
+    @Test
     public void testTrackPageHit() {
-        Context context = mock(Context.class);
         Activity activity = mock(Activity.class);
 
         AnalyticsManager analyticsManager = new AnalyticsManager();
@@ -215,7 +233,7 @@ public class AnalyticsManagerUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        analyticsManager.addAppenders(context, appenders);
+        analyticsManager.addAppenders(mContext, appenders);
 
         analyticsManager.trackPageHit(activity, "test", "screen class");
 
@@ -226,8 +244,6 @@ public class AnalyticsManagerUnitTest {
 
     @Test
     public void testSetUserID() {
-        Context context = mock(Context.class);
-
         AnalyticsManager analyticsManager = new AnalyticsManager();
 
         List<IAnalyticsAppender> appenders = new ArrayList<>();
@@ -240,7 +256,7 @@ public class AnalyticsManagerUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        analyticsManager.addAppenders(context, appenders);
+        analyticsManager.addAppenders(mContext, appenders);
 
         analyticsManager.setUserID("1234");
 
@@ -251,8 +267,6 @@ public class AnalyticsManagerUnitTest {
 
     @Test
     public void testSetUserProperty() {
-        Context context = mock(Context.class);
-
         AnalyticsManager analyticsManager = new AnalyticsManager();
 
         List<IAnalyticsAppender> appenders = new ArrayList<>();
@@ -265,7 +279,7 @@ public class AnalyticsManagerUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        analyticsManager.addAppenders(context, appenders);
+        analyticsManager.addAppenders(mContext, appenders);
 
         analyticsManager.setUserProperty("name", "banana");
         analyticsManager.setUserProperty("age", "30");
