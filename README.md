@@ -44,7 +44,7 @@ You can have multiple log appenders, you can event implement your own. We provid
  ```
 
 
-### Connectivity
+### Connectivity - This module is currently DEPRECATED (check issue #47)
 Determine real device connectivity: if the device is connected to a network and if it really has internet access.
 To be able to do that, you'll need to add to the app's manifest:
 
@@ -63,7 +63,7 @@ And then you can just check via:
  ```java
      boolean isConnectedAndWithInternet = Connectivity.isConnectedAndWithInternetAvailable(context);
  ```
-   
+
 If you want to be notified via callback:
    
  ```java
