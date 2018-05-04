@@ -2,11 +2,13 @@ package com.mindera.skeletoid.analytics;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 
 import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
 import com.mindera.skeletoid.logs.LOG;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -29,6 +31,13 @@ public class AnalyticsUnitTest {
 
     private String mPackageName = "my.package.name";
 
+    private Context mContext;
+
+    @Before
+    public void setUp() {
+        mContext = mock(Context.class);
+    }
+
     @After
     public void cleanUp() {
         Analytics.deinit(null);
@@ -46,8 +55,6 @@ public class AnalyticsUnitTest {
 
     @Test
     public void testInitWithParams() {
-        Context context = mock(Context.class);
-
         List<IAnalyticsAppender> appenders = new ArrayList<>();
 
         IAnalyticsAppender appenderA = mockAppender("A");
@@ -59,8 +66,8 @@ public class AnalyticsUnitTest {
         appenders.add(appenderC);
 
         //Must have logger initialized for this test
-        LOG.init(context);
-        Analytics.init(context, appenders);
+        LOG.init(mContext);
+        Analytics.init(mContext, appenders);
 
         assertTrue(Analytics.isInitialized());
     }
@@ -74,8 +81,6 @@ public class AnalyticsUnitTest {
 
     @Test
     public void testDeinit() {
-        Context context = mock(Context.class);
-
         List<IAnalyticsAppender> appenders = new ArrayList<>();
 
         IAnalyticsAppender appenderA = mockAppender("A");
@@ -87,10 +92,10 @@ public class AnalyticsUnitTest {
         appenders.add(appenderC);
 
         //Must have logger initialized for this test
-        LOG.init(context);
-        Analytics.init(context, appenders);
+        LOG.init(mContext);
+        Analytics.init(mContext, appenders);
 
-        Analytics.deinit(context);
+        Analytics.deinit(mContext);
 
         verify(appenderA, times(1)).disableAppender();
         verify(appenderB, times(1)).disableAppender();
@@ -99,8 +104,6 @@ public class AnalyticsUnitTest {
 
     @Test
     public void testAddAppenders() {
-        Context context = mock(Context.class);
-
         List<IAnalyticsAppender> appenders = new ArrayList<>();
 
         IAnalyticsAppender appenderA = mockAppender("A");
@@ -111,11 +114,11 @@ public class AnalyticsUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        Set<String> appendersIds = Analytics.init(context, appenders);
+        Set<String> appendersIds = Analytics.init(mContext, appenders);
 
-        verify(appenderA, times(1)).enableAppender(context);
-        verify(appenderB, times(1)).enableAppender(context);
-        verify(appenderC, times(1)).enableAppender(context);
+        verify(appenderA, times(1)).enableAppender(mContext);
+        verify(appenderB, times(1)).enableAppender(mContext);
+        verify(appenderC, times(1)).enableAppender(mContext);
 
         assertNotNull(appendersIds);
         assertEquals(3, appendersIds.size());
@@ -126,8 +129,6 @@ public class AnalyticsUnitTest {
 
     @Test
     public void testAddAppendersRepeated() {
-        Context context = mock(Context.class);
-
         List<IAnalyticsAppender> appenders = new ArrayList<>();
 
         IAnalyticsAppender appenderA = mockAppender("A");
@@ -138,8 +139,8 @@ public class AnalyticsUnitTest {
         appenders.add(appenderB1);
         appenders.add(appenderB2);
 
-        LOG.init(context, mPackageName);
-        Set<String> appendersIds = Analytics.init(context, appenders);
+        LOG.init(mContext, mPackageName);
+        Set<String> appendersIds = Analytics.init(mContext, appenders);
 
         assertNotNull(appendersIds);
         assertEquals(2, appendersIds.size());
@@ -149,22 +150,16 @@ public class AnalyticsUnitTest {
 
     @Test
     public void testDisableAppendersNull() {
-        Context context = mock(Context.class);
-
-        Analytics.removeAppenders(context, null);
+        Analytics.removeAppenders(mContext, null);
     }
 
     @Test
     public void testDisableAppendersEmpty() {
-        Context context = mock(Context.class);
-
-        Analytics.removeAppenders(context, new HashSet<String>());
+        Analytics.removeAppenders(mContext, new HashSet<String>());
     }
 
     @Test
     public void testRemoveAppenders() {
-        Context context = mock(Context.class);
-
         List<IAnalyticsAppender> appenders = new ArrayList<>();
 
         IAnalyticsAppender appenderA = mockAppender("A");
@@ -175,9 +170,9 @@ public class AnalyticsUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        LOG.init(context, mPackageName);
-        Set<String> appendersIds = Analytics.addAppenders(context, appenders);
-        Analytics.removeAppenders(context, appendersIds);
+        LOG.init(mContext, mPackageName);
+        Set<String> appendersIds = Analytics.addAppenders(mContext, appenders);
+        Analytics.removeAppenders(mContext, appendersIds);
 
         verify(appenderA, times(1)).disableAppender();
         verify(appenderB, times(1)).disableAppender();
@@ -186,8 +181,6 @@ public class AnalyticsUnitTest {
 
     @Test
     public void testRemoveAllAppenders() {
-        Context context = mock(Context.class);
-
         List<IAnalyticsAppender> appenders = new ArrayList<>();
 
         IAnalyticsAppender appenderA = mockAppender("A");
@@ -198,8 +191,8 @@ public class AnalyticsUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        LOG.init(context, mPackageName);
-        Analytics.addAppenders(context, appenders);
+        LOG.init(mContext, mPackageName);
+        Analytics.addAppenders(mContext, appenders);
         Analytics.removeAllAppenders();
 
         verify(appenderA, times(1)).disableAppender();
@@ -209,8 +202,6 @@ public class AnalyticsUnitTest {
 
     @Test
     public void testTrackEvent() {
-        Context context = mock(Context.class);
-
         List<IAnalyticsAppender> appenders = new ArrayList<>();
 
         IAnalyticsAppender appenderA = mockAppender("A");
@@ -221,7 +212,7 @@ public class AnalyticsUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        Analytics.init(context, appenders);
+        Analytics.init(mContext, appenders);
 
         Map<String, Object> analyticsPayload = new HashMap<>();
         analyticsPayload.put("A", "A1");
@@ -236,8 +227,33 @@ public class AnalyticsUnitTest {
     }
 
     @Test
+    public void testTrackEventWithBundle() {
+        List<IAnalyticsAppender> appenders = new ArrayList<>();
+
+        IAnalyticsAppender appenderA = mockAppender("A");
+        IAnalyticsAppender appenderB = mockAppender("B");
+        IAnalyticsAppender appenderC = mockAppender("C");
+
+        appenders.add(appenderA);
+        appenders.add(appenderB);
+        appenders.add(appenderC);
+
+        Analytics.init(mContext, appenders);
+
+        Bundle analyticsPayload = new Bundle();
+        analyticsPayload.putString("A", "A1");
+        analyticsPayload.putString("B", "B1");
+        analyticsPayload.putString("C", "C1");
+
+        Analytics.trackEvent("test", analyticsPayload);
+
+        verify(appenderA, times(1)).trackEvent("test", analyticsPayload);
+        verify(appenderB, times(1)).trackEvent("test", analyticsPayload);
+        verify(appenderC, times(1)).trackEvent("test", analyticsPayload);
+    }
+
+    @Test
     public void testTrackPageHit() {
-        Context context = mock(Context.class);
         Activity activity = mock(Activity.class);
 
         List<IAnalyticsAppender> appenders = new ArrayList<>();
@@ -250,7 +266,7 @@ public class AnalyticsUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        Analytics.init(context, appenders);
+        Analytics.init(mContext, appenders);
 
         Analytics.trackPageHit(activity, "test", "screen class");
 
@@ -261,8 +277,6 @@ public class AnalyticsUnitTest {
 
     @Test
     public void testSetUserID() {
-        Context context = mock(Context.class);
-
         List<IAnalyticsAppender> appenders = new ArrayList<>();
 
         IAnalyticsAppender appenderA = mockAppender("A");
@@ -273,7 +287,7 @@ public class AnalyticsUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        Analytics.init(context, appenders);
+        Analytics.init(mContext, appenders);
 
         Analytics.setUserID("1234");
 
@@ -284,8 +298,6 @@ public class AnalyticsUnitTest {
 
     @Test
     public void testSetUserProperty() {
-        Context context = mock(Context.class);
-
         List<IAnalyticsAppender> appenders = new ArrayList<>();
 
         IAnalyticsAppender appenderA = mockAppender("A");
@@ -296,7 +308,7 @@ public class AnalyticsUnitTest {
         appenders.add(appenderB);
         appenders.add(appenderC);
 
-        Analytics.init(context, appenders);
+        Analytics.init(mContext, appenders);
 
         Analytics.setUserProperty("name", "banana");
         Analytics.setUserProperty("age", "30");

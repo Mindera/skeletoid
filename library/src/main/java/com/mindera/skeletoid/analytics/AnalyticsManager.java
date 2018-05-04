@@ -2,6 +2,7 @@ package com.mindera.skeletoid.analytics;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 
 import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
 import com.mindera.skeletoid.logs.LOG;
@@ -78,6 +79,13 @@ public class AnalyticsManager implements IAnalyticsManager {
 
     @Override
     public void trackEvent(String eventName, Map<String, Object> analyticsPayload) {
+        for (IAnalyticsAppender appender : mAnalyticsAppenders.values()) {
+            appender.trackEvent(eventName, analyticsPayload);
+        }
+    }
+
+    @Override
+    public void trackEvent(String eventName, Bundle analyticsPayload) {
         for (IAnalyticsAppender appender : mAnalyticsAppenders.values()) {
             appender.trackEvent(eventName, analyticsPayload);
         }
