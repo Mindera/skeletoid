@@ -5,7 +5,7 @@ android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
 
-    testBuildType "unitTest"
+    testBuildType "qa"
 
     defaultConfig {
 
@@ -16,7 +16,7 @@ android {
 
     buildTypes {
 
-        unitTest{
+        qa{
             testCoverageEnabled = true
         }
 
