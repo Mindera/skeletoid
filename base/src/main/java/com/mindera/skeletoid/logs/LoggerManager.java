@@ -6,6 +6,7 @@ import com.mindera.skeletoid.generic.AndroidUtils;
 import com.mindera.skeletoid.logs.appenders.ILogAppender;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -26,15 +27,15 @@ class LoggerManager implements ILoggerManager {
     /**
      * Log format
      */
-    public static final String LOG_FORMAT_4ARGS = "%s %s %s | %s";
+    static final String LOG_FORMAT_4ARGS = "%s %s %s | %s";
     /**
      * Log format
      */
-    public static final String LOG_FORMAT_3ARGS = "%s %s | %s";
+    private static final String LOG_FORMAT_3ARGS = "%s %s | %s";
     /**
      * Application TAG for logs
      */
-    protected final String PACKAGE_NAME;
+    private final String PACKAGE_NAME;
     /**
      * Define if the method name invoking the log should be printed or not (via exception stack)
      */
@@ -131,25 +132,25 @@ class LoggerManager implements ILoggerManager {
     }
 
     @Override
-    public void log(String tag, LOG.PRIORITY type, String text) {
+    public void log(String tag, LOG.PRIORITY priority, String... text) {
         if (mLogAppenders.isEmpty()) {
             //nothing will be logged so no point in continuing
             return;
         }
 
-        if (tag == null || type == null || text == null) {
-            LOG.e(LOG_TAG, "Something is wrong, logger caught null -> " + tag + " - " + type + " - " + (text == null ? null : text.toString()));
+        if (tag == null || priority == null || text == null) {
+            LOG.e(LOG_TAG, "Something is wrong, logger caught null -> " + tag + " - " + priority + " - " + (text == null ? null : Arrays.toString(text)));
 
             return;
         }
 
         final String log = String.format(LOG_FORMAT_4ARGS, tag, getObjectHash(tag), getCurrentThreadName(), getLogString(text));
 
-        pushLogToAppenders(type, null, log);
+        pushLogToAppenders(priority, null, log);
     }
 
     @Override
-    public void log(String tag, LOG.PRIORITY type, Throwable t, String text) {
+    public void log(String tag, LOG.PRIORITY priority, Throwable t, String... text) {
         if (mLogAppenders.isEmpty()) {
             //nothing will be logged so no point in continuing
             return;
@@ -157,14 +158,14 @@ class LoggerManager implements ILoggerManager {
 
         String logString = getLogString(text);
 
-        if (tag == null || type == null || text == null || t == null) {
+        if (tag == null || priority == null || text == null || t == null) {
             LOG.e(LOG_TAG, "Something is wrong, logger caught null -> " + logString);
             return;
         }
 
         final String log = String.format(LOG_FORMAT_4ARGS, tag, getObjectHash(tag), getCurrentThreadName(), logString);
 
-        pushLogToAppenders(type, t, log);
+        pushLogToAppenders(priority, t, log);
     }
 
     public void log(Class<?> clazz, LOG.PRIORITY type, String text) {
