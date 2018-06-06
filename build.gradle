@@ -1,6 +1,7 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
+    ext.gradleVersion = '3.1.2'
+    ext.kotlinVersion = '1.2.41'
+
     repositories {
         jcenter()
         mavenCentral()
@@ -10,7 +11,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath "com.android.tools.build:gradle:$gradleVersion"
 
         classpath "gradle.plugin.io.github.ddimtirov:codacy-gradle-plugin:0.1.0"
 
@@ -32,10 +33,6 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
 ext {
     // sdk and tools
     compileSdkVersion = 27
@@ -45,9 +42,9 @@ ext {
 
     // dependencies versions
     supportLibraryVersion = '27.1.1'
-    rxJavaVersion = '2.0.6'
+    rxJavaVersion = '2.1.7'
+    rxAndroidVersion = '2.0.1'
     rxBindingsVersion = '2.1.1'
-    rxAndroidVersion = '2.0.2'
 
     kotlinVersion = '1.2.41'
 
@@ -56,4 +53,9 @@ ext {
 
     skeletoidVersion = '0.2.8'
 
+    junitVersion = '4.12'
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }

@@ -1,7 +1,9 @@
 package com.mindera.skeletoid.analytics.appenders;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -36,7 +38,7 @@ public class GAAppender implements IAnalyticsAppender {
         analytics.setLogger(new Logger() {
             @Override
             public void verbose(String s) {
-                
+
             }
 
             @Override
@@ -91,9 +93,19 @@ public class GAAppender implements IAnalyticsAppender {
         mTracker.send(parsePayload(analyticsPayload));
     }
 
+    @Override
+    public void trackEvent(String eventName, Bundle analyticsPayload) {
+        if (mTracker == null) {
+            LOG.e(LOG_TAG, "trackEvent failed: mTracker is null");
+            return;
+        }
+
+        mTracker.setReferrer(eventName);
+        mTracker.send(parsePayload(analyticsPayload));
+    }
 
     @Override
-    public void trackPageHit(String screenName, Map<String, Object> map) {
+    public void trackPageHit(Activity activity, String screenName, String screenClassOverride) {
         if (mTracker == null) {
             LOG.e(LOG_TAG, "trackPageHit failed: mTracker is null");
             return;
@@ -103,7 +115,37 @@ public class GAAppender implements IAnalyticsAppender {
     }
 
 
-    private Map parsePayload(Map<String, Object> analyticsPayload) {
+    private Map<String, String> parsePayload(Map<String, Object> analyticsPayload) {
+        HitBuilders.EventBuilder eventBuilder = new HitBuilders.EventBuilder();
+
+        //TODO Should this be protected, or crash in purpose to avoid mistakes on dev side?
+        if (analyticsPayload.containsKey(CATEGORY)) {
+            eventBuilder.setCategory((String) analyticsPayload.get(CATEGORY));
+        }
+
+        if (analyticsPayload.containsKey(ACTION)) {
+            eventBuilder.setCategory((String) analyticsPayload.get(ACTION));
+        }
+        if (analyticsPayload.containsKey(LABEL)) {
+            eventBuilder.setLabel((String) analyticsPayload.get(LABEL));
+        }
+
+        if (analyticsPayload.containsKey(VALUE)) {
+            eventBuilder.setValue((Long) analyticsPayload.get(VALUE));
+        }
+
+        if (analyticsPayload.containsKey(PRODUCT)) {
+            eventBuilder.addProduct((Product) analyticsPayload.get(PRODUCT));
+        }
+
+        if (analyticsPayload.containsKey(PRODUCT_ACTION)) {
+            eventBuilder.setProductAction((ProductAction) analyticsPayload.get(PRODUCT_ACTION));
+        }
+
+        return eventBuilder.build();
+    }
+
+    private Map<String, String> parsePayload(Bundle analyticsPayload) {
         HitBuilders.EventBuilder eventBuilder = new HitBuilders.EventBuilder();
 
         //TODO Should this be protected, or crash in purpose to avoid mistakes on dev side?
@@ -136,6 +178,16 @@ public class GAAppender implements IAnalyticsAppender {
     @Override
     public String getAnalyticsId() {
         return "GoogleAnalytics";
+    }
+
+    @Override
+    public void setUserID(String userID) {
+        mTracker.setClientId(userID);
+    }
+
+    @Override
+    public void setUserProperty(String name, String value) {
+        //TODO How can this be added?
     }
 }
 

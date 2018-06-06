@@ -20,9 +20,11 @@ android {
 }
 
 dependencies {
-    api "com.github.mindera:skeletoid:$rootProject.skeletoidVersion"
+
+    //Depends on Base Skeletoid
+    compile project(path: ':base')
 
     implementation "com.google.android.gms:play-services-analytics:$rootProject.playServicesVersion"
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation "junit:junit:$rootProject.junitVersion"
 }
