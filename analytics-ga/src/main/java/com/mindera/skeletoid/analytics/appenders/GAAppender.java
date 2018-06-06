@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.analytics.ecommerce.Product;
 import com.google.android.gms.analytics.ecommerce.ProductAction;
@@ -35,42 +34,42 @@ public class GAAppender implements IAnalyticsAppender {
     @Override
     public void enableAppender(Context context) {
         GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
-        analytics.setLogger(new Logger() {
-            @Override
-            public void verbose(String s) {
-
-            }
-
-            @Override
-            public void info(String s) {
-
-            }
-
-            @Override
-            public void warn(String s) {
-
-            }
-
-            @Override
-            public void error(String s) {
-
-            }
-
-            @Override
-            public void error(Exception e) {
-
-            }
-
-            @Override
-            public void setLogLevel(int i) {
-
-            }
-
-            @Override
-            public int getLogLevel() {
-                return 0;
-            }
-        });
+//        analytics.setLogger(new Logger() {
+//            @Override
+//            public void verbose(String s) {
+//
+//            }
+//
+//            @Override
+//            public void info(String s) {
+//
+//            }
+//
+//            @Override
+//            public void warn(String s) {
+//
+//            }
+//
+//            @Override
+//            public void error(String s) {
+//
+//            }
+//
+//            @Override
+//            public void error(Exception e) {
+//
+//            }
+//
+//            @Override
+//            public void setLogLevel(int i) {
+//
+//            }
+//
+//            @Override
+//            public int getLogLevel() {
+//                return 0;
+//            }
+//        });
 
         //This can be configured via XML or code. Since we need to maintain this code on the lib, it must
         // be via xml (dummy file) that will ne replaced by the apps real file
