@@ -1,1 +1,1 @@
-include ':library'
+include ':base', ':kt-extensions', ':kt-extensions', ':analytics-ga', ':analytics-firebase'
