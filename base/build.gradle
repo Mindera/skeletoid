@@ -5,6 +5,8 @@ android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
 
+    testBuildType "unitTest"
+
     defaultConfig {
 
         minSdkVersion rootProject.minSdkVersion
@@ -13,6 +15,11 @@ android {
     }
 
     buildTypes {
+
+        unitTest{
+            testCoverageEnabled = true
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -21,6 +28,21 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    lintOptions {
+        // set to true to turn off analysis progress reporting by lint
+        quiet true
+
+        // if true, stop the gradle build if errors are found
+        abortOnError false
+
+        // do not ignore warnings
+        warningsAsErrors true
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 
@@ -42,6 +64,6 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "org.powermock:powermock-module-junit4:$rootProject.powermockVersion"
     testImplementation "org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion"
-    testImplementation "org.powermock:powermock-api-mockito:$rootProject.powermockVersion"
+    testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"
     testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
 }

@@ -55,7 +55,7 @@ ext {
 
     junitVersion = '4.12'
     mockitoVersion = '2.10.0'
-    powermockVersion = '1.6.4'
+    powermockVersion = '1.7.0'
 }
 
 task clean(type: Delete) {
