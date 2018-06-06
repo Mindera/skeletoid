@@ -43,7 +43,7 @@ ext {
     // dependencies versions
     supportLibraryVersion = '27.1.1'
     rxJavaVersion = '2.1.7'
-    rxAndroidVersion = '2.0.1'
+    rxAndroidVersion = '2.0.2'
     rxBindingsVersion = '2.1.1'
 
     kotlinVersion = '1.2.41'
@@ -54,6 +54,8 @@ ext {
     skeletoidVersion = '0.2.8'
 
     junitVersion = '4.12'
+    mockitoVersion = '2.10.0'
+    powermockVersion = '1.6.4'
 }
 
 task clean(type: Delete) {
