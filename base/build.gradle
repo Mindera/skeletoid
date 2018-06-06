@@ -64,6 +64,6 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "org.powermock:powermock-module-junit4:$rootProject.powermockVersion"
     testImplementation "org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion"
-    testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"
+    testImplementation "org.powermock:powermock-api-mockito:$rootProject.powermockVersion"
     testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
 }

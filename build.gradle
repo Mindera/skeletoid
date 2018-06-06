@@ -54,8 +54,8 @@ ext {
     skeletoidVersion = '0.2.8'
 
     junitVersion = '4.12'
-    mockitoVersion = '2.10.0'
-    powermockVersion = '1.7.0'
+    mockitoVersion = '1.10.19'
+    powermockVersion = '1.6.4'
 }
 
 task clean(type: Delete) {
