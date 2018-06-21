@@ -27,7 +27,7 @@ android {
 dependencies {
 
     //Depends on Base Skeletoid
-    compile project(path: ':base')
+    api project(path: ':base')
 
     api "com.google.firebase:firebase-core:$rootProject.firebaseVersion"
 

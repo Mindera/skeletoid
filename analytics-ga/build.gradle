@@ -26,7 +26,7 @@ android {
 dependencies {
 
     //Depends on Base Skeletoid
-    compile project(path: ':base')
+    api project(path: ':base')
 
     implementation "com.google.android.gms:play-services-analytics:$rootProject.playServicesVersion"
 
