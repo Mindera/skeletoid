@@ -1,6 +1,6 @@
 buildscript {
     ext.gradleVersion = '3.1.2'
-    ext.kotlinVersion = '1.2.41'
+    ext.kotlinVersion = '1.2.50'
 
     repositories {
         jcenter()
@@ -48,8 +48,8 @@ ext {
 
     kotlinVersion = '1.2.41'
 
-    playServicesVersion = '16.0.0'
-    firebaseVersion = '16.0.0'
+    playServicesVersion = '16.0.1'
+    firebaseVersion = '16.0.1'
 
     skeletoidVersion = '0.2.8'
 

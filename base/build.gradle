@@ -11,13 +11,19 @@ android {
 
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        
+
     }
 
     buildTypes {
 
-        qa{
+        debug {
+            matchingFallbacks = ['debug']
+        }
+
+        qa {
             testCoverageEnabled = true
+
+            matchingFallbacks = ['debug']
         }
 
         release {

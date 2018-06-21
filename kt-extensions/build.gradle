@@ -17,8 +17,15 @@ android {
     }
 
     buildTypes {
+
+        debug{
+            matchingFallbacks = ['debug']
+        }
+
         qa{
             testCoverageEnabled = true
+
+            matchingFallbacks = ['debug']
         }
 
         release {
