@@ -1,17 +1,18 @@
 package com.mindera.skeletoid.logs;
 
+import android.content.Context;
+
 import com.mindera.skeletoid.logs.appenders.ILogAppender;
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils;
 
 import org.junit.After;
 import org.junit.Test;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.mindera.skeletoid.logs.LoggerManager.LOG_FORMAT_4ARGS;
+
 import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getObjectHash;
 import static com.mindera.skeletoid.threads.utils.ThreadUtils.getCurrentThreadName;
 import static junit.framework.Assert.assertTrue;
@@ -22,9 +23,14 @@ import static org.mockito.Mockito.when;
 
 public class LOGUnitTest {
 
-    private String mPackageName = "my.package.name";
+    /**
+     * Should be the same as {@link LoggerManager#LOG_FORMAT_4ARGS}
+     */
+    private static final String LOG_FORMAT_4ARGS = "%s %s %s | %s";
+
     private final String TAG = "TAG";
     private final String TEXT = "Text";
+    private String mPackageName = "my.package.name";
 
     @After
     public void cleanupLOG() {

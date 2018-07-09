@@ -25,9 +25,14 @@ import static org.mockito.Mockito.when;
 
 public class LoggerManagerUnitTest {
 
-    private String mPackageName = "my.package.name";
+    /**
+     * Should be the same as {@link LoggerManager#LOG_FORMAT_4ARGS}
+     */
+    private static final String LOG_FORMAT_4ARGS = "%s %s %s | %s";
+
     private final String TAG = "TAG";
     private final String TEXT = "Text";
+    private String mPackageName = "my.package.name";
 
     @Test
     public void testAddAppendersNull() {

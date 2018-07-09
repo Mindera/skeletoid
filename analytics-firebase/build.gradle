@@ -19,7 +19,6 @@ android {
         }
 
         qa{
-
             matchingFallbacks = ['debug']
         }
 
@@ -40,7 +39,6 @@ dependencies {
     testImplementation "junit:junit:$rootProject.junitVersion"
 
 }
-
 jacoco {
     toolVersion "0.8.1"
 }
