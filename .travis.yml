@@ -41,4 +41,4 @@ script:
   - ./gradlew base:createUnitTestReport
 
   # Send coverage report to Codacy
-   - ./gradlew base:codacyUpload
+  # - ./gradlew base:codacyUpload
