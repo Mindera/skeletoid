@@ -33,10 +33,6 @@ android {
         }
     }
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-    }
-
     lintOptions {
         // set to true to turn off analysis progress reporting by lint
         quiet true
