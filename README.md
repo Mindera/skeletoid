@@ -106,7 +106,7 @@ repositories {
 }
 
 ```
-And add the following script to the app dependencies
+And add the following script to the app dependencies (TO FIX)
 
 ```groovy
 dependencies {
