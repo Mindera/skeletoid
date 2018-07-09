@@ -43,48 +43,6 @@ You can have multiple log appenders, you can event implement your own. We provid
    LOG.wtf("TAG", new Exception(), "This", "accepts", "endless", "strings");
  ```
 
-
-### Connectivity - This module is currently DEPRECATED (check issue #47)
-Determine real device connectivity: if the device is connected to a network and if it really has internet access.
-To be able to do that, you'll need to add to the app's manifest:
-
- ```android
-     <receiver android:name="com.mindera.skeletoid.network.ConnectivityReceiver">
-       <intent-filter>
-         <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-         <action android:name="android.net.wifi.STATE_CHANGE"/>
-         <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE"/>
-       </intent-filter>
-     </receiver>
- ```
- 
-And then you can just check via:
-
- ```java
-     boolean isConnectedAndWithInternet = Connectivity.isConnectedAndWithInternetAvailable(context);
- ```
-
-If you want to be notified via callback:
-   
- ```java
-     Connectivity.setConnectivityCallback(callback);
- ```
-
-Remember to avoid leaks. If you need you can:
-
-```java
-   Connectivity.removeConnectivityCallback();
-```
-   
-
-_Note: To be able to determine the real connectivity, a request to google.com will be made each time the device connects to a network. You need of course to have the INTERNET permission on the Manifest (if you didn't, you wouldn't need this anyway)._
-
-You can change the host to be called via:
-
-```java
-   Connectivity.updateConnectivityValidationAddress(uri);
-```
-
 ### Thread pooling management
 With this you can use the the ThreadPoolExecutor and ScheduledThreadPool executor the same as you normally use, so why use it?
 - Have threads of each ThreadPool with the naming you want
@@ -122,6 +80,20 @@ You can have multiple Analytic appenders, you can event implement your own. We p
    Analytics.trackPageHit(activity, screenName, screenClassOverride, analyticsPayload);
    ```
 
+### Analytics Support for Firebase 
+
+TODO: Add code examples (merged from https://github.com/Mindera/skeletoid-firebase-analytics)
+
+### Analytics Support for Google Analytics 
+
+TODO: Add code examples (merged from https://github.com/Mindera/skeletoid-googleanalytics)
+
+
+### Kotlin extensions 
+
+TODO: Add code examples (merged from https://github.com/Mindera/skeletoid-kt-extensions)
+
+
 ## Usage
 
 The plugin is available in [JitPack](https://jitpack.io/). Just add the following to your buildscript dependencies:
@@ -134,7 +106,7 @@ repositories {
 }
 
 ```
-And add the following script to the app dependencies
+And add the following script to the app dependencies (TO FIX)
 
 ```groovy
 dependencies {
@@ -142,10 +114,12 @@ dependencies {
 }
 ```
 
-## Standalones available
-* [Kotlin Extensions](https://github.com/Mindera/skeletoid-kt-extensions)
 
-## Plugins available
-* [Firebase Analytics appender](https://github.com/Mindera/skeletoid-firebase-analytics)
-* [Google Analytics appender](https://github.com/Mindera/skeletoid-googleanalytics)
+## Note
 
+The parts of this lib in Java will soon be migrated to Kotlin
+
+
+
+## Suggestions of other dependencies that complement this lib:
+- Reactive Network: https://github.com/pwittchen/ReactiveNetwork
