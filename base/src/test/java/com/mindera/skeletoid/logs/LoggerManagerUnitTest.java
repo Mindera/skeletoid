@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.mindera.skeletoid.logs.LoggerManager.LOG_FORMAT_4ARGS;
 import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getObjectHash;
 import static com.mindera.skeletoid.threads.utils.ThreadUtils.getCurrentThreadName;
 import static junit.framework.Assert.assertEquals;

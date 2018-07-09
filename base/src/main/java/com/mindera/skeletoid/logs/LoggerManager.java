@@ -27,7 +27,7 @@ class LoggerManager implements ILoggerManager {
     /**
      * Log format
      */
-    private static final String LOG_FORMAT_4ARGS = "%s %s %s | %s";
+    static final String LOG_FORMAT_4ARGS = "%s %s %s | %s";
     /**
      * Log format
      */

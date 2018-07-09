@@ -28,7 +28,7 @@ public class LOG {
      * @param context
      */
     public static void init(Context context) {
-        getInstance(context);
+        getInstance(context).removeAllAppenders();
     }
 
 
@@ -38,7 +38,7 @@ public class LOG {
      * @param context
      */
     public static void init(Context context, String packageName) {
-        getInstance(context, packageName);
+        getInstance(context, packageName).removeAllAppenders();
     }
 
     /**
@@ -47,8 +47,11 @@ public class LOG {
      * @param context      Context app
      * @param logAppenders The log appenders to be started
      */
-    public static Set<String> init(Context context, List<ILogAppender> logAppenders) {
-        return getInstance(context).addAppenders(context, logAppenders);
+    public synchronized static Set<String> init(Context context, List<ILogAppender> logAppenders) {
+        ILoggerManager logger = getInstance(context);
+        logger.removeAllAppenders();
+
+        return logger.addAppenders(context, logAppenders);
     }
 
 
@@ -59,8 +62,11 @@ public class LOG {
      * @param packageName  Packagename
      * @param logAppenders The log appenders to be started
      */
-    public static Set<String> init(Context context, String packageName, List<ILogAppender> logAppenders) {
-        return getInstance(packageName).addAppenders(context, logAppenders);
+    public synchronized static Set<String> init(Context context, String packageName, List<ILogAppender> logAppenders) {
+        ILoggerManager logger = getInstance(packageName);
+        logger.removeAllAppenders();
+
+        return logger.addAppenders(context, logAppenders);
     }
 
 
