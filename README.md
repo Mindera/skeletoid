@@ -80,7 +80,6 @@ Analytics.trackEvent(eventName, analyticsPayload);
    Analytics.trackPageHit(activity, screenName, screenClassOverride, analyticsPayload);
    ```
 
-
 ## Usage
 
 The plugin is available in [JitPack](https://jitpack.io/). Just add the following to your buildscript dependencies:
@@ -94,12 +93,10 @@ repositories {
 
 ```
 
-
 Add the following script to the app dependencies:
 
 ```groovy
 dependencies {
-    #Base skeletoid (loggers, threads...)
     compile 'com.github.mindera.skeletoid:base:0.3.0'
     
 }
@@ -147,3 +144,5 @@ dependencies {
 ## Note
 
 All the module will be converted to Kotlin in due time.
+
+The parts of this lib in Java will soon be migrated to Kotlin
