@@ -72,27 +72,13 @@ You can have multiple Analytic appenders, you can event implement your own. We p
     
 3. Then track an event or page hit:
 
-   ```java
-   Analytics.trackEvent(eventName, analyticsPayload);
+```java
+Analytics.trackEvent(eventName, analyticsPayload);
    ```
 
    ```java
    Analytics.trackPageHit(activity, screenName, screenClassOverride, analyticsPayload);
    ```
-
-### Analytics Support for Firebase 
-
-TODO: Add code examples (merged from https://github.com/Mindera/skeletoid-firebase-analytics)
-
-### Analytics Support for Google Analytics 
-
-TODO: Add code examples (merged from https://github.com/Mindera/skeletoid-googleanalytics)
-
-
-### Kotlin extensions 
-
-TODO: Add code examples (merged from https://github.com/Mindera/skeletoid-kt-extensions)
-
 
 ## Usage
 
@@ -106,20 +92,57 @@ repositories {
 }
 
 ```
-And add the following script to the app dependencies (TO FIX)
+
+Add the following script to the app dependencies:
 
 ```groovy
 dependencies {
-    compile 'com.github.mindera:skeletoid:x.y.z'
+    compile 'com.github.mindera.skeletoid:base:0.3.0'
+    
+}
+```
+
+### Analytics Support for Firebase 
+
+TODO: Add code examples (merged from https://github.com/Mindera/skeletoid-firebase-analytics)
+
+And add the following script to the app dependencies:
+
+```groovy
+dependencies {
+    compile 'com.github.mindera.skeletoid:analytics-firebase:0.3.0'
+}
+```
+
+
+### Analytics Support for Google Analytics 
+
+TODO: Add code examples (merged from https://github.com/Mindera/skeletoid-googleanalytics)
+
+And add the following script to the app dependencies:
+
+```groovy
+dependencies {
+    compile 'com.github.mindera.skeletoid:analytics-ga:0.3.0'
+}
+```
+
+
+### Kotlin extensions 
+
+TODO: Add code examples (merged from https://github.com/Mindera/skeletoid-kt-extensions)
+
+And add the following script to the app dependencies:
+
+```groovy
+dependencies {
+    compile 'com.github.mindera.skeletoid:kt-extensions:0.3.0'
 }
 ```
 
 
 ## Note
 
+All the module will be converted to Kotlin in due time.
+
 The parts of this lib in Java will soon be migrated to Kotlin
-
-
-
-## Suggestions of other dependencies that complement this lib:
-- Reactive Network: https://github.com/pwittchen/ReactiveNetwork
