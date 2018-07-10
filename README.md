@@ -97,7 +97,7 @@ Add the following script to the app dependencies:
 
 ```groovy
 dependencies {
-    compile 'com.github.mindera.skeletoid:base:0.3.0'
+    implementation 'com.github.mindera.skeletoid:base:0.3.0'
     
 }
 ```
@@ -110,7 +110,7 @@ And add the following script to the app dependencies:
 
 ```groovy
 dependencies {
-    compile 'com.github.mindera.skeletoid:analytics-firebase:0.3.0'
+    implementation 'com.github.mindera.skeletoid:analytics-firebase:0.3.0'
 }
 ```
 
@@ -123,7 +123,7 @@ And add the following script to the app dependencies:
 
 ```groovy
 dependencies {
-    compile 'com.github.mindera.skeletoid:analytics-ga:0.3.0'
+    implementation 'com.github.mindera.skeletoid:analytics-ga:0.3.0'
 }
 ```
 
@@ -136,7 +136,7 @@ And add the following script to the app dependencies:
 
 ```groovy
 dependencies {
-    compile 'com.github.mindera.skeletoid:kt-extensions:0.3.0'
+    implementation 'com.github.mindera.skeletoid:kt-extensions:0.3.0'
 }
 ```
 
