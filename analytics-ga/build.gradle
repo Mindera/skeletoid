@@ -29,7 +29,7 @@ dependencies {
     //Depends on Base Skeletoid
     api project(path: ':base')
 
-    implementation "com.google.android.gms:play-services-analytics:$rootProject.playServicesVersion"
+    implementation "com.google.android.gms:play-services-analytics:$rootProject.gaVersion"
 
     testImplementation "junit:junit:$rootProject.junitVersion"
 }

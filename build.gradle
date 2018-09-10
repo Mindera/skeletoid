@@ -1,6 +1,6 @@
 buildscript {
     ext.gradleVersion = '3.1.2'
-    ext.kotlinVersion = '1.2.51'
+    ext.kotlinVersion = '1.2.61'
 
     repositories {
         google()
@@ -47,12 +47,11 @@ ext {
     rxAndroidVersion = '2.0.2'
     rxBindingsVersion = '2.1.1'
 
-    kotlinVersion = '1.2.41'
+    playServicesVersion = '15.0.1'
+    gaVersion = '16.0.3'
+    firebaseVersion = '16.0.3'
 
-    playServicesVersion = '16.0.1'
-    firebaseVersion = '16.0.1'
-
-    skeletoidVersion = '0.2.8'
+    skeletoidVersion = '0.3.0'
 
     junitVersion = '4.12'
     mockitoVersion = '1.10.19'
