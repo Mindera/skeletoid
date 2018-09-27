@@ -1,0 +1,48 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+
+        consumerProguardFiles 'proguard-rules.pro'
+    }
+
+    buildTypes {
+        debug {
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+
+    lintOptions {
+        // set to true to turn off analysis progress reporting by lint
+        quiet true
+
+        // if true, stop the gradle build if errors are found
+        abortOnError false
+
+        // do not ignore warnings
+        warningsAsErrors true
+    }
+}
+
+dependencies {
+    //Support
+    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+
+    // RxJava
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
+
+    // RxBindings
+    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7:$rootProject.rxBindingsVersion"
+    implementation "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:$rootProject.rxBindingsVersion"
+    implementation "com.jakewharton.rxbinding2:rxbinding-support-v4:$rootProject.rxBindingsVersion"
+    implementation "com.jakewharton.rxbinding2:rxbinding-design:$rootProject.rxBindingsVersion"
+}
