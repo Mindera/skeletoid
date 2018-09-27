@@ -1,7 +1,7 @@
 package com.mindera.skeletoid.rxbindings.searchview;
 
 import android.support.annotation.NonNull;
-import android.widget.SearchView;
+import android.support.v7.widget.SearchView;
 
 import com.jakewharton.rxbinding2.InitialValueObservable;
 import com.jakewharton.rxbinding2.widget.SearchViewQueryTextEvent;
@@ -12,7 +12,7 @@ public class RxSearchView {
 
     public static InitialValueObservable<SearchViewQueryTextEvent> queryTextChangeEvents(
             @NonNull SearchView view) {
-        return com.jakewharton.rxbinding2.support.v7.widget.RxSearchView.queryTextChangeEvents(view);
+        return queryTextChangeEvents(view);
     }
 
     public static InitialValueObservable<CharSequence> queryTextChanges(@NonNull android.support.v7.widget.SearchView view) {
