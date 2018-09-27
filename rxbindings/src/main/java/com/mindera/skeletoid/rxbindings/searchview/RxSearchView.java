@@ -1,7 +1,7 @@
 package com.mindera.skeletoid.rxbindings.searchview;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.SearchView;
+import android.widget.SearchView;
 
 import com.jakewharton.rxbinding2.InitialValueObservable;
 import com.jakewharton.rxbinding2.widget.SearchViewQueryTextEvent;
