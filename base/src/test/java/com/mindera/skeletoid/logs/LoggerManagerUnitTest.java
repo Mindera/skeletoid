@@ -1,6 +1,7 @@
 package com.mindera.skeletoid.logs;
 
 import android.content.Context;
+import android.util.ArraySet;
 
 import com.mindera.skeletoid.logs.appenders.ILogAppender;
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils;
@@ -19,6 +20,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -147,6 +149,30 @@ public class LoggerManagerUnitTest {
         verify(appenderA, times(1)).disableAppender();
         verify(appenderB, times(1)).disableAppender();
         verify(appenderC, times(1)).disableAppender();
+    }
+
+    @Test
+    public void testRemoveAppender() {
+        Context context = mock(Context.class);
+
+        LoggerManager loggerManager = new LoggerManager(mPackageName);
+
+        List<ILogAppender> appenders = new ArrayList<>();
+        List<String> appendersId = new ArrayList<>();
+
+        ILogAppender appenderA = mockAppender("A");
+        ILogAppender appenderB = mockAppender("B");
+        ILogAppender appenderC = mockAppender("C");
+
+        appenders.add(appenderA);
+        appenders.add(appenderB);
+        appenders.add(appenderC);
+
+        appendersId.add("A");
+
+        loggerManager.addAppenders(context, appenders);
+        loggerManager.removeAppenders(context, new HashSet<>(appendersId));
+        verify(appenderA, times(1)).disableAppender();
     }
 
     @Test
