@@ -1,9 +1,14 @@
 package com.mindera.skeletoid.generic;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import android.app.Activity;
 import android.view.View;
+
+import com.mindera.skeletoid.BuildConfig;
 
 import static org.mockito.Mockito.mock;
 
@@ -11,9 +16,9 @@ import static org.mockito.Mockito.mock;
  * Created by Pedro Vicente - pedro.vicente@mindera.com
  * File created on 14/08/2017.
  */
-
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest=Config.NONE)
 public class KeyboardUtilsTest {
-
 
     @Test(expected = NullPointerException.class)
     public void testHideKeyboard() {

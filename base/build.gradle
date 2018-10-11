@@ -68,6 +68,7 @@ dependencies {
     testImplementation "org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion"
     testImplementation "org.powermock:powermock-api-mockito:$rootProject.powermockVersion"
     testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
+    testImplementation "org.robolectric:robolectric:$rootProject.robolectricVersion"
 }
 
 jacoco {
