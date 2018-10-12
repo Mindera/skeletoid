@@ -1,15 +1,13 @@
 package com.mindera.skeletoid.generic;
 
+import android.content.Context;
+import android.util.Log;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
-import android.content.Context;
-import android.util.Log;
 
 import java.io.File;
 

@@ -1,14 +1,12 @@
 package com.mindera.skeletoid.generic;
 
+import android.app.Activity;
+import android.view.View;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-
-import android.app.Activity;
-import android.view.View;
-
-import com.mindera.skeletoid.BuildConfig;
 
 import static org.mockito.Mockito.mock;
 

@@ -1,7 +1,6 @@
 package com.mindera.skeletoid.logs;
 
 import android.content.Context;
-import android.util.ArraySet;
 
 import com.mindera.skeletoid.logs.appenders.ILogAppender;
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils;
@@ -13,14 +12,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.mindera.skeletoid.logs.LoggerManager.LOG_FORMAT_4ARGS;
 import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getObjectHash;
 import static com.mindera.skeletoid.threads.utils.ThreadUtils.getCurrentThreadName;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
