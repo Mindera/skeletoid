@@ -1,8 +1,13 @@
 package com.mindera.skeletoid.generic;
 
-import org.junit.Test;
-
 import android.content.Context;
+import android.util.Log;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
 
@@ -12,6 +17,8 @@ import static junit.framework.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(Log.class)
 public class AndroidUtilsUnitTests {
 
     private final String packageName = "com.mindera.skeletoid";
@@ -82,9 +89,11 @@ public class AndroidUtilsUnitTests {
         assertEquals(AndroidUtils.APP_NAME, AndroidUtils.getApplicationName(null));
     }
 
+
     @Test
     public void testGetApplicationVersionCode() {
         Context context = mock(Context.class);
+        PowerMockito.mockStatic(Log.class);
         assertEquals(AndroidUtils.mAppVersionCode, AndroidUtils.getApplicationVersionCode(context));
     }
 

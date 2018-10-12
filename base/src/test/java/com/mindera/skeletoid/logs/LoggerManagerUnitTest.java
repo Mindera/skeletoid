@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.mindera.skeletoid.logs.LoggerManager.LOG_FORMAT_4ARGS;
 import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getObjectHash;
 import static com.mindera.skeletoid.threads.utils.ThreadUtils.getCurrentThreadName;
 import static junit.framework.Assert.assertEquals;
@@ -147,6 +146,30 @@ public class LoggerManagerUnitTest {
         verify(appenderA, times(1)).disableAppender();
         verify(appenderB, times(1)).disableAppender();
         verify(appenderC, times(1)).disableAppender();
+    }
+
+    @Test
+    public void testRemoveAppender() {
+        Context context = mock(Context.class);
+
+        LoggerManager loggerManager = new LoggerManager(mPackageName);
+
+        List<ILogAppender> appenders = new ArrayList<>();
+        List<String> appendersId = new ArrayList<>();
+
+        ILogAppender appenderA = mockAppender("A");
+        ILogAppender appenderB = mockAppender("B");
+        ILogAppender appenderC = mockAppender("C");
+
+        appenders.add(appenderA);
+        appenders.add(appenderB);
+        appenders.add(appenderC);
+
+        appendersId.add("A");
+
+        loggerManager.addAppenders(context, appenders);
+        loggerManager.removeAppenders(context, new HashSet<>(appendersId));
+        verify(appenderA, times(1)).disableAppender();
     }
 
     @Test

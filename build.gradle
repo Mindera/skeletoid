@@ -51,11 +51,10 @@ ext {
     gaVersion = '16.0.3'
     firebaseVersion = '16.0.3'
 
-    skeletoidVersion = '0.3.0'
-
     junitVersion = '4.12'
-    mockitoVersion = '1.10.19'
-    powermockVersion = '1.6.4'
+    mockitoVersion = '2.8.9'
+    powermockVersion = '1.7.4'
+    robolectricVersion = '3.8'
 }
 
 task clean(type: Delete) {
