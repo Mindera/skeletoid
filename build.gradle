@@ -1,6 +1,6 @@
 buildscript {
-    ext.gradleVersion = '3.1.2'
-    ext.kotlinVersion = '1.2.61'
+    ext.gradleVersion = '3.2.0'
+    ext.kotlinVersion = '1.2.71'
 
     repositories {
         google()
@@ -18,9 +18,6 @@ buildscript {
         classpath "com.dicedmelon.gradle:jacoco-android:0.1.3"
 
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
@@ -36,8 +33,8 @@ allprojects {
 
 ext {
     // sdk and tools
-    compileSdkVersion = 27
-    buildToolsVersion = '27.0.3'
+    compileSdkVersion = 28
+    buildToolsVersion = '28.0.2'
     minSdkVersion = 16
     targetSdkVersion = 27
 
@@ -49,7 +46,7 @@ ext {
 
     playServicesVersion = '15.0.1'
     gaVersion = '16.0.3'
-    firebaseVersion = '16.0.3'
+    firebaseVersion = '16.0.4'
 
     junitVersion = '4.12'
     mockitoVersion = '2.8.9'
