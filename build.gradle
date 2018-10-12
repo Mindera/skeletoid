@@ -51,8 +51,6 @@ ext {
     gaVersion = '16.0.3'
     firebaseVersion = '16.0.3'
 
-    skeletoidVersion = '0.4.0'
-
     junitVersion = '4.12'
     mockitoVersion = '2.20.0'
     powermockVersion = '1.7.4'
