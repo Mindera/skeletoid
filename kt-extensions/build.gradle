@@ -51,7 +51,13 @@ dependencies {
     implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7:$rootProject.rxBindingsVersion"
     implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rootProject.rxBindingsVersion"
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    testImplementation "org.powermock:powermock-module-junit4:$rootProject.powermockVersion"
+    testImplementation "org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion"
+    testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"
+    testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
+    testImplementation "org.robolectric:robolectric:$rootProject.robolectricVersion"
 
 }
 

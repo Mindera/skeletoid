@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 apply plugin: 'jacoco'
 apply plugin: "io.github.ddimtirov.codacy"
 
@@ -33,6 +34,13 @@ dependencies {
     implementation "com.google.android.gms:play-services-analytics:$rootProject.gaVersion"
 
     testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    testImplementation "org.powermock:powermock-module-junit4:$rootProject.powermockVersion"
+    testImplementation "org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion"
+    testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"
+    testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
+    testImplementation "org.robolectric:robolectric:$rootProject.robolectricVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 jacoco {
@@ -73,4 +81,7 @@ task createUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest']) {
 
     classDirectories = files([debugTree], [kotlinDebugTree])
     executionData = files("${buildDir}/jacoco/testQaUnitTest.exec")
+}
+repositories {
+    mavenCentral()
 }

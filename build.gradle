@@ -1,4 +1,5 @@
 buildscript {
+    ext.kotlin_version = '1.2.71'
     ext.gradleVersion = '3.2.0'
     ext.kotlinVersion = '1.2.71'
 
@@ -18,6 +19,7 @@ buildscript {
         classpath "com.dicedmelon.gradle:jacoco-android:0.1.3"
 
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
