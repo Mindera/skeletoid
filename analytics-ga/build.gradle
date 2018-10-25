@@ -15,6 +15,10 @@ android {
     }
 
     buildTypes {
+        debug{
+            
+        }
+        
         qa{
             matchingFallbacks = ['debug']
         }

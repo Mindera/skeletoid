@@ -38,7 +38,10 @@ script:
   - ./gradlew assemble
 
   # Run initTests
-  - ./gradlew createUnitTestReport
+  - ./gradlew base:createUnitTestReport
+  # TODO This should be aggregated report... drop the :base
 
   # Send coverage report to Codacy
-  - ./gradlew codacyUpload
+  - ./gradlew base:codacyUpload
+  # TODO This should be aggregated report... drop the :base
+

@@ -32,7 +32,7 @@ public class RxSearchView {
         return new com.mindera.skeletoid.rxbindings.searchview.support.SearchViewFocusChangeObservable(view);
     }
 
-    protected RxSearchView() {
+    private RxSearchView() {
         throw new AssertionError("No instances.");
     }
 }
