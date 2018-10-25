@@ -38,7 +38,7 @@ script:
   - ./gradlew assemble
 
   # Run initTests
-  - ./gradlew base:createUnitTestReport
+  - ./gradlew createUnitTestReport
 
   # Send coverage report to Codacy
-  - ./gradlew base:codacyUpload
+  - ./gradlew codacyUpload
