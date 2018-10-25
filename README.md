@@ -10,7 +10,12 @@ An utils library for Android Applications made at Mindera.
 Instead of copy pasting the same utils packages to each new project (and not having improvements propagated), just have this lib to help you! 
 
 
-## Features
+This library is divided into modules to enable you to just use those that you need:
+
+## Base
+Standard Android features, without the need to import any external library.
+
+### Features
 
 ### Logging abstraction
 Have multiple implementation of logs, with a common interface. **Log once, propagate it to multiple appenders.** 
@@ -80,7 +85,7 @@ Analytics.trackEvent(eventName, analyticsPayload);
    Analytics.trackPageHit(activity, screenName, screenClassOverride, analyticsPayload);
    ```
 
-## Usage
+### Usage
 
 The plugin is available in [JitPack](https://jitpack.io/). Just add the following to your buildscript dependencies:
 
@@ -97,46 +102,101 @@ Add the following script to the app dependencies:
 
 ```groovy
 dependencies {
-    implementation 'com.github.mindera.skeletoid:base:0.3.0'
+    implementation 'com.github.mindera.skeletoid:base:0.4.0'
     
 }
 ```
 
-### Analytics Support for Firebase 
+## Kotlin extensions 
 
-TODO: Add code examples (merged from https://github.com/Mindera/skeletoid-firebase-analytics)
+This depends on RxJava.
 
+### Features
+Adds extensions for:
+
+Android
+- Activity
+- Context
+- Parcel
+
+Android UI
+- EditText
+- TextView
+- View
+
+Kotlin
+- Any
+- Let
+- Calendar
+
+RxJava
+- Completable
+- Observable
+- Single
+- Breadcrumbs
+
+
+TODO: Add code examples 
+
+### Usage
 And add the following script to the app dependencies:
 
 ```groovy
 dependencies {
-    implementation 'com.github.mindera.skeletoid:analytics-firebase:0.3.0'
+    implementation 'com.github.mindera.skeletoid:kt-extensions:0.4.0'
 }
 ```
 
 
-### Analytics Support for Google Analytics 
+## RxBindings
 
-TODO: Add code examples (merged from https://github.com/Mindera/skeletoid-googleanalytics)
+### Features
+Adds support for some Views that [Jake's Wharlton original RxBindings](https://github.com/JakeWharton/RxBinding) has issues with. Look at this as an extension of that library.
 
+Views supported:
+- RxSearchView (method focusChanges)
+
+TODO: Add code examples 
+
+### Usage
 And add the following script to the app dependencies:
 
 ```groovy
 dependencies {
-    implementation 'com.github.mindera.skeletoid:analytics-ga:0.3.0'
+    implementation 'com.github.mindera.skeletoid:rxbindings:0.4.0'
 }
 ```
 
 
-### Kotlin extensions 
+## Analytics Firebase - Support for Firebase 
 
-TODO: Add code examples (merged from https://github.com/Mindera/skeletoid-kt-extensions)
+### Features
+An appender for the Analytics abstraction of Base module that supports Firebase of the box
 
+TODO: Add code examples 
+
+### Usage
 And add the following script to the app dependencies:
 
 ```groovy
 dependencies {
-    implementation 'com.github.mindera.skeletoid:kt-extensions:0.3.0'
+    implementation 'com.github.mindera.skeletoid:analytics-firebase:0.4.0'
+}
+```
+
+
+## Analytics GA - Support for Google Analytics
+
+An appender for the Analytics abstraction of Base module that supports GA of the box
+
+TODO: Add code examples
+
+### Usage
+And add the following script to the app dependencies:
+
+```groovy
+dependencies {
+    implementation 'com.github.mindera.skeletoid:analytics-ga:0.4.0'
 }
 ```
 
