@@ -1,9 +1,12 @@
 apply plugin: 'com.android.library'
+apply plugin: 'jacoco'
 apply plugin: "io.github.ddimtirov.codacy"
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
+
+    testBuildType "qa"
 
     defaultConfig {
 
