@@ -12,7 +12,7 @@ Instead of copy pasting the same utils packages to each new project (and not hav
 
 This library is divided into modules to enable you to just use those that you need:
 
-## Base
+## Base Module
 Standard Android features, without the need to import any external library.
 
 ### Features
@@ -59,7 +59,7 @@ With this you can use the the ThreadPoolExecutor and ScheduledThreadPool executo
 Have multiple implementation of analytics, with a common interface. **Send an event once, and get it push to every appender.** 
 
 This way you can add/remove/enable/disable appenders seamlessly.
-You can have multiple Analytic appenders, you can event implement your own. We provide the the Google Analytics appender as a plugin. 
+You can have multiple Analytic appenders, you can event implement your own. We provide the the Firebase and Google Analytics appenders as a "plugin" each on it's own module. 
 
 1. Init:
 
