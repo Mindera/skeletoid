@@ -44,23 +44,77 @@ android {
         // do not ignore warnings
         warningsAsErrors true
     }
+
+    configurations.all {
+        resolutionStrategy {
+            // fail eagerly on version conflict (includes transitive dependencies)
+            // e.g. multiple different versions of the same dependency (group and name are equal)
+            //failOnVersionConflict()
+        }
+    }
 }
 
 dependencies {
+
     //Support
-    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
 
     // RxJava
-    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
-    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation ("io.reactivex.rxjava2:rxandroid:$rxAndroidVersion") {
+        exclude group: 'io.reactivex.rxjava2', module:'rxjava'
+    }
+    implementation ("com.jakewharton.rxbinding2:rxbinding:$rxBindingsVersion") {
+        exclude group: 'io.reactivex.rxjava2', module:'rxjava'
+        exclude group: 'io.reactivex.rxjava2', module:'rxandroid'
+        exclude group: 'com.android.support', module:'support-annotations'
+    }
 
     // RxBindings
-    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7:$rootProject.rxBindingsVersion"
-    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rootProject.rxBindingsVersion"
-    implementation "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:$rootProject.rxBindingsVersion"
-    implementation "com.jakewharton.rxbinding2:rxbinding-support-v4:$rootProject.rxBindingsVersion"
-    implementation "com.jakewharton.rxbinding2:rxbinding-design:$rootProject.rxBindingsVersion"
+    implementation ("com.jakewharton.rxbinding2:rxbinding-appcompat-v7:$rxBindingsVersion") {
+        exclude group: 'io.reactivex.rxjava2', module:'rxjava'
+        exclude group: 'io.reactivex.rxjava2', module:'rxandroid'
+        exclude group: 'com.android.support', module:'support-annotations'
+        exclude group: 'com.android.support', module:'appcompat-v7'
+    }
+    implementation ("com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rxBindingsVersion") {
+        exclude group: 'com.android.support', module:'support-annotations'
+        exclude group: 'io.reactivex.rxjava2', module:'rxandroid'
+        exclude group: 'com.android.support', module:'appcompat-v7'
+        exclude group: 'io.reactivex.rxjava2', module:'rxjava'
+    }
+    implementation ("com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:$rxBindingsVersion") {
+        exclude group: 'io.reactivex.rxjava2', module:'rxjava'
+        exclude group: 'io.reactivex.rxjava2', module:'rxandroid'
+        exclude group: 'com.android.support', module:'recyclerview-v7'
+        exclude group: 'com.android.support', module:'support-annotations'
+        exclude group: 'com.android.support', module:'support-compat'
+        exclude group: 'com.android.support', module:'support-core-ui'
+    }
+    implementation ("com.jakewharton.rxbinding2:rxbinding-support-v4:$rxBindingsVersion") {
+        exclude group: 'io.reactivex.rxjava2', module:'rxjava'
+        exclude group: 'io.reactivex.rxjava2', module:'rxandroid'
+        exclude group: 'com.android.support', module:'support-annotations'
+        exclude group: 'com.android.support', module:'support-core-ui'
+    }
+    implementation ("com.jakewharton.rxbinding2:rxbinding-design:$rxBindingsVersion") {
+        exclude group: 'io.reactivex.rxjava2', module:'rxjava'
+        exclude group: 'io.reactivex.rxjava2', module:'rxandroid'
+        exclude group: 'com.android.support', module:'support-annotations'
+        exclude group: 'com.android.support', module:'design'
+        exclude group: 'com.android.support', module:'appcompat-v7'
+        exclude group: 'com.android.support', module:'support-compat'
+        exclude group: 'com.android.support', module:'support-core-ui'
+        exclude group: 'com.android.support', module:'support-core-utils'
+        exclude group: 'com.android.support', module:'support-fragment'
+    }
 
+    // jakewharton'' libs use version 27.0.2 and we use 27.1.1, so we need to remove those.
+    // we also need to guarantee that any project using this lib will not crash due to the lack
+    // of these libs, so we should reference them here. But our project will not crash even
+    // without these
+    implementation ("com.android.support:recyclerview-v7:$supportLibraryVersion")
+    implementation ("com.android.support:design:$supportLibraryVersion")
 
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
@@ -68,7 +122,8 @@ dependencies {
     testImplementation "org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion"
     testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"
     testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
-    testImplementation "org.robolectric:robolectric:$rootProject.robolectricVersion"}
+    testImplementation "org.robolectric:robolectric:$rootProject.robolectricVersion"
+}
 
 jacoco {
     toolVersion "0.8.1"
