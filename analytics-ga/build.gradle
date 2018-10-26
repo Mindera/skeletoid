@@ -35,6 +35,8 @@ dependencies {
     //Depends on Base Skeletoid
     api project(path: ':base')
 
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+
     implementation "com.google.android.gms:play-services-analytics:$rootProject.gaVersion"
 
     testImplementation "junit:junit:$rootProject.junitVersion"
@@ -44,7 +46,7 @@ dependencies {
     testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"
     testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
     testImplementation "org.robolectric:robolectric:$rootProject.robolectricVersion"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
 }
 
 jacoco {
