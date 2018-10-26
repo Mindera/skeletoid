@@ -47,8 +47,6 @@ android {
 
     configurations.all {
         resolutionStrategy {
-            resolutionStrategy.force "org.apache.httpcomponents:httpcore:$httpComponentsVersion"
-            resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
             // fail eagerly on version conflict (includes transitive dependencies)
             // e.g. multiple different versions of the same dependency (group and name are equal)
             //failOnVersionConflict()
