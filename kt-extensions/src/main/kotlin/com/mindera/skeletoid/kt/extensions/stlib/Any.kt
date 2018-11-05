@@ -10,3 +10,11 @@ inline fun Any?.isNullOrTrue(): Boolean {
 inline fun Any?.isNullOrFalse(): Boolean {
     return this != true
 }
+
+inline fun Any?.isNotNullAndTrue(): Boolean {
+    return this == true
+}
+
+inline fun Any?.isNotNullAndFalse(): Boolean {
+    return this == false
+}
