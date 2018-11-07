@@ -38,10 +38,13 @@ script:
   - ./gradlew assemble
 
   # Run initTests
-  - ./gradlew base:createUnitTestReport
+  - ./gradlew createUnitTestReport
   # TODO This should be aggregated report... drop the :base
 
   # Send coverage report to Codacy
-  - ./gradlew base:codacyUpload
+  #- ./gradlew base:codacyUpload
   # TODO This should be aggregated report... drop the :base
 
+after_success:
+  # Send coverage report to Codecov
+  - bash <(curl -s https://codecov.io/bash)
