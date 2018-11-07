@@ -3,8 +3,7 @@ An utils library for Android Applications made at Mindera.
 
 [![Build Status](https://travis-ci.org/Mindera/skeletoid.svg)](https://travis-ci.org/Mindera/skeletoid)
 [![Release](https://jitpack.io/v/mindera/skeletoid.svg)](https://jitpack.io/#mindera/skeletoid)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/86fd0ce3d3314d4f93999f98dbd96f26)](https://www.codacy.com/app/Skeletoid/skeletoid?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Mindera/skeletoid&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/86fd0ce3d3314d4f93999f98dbd96f26)](https://www.codacy.com/app/Skeletoid/skeletoid?utm_source=github.com&utm_medium=referral&utm_content=Mindera/skeletoid&utm_campaign=Badge_Coverage)
+[![codecov](https://codecov.io/gh/Mindera/skeletoid/branch/master/graph/badge.svg)](https://codecov.io/gh/Mindera/skeletoid)
 
 ### Why should you use it?
 Instead of copy pasting the same utils packages to each new project (and not having improvements propagated), just have this lib to help you! 
@@ -199,10 +198,3 @@ dependencies {
     implementation 'com.github.mindera.skeletoid:analytics-ga:0.4.0'
 }
 ```
-
-
-## Note
-
-All the module will be converted to Kotlin in due time.
-
-The parts of this lib in Java will soon be migrated to Kotlin
