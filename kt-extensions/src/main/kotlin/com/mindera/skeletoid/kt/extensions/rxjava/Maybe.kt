@@ -4,15 +4,14 @@ import io.reactivex.Maybe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-inline fun <T : Any> Maybe<T>.subscribeIO(): Maybe<T>
+fun <T : Any> Maybe<T>.subscribeOnIO(): Maybe<T>
         = subscribeOn(Schedulers.io())
 
-inline fun <T : Any> Maybe<T>.subscribeMain(): Maybe<T>
+fun <T : Any> Maybe<T>.subscribeOnMain(): Maybe<T>
         = subscribeOn(AndroidSchedulers.mainThread())
 
-
-inline fun <T : Any> Maybe<T>.observeIO(): Maybe<T>
+fun <T : Any> Maybe<T>.observeOnIO(): Maybe<T>
         = observeOn(Schedulers.io())
 
-inline fun <T : Any> Maybe<T>.observeMain(): Maybe<T>
+fun <T : Any> Maybe<T>.observeOnMain(): Maybe<T>
         = observeOn(AndroidSchedulers.mainThread())
