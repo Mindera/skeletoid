@@ -6,15 +6,14 @@ import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-inline fun Completable.subscribeIO(): Completable = subscribeOn(Schedulers.io())
+fun Completable.subscribeOnIO(): Completable = subscribeOn(Schedulers.io())
 
-inline fun Completable.subscribeComputation(): Completable = subscribeOn(Schedulers.computation())
+fun Completable.subscribeOnComputation(): Completable = subscribeOn(Schedulers.computation())
 
-inline fun Completable.subscribeMain(): Completable = subscribeOn(AndroidSchedulers.mainThread())
+fun Completable.subscribeOnMain(): Completable = subscribeOn(AndroidSchedulers.mainThread())
 
+fun Completable.observeOnIO(): Completable = observeOn(Schedulers.io())
 
-inline fun Completable.observeIO(): Completable = observeOn(Schedulers.io())
+fun Completable.observeOnComputation(): Completable = observeOn(Schedulers.computation())
 
-inline fun Completable.observeComputation(): Completable = observeOn(Schedulers.computation())
-
-inline fun Completable.observeMain(): Completable = observeOn(AndroidSchedulers.mainThread())
+fun Completable.observeOnMain(): Completable = observeOn(AndroidSchedulers.mainThread())
