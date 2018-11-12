@@ -73,9 +73,10 @@ jacoco {
 
 //Unit Test Coverage filtered
 task createUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest',
-                                                          ':skeletoid-analytics-firebase:createUnitTestReport',
-                                                          ':skeletoid-kt-extensions:createUnitTestReport',
-                                                          ':skeletoid-rxbindings:createUnitTestReport'
+                                                          ':analytics-firebase:createUnitTestReport',
+                                                          ':analytics-ga:createUnitTestReport',
+                                                          ':kt-extensions:createUnitTestReport',
+                                                          ':rxbindings:createUnitTestReport'
 ]) {
 
     reports {
