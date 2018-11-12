@@ -42,6 +42,6 @@ script:
   # TODO This should be aggregated report... drop the :base
 
   # Send coverage report to Codacy
-  - ./gradlew base:codacyUpload
+  - ./gradlew base:createUnitTestReportCodacyUpload
   # TODO This should be aggregated report... drop the :base
 

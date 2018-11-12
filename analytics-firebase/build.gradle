@@ -24,12 +24,17 @@ android {
 
         qa{
             matchingFallbacks = ['debug']
+            testCoverageEnabled = true
         }
 
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 
@@ -56,6 +61,7 @@ jacoco {
     toolVersion "0.8.1"
 }
 
+
 //Unit Test Coverage filtered
 task createUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest']) {
 
@@ -78,7 +84,7 @@ task createUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest']) {
             '**/**Test*.*']
 
     //To support Java coverage on Unit tests
-    def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/qa", excludes: fileFilter)
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/qa/compileQaJavaWithJavac/classes/com/mindera/skeletoid", excludes: fileFilter)
     //To support Kotlin coverage on Unit tests
     def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/qa", excludes: fileFilter)
 
