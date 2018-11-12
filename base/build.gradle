@@ -72,7 +72,12 @@ jacoco {
 }
 
 //Unit Test Coverage filtered
-task createUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest']) {
+task createUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest',
+                                                          ':analytics-firebase:createUnitTestReport',
+                                                          ':analytics-ga:createUnitTestReport',
+                                                          ':kt-extensions:createUnitTestReport',
+                                                          ':rxbindings:createUnitTestReport'
+]) {
 
     reports {
         html.enabled = true
