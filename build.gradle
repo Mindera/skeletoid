@@ -1,5 +1,5 @@
 buildscript {
-    ext.gradleVersion = '3.2.0'
+    ext.gradleVersion = '3.2.1'
     ext.kotlinVersion = '1.2.71'
 
     repositories {
@@ -34,7 +34,7 @@ allprojects {
 ext {
     // sdk and tools
     compileSdkVersion = 28
-    buildToolsVersion = '28.0.2'
+    buildToolsVersion = '28.0.3'
     minSdkVersion = 16
     targetSdkVersion = 27
 
