@@ -58,10 +58,6 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-jacocoTestQaUnitTestReport {
-    excludes += ['**/*Test.*']
-}
-
 jacocoTestReport {
 
 
