@@ -57,3 +57,7 @@ ext {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+jacocoAndroidUnitTestReport {
+    excludes += ['**/*Test.*']
+}

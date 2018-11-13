@@ -54,7 +54,7 @@ jacoco {
     toolVersion "0.8.1"
 }
 
-//Unit Test Coverage filtered
+//Unit Test Coverage filtered - Note: This is currently NOT being used on the Codacy report. This is to run locally if needed
 task createUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest']) {
 
     reports {
