@@ -22,19 +22,6 @@ public class Connectivity {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * Validates if we are connected to a network and if we have real internet access
-     * NOTE: This will only work if ConnectivityReceiver is added to the app manifest
-     *
-     * @param context The context
-     * @return true if internet access is available, false otherwise.
-     */
-    public static boolean isConnectedAndWithInternetAvailable(Context context) {
-        if (context == null) {
-            throw new IllegalArgumentException("Context must not be null");
-        }
-        return isConnected(context) && ConnectivityReceiver.isInternetAvailable;
-    }
 
     /**
      * Validates if we are connected to a network.
@@ -77,40 +64,5 @@ public class Connectivity {
 
         NetworkInfo ni = cm.getActiveNetworkInfo();
         return ni != null && ni.getType() == ConnectivityManager.TYPE_WIFI;
-    }
-
-    /**
-     * Add a callback to receive connectivity updates
-     */
-    public static void setConnectivityCallback(
-            ConnectivityReceiver.ConnectivityCallback connectivityCallback) {
-        ConnectivityReceiver.mConnectivityCallback = connectivityCallback;
-    }
-
-    /**
-     * Remove the callback to receive connectivity updates
-     */
-    public static void removeConnectivityCallback() {
-        ConnectivityReceiver.mConnectivityCallback = null;
-    }
-
-    /**
-     * Update url to check internet status
-     *
-     * @param uri With a valid URI
-     * @throws MalformedURLException When the URI is invalid
-     */
-    public static void updateConnectivityValidationAddress(URI uri) {
-        try {
-            //Validate URL
-            String host = uri.getHost();
-            ConnectivityReceiver.mInternetAddress = "http://" + host;
-            ConnectivityReceiver.mInternetHttpValidationAddress = "http://" + host
-                    .substring(0, StringUtils.ordinalIndexOf(host, ".", 2));
-            ConnectivityReceiver.mInternetHttpsValidationAddress = "https://" + host
-                    .substring(0, StringUtils.ordinalIndexOf(host, ".", 2));
-        } catch (Exception e) {
-            throw new IllegalArgumentException("URI is invalid");
-        }
     }
 }
