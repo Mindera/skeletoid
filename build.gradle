@@ -61,3 +61,25 @@ task clean(type: Delete) {
 jacocoTestQaUnitTestReport {
     excludes += ['**/*Test.*']
 }
+
+jacocoTestReport {
+
+
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: [//Android stuff
+                              '**/R.class',
+                              '**/BR.class',
+                              '**/R$*.class',
+                              '**/BR$*.class',
+                              '**/BuildConfig.*',
+                              'android/**/*.*',
+                              '**/Manifest*.*',
+                              //Data Binding
+                              '**/*databinding/**/*.*',
+                              //Test
+                              '**/**Test*.*'])
+        })
+    }
+}
