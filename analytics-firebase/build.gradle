@@ -57,6 +57,7 @@ dependencies {
 
 
 }
+
 jacoco {
     toolVersion "0.8.1"
 }
@@ -97,6 +98,4 @@ task createUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest']) {
     classDirectories = files([debugTree], [kotlinDebugTree])
     executionData = files("${buildDir}/jacoco/testQaUnitTest.exec")
 }
-repositories {
-    mavenCentral()
-}
+
