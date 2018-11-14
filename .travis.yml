@@ -41,7 +41,8 @@ script:
   - ./gradlew testQa
 
 
-  # Send coverage report to Codacy
+  # Send coverage report to Codacy:
+  # Read more: https://github.com/arturdm/jacoco-android-gradle-plugin & https://github.com/ddimtirov/codacy-gradle-plugin
   - ./gradlew jacocoTestQaUnitTestReportCodacyUpload
 
 
