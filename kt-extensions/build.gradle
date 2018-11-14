@@ -66,20 +66,6 @@ jacoco {
     toolVersion "0.8.1"
 }
 
-jacocoAndroidUnitTestReport {
-    excludes += ['**/R.class',
-                 '**/BR.class',
-                 '**/R$*.class',
-                 '**/BR$*.class',
-                 '**/BuildConfig.*',
-                 'android/**/*.*',
-                 '**/Manifest*.*',
-                 //Data Binding
-                 '**/*databinding/**/*.*',
-                 //Test
-                 '**/**Test*.*']
-}
-
 //Unit Test Coverage filtered
 task createUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest']) {
 
