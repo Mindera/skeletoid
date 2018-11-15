@@ -18,8 +18,10 @@ An utils library for Android Applications made at Mindera.
 
 Note: we currently have a issue with coverage not being reported...
 
-###Is it growing?
+### Is it growing?
 [![sonarcloud Badge](https://sonarcloud.io/api/project_badges/measure?project=mydroidisbetterthanyours&metric=ncloc)](https://sonarcloud.io/dashboard?id=mydroidisbetterthanyours)
+
+---
 
 ### Why should you use it?
 Instead of copy pasting the same utils packages to each new project (and not having improvements propagated), just have this lib to help you! 
