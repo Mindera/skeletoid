@@ -46,3 +46,8 @@ script:
   - ./gradlew jacocoTestQaUnitTestReportCodacyUpload
 
 
+  # Send coverage report to Sonarcloud:
+  # Read more: https://github.com/arturdm/jacoco-android-gradle-plugin & https://github.com/ddimtirov/codacy-gradle-plugin
+  - ./gradlew sonarqube -Dsonar.projectKey=$SONARCLOUD_PROJECT_KEY -Dsonar.organization=mindera -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONARCLOUD_PROJECT_LOGIN
+
+
