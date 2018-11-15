@@ -1,17 +1,17 @@
 # Skeletoid
 An utils library for Android Applications made at Mindera.
 
-###And it's green!
+### And it's green!
 [![Build Status](https://travis-ci.org/Mindera/skeletoid.svg)](https://travis-ci.org/Mindera/skeletoid)
 [![Release](https://jitpack.io/v/mindera/skeletoid.svg)](https://jitpack.io/#mindera/skeletoid)
 
-###Say "Aaaa":
+### Say "Aaaa":
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/86fd0ce3d3314d4f93999f98dbd96f26)](https://www.codacy.com/app/Skeletoid/skeletoid?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Mindera/skeletoid&amp;utm_campaign=Badge_Grade)
 [![codebeat badge](https://codebeat.co/badges/fa990b92-e4ef-4882-9e65-52c32bda0a5b)](https://codebeat.co/projects/github-com-mindera-skeletoid-master)
 [![sonarcloud badge](https://sonarcloud.io/api/project_badges/measure?project=mydroidisbetterthanyours&metric=alert_status)](https://sonarcloud.io/dashboard?id=mydroidisbetterthanyours)
 
 
-###Code coverage:
+### Code coverage:
 
 [![Codacy Coverage Badge](https://api.codacy.com/project/badge/Coverage/86fd0ce3d3314d4f93999f98dbd96f26)](https://www.codacy.com/app/Skeletoid/skeletoid?utm_source=github.com&utm_medium=referral&utm_content=Mindera/skeletoid&utm_campaign=Badge_Coverage)
 [![sonarcloud Coverage Badge](https://sonarcloud.io/api/project_badges/measure?project=mydroidisbetterthanyours&metric=coverage)](https://sonarcloud.io/dashboard?id=mydroidisbetterthanyours)
