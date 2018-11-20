@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.mindera.skeletoid.kt.extensions.views
+package com.mindera.skeletoid.rxbindings.extensions
 
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText

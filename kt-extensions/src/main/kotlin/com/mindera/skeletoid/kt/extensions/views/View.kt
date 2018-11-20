@@ -7,14 +7,6 @@ import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import com.jakewharton.rxbinding2.view.clicks
-import com.mindera.skeletoid.kt.extensions.rxjava.observeOnMain
-import com.mindera.skeletoid.kt.extensions.rxjava.subscribeOnMain
-import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
-import java.util.concurrent.TimeUnit
-
-var CLICK_THROTTLE = 2000L
 
 inline fun View.visible() {
     visibility = VISIBLE
@@ -48,15 +40,5 @@ fun View.disableChildren(enabled: Boolean) {
         }
     }
 }
-
-fun View.bindThrottledTouch(action: () -> Unit): Disposable {
-    return this.clicksThrottle()
-            .subscribeOnMain()
-            .observeOnMain()
-            .subscribe { action() }
-}
-
-fun View.clicksThrottle(): Observable<Unit> =
-        this.clicks().throttleFirst(CLICK_THROTTLE, TimeUnit.MILLISECONDS)
 
 

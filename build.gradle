@@ -49,6 +49,12 @@ ext {
     playServicesVersion = '15.0.1'
     gaVersion = '16.0.3'
     firebaseVersion = '16.0.4'
+    firebaseCommonsVersion = '16.0.1'
+
+    kotlinStdlibVersion = '1.2.71'
+
+    httpComponentsVersion = '4.2.5'
+    guavaVersion = '22.0'
 
     junitVersion = '4.12'
     mockitoVersion = '2.8.9'
@@ -59,5 +65,3 @@ ext {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-apply plugin: "org.sonarqube"

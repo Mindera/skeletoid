@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'jacoco'
-apply plugin: "io.github.ddimtirov.codacy"
+//apply plugin: "io.github.ddimtirov.codacy"
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -37,6 +37,19 @@ android {
         }
     }
 
+    configurations.all {
+        resolutionStrategy {
+            resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
+            resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib:$kotlinStdlibVersion"
+            resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
+            resolutionStrategy.force "org.apache.httpcomponents:httpcore:$httpComponentsVersion"
+            resolutionStrategy.force "org.objenesis:objenesis:2.5" // powermock
+            // fail eagerly on version conflict (includes transitive dependencies)
+            // e.g. multiple different versions of the same dependency (group and name are equal)
+            failOnVersionConflict()
+        }
+    }
+
 }
 
 dependencies {
@@ -46,11 +59,9 @@ dependencies {
 
     // RxJava
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
-    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
-
-    // RxBindings
-    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7:$rootProject.rxBindingsVersion"
-    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rootProject.rxBindingsVersion"
+    implementation ("io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"){
+        exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
+    }
 
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
@@ -58,7 +69,10 @@ dependencies {
     testImplementation "org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion"
     testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"
     testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
-    testImplementation "org.robolectric:robolectric:$rootProject.robolectricVersion"
+    testImplementation("org.robolectric:robolectric:$rootProject.robolectricVersion") {
+        exclude group: 'com.thoughtworks.xstream', module: 'xstream'
+        exclude group: 'org.codehaus.plexus', module: 'plexus-utils'
+    }
 
 }
 
@@ -67,7 +81,7 @@ jacoco {
 }
 
 //Unit Test Coverage filtered
-task createUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest']) {
+task createSkeletoidUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest']) {
 
     reports {
         html.enabled = true

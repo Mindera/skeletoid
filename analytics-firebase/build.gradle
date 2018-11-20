@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'jacoco-android'
-apply plugin: "io.github.ddimtirov.codacy"
+//apply plugin: "io.github.ddimtirov.codacy"
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -36,6 +36,22 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+
+    configurations.all {
+        resolutionStrategy {
+            resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
+            resolutionStrategy.force "com.google.android.gms:play-services-basement:16.0.1"
+            resolutionStrategy.force "com.google.android.gms:play-services-tasks:16.0.1"
+            resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib:$kotlinStdlibVersion"
+            resolutionStrategy.force "org.apache.httpcomponents:httpcore:$httpComponentsVersion"
+            resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
+            resolutionStrategy.force "com.google.firebase:firebase-common:$firebaseCommonsVersion" // com.google.firebase:firebase-core
+            resolutionStrategy.force "org.objenesis:objenesis:2.5" // powermock
+            // fail eagerly on version conflict (includes transitive dependencies)
+            // e.g. multiple different versions of the same dependency (group and name are equal)
+            failOnVersionConflict()
+        }
+    }
 }
 
 dependencies {
@@ -45,15 +61,28 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
-    api "com.google.firebase:firebase-core:$rootProject.firebaseVersion"
+    api ("com.google.firebase:firebase-core:$rootProject.firebaseVersion"){
+        exclude group: 'com.android.support', module: 'support-compat'
+        exclude group: 'com.android.support', module: 'support-core-utils'
+        exclude group: 'com.android.support', module: 'support-core-ui'
+        exclude group: 'com.android.support', module: 'support-fragment'
+    }
 
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
-    testImplementation "org.powermock:powermock-module-junit4:$rootProject.powermockVersion"
-    testImplementation "org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion"
+    testImplementation ("org.powermock:powermock-module-junit4:$rootProject.powermockVersion"){
+        exclude group: 'org.objenesis', module: 'objenesis'
+    }
+    testImplementation ("org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion"){
+        exclude group: 'org.objenesis', module: 'objenesis'
+    }
     testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"
     testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
-    testImplementation "org.robolectric:robolectric:$rootProject.robolectricVersion"
+    testImplementation("org.robolectric:robolectric:$rootProject.robolectricVersion") {
+        exclude group: 'com.thoughtworks.xstream', module: 'xstream'
+        exclude group: 'org.codehaus.plexus', module: 'plexus-utils'
+
+    }
 
 
 }
@@ -64,7 +93,7 @@ jacoco {
 
 
 //Unit Test Coverage filtered - Note: This is currently NOT being used on the Codacy report. This is to run locally if needed
-task createUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest']) {
+task createSkeletoidUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest']) {
 
     reports {
         html.enabled = true

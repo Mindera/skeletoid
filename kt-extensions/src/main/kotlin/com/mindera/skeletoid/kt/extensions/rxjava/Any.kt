@@ -3,8 +3,8 @@ package com.mindera.skeletoid.kt.extensions.rxjava
 import io.reactivex.Observable
 import io.reactivex.Single
 
-fun <T : Any> T.toObservable(): Observable<T>
+fun <T : Any> T.justObservable(): Observable<T>
         = Observable.just(this)
 
-fun <T : Any> T.toSingle(): Single<T>
+fun <T : Any> T.justSingle(): Single<T>
         = Single.just(this)

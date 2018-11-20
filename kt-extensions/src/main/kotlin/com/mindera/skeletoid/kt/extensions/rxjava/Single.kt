@@ -2,6 +2,7 @@
 
 package com.mindera.skeletoid.kt.extensions.rxjava
 
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -23,3 +24,9 @@ fun <T : Any> Single<T>.observeOnComputation(): Single<T>
 
 fun <T : Any> Single<T>.observeOnMain(): Single<T>
         = observeOn(AndroidSchedulers.mainThread())
+
+inline fun <reified T> Single<T>.allowMultipleSubscribers(): Observable<T> =
+        toObservable()
+                .share()
+                .replay(1)
+                .autoConnect(1)

@@ -1,7 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'jacoco-android'
-apply plugin: "io.github.ddimtirov.codacy"
+//apply plugin: "io.github.ddimtirov.codacy"
+apply plugin: "org.sonarqube"
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -47,6 +48,20 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+
+    configurations.all {
+        resolutionStrategy {
+            resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
+            resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib:$kotlinStdlibVersion"
+            resolutionStrategy.force "org.apache.httpcomponents:httpcore:$httpComponentsVersion"
+            resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
+            resolutionStrategy.force "org.objenesis:objenesis:2.5" // powermock
+
+            // fail eagerly on version conflict (includes transitive dependencies)
+            // e.g. multiple different versions of the same dependency (group and name are equal)
+            failOnVersionConflict()
+        }
+    }
 }
 
 dependencies {
@@ -57,7 +72,9 @@ dependencies {
 
     // RxJava
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
-    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
+    implementation ("io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"){
+        exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
+    }
 
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
@@ -65,7 +82,10 @@ dependencies {
     testImplementation "org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion"
     testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"
     testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
-    testImplementation "org.robolectric:robolectric:$rootProject.robolectricVersion"
+    testImplementation("org.robolectric:robolectric:$rootProject.robolectricVersion") {
+        exclude group: 'com.thoughtworks.xstream', module: 'xstream'
+        exclude group: 'org.codehaus.plexus', module: 'plexus-utils'
+    }
 }
 
 jacoco {
@@ -87,11 +107,10 @@ jacocoAndroidUnitTestReport {
 }
 
 //Unit Test Coverage filtered - Note: This is currently NOT being used on the Codacy report. This is to run locally if needed
-task createUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest',
-                                                          ':analytics-firebase:createUnitTestReport',
-                                                          ':analytics-ga:createUnitTestReport',
-                                                          ':kt-extensions:createUnitTestReport',
-                                                          ':rxbindings:createUnitTestReport'
+task createSkeletoidUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest',
+                                                          ':analytics-firebase:createSkeletoidUnitTestReport',
+                                                          ':kt-extensions:createSkeletoidUnitTestReport',
+                                                          ':rxbindings:createSkeletoidUnitTestReport'
 ]) {
 
     reports {
@@ -127,6 +146,10 @@ task createUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest',
     executionData = files("${buildDir}/jacoco/testQaUnitTest.exec")
 }
 
+tasks['sonarqube'].with {
+    dependsOn.clear()
+    dependsOn createSkeletoidUnitTestReport
+}
 
 sonarqube {
     properties {
