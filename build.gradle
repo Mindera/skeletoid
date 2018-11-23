@@ -47,7 +47,7 @@ ext {
     rxBindingsVersion = '2.1.1'
 
     playServicesVersion = '15.0.1'
-    gaVersion = '16.0.3'
+    gaVersion = '16.0.5'
     firebaseVersion = '16.0.4'
     firebaseCommonsVersion = '16.0.1'
 

@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'jacoco-android'
-apply plugin: "io.github.ddimtirov.codacy"
+//apply plugin: "io.github.ddimtirov.codacy"
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -32,10 +32,10 @@ android {
 
     configurations.all {
         resolutionStrategy {
-            resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
             resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib:$kotlinStdlibVersion"
             resolutionStrategy.force "org.apache.httpcomponents:httpcore:$httpComponentsVersion"
             resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
+
             resolutionStrategy.force "org.objenesis:objenesis:2.5" // powermock
             // fail eagerly on version conflict (includes transitive dependencies)
             // e.g. multiple different versions of the same dependency (group and name are equal)
@@ -51,7 +51,14 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
-    implementation "com.google.android.gms:play-services-analytics:$rootProject.gaVersion"
+    implementation ("com.google.android.gms:play-services-analytics:$rootProject.gaVersion"){
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-compat'
+        exclude group: 'com.android.support', module: 'support-core-utils'
+        exclude group: 'com.android.support', module: 'support-core-ui'
+        exclude group: 'com.android.support', module: 'support-fragment'
+
+    }
 
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
