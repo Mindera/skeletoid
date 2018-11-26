@@ -145,9 +145,13 @@ public class ShareLogFilesUtils {
     }
 
     private static boolean zipLogFiles(String source, String output) {
+        FileOutputStream fos = null;
+        ZipOutputStream zos = null;
+        FileInputStream fis = null;
+
         try {
-            FileOutputStream fos = new FileOutputStream(output);
-            ZipOutputStream zos = new ZipOutputStream(fos);
+            fos = new FileOutputStream(output);
+            zos = new ZipOutputStream(fos);
             File srcFile = new File(source);
             File[] files = srcFile.listFiles();
 
@@ -159,7 +163,7 @@ public class ShareLogFilesUtils {
 
                 LOG.d(TAG, "Adding file: " + file.getName());
                 byte[] buffer = new byte[1024];
-                FileInputStream fis = new FileInputStream(file);
+                fis = new FileInputStream(file);
                 zos.putNextEntry(new ZipEntry(file.getName()));
 
                 int length;
@@ -168,14 +172,29 @@ public class ShareLogFilesUtils {
                 }
 
                 zos.closeEntry();
-                fis.close();
             }
 
-            zos.close();
+
             return true;
         } catch (IOException ex) {
             LOG.e(TAG, "Unable to zip folder: " + ex.getMessage());
             return false;
+        }finally {
+            try {
+                fis.close();
+            } catch (Exception e) {
+                LOG.e(TAG, e,"Unable to close FileInputStream");
+            }
+            try {
+                fos.close();
+            } catch (Exception e) {
+                LOG.e(TAG, e,"Unable to close FileOutputStream");
+            }
+            try {
+                zos.close();
+            } catch (Exception e) {
+                LOG.e(TAG, e,"Unable to close ZipOutputStream");
+            }
         }
     }
 }
