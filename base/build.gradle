@@ -51,10 +51,10 @@ android {
     configurations.all {
         resolutionStrategy {
             resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
-            resolutionStrategy.force "org.apache.httpcomponents:httpcore:$httpComponentsVersion"
             // annotation processor conflicts
             resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib:$kotlinStdlibVersion"
             // lint conflicts
+            resolutionStrategy.force "org.apache.httpcomponents:httpcore:$httpComponentsVersion"
             resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
             // powermock
             resolutionStrategy.force "org.objenesis:objenesis:2.5"
