@@ -25,7 +25,7 @@ fun <T : Any> Observable<T>.createUniqueConcurrentRequestCache(requestMap: Concu
     return this.doFinally { requestMap.remove(key) }
 }
 
-inline fun <reified T> Observable<T>.allowMultipleSubscribers(): Observable<T> =
+fun <T> Observable<T>.allowMultipleSubscribers(): Observable<T> =
         share()
                 .replay(1)
                 .autoConnect(1)

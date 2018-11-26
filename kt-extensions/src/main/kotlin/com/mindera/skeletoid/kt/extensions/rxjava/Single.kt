@@ -25,7 +25,7 @@ fun <T : Any> Single<T>.observeOnComputation(): Single<T>
 fun <T : Any> Single<T>.observeOnMain(): Single<T>
         = observeOn(AndroidSchedulers.mainThread())
 
-inline fun <reified T> Single<T>.allowMultipleSubscribers(): Observable<T> =
+fun <T> Single<T>.allowMultipleSubscribers(): Observable<T> =
         toObservable()
                 .share()
                 .replay(1)
