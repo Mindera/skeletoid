@@ -52,8 +52,12 @@ android {
         resolutionStrategy {
             resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
             resolutionStrategy.force "org.apache.httpcomponents:httpcore:$httpComponentsVersion"
+            // annotation processor conflicts
+            resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib:$kotlinStdlibVersion"
+            // lint conflicts
             resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
-            resolutionStrategy.force "org.objenesis:objenesis:2.5" // powermock
+            // powermock
+            resolutionStrategy.force "org.objenesis:objenesis:2.5"
 
             // fail eagerly on version conflict (includes transitive dependencies)
             // e.g. multiple different versions of the same dependency (group and name are equal)

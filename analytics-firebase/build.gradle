@@ -41,10 +41,15 @@ android {
             resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
             resolutionStrategy.force "com.google.android.gms:play-services-basement:16.0.1"
             resolutionStrategy.force "com.google.android.gms:play-services-tasks:16.0.1"
+            // annotation processor conflicts
+            resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib:$kotlinStdlibVersion"
+            // lint conflicts
             resolutionStrategy.force "org.apache.httpcomponents:httpcore:$httpComponentsVersion"
             resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
-            resolutionStrategy.force "com.google.firebase:firebase-common:$firebaseCommonsVersion" // com.google.firebase:firebase-core
-            resolutionStrategy.force "org.objenesis:objenesis:2.5" // powermock
+            // Firebase -> com.google.firebase:firebase-core
+            resolutionStrategy.force "com.google.firebase:firebase-common:$firebaseCommonsVersion"
+            // powermock
+            resolutionStrategy.force "org.objenesis:objenesis:2.5"
             // fail eagerly on version conflict (includes transitive dependencies)
             // e.g. multiple different versions of the same dependency (group and name are equal)
             failOnVersionConflict()
