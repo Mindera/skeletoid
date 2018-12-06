@@ -26,7 +26,7 @@ public class LogFileAppender implements ILogAppender {
 
     private static final String LOG_TAG = "LogFileAppender";
 
-    private static SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd HH:mm:ss.SSS");
+    private java.text.DateFormat dateFormatter = SimpleDateFormat.getDateTimeInstance();
     /**
      * Logcat logger tag
      */

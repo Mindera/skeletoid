@@ -4,7 +4,6 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.VisibleForTesting;
 import android.telephony.TelephonyManager;
@@ -130,7 +129,7 @@ public class AndroidUtils {
                 Log.e(AndroidUtils.class.getSimpleName(), "getApplicationVersionName", e);
             }
 
-            mAppVersionName = info.versionName;
+            mAppVersionName = info != null ? info.versionName : "";
         }
 
         return mAppVersionName;

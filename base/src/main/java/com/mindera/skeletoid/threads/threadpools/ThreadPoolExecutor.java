@@ -43,7 +43,7 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
      */
     public ThreadPoolExecutor(int corePoolSize, int maxPoolSize, long keepAlive, TimeUnit timeUnit,
                               final NamedThreadFactory threadFactory) {
-        super(corePoolSize, maxPoolSize, keepAlive, timeUnit, new PriorityBlockingQueue<>(11,
+        super(corePoolSize, maxPoolSize, keepAlive, timeUnit, new PriorityBlockingQueue<Runnable>(11,
                 new PriorityTaskComparator()), threadFactory);
     }
 
@@ -185,8 +185,8 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
          */
         @Override
         public int compareTo(final PriorityTask<T> o) {
-            final long diff = o.priority - priority;
-            return 0 == diff ? 0 : 0 > diff ? -1 : 1;
+            final int diff = o.priority - priority;
+            return Integer.compare(diff, 0);
         }
     }
 

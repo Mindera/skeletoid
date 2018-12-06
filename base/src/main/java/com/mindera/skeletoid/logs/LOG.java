@@ -1,8 +1,8 @@
 package com.mindera.skeletoid.logs;
 
-import com.mindera.skeletoid.logs.appenders.ILogAppender;
-
 import android.content.Context;
+
+import com.mindera.skeletoid.logs.appenders.ILogAppender;
 
 import java.util.List;
 import java.util.Set;
@@ -20,7 +20,7 @@ public class LOG {
 
 //    private static final String LOGGER = "LOG";
 
-    private static volatile ILoggerManager mInstance;
+    private static ILoggerManager mInstance;
 
     /**
      * Init the logger. This method MUST be called before using LoggerManager
