@@ -5,6 +5,6 @@ package com.mindera.skeletoid.kt.extensions.utils
 import java.util.*
 
 
-inline fun Calendar.addDays(days: Int) {
+fun Calendar.addDays(days: Int) {
     add(Calendar.DAY_OF_YEAR, days)
 }

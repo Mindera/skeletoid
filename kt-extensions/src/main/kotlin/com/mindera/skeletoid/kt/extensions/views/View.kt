@@ -8,27 +8,27 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 
-inline fun View.visible() {
+fun View.visible() {
     visibility = VISIBLE
 }
 
-inline fun View.invisible() {
+fun View.invisible() {
     visibility = INVISIBLE
 }
 
-inline fun View.gone() {
+fun View.gone() {
     visibility = GONE
 }
 
-inline fun View.isVisible(): Boolean {
+fun View.isVisible(): Boolean {
     return visibility == VISIBLE
 }
 
-inline fun View.isInvisible(): Boolean {
+fun View.isInvisible(): Boolean {
     return visibility == INVISIBLE
 }
 
-inline fun View.isGone(): Boolean {
+fun View.isGone(): Boolean {
     return visibility == GONE
 }
 

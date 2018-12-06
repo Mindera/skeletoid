@@ -29,20 +29,20 @@ inline fun <reified T> parcelableClassLoaderCreator(
         }
 
 
-inline fun Parcel.readBoolean() = readInt() != 0
+fun Parcel.readBoolean() = readInt() != 0
 
-inline fun Parcel.writeBoolean(value: Boolean) = writeInt(if (value) 1 else 0)
+fun Parcel.writeBoolean(value: Boolean) = writeInt(if (value) 1 else 0)
 
 inline fun <reified T : Enum<T>> Parcel.readEnum() =
         readInt().let { if (it >= 0) enumValues<T>()[it] else null }
 
-inline fun <T : Enum<T>> Parcel.writeEnum(value: T?) =
+fun <T : Enum<T>> Parcel.writeEnum(value: T?) =
         writeInt(value?.ordinal ?: -1)
 
-inline fun <T> Parcel.readNullable(reader: () -> T) =
+fun <T> Parcel.readNullable(reader: () -> T) =
         if (readInt() != 0) reader() else null
 
-inline fun <T> Parcel.writeNullable(value: T?, writer: (T) -> Unit) {
+fun <T> Parcel.writeNullable(value: T?, writer: (T) -> Unit) {
     if (value != null) {
         writeInt(1)
         writer(value)
