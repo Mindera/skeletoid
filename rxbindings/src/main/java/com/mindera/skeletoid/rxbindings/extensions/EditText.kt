@@ -8,7 +8,7 @@ import com.jakewharton.rxbinding2.widget.editorActionEvents
 import io.reactivex.Observable
 
 
-inline fun EditText.imeActionDone(): Observable<Unit> {
+fun EditText.imeActionDone(): Observable<Unit> {
     return editorActionEvents()
             .filter { it.actionId() == EditorInfo.IME_ACTION_DONE }
             .map { Unit }
