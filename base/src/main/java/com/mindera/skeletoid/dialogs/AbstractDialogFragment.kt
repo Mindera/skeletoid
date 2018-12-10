@@ -5,6 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentManager
+import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CANCELED
+import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CLICK_NEGATIVE
+import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CLICK_NEUTRAL
+import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CLICK_POSITIVE
+import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.DISMISSED
 import com.mindera.skeletoid.logs.LOG
 
 abstract class AbstractDialogFragment : DialogFragment() {
@@ -17,18 +22,22 @@ abstract class AbstractDialogFragment : DialogFragment() {
 
         @JvmField
         val ARG_OWNER_FRAGMENT = "ARG_OWNER_FRAGMENT"
+    }
 
-        const val RESULT_POSITIVE = -1
-        const val RESULT_CANCELED = 0
-        const val RESULT_NEUTRAL = 1
-        const val RESULT_DISMISS = 2
-        const val RESULT_NEGATIVE = 3
+    enum class DialogState {
+        CLICK_POSITIVE,
+        CLICK_NEGATIVE,
+        CLICK_NEUTRAL,
+        DISMISSED,
+        CANCELED
     }
 
     abstract val isShowing: Boolean
 
+    protected var targetActivityRequestCode: Int = 0
+
     interface DialogFragmentHandler {
-        fun onDialogResult(requestCode: Int, resultCode: Int, intent: Intent?)
+        fun onDialogResult(requestCode: Int, stateCode: DialogState, intent: Intent?)
     }
 
     /**
@@ -44,19 +53,9 @@ abstract class AbstractDialogFragment : DialogFragment() {
         }
 
     /**
-     * The fragment owner of this dialog (null if the Activity is the handler)
-     */
-    private var ownerFragment: String? = null
-
-    /**
-     * Flag to determine if this Fragment allows only one of its kind (via tag)
+     * Flag to determine if this Dialog allows only one of its kind (via tag)
      */
     protected open var isSingleTop = false
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        ownerFragment = arguments?.getString(ARG_OWNER_FRAGMENT)
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -72,24 +71,8 @@ abstract class AbstractDialogFragment : DialogFragment() {
 
     protected abstract fun disposeRxBindings()
 
-    override fun onCancel(dialog: DialogInterface) {
-        super.onCancel(dialog)
-        onCancel()
-    }
-
-
-    /**
-     * Dismiss the dialog normally, but if the state of the activity had already been saved dismiss
-     * dialog allowing state loss.
-     */
-    override fun dismiss() = try {
-        LOG.d("Dismissing dialog ", dialogId)
-        onDismiss()
-        super.dismiss()
-    } catch (ex: IllegalStateException) {
-        LOG.e(LOG_TAG, ex, "Dismissing dialog $dialogId allowing state loss. Activity = $activity isFinishing = ${activity?.isFinishing
-                ?: "null"}")
-        super.dismissAllowingStateLoss()
+    fun setTargetActivity(requestCode: Int) {
+        targetActivityRequestCode = requestCode
     }
 
     override fun show(fragmentManager: FragmentManager?, tag: String) {
@@ -139,18 +122,41 @@ abstract class AbstractDialogFragment : DialogFragment() {
         onDismiss()
     }
 
-    private fun passEventToParentActivity(result: Int): Boolean {
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
+        onCancel()
+    }
+
+    /**
+     * Dismiss the dialog normally, but if the state of the activity had already been saved dismiss
+     * dialog allowing state loss.
+     */
+    override fun dismiss() = try {
+        LOG.d("Dismissing dialog ", dialogId)
+        onDismiss()
+        super.dismiss()
+    } catch (ex: IllegalStateException) {
+        LOG.e(LOG_TAG, ex, "Dismissing dialog $dialogId allowing state loss. Activity = $activity isFinishing = ${activity?.isFinishing
+                ?: "null"}")
+        super.dismissAllowingStateLoss()
+    }
+
+    private fun passEventToParentActivity(state: DialogState): Boolean {
         if (activity is DialogFragmentHandler) {
-            (activity as DialogFragmentHandler).onDialogResult(targetRequestCode, result, getContentIntent())
-            return true
+            if (targetActivityRequestCode == 0) {
+                LOG.e(LOG_TAG, "Invalid request code for activity")
+            } else {
+                (activity as DialogFragmentHandler).onDialogResult(targetActivityRequestCode, state, getContentIntent())
+                return true
+            }
         }
 
         return false
     }
 
-    protected fun passEventToParentFragment(result: Int): Boolean {
+    protected fun passEventToParentFragment(state: DialogState): Boolean {
         if (targetFragment is DialogFragmentHandler) {
-            (targetFragment as DialogFragmentHandler).onDialogResult(targetRequestCode, result, getContentIntent())
+            (targetFragment as DialogFragmentHandler).onDialogResult(targetRequestCode, state, getContentIntent())
             return true
         }
         return false
@@ -165,33 +171,30 @@ abstract class AbstractDialogFragment : DialogFragment() {
     }
 
     protected fun onPositiveClick() {
-        onClick(RESULT_POSITIVE)
+        onClick(CLICK_POSITIVE)
     }
 
     protected fun onNegativeClick() {
-        onClick(RESULT_NEGATIVE)
+        onClick(CLICK_NEGATIVE)
     }
 
     protected fun onNeutralClick() {
-        onClick(RESULT_NEUTRAL)
+        onClick(CLICK_NEUTRAL)
     }
 
     protected fun onDismiss() {
-        onClick(RESULT_DISMISS)
+        onClick(DISMISSED)
     }
 
     protected fun onCancel() {
-        onClick(RESULT_CANCELED)
+        onClick(CANCELED)
     }
 
-    private fun onClick(result: Int) {
-        if (!passEventToParentFragment(result)) {
-            if (!passEventToParentActivity(result)) {
-                LOG.e(LOG_TAG, "Could not propagate event for requestCode: $targetRequestCode with resultCode $result")
+    private fun onClick(state: DialogState) {
+        if (!passEventToParentFragment(state)) {
+            if (!passEventToParentActivity(state)) {
+                LOG.e(LOG_TAG, "Could not propagate event for requestCode: $targetRequestCode with resultCode $state")
             }
         }
     }
-
-
-
 }
