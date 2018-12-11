@@ -1,6 +1,6 @@
 buildscript {
     ext.gradleVersion = '3.2.1'
-    ext.kotlinVersion = '1.2.71'
+    ext.kotlinVersion = '1.3.11'
 
     repositories {
         google()
@@ -55,7 +55,7 @@ ext {
     rxBindingsVersion = '2.1.1'
 
     //Kotlin
-    kotlinStdlibVersion = '1.2.71'
+    kotlinStdlibVersion = '1.3.11'
 
     //Lint stuff
     httpComponentsVersion = '4.2.5'
