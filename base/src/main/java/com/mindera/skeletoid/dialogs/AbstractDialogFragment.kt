@@ -29,7 +29,7 @@ abstract class AbstractDialogFragment : DialogFragment() {
 
     abstract val isShowing: Boolean
 
-    protected var targetActivityRequestCode: Int = 0
+    private var targetActivityRequestCode: Int = 0
 
     interface DialogFragmentHandler {
         fun onDialogResult(requestCode: Int, stateCode: DialogState, intent: Intent?)
@@ -68,7 +68,7 @@ abstract class AbstractDialogFragment : DialogFragment() {
 
         val activity = targetFragment?.activity ?: activity
 
-        if(isActivityFinishingOrNull(activity)){
+        if (isActivityFinishingOrNull(activity)) {
             LOG.e(LOG_TAG, Exception("Invalid state for Activity"),
                     "show(): Fragment Activity cannot be finishing or null...")
             return
@@ -150,36 +150,32 @@ abstract class AbstractDialogFragment : DialogFragment() {
     }
 
     protected fun setParameters(bundle: Bundle) {
-        activity?.intent?.let {
-            it.putExtras(bundle)
-        } ?: LOG.e(LOG_TAG, "setParameters: intent is null, unable to add bundle")
+        activity?.intent?.putExtras(bundle) ?: LOG.e(LOG_TAG, "setParameters: intent is null, unable to add bundle")
     }
 
-    protected fun onPositiveClick() {
+    private fun onPositiveClick() {
         onClick(CLICK_POSITIVE)
     }
 
-    protected fun onNegativeClick() {
+    private fun onNegativeClick() {
         onClick(CLICK_NEGATIVE)
     }
 
-    protected fun onNeutralClick() {
+    private fun onNeutralClick() {
         onClick(CLICK_NEUTRAL)
     }
 
-    protected fun onDismiss() {
+    private fun onDismiss() {
         onClick(DISMISSED)
     }
 
-    protected fun onCancel() {
+    private fun onCancel() {
         onClick(CANCELED)
     }
 
     private fun onClick(state: DialogState) {
-        if (!passEventToTargetFragment(state)) {
-            if (!passEventToTargetActivity(state)) {
-                LOG.e(LOG_TAG, "Could not propagate event for requestCode: $targetRequestCode with resultCode $state")
-            }
+        if (!passEventToTargetFragment(state) && !passEventToTargetActivity(state)) {
+            LOG.e(LOG_TAG, "Could not propagate event for requestCode: $targetRequestCode with resultCode $state")
         }
     }
 }
