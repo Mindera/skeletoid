@@ -22,6 +22,9 @@ abstract class AbstractDialogFragment : DialogFragment() {
 
         @JvmField
         val ARG_OWNER_FRAGMENT = "ARG_OWNER_FRAGMENT"
+
+        @JvmStatic
+        protected val RESULT_DIALOGS_CHILD_OFFSET = 10000
     }
 
     enum class DialogState {
