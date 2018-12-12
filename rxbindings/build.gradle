@@ -49,7 +49,7 @@ android {
         resolutionStrategy {
             resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
             // annotation processor conflicts
-            resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib:$kotlinStdlibVersion"
+            resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
             // lint conflicts
             resolutionStrategy.force "org.apache.httpcomponents:httpcore:$httpComponentsVersion"
             resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
