@@ -16,15 +16,6 @@ abstract class AbstractDialogFragment : DialogFragment() {
 
     companion object {
         private const val LOG_TAG = "AbstractDialogFragment"
-
-        @JvmField
-        val ARG_DIALOG_ID = "ARG_DIALOG_ID"
-
-        @JvmField
-        val ARG_OWNER_FRAGMENT = "ARG_OWNER_FRAGMENT"
-
-        @JvmStatic
-        protected val RESULT_DIALOGS_CHILD_OFFSET = 10000
     }
 
     enum class DialogState {
@@ -42,18 +33,6 @@ abstract class AbstractDialogFragment : DialogFragment() {
     interface DialogFragmentHandler {
         fun onDialogResult(requestCode: Int, stateCode: DialogState, intent: Intent?)
     }
-
-    /**
-     * This dialog Id.
-     */
-    private var dialogId: String? = null
-        set(value) {
-            field = value
-            arguments?.let { arguments ->
-                arguments.putString(ARG_DIALOG_ID, value)
-                setArguments(arguments)
-            }
-        }
 
     /**
      * Flag to determine if this Dialog allows only one of its kind (via tag)
@@ -135,16 +114,16 @@ abstract class AbstractDialogFragment : DialogFragment() {
      * dialog allowing state loss.
      */
     override fun dismiss() = try {
-        LOG.d("Dismissing dialog ", dialogId)
+        LOG.d("Dismissing dialog ", tag)
         onDismiss()
         super.dismiss()
     } catch (ex: IllegalStateException) {
-        LOG.e(LOG_TAG, ex, "Dismissing dialog $dialogId allowing state loss. Activity = $activity isFinishing = ${activity?.isFinishing
+        LOG.e(LOG_TAG, ex, "Dismissing dialog $tag allowing state loss. Activity = $activity isFinishing = ${activity?.isFinishing
                 ?: "null"}")
         super.dismissAllowingStateLoss()
     }
 
-    private fun passEventToParentActivity(state: DialogState): Boolean {
+    private fun passEventToTargetActivity(state: DialogState): Boolean {
         if (activity is DialogFragmentHandler) {
             if (targetActivityRequestCode == 0) {
                 LOG.e(LOG_TAG, "Invalid request code for activity")
@@ -157,7 +136,7 @@ abstract class AbstractDialogFragment : DialogFragment() {
         return false
     }
 
-    protected fun passEventToParentFragment(state: DialogState): Boolean {
+    protected fun passEventToTargetFragment(state: DialogState): Boolean {
         if (targetFragment is DialogFragmentHandler) {
             (targetFragment as DialogFragmentHandler).onDialogResult(targetRequestCode, state, getContentIntent())
             return true
@@ -171,6 +150,12 @@ abstract class AbstractDialogFragment : DialogFragment() {
             intent?.putExtras(it)
         }
         return intent
+    }
+
+    protected fun setParameters(bundle: Bundle) {
+        activity?.intent?.let {
+            it.putExtras(bundle)
+        } ?: LOG.e(LOG_TAG, "setParameters: intent is null, unable to add bundle")
     }
 
     protected fun onPositiveClick() {
@@ -194,8 +179,8 @@ abstract class AbstractDialogFragment : DialogFragment() {
     }
 
     private fun onClick(state: DialogState) {
-        if (!passEventToParentFragment(state)) {
-            if (!passEventToParentActivity(state)) {
+        if (!passEventToTargetFragment(state)) {
+            if (!passEventToTargetActivity(state)) {
                 LOG.e(LOG_TAG, "Could not propagate event for requestCode: $targetRequestCode with resultCode $state")
             }
         }
