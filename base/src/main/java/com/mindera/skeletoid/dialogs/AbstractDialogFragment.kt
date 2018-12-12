@@ -153,23 +153,23 @@ abstract class AbstractDialogFragment : DialogFragment() {
         activity?.intent?.putExtras(bundle) ?: LOG.e(LOG_TAG, "setParameters: intent is null, unable to add bundle")
     }
 
-    private fun onPositiveClick() {
+    protected fun onPositiveClick() {
         onClick(CLICK_POSITIVE)
     }
 
-    private fun onNegativeClick() {
+    protected fun onNegativeClick() {
         onClick(CLICK_NEGATIVE)
     }
 
-    private fun onNeutralClick() {
+    protected fun onNeutralClick() {
         onClick(CLICK_NEUTRAL)
     }
 
-    private fun onDismiss() {
+    protected fun onDismiss() {
         onClick(DISMISSED)
     }
 
-    private fun onCancel() {
+    protected fun onCancel() {
         onClick(CANCELED)
     }
 
