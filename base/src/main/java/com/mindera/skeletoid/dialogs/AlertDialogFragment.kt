@@ -84,7 +84,7 @@ class AlertDialogFragment : AbstractDialogFragment() {
             }
         }
 
-        neutralButtonText.let {
+        neutralButtonText?.let {
             builder.setNeutralButton(it) { _, _ ->
                 onNeutralClick()
             }
