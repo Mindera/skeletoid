@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
 import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CANCELED
 import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CLICK_NEGATIVE
@@ -62,28 +63,20 @@ abstract class AbstractDialogFragment : DialogFragment() {
         if (fragmentManager == null) {
             LOG.e(LOG_TAG, Exception("Check StackTrace -> "),
                     "Fragment.show():: FragmentManager cannot be null")
-            return@show
+            return
         }
 
-        targetFragment?.activity?.let {
-            if (it.isFinishing) {
-                LOG.e(LOG_TAG, Exception("Check StackTrace -> "),
-                        "Fragment.show():: Fragment Activity cannot be finishing...")
-                return@show
-            }
-        }
+        val activity = targetFragment?.activity ?: activity
 
-        activity?.let {
-            if (it.isFinishing) {
-                LOG.e(LOG_TAG, Exception("Check StackTrace -> "),
-                        "Fragment.show():: Activity cannot be null")
-                return@show
-            }
+        if(isActivityFinishingOrNull(activity)){
+            LOG.e(LOG_TAG, Exception("Invalid state for Activity"),
+                    "show(): Fragment Activity cannot be finishing or null...")
+            return
         }
 
         // If true allows only one with this tag to avoid multiple dialogs
         if (isSingleTop && fragmentManager.findFragmentByTag(tag) is AbstractDialogFragment) {
-            LOG.e(LOG_TAG, "Fragment.show():: Dialog already present for $tag")
+            LOG.e(LOG_TAG, "show(): Dialog already present for $tag")
             return
         }
 
@@ -97,6 +90,10 @@ abstract class AbstractDialogFragment : DialogFragment() {
         } catch (t: Throwable) {
             LOG.e(LOG_TAG, "[Dialog] Failed to show: $tag")
         }
+    }
+
+    private fun isActivityFinishingOrNull(activity: FragmentActivity?): Boolean {
+        return activity?.isFinishing ?: true
     }
 
     override fun onDismiss(dialog: DialogInterface?) {
