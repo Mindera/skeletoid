@@ -21,8 +21,13 @@ fun <T : Any> Observable<T>.observeOnMain(): Observable<T> = observeOn(AndroidSc
 
 //Use this to maintain a list of shared Observables (use together with allowMultipleSubscribers)
 fun <T : Any> Observable<T>.createUniqueConcurrentRequestCache(requestMap: ConcurrentHashMap<String, Observable<*>>, key: String): Observable<T> {
-    requestMap[key] = this
-    return this.doFinally { requestMap.remove(key) }
+
+    val obs = this.doFinally {
+        requestMap.remove(key)
+    }
+
+    requestMap[key] = obs
+    return obs
 }
 
 fun <T> Observable<T>.allowMultipleSubscribers(): Observable<T> =
