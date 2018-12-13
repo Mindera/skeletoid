@@ -68,7 +68,7 @@ abstract class AbstractDialogFragment : DialogFragment() {
 
         val activity = targetFragment?.activity ?: activity
 
-        if (isActivityFinishingOrNull(activity)) {
+        if (isActivityFinishing(activity)) {
             LOG.e(LOG_TAG, Exception("Invalid state for Activity"),
                     "show(): Fragment Activity cannot be finishing or null...")
             return
@@ -92,8 +92,8 @@ abstract class AbstractDialogFragment : DialogFragment() {
         }
     }
 
-    private fun isActivityFinishingOrNull(activity: FragmentActivity?): Boolean {
-        return activity?.isFinishing ?: true
+    private fun isActivityFinishing(activity: FragmentActivity?): Boolean {
+        return activity?.isFinishing ?: false
     }
 
     override fun onDismiss(dialog: DialogInterface?) {
