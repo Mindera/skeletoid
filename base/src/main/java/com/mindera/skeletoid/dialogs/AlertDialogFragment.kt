@@ -94,5 +94,5 @@ class AlertDialogFragment : AbstractDialogFragment() {
     }
 
     override val isShowing: Boolean
-        get() = dialog?.isShowing ?: false
+        get() = dialog?.isShowing == true
 }
