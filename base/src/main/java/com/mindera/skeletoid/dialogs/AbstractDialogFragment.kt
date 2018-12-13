@@ -93,7 +93,7 @@ abstract class AbstractDialogFragment : DialogFragment() {
     }
 
     private fun isActivityFinishing(activity: FragmentActivity?): Boolean {
-        return activity?.isFinishing ?: false
+        return activity?.isFinishing == true
     }
 
     override fun onDismiss(dialog: DialogInterface?) {
