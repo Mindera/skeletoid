@@ -154,42 +154,32 @@ abstract class AbstractDialogFragment : DialogFragment() {
     }
 
     protected fun onPositiveClick() {
-        if (hasReturnedValueAlready) {
-            return
-        }
         onClick(CLICK_POSITIVE)
     }
 
     protected fun onNegativeClick() {
-        if (hasReturnedValueAlready) {
-            return
-        }
         onClick(CLICK_NEGATIVE)
     }
 
     protected fun onNeutralClick() {
-        if (hasReturnedValueAlready) {
-            return
-        }
         onClick(CLICK_NEUTRAL)
     }
 
     protected fun onDismiss() {
-        if (hasReturnedValueAlready) {
-            return
-        }
         onClick(DISMISSED)
     }
 
     protected fun onCancel() {
-        if (hasReturnedValueAlready) {
-            return
-        }
         onClick(CANCELED)
     }
 
     protected fun onClick(state: DialogState) {
+        if (hasReturnedValueAlready) {
+            return
+        }
+
         hasReturnedValueAlready = true
+
         if (!passEventToTargetFragment(state) && !passEventToTargetActivity(state)) {
             LOG.e(LOG_TAG, "Could not propagate event for requestCode: $targetRequestCode with resultCode $state")
         }
