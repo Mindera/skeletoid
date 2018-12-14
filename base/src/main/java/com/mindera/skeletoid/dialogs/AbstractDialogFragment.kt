@@ -1,7 +1,6 @@
 package com.mindera.skeletoid.dialogs
 
 import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentActivity
@@ -19,6 +18,10 @@ abstract class AbstractDialogFragment : DialogFragment() {
         private const val LOG_TAG = "AbstractDialogFragment"
     }
 
+    private var hasReturnedValueAlready = false
+
+    private var args: Bundle? = null
+
     enum class DialogState {
         CLICK_POSITIVE,
         CLICK_NEGATIVE,
@@ -32,7 +35,7 @@ abstract class AbstractDialogFragment : DialogFragment() {
     private var targetActivityRequestCode: Int = 0
 
     interface DialogFragmentHandler {
-        fun onDialogResult(requestCode: Int, stateCode: DialogState, intent: Intent?)
+        fun onDialogResult(requestCode: Int, stateCode: DialogState, parameters: Bundle?)
     }
 
     /**
@@ -53,6 +56,20 @@ abstract class AbstractDialogFragment : DialogFragment() {
     }
 
     protected abstract fun disposeRxBindings()
+
+
+    protected fun getParameters(): Bundle? {
+        return args
+    }
+
+    protected fun setParameters(bundle: Bundle) {
+        if (args == null) {
+            args = Bundle()
+        }
+        args?.let {
+            it.putAll(bundle)
+        } ?: LOG.e(LOG_TAG, "Unable to set parameters on bundle")
+    }
 
     fun setTargetActivity(requestCode: Int) {
         targetActivityRequestCode = requestCode
@@ -96,11 +113,6 @@ abstract class AbstractDialogFragment : DialogFragment() {
         return activity?.isFinishing == true
     }
 
-    override fun onDismiss(dialog: DialogInterface?) {
-        super.onDismiss(dialog)
-        onDismiss()
-    }
-
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
         onCancel()
@@ -125,7 +137,7 @@ abstract class AbstractDialogFragment : DialogFragment() {
             if (targetActivityRequestCode == 0) {
                 LOG.e(LOG_TAG, "Invalid request code for activity")
             } else {
-                (activity as DialogFragmentHandler).onDialogResult(targetActivityRequestCode, state, getContentIntent())
+                (activity as DialogFragmentHandler).onDialogResult(targetActivityRequestCode, state, getParameters())
                 return true
             }
         }
@@ -133,47 +145,51 @@ abstract class AbstractDialogFragment : DialogFragment() {
         return false
     }
 
-    protected fun passEventToTargetFragment(state: DialogState): Boolean {
+    private fun passEventToTargetFragment(state: DialogState): Boolean {
         if (targetFragment is DialogFragmentHandler) {
-            (targetFragment as DialogFragmentHandler).onDialogResult(targetRequestCode, state, getContentIntent())
+            (targetFragment as DialogFragmentHandler).onDialogResult(targetRequestCode, state, getParameters())
             return true
         }
         return false
     }
 
-    private fun getContentIntent(): Intent? {
-        val intent = activity?.intent
-        arguments?.let {
-            intent?.putExtras(it)
-        }
-        return intent
-    }
-
-    protected fun setParameters(bundle: Bundle) {
-        activity?.intent?.putExtras(bundle) ?: LOG.e(LOG_TAG, "setParameters: intent is null, unable to add bundle")
-    }
-
     protected fun onPositiveClick() {
+        if (hasReturnedValueAlready) {
+            return
+        }
         onClick(CLICK_POSITIVE)
     }
 
     protected fun onNegativeClick() {
+        if (hasReturnedValueAlready) {
+            return
+        }
         onClick(CLICK_NEGATIVE)
     }
 
     protected fun onNeutralClick() {
+        if (hasReturnedValueAlready) {
+            return
+        }
         onClick(CLICK_NEUTRAL)
     }
 
     protected fun onDismiss() {
+        if (hasReturnedValueAlready) {
+            return
+        }
         onClick(DISMISSED)
     }
 
     protected fun onCancel() {
+        if (hasReturnedValueAlready) {
+            return
+        }
         onClick(CANCELED)
     }
 
-    private fun onClick(state: DialogState) {
+    protected fun onClick(state: DialogState) {
+        hasReturnedValueAlready = true
         if (!passEventToTargetFragment(state) && !passEventToTargetActivity(state)) {
             LOG.e(LOG_TAG, "Could not propagate event for requestCode: $targetRequestCode with resultCode $state")
         }
