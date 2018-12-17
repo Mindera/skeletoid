@@ -29,6 +29,12 @@ class AlertDialogFragment : AbstractDialogFragment() {
                         args: Bundle = Bundle()): AlertDialogFragment {
 
             val frag = AlertDialogFragment()
+
+            //Parameters to send onDialogResult
+            val parameters = Bundle()
+            parameters.putAll(args)
+            frag.setParameters(parameters)
+
             args.putString(ARG_TITLE, title)
             args.putString(ARG_MESSAGE, message)
             args.putString(ARG_POSITIVE_BUTTON_TEXT, positiveButtonText)
@@ -38,9 +44,6 @@ class AlertDialogFragment : AbstractDialogFragment() {
 
             //Dialog related parameters
             frag.arguments = args
-
-            //Parameters to send onDialogResult
-            frag.setParameters(bundle = args)
 
             return frag
         }

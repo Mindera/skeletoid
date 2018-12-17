@@ -66,9 +66,7 @@ abstract class AbstractDialogFragment : DialogFragment() {
         if (args == null) {
             args = Bundle()
         }
-        args?.let {
-            it.putAll(bundle)
-        } ?: LOG.e(LOG_TAG, "Unable to set parameters on bundle")
+        args?.putAll(bundle) ?: LOG.e(LOG_TAG, "Unable to set parameters on bundle")
     }
 
     fun setTargetActivity(requestCode: Int) {
