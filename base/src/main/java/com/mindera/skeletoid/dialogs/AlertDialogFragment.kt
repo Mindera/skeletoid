@@ -36,7 +36,11 @@ class AlertDialogFragment : AbstractDialogFragment() {
             args.putString(ARG_NEUTRAL_BUTTON_TEXT, neutralButtonText)
             args.putBoolean(ARG_CANCELLABLE, cancellable)
 
+            //Dialog related parameters
             frag.arguments = args
+
+            //Parameters to send onDialogResult
+            frag.setParameters(bundle = args)
 
             return frag
         }
@@ -60,7 +64,6 @@ class AlertDialogFragment : AbstractDialogFragment() {
             negativeButtonText = it.getString(ARG_NEGATIVE_BUTTON_TEXT)
             neutralButtonText = it.getString(ARG_NEUTRAL_BUTTON_TEXT)
             cancellable = it.getBoolean(ARG_CANCELLABLE)
-            setParameters(it)
         }
     }
 
