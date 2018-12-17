@@ -43,6 +43,14 @@ abstract class AbstractDialogFragment : DialogFragment() {
      */
     protected open var isSingleTop = false
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (targetActivityRequestCode > 0 || targetRequestCode > 0) {
+            throw IllegalArgumentException("Must define either a targetActivityRequestCode or a targetFragmentRequestCode")
+        }
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setupRxBindings()
@@ -141,7 +149,6 @@ abstract class AbstractDialogFragment : DialogFragment() {
                 return true
             }
         }
-
         return false
     }
 
