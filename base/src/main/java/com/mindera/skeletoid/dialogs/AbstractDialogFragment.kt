@@ -16,11 +16,21 @@ abstract class AbstractDialogFragment : DialogFragment() {
 
     companion object {
         private const val LOG_TAG = "AbstractDialogFragment"
+
+        private const val HAS_RETURNED_VALUE_KEY = "HAS_RETURNED_VALUE_KEY"
+        private const val ARGS_KEY = "ARGS_KEY"
+        private const val TARGET_ACTIVITY_KEY = "TARGET_ACTIVITY_KEY"
     }
+
+    abstract val isShowing: Boolean
 
     private var hasReturnedValueAlready = false
 
+    //This is a bundle of parameters that will be resent out of the dialog via onDialogResult.
+    //They are kept in a different bundle to maintain this bundle just with user related values
     private var args: Bundle? = null
+
+    private var targetActivityRequestCode: Int = -1
 
     enum class DialogState {
         CLICK_POSITIVE,
@@ -29,10 +39,6 @@ abstract class AbstractDialogFragment : DialogFragment() {
         DISMISSED,
         CANCELED
     }
-
-    abstract val isShowing: Boolean
-
-    private var targetActivityRequestCode: Int = 0
 
     interface DialogFragmentHandler {
         fun onDialogResult(requestCode: Int, stateCode: DialogState, parameters: Bundle?)
@@ -45,7 +51,20 @@ abstract class AbstractDialogFragment : DialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        savedInstanceState?.let { savedInstance ->
+            hasReturnedValueAlready = savedInstance.getBoolean(HAS_RETURNED_VALUE_KEY)
+            args = savedInstance.getBundle(ARGS_KEY)
+            targetActivityRequestCode = savedInstance.getInt(TARGET_ACTIVITY_KEY)
+        }
         setupRxBindings()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putBoolean(HAS_RETURNED_VALUE_KEY, hasReturnedValueAlready)
+        outState.putBundle(ARGS_KEY, args)
+        outState.putInt(TARGET_ACTIVITY_KEY, targetActivityRequestCode)
     }
 
     protected abstract fun setupRxBindings()
@@ -75,7 +94,8 @@ abstract class AbstractDialogFragment : DialogFragment() {
 
     override fun show(fragmentManager: FragmentManager?, tag: String) {
 
-        if(!hasValidTargetFragment() && !hasValidTargetActivity()){
+        //Note that since
+        if (!hasValidTargetFragment() && !hasValidTargetActivity()) {
             throw IllegalArgumentException("Must define either a targetActivityRequestCode or a targetFragmentRequestCode")
         }
 
@@ -111,12 +131,12 @@ abstract class AbstractDialogFragment : DialogFragment() {
         }
     }
 
-    private fun hasValidTargetFragment() : Boolean{
-        return targetFragment != null && targetRequestCode > 0
+    private fun hasValidTargetFragment(): Boolean {
+        return targetFragment != null && targetRequestCode >= 0
     }
 
-    private fun hasValidTargetActivity() : Boolean{
-        return targetActivityRequestCode > 0
+    private fun hasValidTargetActivity(): Boolean {
+        return targetActivityRequestCode >= 0
     }
 
     private fun isActivityFinishing(activity: FragmentActivity?): Boolean {
@@ -144,12 +164,14 @@ abstract class AbstractDialogFragment : DialogFragment() {
 
     private fun passEventToTargetActivity(state: DialogState): Boolean {
         if (activity is DialogFragmentHandler) {
-            if (targetActivityRequestCode == 0) {
-                LOG.e(LOG_TAG, "Invalid request code for activity")
-            } else {
+            if (targetActivityRequestCode >= 0) {
                 (activity as DialogFragmentHandler).onDialogResult(targetActivityRequestCode, state, getParameters())
                 return true
+            } else {
+                LOG.e(LOG_TAG, "Invalid targetActivityRequestCode: $targetActivityRequestCode")
             }
+        } else {
+            LOG.e(LOG_TAG, "Activity is not DialogFragmentHandler, ignoring event...")
         }
         return false
     }
@@ -158,6 +180,8 @@ abstract class AbstractDialogFragment : DialogFragment() {
         if (targetFragment is DialogFragmentHandler) {
             (targetFragment as DialogFragmentHandler).onDialogResult(targetRequestCode, state, getParameters())
             return true
+        } else {
+            LOG.e(LOG_TAG, "Fragment is not DialogFragmentHandler, ignoring event...")
         }
         return false
     }

@@ -30,7 +30,7 @@ class AlertDialogFragment : AbstractDialogFragment() {
 
             val frag = AlertDialogFragment()
 
-            //Parameters to send onDialogResult
+            //Parameters to be resend on onDialogResult to the target Fragment or Activity
             val parameters = Bundle()
             parameters.putAll(args)
             frag.setParameters(parameters)
