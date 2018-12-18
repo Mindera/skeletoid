@@ -75,7 +75,7 @@ abstract class AbstractDialogFragment : DialogFragment() {
 
     override fun show(fragmentManager: FragmentManager?, tag: String) {
 
-        if (targetActivityRequestCode > 0 || targetRequestCode > 0) {
+        if(!hasValidTargetFragment() && !hasValidTargetActivity()){
             throw IllegalArgumentException("Must define either a targetActivityRequestCode or a targetFragmentRequestCode")
         }
 
@@ -109,6 +109,14 @@ abstract class AbstractDialogFragment : DialogFragment() {
         } catch (t: Throwable) {
             LOG.e(LOG_TAG, "[Dialog] Failed to show: $tag")
         }
+    }
+
+    private fun hasValidTargetFragment() : Boolean{
+        return targetFragment != null && targetRequestCode > 0
+    }
+
+    private fun hasValidTargetActivity() : Boolean{
+        return targetActivityRequestCode > 0
     }
 
     private fun isActivityFinishing(activity: FragmentActivity?): Boolean {
