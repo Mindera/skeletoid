@@ -16,8 +16,8 @@ fun Activity.setStatusBarTextWhite() {
 
 fun Activity.makeStatusBarFullyTransparent() {
     window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+                                           View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                                           View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
 }
 
 fun Activity.setStatusBarColor(@ColorRes colorResId: Int) {
