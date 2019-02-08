@@ -18,8 +18,13 @@ object Versioning {
      *         The result is zero if the strings are _numerically_ equal.
      */
     fun compareVersions(str1: String, str2: String): Int {
+        if (str1.isBlank() || str2.isBlank()) {
+            throw IllegalArgumentException("Invalid Version")
+        }
+
         val vals1 = str1.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         val vals2 = str2.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+
         var i = 0
         // set index to first non-equal ordinal or length of shortest version string
         while (i < vals1.size && i < vals2.size && vals1[i] == vals2[i]) {
