@@ -1,5 +1,7 @@
 package com.mindera.skeletoid.utils.versioning
 
+import kotlin.math.sign
+
 
 object Versioning {
     /**
@@ -41,12 +43,7 @@ object Versioning {
                 vals1.size - vals2.size
             }
         }.sign
-            val diff = Integer.valueOf(vals1[i]).compareTo(Integer.valueOf(vals2[i]))
-            Integer.signum(diff)
-        } else {
-            Integer.signum(vals1.size - vals2.size)
-        }// the strings are equal or one string is a substring of the other
-        // e.g. "1.2.3" = "1.2.3" or "1.2.3" < "1.2.3.4"
+
     }
 
 }
