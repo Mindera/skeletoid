@@ -2,7 +2,7 @@ package com.mindera.skeletoid.utils
 
 import com.mindera.skeletoid.utils.tuples.Quadruple
 import com.mindera.skeletoid.utils.tuples.Quintuple
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class TuplesUnitTest {
@@ -19,10 +19,10 @@ class TuplesUnitTest {
         )
 
         // then
-        Assert.assertEquals("1st", quadruple.first)
-        Assert.assertEquals("2nd", quadruple.second)
-        Assert.assertEquals(3, quadruple.third)
-        Assert.assertEquals(4f, quadruple.fourth)
+        assertEquals("1st", quadruple.first)
+        assertEquals("2nd", quadruple.second)
+        assertEquals(3, quadruple.third)
+        assertEquals(4f, quadruple.fourth)
     }
 
     @Test
@@ -38,10 +38,10 @@ class TuplesUnitTest {
         )
 
         // then
-        Assert.assertEquals("1st", quintuple.first)
-        Assert.assertEquals("2nd", quintuple.second)
-        Assert.assertEquals(3, quintuple.third)
-        Assert.assertEquals(4f, quintuple.fourth)
-        Assert.assertEquals("5th", quintuple.fifth)
+        assertEquals("1st", quintuple.first)
+        assertEquals("2nd", quintuple.second)
+        assertEquals(3, quintuple.third)
+        assertEquals(4f, quintuple.fourth)
+        assertEquals("5th", quintuple.fifth)
     }
 }

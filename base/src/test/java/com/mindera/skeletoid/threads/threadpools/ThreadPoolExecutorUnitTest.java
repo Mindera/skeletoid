@@ -2,12 +2,12 @@ package com.mindera.skeletoid.threads.threadpools;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class ThreadPoolExecutorUnitTest {
 
@@ -15,7 +15,7 @@ public class ThreadPoolExecutorUnitTest {
     private static final int MAX_POOL_SIZE = 15;
     private static final long KEEP_ALIVE = 5;
     private static final TimeUnit TIME_UNIT = TimeUnit.MILLISECONDS;
-    private static final NamedThreadFactory THREAD_FACTORY = Mockito.mock(NamedThreadFactory.class);
+    private static final NamedThreadFactory THREAD_FACTORY = mock(NamedThreadFactory.class);
 
     private ThreadPoolExecutor mThreadPoolExecutor;
 
