@@ -24,9 +24,9 @@ object CookiesUtils {
         for (ar1 in temp) {
             val temp1 = ar1.split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-            if(temp1.size == 2){
+            if (temp1.size == 2) {
                 cookiesMap[temp1[0]] = temp1[1]
-            }else{
+            } else {
                 LOG.e(LOG_TAG, "Cookie is malformed, skipping...")
             }
         }

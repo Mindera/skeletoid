@@ -6,7 +6,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.util.*
+import java.util.Date
 
 // Creator factory functions
 inline fun <reified T> parcelableCreator(

@@ -2,7 +2,6 @@ package com.mindera.skeletoid.utils.versioning
 
 import kotlin.math.sign
 
-
 object Versioning {
     /**
      * Compares two version strings.
@@ -43,7 +42,5 @@ object Versioning {
                 vals1.size - vals2.size
             }
         }.sign
-
     }
-
 }

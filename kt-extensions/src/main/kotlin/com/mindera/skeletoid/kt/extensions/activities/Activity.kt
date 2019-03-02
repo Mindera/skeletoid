@@ -2,6 +2,7 @@
 
 package com.mindera.skeletoid.kt.extensions.activities
 
+import android.annotation.TargetApi
 import android.app.Activity
 import android.os.Build
 import android.support.annotation.ColorRes
@@ -16,10 +17,11 @@ fun Activity.setStatusBarTextWhite() {
 
 fun Activity.setTransparentStatusBar() {
     window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                                           View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                                           View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
 }
 
+@TargetApi(21)
 fun Activity.setStatusBarColor(@ColorRes colorResId: Int) {
     window.statusBarColor = ContextCompat.getColor(this, colorResId)
 }

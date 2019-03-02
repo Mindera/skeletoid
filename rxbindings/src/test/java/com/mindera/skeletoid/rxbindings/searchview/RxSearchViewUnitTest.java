@@ -31,5 +31,4 @@ public class RxSearchViewUnitTest {
         SearchView sv = mock(SearchView.class);
         assertNotNull(RxSearchView.focusChanges(sv));
     }
-
 }

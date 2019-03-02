@@ -1,7 +1,5 @@
 package com.mindera.skeletoid.utils
 
-import java.util.*
-
 class Optional<T> {
 
     private val value: T?
@@ -31,6 +29,7 @@ class Optional<T> {
         if (this === other) {
             return true
         }
+
         if (other == null || javaClass != other.javaClass) {
             return false
         }
@@ -46,10 +45,7 @@ class Optional<T> {
     }
 
     override fun toString(): String {
-        return if (value != null)
-            String.format("Optional[%s]", value)
-        else
-            "Optional.empty"
+        return if (value != null) String.format("Optional[%s]", value) else "Optional.empty"
     }
 
     companion object {

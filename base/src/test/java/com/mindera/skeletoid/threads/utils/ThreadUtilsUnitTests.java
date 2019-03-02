@@ -2,7 +2,7 @@ package com.mindera.skeletoid.threads.utils;
 
 import org.junit.Test;
 
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 public class ThreadUtilsUnitTests {
 

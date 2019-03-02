@@ -11,11 +11,9 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mindera.skeletoid.logs.LoggerManager.LOG_FORMAT_4ARGS;
-
 import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getObjectHash;
 import static com.mindera.skeletoid.threads.utils.ThreadUtils.getCurrentThreadName;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
