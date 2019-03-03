@@ -1,9 +1,5 @@
-package com.mindera.skeletoid.kt.extensions
+package com.mindera.skeletoid.kt.extensions.stlib
 
-import com.mindera.skeletoid.kt.extensions.stlib.isFalseAndNotNull
-import com.mindera.skeletoid.kt.extensions.stlib.isFalseOrNull
-import com.mindera.skeletoid.kt.extensions.stlib.isTrueAndNotNull
-import com.mindera.skeletoid.kt.extensions.stlib.isTrueOrNull
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
