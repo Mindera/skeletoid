@@ -1,6 +1,6 @@
 package com.mindera.skeletoid.threads.threadpools
 
-import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils.Companion.mThreadTotal
+import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils.totalThreads
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
 import junit.framework.Assert.assertTrue
@@ -18,11 +18,6 @@ class ThreadPoolUtilsUnitTest {
     @Before
     fun beforeTest() {
         ThreadPoolUtils.totalThreads.set(0)
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun testConstructor() {
-        ThreadPoolUtils()
     }
 
     @Test
@@ -72,7 +67,7 @@ class ThreadPoolUtilsUnitTest {
         `when`(threadPoolExecutor.corePoolSize).thenReturn(5)
 
         ThreadPoolUtils.shutdown(threadPoolExecutor)
-        assertEquals(-5, mThreadTotal.get())
+        assertEquals(-5, totalThreads.get())
 
         verify(threadPoolExecutor, times(1)).shutdown()
     }
@@ -90,7 +85,7 @@ class ThreadPoolUtilsUnitTest {
         `when`(threadPoolExecutor.corePoolSize).thenReturn(5)
 
         ThreadPoolUtils.shutdownNow(threadPoolExecutor)
-        assertEquals(-5, mThreadTotal.get())
+        assertEquals(-5, totalThreads.get())
 
         verify(threadPoolExecutor, times(1)).shutdownNow()
     }
