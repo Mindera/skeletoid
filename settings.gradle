@@ -1,1 +1,1 @@
-include ':base', ':kt-extensions', ':analytics-ga', ':analytics-firebase', ':rxbindings'
+include ':base', ':kt-extensions', ':analytics-ga', ':analytics-firebase', ':rxbindings', ':rxjava'

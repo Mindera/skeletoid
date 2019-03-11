@@ -63,6 +63,8 @@ android {
 }
 
 dependencies {
+    //Depends on Base RxJava
+    api project(path: ':rxjava')
 
     //Support
     implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
