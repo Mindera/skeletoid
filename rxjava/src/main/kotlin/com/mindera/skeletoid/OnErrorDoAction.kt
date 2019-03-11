@@ -1,4 +1,4 @@
-package com.mindera.skeletoid.kt.extensions.rxjava
+package com.mindera.skeletoid
 
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -10,12 +10,12 @@ class RequestWrapper<T>(val result: T? = null, val throwable: Throwable? = null)
 class ActionOnErrorException(val error: Throwable) : Exception()
 
 fun <R> Single<R>.onErrorDoActionBeforeFailing(doAction: (Throwable) -> Single<R>): Single<R> =
-        map { RequestWrapper(it) }
-                .onErrorReturn { e -> RequestWrapper(throwable = e) }
+        map { com.mindera.skeletoid.RequestWrapper(it) }
+                .onErrorReturn { e -> com.mindera.skeletoid.RequestWrapper(throwable = e) }
                 .flatMap { wrapper ->
                     wrapper.throwable?.let { throwable ->
                         doAction(throwable).flatMap {
-                            throw ActionOnErrorException(throwable)
+                            throw com.mindera.skeletoid.ActionOnErrorException(throwable)
                             Single.just(it) //Needed for compiler to know which type is this...
                         }
                     } ?: Single.just(wrapper.result)
@@ -23,12 +23,12 @@ fun <R> Single<R>.onErrorDoActionBeforeFailing(doAction: (Throwable) -> Single<R
 
 
 fun <R> Observable<R>.onErrorDoActionBeforeFailing(doAction: (Throwable) -> Observable<R>): Observable<R> =
-        map { RequestWrapper(it) }
-                .onErrorReturn { e -> RequestWrapper(throwable = e) }
+        map { com.mindera.skeletoid.RequestWrapper(it) }
+                .onErrorReturn { e -> com.mindera.skeletoid.RequestWrapper(throwable = e) }
                 .flatMap { wrapper ->
                     wrapper.throwable?.let { throwable ->
                         doAction(throwable).flatMap {
-                            throw ActionOnErrorException(throwable)
+                            throw com.mindera.skeletoid.ActionOnErrorException(throwable)
                             Observable.just(it) //Needed for compiler to know which type is this...
                         }
                     } ?: Observable.just(wrapper.result)

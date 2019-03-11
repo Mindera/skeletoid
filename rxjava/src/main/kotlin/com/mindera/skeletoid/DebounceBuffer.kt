@@ -1,4 +1,4 @@
-package com.mindera.skeletoid.kt.extensions.rxjava
+package com.mindera.skeletoid
 
 import io.reactivex.ObservableTransformer
 import io.reactivex.Scheduler

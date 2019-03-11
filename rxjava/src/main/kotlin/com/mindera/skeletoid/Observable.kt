@@ -1,12 +1,11 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.mindera.skeletoid.kt.extensions.rxjava
+package com.mindera.skeletoid
 
+import com.mindera.skeletoid.schedulers.Schedulers
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
-import io.reactivex.schedulers.Schedulers
-import java.lang.Exception
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
@@ -45,7 +44,11 @@ internal data class DataHolder<T>(val something: T? = null, val throwable: Throw
  * @param timeUnit - the unit of timeToWait
  */
 fun <T> Observable<T>.delayAtLeast(timeToWait: Long = 1000, timeUnit: TimeUnit = TimeUnit.MILLISECONDS): Observable<T> {
-    return Observable.zip<DataHolder<T>, Long, DataHolder<T>>(this.map { DataHolder(something = it) }.onErrorReturn { DataHolder(throwable = it) },
+    return Observable.zip<DataHolder<T>, Long, DataHolder<T>>(this.map {
+        com.mindera.skeletoid.DataHolder(
+            something = it
+        )
+    }.onErrorReturn { com.mindera.skeletoid.DataHolder(throwable = it) },
             Observable.timer(timeToWait, timeUnit), BiFunction { t, _ -> t }).map { it.something ?: it.throwable?.let { throwable -> throw throwable } ?: throw Exception() }
 }
 

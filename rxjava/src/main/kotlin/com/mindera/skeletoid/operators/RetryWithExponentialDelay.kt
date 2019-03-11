@@ -1,4 +1,4 @@
-package com.mindera.skeletoid.kt.extensions.rxjava.operators
+package com.mindera.skeletoid.operators
 
 import io.reactivex.Flowable
 import io.reactivex.functions.Function

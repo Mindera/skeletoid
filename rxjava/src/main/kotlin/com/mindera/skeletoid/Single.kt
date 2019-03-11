@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.mindera.skeletoid.kt.extensions.rxjava
+package com.mindera.skeletoid
 
 import io.reactivex.Observable
 import io.reactivex.Single

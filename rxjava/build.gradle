@@ -21,11 +21,11 @@ android {
 
     buildTypes {
 
-        debug{
+        debug {
             matchingFallbacks = ['debug']
         }
 
-        qa{
+        qa {
             matchingFallbacks = ['debug']
             testCoverageEnabled = true
         }
@@ -55,21 +55,23 @@ android {
 }
 
 dependencies {
+    //Depends on Base Skeletoid
+    api project(path: ':base')
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
 
-    testImplementation "junit:junit:$rootProject.junitVersion"
-    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
-    testImplementation "org.powermock:powermock-module-junit4:$rootProject.powermockVersion"
-    testImplementation "org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion"
-    testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"
-    testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
-    testImplementation("org.robolectric:robolectric:$rootProject.robolectricVersion") {
-        exclude group: 'com.thoughtworks.xstream', module: 'xstream'
-        exclude group: 'org.codehaus.plexus', module: 'plexus-utils'
+// RxJava
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
+    implementation("io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion") {
+        exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
     }
 
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
 
 jacoco {
@@ -92,8 +94,6 @@ task createSkeletoidUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTe
             '**/BuildConfig.*',
             'android/**/*.*',
             '**/Manifest*.*',
-            //Data Binding
-            '**/*databinding/**/*.*',
             //Test
             '**/**Test*.*']
 
