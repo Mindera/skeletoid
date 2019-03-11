@@ -1,20 +1,26 @@
 package com.mindera.skeletoid.rxjava.schedulers
 
+import com.mindera.skeletoid.logs.LOG
 import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils
 import io.reactivex.Scheduler
 
 object Schedulers {
 
-    private val computationThreadPool by lazy {
-        val maxComputationThreads = Runtime.getRuntime().availableProcessors()
+    private val LOG_TAG = "Schedulers"
 
-        ThreadPoolUtils.getScheduledThreadPool("RxComputationTP", maxComputationThreads)
+    private val computationThreadPool by lazy {
+        val coreThreads = Runtime.getRuntime().availableProcessors()
+
+        ThreadPoolUtils.getFixedThreadPool("RxComputationTP", coreThreads, coreThreads)
     }
 
     private val ioThreadPool by lazy {
-        val maxIoThreads = Runtime.getRuntime().availableProcessors()
+        val coreThreads = Runtime.getRuntime().availableProcessors()
+        val maxIoThreads = coreThreads + 2
 
-        ThreadPoolUtils.getScheduledThreadPool("RxIoTP", maxIoThreads + 2)
+        LOG.v(LOG_TAG, "Starting IO Thread Pool with max number of $maxIoThreads threads")
+
+        ThreadPoolUtils.getFixedThreadPool("RxIoTP", maxIoThreads, coreThreads)
     }
 
     fun computation(): Scheduler = io.reactivex.schedulers.Schedulers.from(computationThreadPool)

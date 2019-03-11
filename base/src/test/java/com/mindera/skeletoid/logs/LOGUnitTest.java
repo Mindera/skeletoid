@@ -134,7 +134,7 @@ public class LOGUnitTest {
         LOG.d(TAG, TEXT);
 
         //This is ugly.. but I don't see another way.
-        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), Companion.getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         verify(appenderA, times(1)).log(LOG.PRIORITY.DEBUG, null, log);
         verify(appenderB, times(1)).log(LOG.PRIORITY.DEBUG, null, log);
@@ -160,7 +160,7 @@ public class LOGUnitTest {
         LOG.e(TAG, TEXT);
 
         //This is ugly.. but I don't see another way.
-        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), Companion.getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         verify(appenderA, times(1)).log(LOG.PRIORITY.ERROR, null, log);
         verify(appenderB, times(1)).log(LOG.PRIORITY.ERROR, null, log);
@@ -186,7 +186,7 @@ public class LOGUnitTest {
         LOG.w(TAG, TEXT);
 
         //This is ugly.. but I don't see another way.
-        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), Companion.getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         verify(appenderA, times(1)).log(LOG.PRIORITY.WARN, null, log);
         verify(appenderB, times(1)).log(LOG.PRIORITY.WARN, null, log);
@@ -211,7 +211,7 @@ public class LOGUnitTest {
 
         LOG.wtf(TAG, TEXT);
         //This is ugly.. but I don't see another way.
-        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), Companion.getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         verify(appenderA, times(1)).log(LOG.PRIORITY.FATAL, null, log);
         verify(appenderB, times(1)).log(LOG.PRIORITY.FATAL, null, log);
@@ -236,7 +236,7 @@ public class LOGUnitTest {
 
         LOG.i(TAG, TEXT);
         //This is ugly.. but I don't see another way.
-        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), Companion.getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         verify(appenderA, times(1)).log(LOG.PRIORITY.INFO, null, log);
         verify(appenderB, times(1)).log(LOG.PRIORITY.INFO, null, log);
@@ -263,7 +263,7 @@ public class LOGUnitTest {
         Exception e = new Exception();
         LOG.d(TAG, e, TEXT);
         //This is ugly.. but I don't see another way.
-        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), Companion.getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         verify(appenderA, times(1)).log(LOG.PRIORITY.DEBUG, e, log);
         verify(appenderB, times(1)).log(LOG.PRIORITY.DEBUG, e, log);
@@ -289,7 +289,7 @@ public class LOGUnitTest {
         Exception e = new Exception();
         LOG.e(TAG, e, TEXT);
         //This is ugly.. but I don't see another way.
-        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), Companion.getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         verify(appenderA, times(1)).log(LOG.PRIORITY.ERROR, e, log);
         verify(appenderB, times(1)).log(LOG.PRIORITY.ERROR, e, log);
@@ -315,7 +315,7 @@ public class LOGUnitTest {
         Exception e = new Exception();
         LOG.w(TAG, e, TEXT);
         //This is ugly.. but I don't see another way.
-        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), Companion.getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         verify(appenderA, times(1)).log(LOG.PRIORITY.WARN, e, log);
         verify(appenderB, times(1)).log(LOG.PRIORITY.WARN, e, log);
@@ -341,7 +341,7 @@ public class LOGUnitTest {
         Exception e = new Exception();
         LOG.wtf(TAG, e, TEXT);
         //This is ugly.. but I don't see another way.
-        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), Companion.getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         verify(appenderA, times(1)).log(LOG.PRIORITY.FATAL, e, log);
         verify(appenderB, times(1)).log(LOG.PRIORITY.FATAL, e, log);
@@ -367,7 +367,7 @@ public class LOGUnitTest {
         Exception e = new Exception();
         LOG.i(TAG, e, TEXT);
         //This is ugly.. but I don't see another way.
-        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), Companion.getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         verify(appenderA, times(1)).log(LOG.PRIORITY.INFO, e, log);
         verify(appenderB, times(1)).log(LOG.PRIORITY.INFO, e, log);
@@ -394,7 +394,7 @@ public class LOGUnitTest {
         Exception e = new Exception();
         LOG.v(TAG, e, TEXT);
         //This is ugly.. but I don't see another way.
-        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), Companion.getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         verify(appenderA, times(1)).log(LOG.PRIORITY.VERBOSE, e, log);
         verify(appenderB, times(1)).log(LOG.PRIORITY.VERBOSE, e, log);
@@ -419,7 +419,7 @@ public class LOGUnitTest {
 
         LOG.v(TAG, TEXT);
         //This is ugly.. but I don't see another way.
-        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
+        final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), Companion.getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         verify(appenderA, times(1)).log(LOG.PRIORITY.VERBOSE, null, log);
         verify(appenderB, times(1)).log(LOG.PRIORITY.VERBOSE, null, log);

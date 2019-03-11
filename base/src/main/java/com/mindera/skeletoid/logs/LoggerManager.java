@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.mindera.skeletoid.generic.AndroidUtils;
 import com.mindera.skeletoid.logs.appenders.ILogAppender;
+import com.mindera.skeletoid.threads.utils.ThreadUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +17,6 @@ import java.util.Set;
 import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString;
 import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getObjectHash;
 import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getTag;
-import static com.mindera.skeletoid.threads.utils.ThreadUtils.getCurrentThreadName;
 
 /**
  * LOG main class. It contains all the logic and feeds the appenders
@@ -144,7 +144,7 @@ class LoggerManager implements ILoggerManager {
             return;
         }
 
-        final String log = String.format(LOG_FORMAT_4ARGS, tag, getObjectHash(tag), getCurrentThreadName(), getLogString(text));
+        final String log = String.format(LOG_FORMAT_4ARGS, tag, getObjectHash(tag), ThreadUtils.INSTANCE.getCurrentThreadName(), getLogString(text));
 
         pushLogToAppenders(priority, null, log);
     }
@@ -163,7 +163,7 @@ class LoggerManager implements ILoggerManager {
             return;
         }
 
-        final String log = String.format(LOG_FORMAT_4ARGS, tag, getObjectHash(tag), getCurrentThreadName(), logString);
+        final String log = String.format(LOG_FORMAT_4ARGS, tag, getObjectHash(tag), ThreadUtils.INSTANCE.getCurrentThreadName(), logString);
 
         pushLogToAppenders(priority, t, log);
     }
@@ -181,7 +181,7 @@ class LoggerManager implements ILoggerManager {
             return;
         }
 
-        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz, mAddPackageName, PACKAGE_NAME, mAddMethodName), getCurrentThreadName(), logString);
+        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz, mAddPackageName, PACKAGE_NAME, mAddMethodName), ThreadUtils.INSTANCE.getCurrentThreadName(), logString);
 
         pushLogToAppenders(type, null, log);
     }
@@ -199,7 +199,7 @@ class LoggerManager implements ILoggerManager {
             return;
         }
 
-        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz, mAddPackageName, PACKAGE_NAME, mAddMethodName), getCurrentThreadName(), logString);
+        final String log = String.format(LOG_FORMAT_3ARGS, getTag(clazz, mAddPackageName, PACKAGE_NAME, mAddMethodName), ThreadUtils.INSTANCE.getCurrentThreadName(), logString);
         pushLogToAppenders(type, t, log);
     }
 }

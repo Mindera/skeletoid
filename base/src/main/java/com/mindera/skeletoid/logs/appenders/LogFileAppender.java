@@ -154,7 +154,7 @@ public class LogFileAppender implements ILogAppender {
     public void enableAppender(final Context context) {
         final int MBYTE_IN_BYTES = 1024 * 1024;
 
-        mFileLoggingTP = ThreadPoolUtils.getFixedThreadPool("LogToFileTP", 1);
+        mFileLoggingTP = ThreadPoolUtils.INSTANCE.getFixedThreadPool("LogToFileTP", 1, 1);
 
         mFileLoggingTP.submit(new Runnable() {
             @Override
@@ -192,15 +192,15 @@ public class LogFileAppender implements ILogAppender {
         mCanWriteToFile = false;
 
         if (mFileLoggingTP != null) {
-            ThreadPoolUtils.shutdown(mFileLoggingTP);
+            ThreadPoolUtils.INSTANCE.shutdown(mFileLoggingTP);
 
             try {
                 // wait until task terminate
                 if (!mFileLoggingTP.awaitTermination(500, TimeUnit.MILLISECONDS)) {
-                    ThreadPoolUtils.shutdownNow(mFileLoggingTP);
+                    ThreadPoolUtils.INSTANCE.shutdownNow(mFileLoggingTP);
                 }
             } catch (InterruptedException e) {
-                ThreadPoolUtils.shutdownNow(mFileLoggingTP);
+                ThreadPoolUtils.INSTANCE.shutdownNow(mFileLoggingTP);
             }
         }
     }
