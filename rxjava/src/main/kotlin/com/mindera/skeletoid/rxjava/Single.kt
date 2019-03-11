@@ -1,8 +1,8 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.mindera.skeletoid
+package com.mindera.skeletoid.rxjava
 
-import com.mindera.skeletoid.schedulers.Schedulers
+import com.mindera.skeletoid.rxjava.schedulers.Schedulers
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers

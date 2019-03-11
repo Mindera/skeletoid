@@ -1,8 +1,8 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.mindera.skeletoid
+package com.mindera.skeletoid.rxjava
 
-import com.mindera.skeletoid.schedulers.Schedulers
+import com.mindera.skeletoid.rxjava.schedulers.Schedulers
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
@@ -48,10 +48,10 @@ internal data class DataHolder<T>(val something: T? = null, val throwable: Throw
  */
 fun <T> Observable<T>.delayAtLeast(timeToWait: Long = 1000, timeUnit: TimeUnit = TimeUnit.MILLISECONDS): Observable<T> {
     return Observable.zip<DataHolder<T>, Long, DataHolder<T>>(this.map {
-        com.mindera.skeletoid.DataHolder(
+        DataHolder(
             something = it
         )
-    }.onErrorReturn { com.mindera.skeletoid.DataHolder(throwable = it) },
+    }.onErrorReturn { DataHolder(throwable = it) },
             Observable.timer(timeToWait, timeUnit), BiFunction { t, _ -> t }).map { it.something ?: it.throwable?.let { throwable -> throw throwable } ?: throw Exception() }
 }
 

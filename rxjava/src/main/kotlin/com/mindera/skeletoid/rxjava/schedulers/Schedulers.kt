@@ -1,4 +1,4 @@
-package com.mindera.skeletoid.schedulers
+package com.mindera.skeletoid.rxjava.schedulers
 
 import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils
 import io.reactivex.Scheduler

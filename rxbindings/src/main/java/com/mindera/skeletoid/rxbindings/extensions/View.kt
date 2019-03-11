@@ -2,8 +2,8 @@ package com.mindera.skeletoid.rxbindings.extensions
 
 import android.view.View
 import com.jakewharton.rxbinding2.view.clicks
-import com.mindera.skeletoid.observeOnMain
-import com.mindera.skeletoid.subscribeOnMain
+import com.mindera.skeletoid.rxjava.observeOnMain
+import com.mindera.skeletoid.rxjava.subscribeOnMain
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit

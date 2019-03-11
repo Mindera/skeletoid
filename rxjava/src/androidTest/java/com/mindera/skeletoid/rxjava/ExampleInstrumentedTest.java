@@ -1,4 +1,4 @@
-package com.mindera.skeletoid;
+package com.mindera.skeletoid.rxjava;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

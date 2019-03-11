@@ -62,12 +62,11 @@ dependencies {
 
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
 
-// RxJava
+    // RxJava
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation("io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion") {
         exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
     }
-
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
