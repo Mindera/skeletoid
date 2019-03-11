@@ -2,9 +2,9 @@
 
 package com.mindera.skeletoid
 
+import com.mindera.skeletoid.schedulers.Schedulers
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 fun Completable.subscribeOnIO(): Completable = subscribeOn(Schedulers.io())
 

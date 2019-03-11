@@ -1,8 +1,8 @@
 package com.mindera.skeletoid
 
+import com.mindera.skeletoid.schedulers.Schedulers
 import io.reactivex.Maybe
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 fun <T : Any> Maybe<T>.subscribeOnIO(): Maybe<T>
         = subscribeOn(Schedulers.io())

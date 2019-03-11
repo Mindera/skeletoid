@@ -16,6 +16,7 @@ fun <R> Single<R>.onErrorDoActionBeforeFailing(doAction: (Throwable) -> Single<R
                     wrapper.throwable?.let { throwable ->
                         doAction(throwable).flatMap {
                             throw com.mindera.skeletoid.ActionOnErrorException(throwable)
+                            @Suppress("UNREACHABLE_CODE")
                             Single.just(it) //Needed for compiler to know which type is this...
                         }
                     } ?: Single.just(wrapper.result)
@@ -29,6 +30,7 @@ fun <R> Observable<R>.onErrorDoActionBeforeFailing(doAction: (Throwable) -> Obse
                     wrapper.throwable?.let { throwable ->
                         doAction(throwable).flatMap {
                             throw com.mindera.skeletoid.ActionOnErrorException(throwable)
+                            @Suppress("UNREACHABLE_CODE")
                             Observable.just(it) //Needed for compiler to know which type is this...
                         }
                     } ?: Observable.just(wrapper.result)

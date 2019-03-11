@@ -1,5 +1,6 @@
 package com.mindera.skeletoid
 
+import com.mindera.skeletoid.BreadcrumbExtension.breadcrumbsEnabled
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
