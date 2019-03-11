@@ -55,10 +55,7 @@ object ThreadPoolUtils {
      *
      * @param threadPoolExecutor The threadpool to be shutdown
      */
-    fun shutdown(threadPoolExecutor: java.util.concurrent.ThreadPoolExecutor?) {
-        if (threadPoolExecutor == null) {
-            return
-        }
+    fun shutdown(threadPoolExecutor: java.util.concurrent.ThreadPoolExecutor) {
         totalThreads.addAndGet(-threadPoolExecutor.corePoolSize)
         threadPoolExecutor.shutdown()
     }
@@ -68,10 +65,7 @@ object ThreadPoolUtils {
      *
      * @param threadPoolExecutor The threadpool to be shutdown now
      */
-    fun shutdownNow(threadPoolExecutor: java.util.concurrent.ThreadPoolExecutor?) {
-        if (threadPoolExecutor == null) {
-            return
-        }
+    fun shutdownNow(threadPoolExecutor: java.util.concurrent.ThreadPoolExecutor) {
         totalThreads.addAndGet(-threadPoolExecutor.corePoolSize)
         threadPoolExecutor.shutdownNow()
     }

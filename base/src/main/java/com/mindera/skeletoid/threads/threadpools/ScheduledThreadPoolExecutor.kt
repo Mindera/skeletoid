@@ -55,18 +55,19 @@ class ScheduledThreadPoolExecutor(corePoolSize: Int, threadFactory: NamedThreadF
      * Mark threads name after shutdown to provide accurate logs
      */
     private fun changeThreadsNameAfterShutdown() {
-        if (threadFactory is NamedThreadFactory) {
-            val factory = threadFactory as NamedThreadFactory
-            val threads = factory.threads
-            if (threads != null) {
-                for (t in threads) {
-                    val threadName = t.name
-                    if (threadName != null && !threadName.startsWith(SHUTDOWN_THREAD)) {
-                        t.name = SHUTDOWN_THREAD + " " + t.name
-                    }
-                }
-                factory.clearThreads()
+        if (threadFactory !is NamedThreadFactory) {
+            return
+        }
+
+        val factory = threadFactory as NamedThreadFactory
+        val threads = factory.threads
+        for (t in threads) {
+            val threadName = t.name
+            if (threadName != null && !threadName.startsWith(SHUTDOWN_THREAD)) {
+                t.name = SHUTDOWN_THREAD + " " + t.name
             }
         }
+        factory.clearThreads()
+
     }
 }
