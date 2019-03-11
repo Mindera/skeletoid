@@ -9,42 +9,6 @@ import java.util.concurrent.TimeUnit
 
 class ThreadPoolExecutorUnitTest {
 
-    private var mThreadPoolExecutor: ThreadPoolExecutor? = null
-
-    @Before
-    fun setUp() {
-        mThreadPoolExecutor =
-            ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, KEEP_ALIVE, TIME_UNIT, THREAD_FACTORY)
-    }
-
-    @Test
-    fun testConstructor() {
-        assertEquals(CORE_POOL_SIZE, mThreadPoolExecutor!!.corePoolSize)
-        assertEquals(MAX_POOL_SIZE, mThreadPoolExecutor!!.maximumPoolSize)
-        assertEquals(KEEP_ALIVE, mThreadPoolExecutor!!.getKeepAliveTime(TIME_UNIT))
-        assertEquals(THREAD_FACTORY, mThreadPoolExecutor!!.threadFactory)
-    }
-
-
-    @Test
-    fun testThreadPoolInitialization() {
-        assertEquals(CORE_POOL_SIZE, mThreadPoolExecutor!!.corePoolSize)
-    }
-
-
-    @Test
-    fun testShutdownThreadPool() {
-        mThreadPoolExecutor!!.shutdown()
-        assertTrue(mThreadPoolExecutor!!.isShutdown)
-    }
-
-
-    @Test
-    fun testShutdownNowThreadPool() {
-        mThreadPoolExecutor!!.shutdownNow()
-        assertTrue(mThreadPoolExecutor!!.isShutdown)
-    }
-
     companion object {
 
         private val CORE_POOL_SIZE = 10
@@ -53,4 +17,42 @@ class ThreadPoolExecutorUnitTest {
         private val TIME_UNIT = TimeUnit.MILLISECONDS
         private val THREAD_FACTORY = mock(NamedThreadFactory::class.java)
     }
+
+    private var threadPoolExecutor: ThreadPoolExecutor? = null
+
+    @Before
+    fun setUp() {
+        threadPoolExecutor =
+            ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, KEEP_ALIVE, TIME_UNIT, THREAD_FACTORY)
+    }
+
+    @Test
+    fun testConstructor() {
+        assertEquals(CORE_POOL_SIZE, threadPoolExecutor!!.corePoolSize)
+        assertEquals(MAX_POOL_SIZE, threadPoolExecutor!!.maximumPoolSize)
+        assertEquals(KEEP_ALIVE, threadPoolExecutor!!.getKeepAliveTime(TIME_UNIT))
+        assertEquals(THREAD_FACTORY, threadPoolExecutor!!.threadFactory)
+    }
+
+
+    @Test
+    fun testThreadPoolInitialization() {
+        assertEquals(CORE_POOL_SIZE, threadPoolExecutor!!.corePoolSize)
+    }
+
+
+    @Test
+    fun testShutdownThreadPool() {
+        threadPoolExecutor!!.shutdown()
+        assertTrue(threadPoolExecutor!!.isShutdown)
+    }
+
+
+    @Test
+    fun testShutdownNowThreadPool() {
+        threadPoolExecutor!!.shutdownNow()
+        assertTrue(threadPoolExecutor!!.isShutdown)
+    }
+
+
 }

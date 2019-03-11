@@ -22,10 +22,14 @@ object Connectivity {
         }
         val cm = context.getSystemService(
             Context.CONNECTIVITY_SERVICE
-        ) as ConnectivityManager ?: return false
+        )
 
-        val ni = cm.activeNetworkInfo
-        return ni != null
+        return if (cm is ConnectivityManager) {
+            val ni = cm.activeNetworkInfo
+            ni != null
+        } else {
+            false
+        }
     }
 
     /**
@@ -40,10 +44,15 @@ object Connectivity {
         }
         val cm = context.getSystemService(
             Context.CONNECTIVITY_SERVICE
-        ) as ConnectivityManager ?: return false
+        )
 
-        val ni = cm.activeNetworkInfo
-        return ni != null && ni.type == ConnectivityManager.TYPE_WIFI
+        return if (cm is ConnectivityManager) {
+            val ni = cm.activeNetworkInfo
+            ni != null && ni.type == ConnectivityManager.TYPE_WIFI
+        } else {
+            false
+        }
+
     }
 
 }
