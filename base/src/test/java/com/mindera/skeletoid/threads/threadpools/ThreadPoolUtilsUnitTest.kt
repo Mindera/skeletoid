@@ -55,12 +55,6 @@ class ThreadPoolUtilsUnitTest {
     }
 
     @Test
-    fun testShutdownNull() {
-        // Kind of a dummy test
-        ThreadPoolUtils.shutdown(null)
-    }
-
-    @Test
     fun testShutdown() {
 
         val threadPoolExecutor = mock(ThreadPoolExecutor::class.java)
@@ -70,12 +64,6 @@ class ThreadPoolUtilsUnitTest {
         assertEquals(-5, totalThreads.get())
 
         verify(threadPoolExecutor, times(1)).shutdown()
-    }
-
-    @Test
-    fun testShutdownNowNull() {
-        // Kind of a dummy test
-        ThreadPoolUtils.shutdownNow(null)
     }
 
     @Test
