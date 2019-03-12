@@ -72,22 +72,19 @@ class PerformanceObservableOperatorTest : BaseRxTest() {
 
     @Test
     fun shouldStartStopPerformanceTrackingOnError() {
-        val observable: TestObserver<String> = Observable.create<String> { emitter ->
-            emitter.onError(Throwable("error"))
-        }
-            .lift(observableOperator)
-            .test()
+        val testObserver: TestObserver<String> =
+            Observable.create<String> { emitter -> emitter.onError(Throwable("error")) }
+                .lift(observableOperator)
+                .test()
 
         verify(performanceTracker).startTracking()
-        observable.assertErrorMessage("error")
+        testObserver.assertErrorMessage("error")
         verify(performanceTracker).stopTracking()
     }
 
     @Test
     fun shouldNotStopPerformanceTrackingOnNext() {
-        Observable.create<String> { emitter ->
-            emitter.onNext("hello")
-        }
+        Observable.create<String> { emitter -> emitter.onNext("hello") }
             .lift(observableOperator)
             .test()
 
@@ -97,10 +94,10 @@ class PerformanceObservableOperatorTest : BaseRxTest() {
 
     @Test
     fun shouldPerformanceTrackingOperatorReturnEmittedValue() {
-        val observable = Observable.just("hello")
+        val testObserver = Observable.just("hello")
             .lift(observableOperator)
             .test()
 
-        observable.assertValue("hello")
+        testObserver.assertValue("hello")
     }
 }

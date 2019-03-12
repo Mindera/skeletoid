@@ -10,6 +10,7 @@ android {
     testBuildType "qa"
 
     defaultConfig {
+
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
     }

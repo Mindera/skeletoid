@@ -30,10 +30,10 @@ private fun setupRxSchedulers() {
         }
     }
 
-    RxJavaPlugins.setInitIoSchedulerHandler { _ -> immediate }
-    RxJavaPlugins.setInitComputationSchedulerHandler { _ -> immediate }
-    RxJavaPlugins.setInitNewThreadSchedulerHandler { _ -> immediate }
-    RxJavaPlugins.setInitSingleSchedulerHandler { _ -> immediate }
-    RxAndroidPlugins.setInitMainThreadSchedulerHandler { _ -> immediate }
+    RxJavaPlugins.setInitIoSchedulerHandler { immediate }
+    RxJavaPlugins.setInitComputationSchedulerHandler { immediate }
+    RxJavaPlugins.setInitNewThreadSchedulerHandler { immediate }
+    RxJavaPlugins.setInitSingleSchedulerHandler { immediate }
+    RxAndroidPlugins.setInitMainThreadSchedulerHandler { immediate }
 
 }

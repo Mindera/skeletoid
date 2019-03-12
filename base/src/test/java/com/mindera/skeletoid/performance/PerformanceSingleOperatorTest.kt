@@ -44,6 +44,7 @@ class PerformanceSingleOperatorTest : BaseRxTest() {
         verify(performanceTracker).startTracking()
 
         testScheduler.advanceTimeBy(2, TimeUnit.SECONDS)
+
         verify(performanceTracker).stopTracking()
     }
 
@@ -54,7 +55,7 @@ class PerformanceSingleOperatorTest : BaseRxTest() {
 
         Single.create<String> { emitter ->
             run {
-                Thread.sleep(1600)
+                Thread.sleep(800)
                 emitter.onSuccess("hi")
             }
         }
@@ -65,29 +66,29 @@ class PerformanceSingleOperatorTest : BaseRxTest() {
 
         verify(performanceTracker).startTracking()
 
-        testScheduler.advanceTimeBy(2, TimeUnit.SECONDS)
+        testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
+
         verify(performanceTracker).stopTracking()
     }
 
     @Test
     fun shouldStartStopPerformanceTrackingOnError() {
-        val observable: TestObserver<String> = Single.create<String> { emitter ->
-            emitter.onError(Throwable("error"))
-        }
-            .lift(operator)
-            .test()
+        val testObserver: TestObserver<String> =
+            Single.create<String> { emitter -> emitter.onError(Throwable("error")) }
+                .lift(operator)
+                .test()
 
         verify(performanceTracker).startTracking()
-        observable.assertErrorMessage("error")
+        testObserver.assertErrorMessage("error")
         verify(performanceTracker).stopTracking()
     }
 
     @Test
     fun shouldPerformanceTrackingOperatorReturnEmittedValue() {
-        val observable = Single.just("hello")
+        val testObserver = Single.just("hello")
             .lift(operator)
             .test()
 
-        observable.assertValue("hello")
+        testObserver.assertValue("hello")
     }
 }
