@@ -120,14 +120,14 @@ Add the following script to the app dependencies:
 
 ```groovy
 dependencies {
-    implementation 'com.github.mindera.skeletoid:base:0.4.0'
+    implementation 'com.github.mindera.skeletoid:base:0.6.0'
     
 }
 ```
 
 ## Kotlin extensions 
 
-This depends on RxJava.
+Kotlin extensions to improve your Android code readability
 
 ### Features
 Adds extensions for:
@@ -147,6 +147,26 @@ Kotlin
 - Let
 - Calendar
 
+
+TODO: Add code examples 
+
+### Usage
+And add the following script to the app dependencies:
+
+```groovy
+dependencies {
+    implementation 'com.github.mindera.skeletoid:kt-extensions:0.6.0'
+}
+```
+
+## RxJava
+
+Depends on base module.
+Operators and extensions to make your RxJava 2 code awesome.
+
+### Features
+Adds extensions for:
+
 RxJava
 - Completable
 - Observable
@@ -161,12 +181,14 @@ And add the following script to the app dependencies:
 
 ```groovy
 dependencies {
-    implementation 'com.github.mindera.skeletoid:kt-extensions:0.4.0'
+    implementation 'com.github.mindera.skeletoid:rxjava:0.6.0'
 }
 ```
 
 
 ## RxBindings
+
+Depends on RxJava module.
 
 ### Features
 Adds support for some Views that [Jake's Wharlton original RxBindings](https://github.com/JakeWharton/RxBinding) has issues with. Look at this as an extension of that library.
@@ -181,7 +203,7 @@ And add the following script to the app dependencies:
 
 ```groovy
 dependencies {
-    implementation 'com.github.mindera.skeletoid:rxbindings:0.4.0'
+    implementation 'com.github.mindera.skeletoid:rxbindings:0.6.0'
 }
 ```
 
@@ -197,7 +219,7 @@ And add the following script to the app dependencies:
 
 ```groovy
 dependencies {
-    implementation 'com.github.mindera.skeletoid:analytics-firebase:0.4.0'
+    implementation 'com.github.mindera.skeletoid:analytics-firebase:0.6.0'
 }
 ```
 
@@ -213,7 +235,7 @@ And add the following script to the app dependencies:
 
 ```groovy
 dependencies {
-    implementation 'com.github.mindera.skeletoid:analytics-ga:0.4.0'
+    implementation 'com.github.mindera.skeletoid:analytics-ga:0.6.0'
 }
 ```
 

@@ -1,6 +1,6 @@
-package com.mindera.skeletoid.kt.extensions.rxjava
+package com.mindera.skeletoid.rxjava
 
-import com.mindera.skeletoid.kt.extensions.rxjava.BreadcrumbExtension.breadcrumbsEnabled
+import com.mindera.skeletoid.rxjava.BreadcrumbExtension.breadcrumbsEnabled
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
