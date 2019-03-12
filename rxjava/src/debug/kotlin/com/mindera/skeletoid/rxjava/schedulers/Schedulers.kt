@@ -20,5 +20,4 @@ object Schedulers {
     fun computation(): Scheduler = io.reactivex.schedulers.Schedulers.from(computationThreadPool)
 
     fun io(): Scheduler = io.reactivex.schedulers.Schedulers.from(ioThreadPool)
-
 }
