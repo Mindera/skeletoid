@@ -9,14 +9,15 @@ android {
     testBuildType "qa"
 
     defaultConfig {
-
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-
     }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        release.java.srcDirs += 'src/debug/kotlin'
+        debug.java.srcDirs += 'src/debug/kotlin'
+        qa.java.srcDirs += 'src/qa/kotlin'
     }
 
     buildTypes {
@@ -31,6 +32,7 @@ android {
         }
 
         release {
+            matchingFallbacks = ['debug']
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
