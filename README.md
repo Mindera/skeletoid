@@ -98,6 +98,11 @@ Analytics.trackEvent(eventName, analyticsPayload);
    Analytics.trackPageHit(activity, screenName, screenClassOverride, analyticsPayload);
    ```
 
+
+### Performance Rx Operators
+Have your own implementation of performance tracking using `PerformanceObservableOperator` and `PerformanceSingleOperator`. Create your tracker by implementing `PerformanceTracker` interface.
+
+
 ### Usage
 
 The plugin is available in [JitPack](https://jitpack.io/). Just add the following to your buildscript dependencies:
@@ -202,7 +207,6 @@ dependencies {
 }
 ```
 
-
 ## Analytics Firebase - Support for Firebase 
 
 ### Features
@@ -234,6 +238,22 @@ dependencies {
     implementation 'com.github.mindera.skeletoid:analytics-ga:0.6.0'
 }
 ```
+
+
+## Performance Firebase - Support for Firebase
+
+### Features
+Contains `FirebasePerformanceObservableOperator` and `FirebasePerformanceSingleOperator` that allows to track your reactive calls performance using Firebase Performance.
+
+### Usage
+
+```groovy
+dependencies {
+    implementation 'com.github.mindera.skeletoid:performance-firebase:0.4.0'
+}
+```
+
+To track your call performance use `lift` operator.
 
 
 ## Note

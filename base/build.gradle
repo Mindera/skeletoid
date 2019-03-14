@@ -78,6 +78,7 @@ dependencies {
         exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
     }
 
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$rootProject.kotlinVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "org.powermock:powermock-module-junit4:$rootProject.powermockVersion"

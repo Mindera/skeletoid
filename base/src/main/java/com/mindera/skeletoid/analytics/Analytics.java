@@ -51,7 +51,7 @@ public class Analytics {
     }
 
     /**
-     * Obtain a instance of the analytics to guarantee it's unique
+     * Obtain an     instance of the analytics to guarantee it's unique
      */
     private static IAnalyticsManager getInstance() {
         IAnalyticsManager result = mInstance;
