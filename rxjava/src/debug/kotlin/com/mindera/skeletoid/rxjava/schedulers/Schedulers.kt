@@ -2,6 +2,7 @@ package com.mindera.skeletoid.rxjava.schedulers
 
 import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils
 import io.reactivex.Scheduler
+import io.reactivex.schedulers.Schedulers
 
 object Schedulers {
 
@@ -20,4 +21,6 @@ object Schedulers {
     fun computation(): Scheduler = io.reactivex.schedulers.Schedulers.from(computationThreadPool)
 
     fun io(): Scheduler = io.reactivex.schedulers.Schedulers.from(ioThreadPool)
+
+    fun single(): Scheduler = Schedulers.single()
 }
