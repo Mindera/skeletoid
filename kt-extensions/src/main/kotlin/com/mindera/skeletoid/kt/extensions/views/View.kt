@@ -41,4 +41,12 @@ fun View.disableChildren(enabled: Boolean) {
     }
 }
 
+fun View.setPaddingTop(paddingTop: Int) {
+    setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
+}
+
+fun View.setPaddingBottom(paddingBottom: Int) {
+    setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
+}
+
 
