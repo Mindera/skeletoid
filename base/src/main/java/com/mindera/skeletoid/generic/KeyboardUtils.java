@@ -12,7 +12,7 @@ public class KeyboardUtils {
      * Using for example getActivity() from a Fragment WON'T work.
      */
     public static void hideKeyboard(Activity activity) {
-        if(activity == null){
+        if (activity == null) {
             throw new IllegalArgumentException("Activity cannot be null");
         }
 
@@ -34,11 +34,11 @@ public class KeyboardUtils {
      * @param view    A view
      */
     public static void hideKeyboardFrom(Context context, View view) {
-        if(context == null){
+        if (context == null) {
             throw new IllegalArgumentException("Context cannot be null");
         }
 
-        if(view == null){
+        if (view == null) {
             throw new IllegalArgumentException("View cannot be null");
         }
 
@@ -46,14 +46,14 @@ public class KeyboardUtils {
                 .getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-    
+
     /**
      * Show keyboard. This can be called from everywhere (Fragments for example)
      *
      * @param context App context
      */
     public static void showKeyboard(Context context) {
-        if(context == null){
+        if (context == null) {
             throw new IllegalArgumentException("Context cannot be null");
         }
 
