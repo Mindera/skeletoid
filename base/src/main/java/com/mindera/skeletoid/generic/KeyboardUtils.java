@@ -46,4 +46,20 @@ public class KeyboardUtils {
                 .getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
+
+    /**
+     * Show keyboard. This can be called from everywhere (Fragments for example)
+     *
+     * @param context App context
+     */
+    public static void showKeyboard(Context context) {
+        if(context == null){
+            throw new IllegalArgumentException("Context cannot be null");
+        }
+
+        InputMethodManager imm = (InputMethodManager) context
+                .getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+    }
 }
