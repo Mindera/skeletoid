@@ -46,8 +46,7 @@ public class KeyboardUtils {
                 .getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-
-
+    
     /**
      * Show keyboard. This can be called from everywhere (Fragments for example)
      *
