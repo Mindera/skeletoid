@@ -26,7 +26,7 @@ class KeyboardUtilsTest {
         activity = mock(Activity::class.java)
         inputMethodManager = mock(InputMethodManager::class.java)
 
-        `when`(activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager).thenReturn(inputMethodManager)
+        `when`(activity.getSystemService(Activity.INPUT_METHOD_SERVICE)).thenReturn(inputMethodManager)
     }
 
     @Test
@@ -38,10 +38,10 @@ class KeyboardUtilsTest {
 
         KeyboardUtils.hideKeyboard(activity)
 
-        verify(inputMethodManager.hideSoftInputFromWindow(binder, 0))
+        verify(inputMethodManager).hideSoftInputFromWindow(binder, 0)
     }
 
-    @Test(expected = NullPointerException::class)
+    @Test
     fun testHideKeyboardFrom() {
         val view = mock(View::class.java)
         val binder = mock(IBinder::class.java)
@@ -49,13 +49,13 @@ class KeyboardUtilsTest {
 
         KeyboardUtils.hideKeyboardFrom(activity, view)
 
-        verify(inputMethodManager.hideSoftInputFromWindow(binder, 0))
+        verify(inputMethodManager).hideSoftInputFromWindow(binder, 0)
     }
 
-    @Test(expected = NullPointerException::class)
+    @Test
     fun testShowKeyboard() {
         KeyboardUtils.showKeyboard(activity)
 
-        verify(inputMethodManager.toggleSoftInput(ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt()))
+        verify(inputMethodManager).toggleSoftInput(ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt())
     }
 }
