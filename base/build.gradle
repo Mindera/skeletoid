@@ -64,6 +64,10 @@ android {
             failOnVersionConflict()
         }
     }
+
+    configurations.all {
+        resolutionStrategy.force "org.codehaus.plexus:plexus-utils:1.5.15"
+    }
 }
 
 dependencies {
@@ -87,7 +91,6 @@ dependencies {
     testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
     testImplementation("org.robolectric:robolectric:$rootProject.robolectricVersion") {
         exclude group: 'com.thoughtworks.xstream', module: 'xstream'
-        exclude group: 'org.codehaus.plexus', module: 'plexus-utils'
     }
 }
 
