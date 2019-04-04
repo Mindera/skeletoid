@@ -1,7 +1,7 @@
-package com.mindera.rxoperators
+package com.mindera.performancefirebase.rxoperators
 
 import com.google.firebase.perf.FirebasePerformance
-import com.mindera.FirebasePerformanceTracker
+import com.mindera.performancefirebase.FirebasePerformanceTracker
 import com.mindera.skeletoid.performance.rxoperators.PerformanceSingleOperator
 
 class FirebasePerformanceSingleOperator<T>(tag: String) :

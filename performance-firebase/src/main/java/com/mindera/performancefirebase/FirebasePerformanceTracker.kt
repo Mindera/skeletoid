@@ -1,4 +1,4 @@
-package com.mindera
+package com.mindera.performancefirebase
 
 import com.google.firebase.perf.FirebasePerformance
 import com.google.firebase.perf.metrics.Trace
