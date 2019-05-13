@@ -2,7 +2,7 @@
 # Each line is a file pattern followed by one or more owners.
 # Order is important; the last matching pattern takes the mostprecedence.
 
-# At the moment, the following Github users will be the default owners for everything in the repo.
+# The following users will be the default owners for everything in the repo.
 # They will be requested for review when someone opens a pull request.
 # Unless a later match takes precedence.
 
