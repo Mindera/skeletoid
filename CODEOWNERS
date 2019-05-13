@@ -1,0 +1,9 @@
+# Define individuals or teams that are responsible for code in skeletoid.
+# Each line is a file pattern followed by one or more owners.
+# Order is important; the last matching pattern takes the mostprecedence.
+
+# At the moment, the following Github users will be the default owners for everything in the repo.
+# They will be requested for review when someone opens a pull request.
+# Unless a later match takes precedence.
+
+* @djrsousa @neteinstein @bruno-garces @pedro-belchior @MajaTrzebiatowska @ChrapowiczMindera @Harsh-Jagad @ritatferreira @Jmvcaseiro @sousamindera @tallnato
