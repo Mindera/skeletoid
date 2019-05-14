@@ -50,7 +50,6 @@ public class LogcatAppenderUnitTest {
         verify(logcatAppender, times(1)).disableAppender();
     }
 
-
     @Test
     public void testFormatLog() {
         LogcatAppender logcatAppender = new LogcatAppender(mPackageName);
