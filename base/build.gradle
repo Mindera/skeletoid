@@ -13,6 +13,7 @@ android {
 
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
+
     }
 
     buildTypes {
@@ -77,7 +78,7 @@ dependencies {
 
     // RxJava
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
-    implementation("io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion") {
+    implementation ("io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"){
         exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
     }
 
@@ -99,12 +100,9 @@ jacoco {
 
 //Unit Test Coverage filtered - Note: This is currently NOT being used on the Codacy report. This is to run locally if needed
 task createSkeletoidUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest',
-                                                                   ':analytics-firebase:createSkeletoidUnitTestReport',
-                                                                   ':analytics-ga:createSkeletoidUnitTestReport',
-                                                                   ':kt-extensions:createSkeletoidUnitTestReport',
-                                                                   ':performance-firebase:createSkeletoidUnitTestReport',
-                                                                   ':rxjava:createSkeletoidUnitTestReport',
-                                                                   ':rxbindings:createSkeletoidUnitTestReport'
+                                                          ':analytics-firebase:createSkeletoidUnitTestReport',
+                                                          ':kt-extensions:createSkeletoidUnitTestReport',
+                                                          ':rxbindings:createSkeletoidUnitTestReport'
 ]) {
 
     reports {

@@ -10,7 +10,6 @@ import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
@@ -27,7 +26,7 @@ public class LogFileAppender implements ILogAppender {
 
     private static final String LOG_TAG = "LogFileAppender";
 
-    private java.text.DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    private java.text.DateFormat dateFormatter = SimpleDateFormat.getDateTimeInstance();
     /**
      * Logcat logger tag
      */
