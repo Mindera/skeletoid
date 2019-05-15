@@ -1,6 +1,7 @@
 package com.mindera.skeletoid.logs;
 
 import android.content.Context;
+import android.support.annotation.VisibleForTesting;
 
 import com.mindera.skeletoid.generic.AndroidUtils;
 import com.mindera.skeletoid.logs.appenders.ILogAppender;
@@ -39,7 +40,8 @@ class LoggerManager implements ILoggerManager {
     /**
      * Define if the method name invoking the log should be printed or not (via exception stack)
      */
-    private boolean mAddMethodName = false;
+    @VisibleForTesting
+    public boolean mAddMethodName = false;
 
     /**
      * Define if the method name invoking the log should be printed or not (via exception stack)

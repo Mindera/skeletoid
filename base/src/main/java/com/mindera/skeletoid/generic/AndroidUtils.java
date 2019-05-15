@@ -302,11 +302,10 @@ public class AndroidUtils {
     /**
      * Get External Storage directory path
      *
-     * @param context              Context
      * @param separatorAndFilename filename
      * @return Path needed
      */
-    public static String getExternalPublicDirectory(Context context, String separatorAndFilename) {
+    public static String getExternalPublicDirectory(String separatorAndFilename) {
         return Environment.getExternalStorageDirectory().getPath() + separatorAndFilename;
     }
 }

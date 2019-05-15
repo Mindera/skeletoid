@@ -4,23 +4,31 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.FileProvider;
 
+import com.mindera.skeletoid.generic.AndroidUtils;
 import com.mindera.skeletoid.logs.LOG;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({FileProvider.class, Intent.class})
+@PrepareForTest({FileProvider.class, Intent.class, AndroidUtils.class})
 public class LogFileAppenderUnitTest {
 
     private String PACKAGE_NAME = "my.package.name";
@@ -91,10 +99,19 @@ public class LogFileAppenderUnitTest {
     }
 
     @Test
-    public void testDisableAppender() {
+    public void testDisableAppender() throws InterruptedException {
+        Context context = mock(Context.class);
         LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
-
+        appender.enableAppender(context);
         appender.disableAppender();
+        Thread.sleep(600);
+
+        assertFalse(appender.canWriteToFile());
+    }
+
+    @Test
+    public void testCanWriteToFile() {
+        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
 
         assertFalse(appender.canWriteToFile());
     }
@@ -146,15 +163,151 @@ public class LogFileAppenderUnitTest {
     }
 
     @Test
-    public void testIsThreadPoolRunning() {
+    public void testGetExternalFileLogPath() {
+        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME, true);
+        Context context = mock(Context.class);
+        PowerMockito.mockStatic(AndroidUtils.class);
+        when(AndroidUtils.getExternalPublicDirectory(String.format("%s%s.log", File.separator, FILE_NAME))).thenReturn("external/com/mindera/skeletoid/FILENAME.log");
+
+        assertEquals("external/com/mindera/skeletoid/FILENAME.log", appender.getFileLogPath(context));
+    }
+
+    @Test
+    public void testFileHandlerLevelDebug() {
+        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
+
+        assertEquals(Level.SEVERE, appender.getFileHandlerLevel(LOG.PRIORITY.ERROR));
+    }
+
+    @Test
+    public void testFileHandlerLevelFatal() {
+        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
+
+        assertEquals(Level.SEVERE, appender.getFileHandlerLevel(LOG.PRIORITY.FATAL));
+    }
+
+    @Test
+    public void testFileHandlerLevelInfo() {
+        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
+
+        assertEquals(Level.INFO, appender.getFileHandlerLevel(LOG.PRIORITY.INFO));
+    }
+
+    @Test
+    public void testFileHandlerLevelVerbose() {
+        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
+
+        assertEquals(Level.ALL, appender.getFileHandlerLevel(LOG.PRIORITY.VERBOSE));
+    }
+
+    @Test
+    public void testFileHandlerLevelWarn() {
+        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
+
+        assertEquals(Level.WARNING, appender.getFileHandlerLevel(LOG.PRIORITY.WARN));
+    }
+
+    @Test
+    public void testIsThreadPoolRunningWhenAppenderEnabled() {
         LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
         Context context = mock(Context.class);
+        appender.enableAppender(context);
 
+        assertTrue(appender.isThreadPoolRunning());
+    }
+
+    @Test
+    public void testIsThreadPoolNotRunningWhenAppenderInitialised() {
+        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
+
+        assertFalse(appender.isThreadPoolRunning());
+    }
+
+    @Test
+    public void testIsThreadPoolNotRunningWhenAppenderDisabled() {
+        Context context = mock(Context.class);
+        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
+        appender.enableAppender(context);
+
+        appender.disableAppender();
+
+        assertFalse(appender.isThreadPoolRunning());
+    }
+
+    @Test
+    public void testLog() throws InterruptedException {
+        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
+        FileHandler fileHandler = mock(FileHandler.class);
+        Context context = mock(Context.class);
         File file = mock(File.class);
         when(context.getFilesDir()).thenReturn(file);
         when(file.getPath()).thenReturn("/com/mindera/skeletoid");
         appender.enableAppender(context);
+        Thread.sleep(500);
+        appender.mCanWriteToFile = true;
+        appender.mFileHandler = fileHandler;
 
-        assertTrue(appender.isThreadPoolRunning());
+        appender.log(LOG.PRIORITY.DEBUG, new Throwable("oops"), "hello");
+
+        verify(fileHandler).publish(any(LogRecord.class));
+    }
+
+    @Test
+    public void testNoLogIfWritingNotEnabled() {
+        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
+        FileHandler fileHandler = mock(FileHandler.class);
+        Context context = mock(Context.class);
+        File file = mock(File.class);
+        when(context.getFilesDir()).thenReturn(file);
+        when(file.getPath()).thenReturn("/com/mindera/skeletoid");
+
+        appender.log(LOG.PRIORITY.DEBUG, null, "hello");
+
+        verify(fileHandler, times(0)).publish(any(LogRecord.class));
+    }
+
+    @Test
+    public void testNoLogIfAppenderNotEnabled() {
+        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
+        FileHandler fileHandler = mock(FileHandler.class);
+
+        appender.log(LOG.PRIORITY.DEBUG, null, "hello");
+
+        verify(fileHandler, times(0)).publish(any(LogRecord.class));
+    }
+
+    @Test
+    public void testNoLogIfAppenderDisabled() {
+        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
+        FileHandler fileHandler = mock(FileHandler.class);
+        Context context = mock(Context.class);
+        File file = mock(File.class);
+        when(context.getFilesDir()).thenReturn(file);
+        when(file.getPath()).thenReturn("/com/mindera/skeletoid");
+        appender.enableAppender(context);
+        appender.mCanWriteToFile = true;
+        appender.mFileHandler = fileHandler;
+        appender.disableAppender();
+
+        appender.log(LOG.PRIORITY.DEBUG, null, "hello");
+
+        verify(fileHandler, times(0)).publish(any(LogRecord.class));
+    }
+
+    @Test
+    public void testNoLogIfLogLevelBelowMinLogLevel() {
+        LogFileAppender appender = new LogFileAppender(PACKAGE_NAME, FILE_NAME);
+        appender.setMinLogLevel(LOG.PRIORITY.ERROR);
+        FileHandler fileHandler = mock(FileHandler.class);
+        Context context = mock(Context.class);
+        File file = mock(File.class);
+        when(context.getFilesDir()).thenReturn(file);
+        when(file.getPath()).thenReturn("/com/mindera/skeletoid");
+        appender.enableAppender(context);
+        appender.mFileHandler = fileHandler;
+
+        appender.log(LOG.PRIORITY.DEBUG, null, "hello");
+
+        verify(fileHandler, times(0)).publish(any(LogRecord.class));
     }
 }

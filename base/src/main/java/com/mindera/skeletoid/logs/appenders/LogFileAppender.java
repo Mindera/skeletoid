@@ -1,6 +1,7 @@
 package com.mindera.skeletoid.logs.appenders;
 
 import android.content.Context;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.mindera.skeletoid.generic.AndroidUtils;
@@ -48,7 +49,8 @@ public class LogFileAppender implements ILogAppender {
      * Whether or not logging to file is possible (don't change value! This is controlled
      * automatically)
      */
-    private volatile boolean mCanWriteToFile = false;
+    @VisibleForTesting
+    public volatile boolean mCanWriteToFile = false;
     /**
      * Whether or not logging to file is possible (don't change value! This is controlled
      * automatically)
@@ -57,7 +59,8 @@ public class LogFileAppender implements ILogAppender {
     /**
      * FileHandler logger: To write to file *
      */
-    private FileHandler mFileHandler = null;
+    @VisibleForTesting
+    public FileHandler mFileHandler = null;
     /**
      * Thread pool to write files to disk. It will only span 1 thread
      */
@@ -124,7 +127,8 @@ public class LogFileAppender implements ILogAppender {
      * @param type LOG type
      * @return FileHandler level
      */
-    private Level getFileHandlerLevel(LOG.PRIORITY type) {
+    @VisibleForTesting
+    public Level getFileHandlerLevel(LOG.PRIORITY type) {
 
         Level level;
 
@@ -318,7 +322,7 @@ public class LogFileAppender implements ILogAppender {
     public String getFileLogPath(Context context) {
         String path;
         if (mWriteToExternal) {
-            path = AndroidUtils.getExternalPublicDirectory(context, File.separator + LOG_FILE_NAME);
+            path = AndroidUtils.getExternalPublicDirectory(File.separator + LOG_FILE_NAME);
         } else {
             path = AndroidUtils.getFileDirPath(context, File.separator + LOG_FILE_NAME);
         }

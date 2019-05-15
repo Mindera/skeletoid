@@ -64,7 +64,7 @@ public class ShareLogFilesUtils {
      * @param file               Log file to be sent
      */
     public static void sendLogs(Activity activity, String intentChooserTitle, String subjectTitle,
-            String bodyText, String[] emails, File file) {
+                                String bodyText, String[] emails, File file) {
 
 
         final Intent intent;
@@ -124,9 +124,7 @@ public class ShareLogFilesUtils {
      * Returns the path where the application logs are being stored.
      *
      * @param context Application context
-     *
      * @return path   The default path where the application logs are being stored
-     *
      * @see AndroidUtils
      */
     public static String getFileLogPath(Context context) {
@@ -179,21 +177,21 @@ public class ShareLogFilesUtils {
         } catch (IOException ex) {
             LOG.e(TAG, "Unable to zip folder: " + ex.getMessage());
             return false;
-        }finally {
+        } finally {
             try {
                 fis.close();
             } catch (Exception e) {
-                LOG.e(TAG, e,"Unable to close FileInputStream");
+                LOG.e(TAG, e, "Unable to close FileInputStream");
             }
             try {
                 fos.close();
             } catch (Exception e) {
-                LOG.e(TAG, e,"Unable to close FileOutputStream");
+                LOG.e(TAG, e, "Unable to close FileOutputStream");
             }
             try {
                 zos.close();
             } catch (Exception e) {
-                LOG.e(TAG, e,"Unable to close ZipOutputStream");
+                LOG.e(TAG, e, "Unable to close ZipOutputStream");
             }
         }
     }

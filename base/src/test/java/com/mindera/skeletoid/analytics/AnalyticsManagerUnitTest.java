@@ -28,8 +28,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest=Config.NONE)
 public class AnalyticsManagerUnitTest {
 
     private static final String mPackageName = "my.package.name";
