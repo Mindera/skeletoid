@@ -92,8 +92,6 @@ public class AndroidUtilsUnitTests {
         when(resources.getDisplayMetrics()).thenReturn(displayMetrics);
         when(context.getResources()).thenReturn(resources);
 
-        AndroidUtils.getDeviceResolution(context);
-
         assertEquals("Width: 0 px (0.0dp)| Height: 0 px (0.0dp)", AndroidUtils.getDeviceResolution(context));
     }
 
