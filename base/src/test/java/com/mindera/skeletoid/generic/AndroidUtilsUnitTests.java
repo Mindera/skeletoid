@@ -1,7 +1,11 @@
 package com.mindera.skeletoid.generic;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,8 +17,11 @@ import java.io.File;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
@@ -75,7 +82,19 @@ public class AndroidUtilsUnitTests {
     @Test
     public void testGetDeviceResolution() {
         Context context = mock(Context.class);
-        assertNull(AndroidUtils.getDeviceResolution(context));
+        WindowManager windowManager = mock(WindowManager.class);
+        Display display = mock(Display.class);
+        Resources resources = mock(Resources.class);
+        DisplayMetrics displayMetrics = spy(DisplayMetrics.class);
+        displayMetrics.densityDpi = 100;
+        when(windowManager.getDefaultDisplay()).thenReturn(display);
+        when(context.getSystemService(Context.WINDOW_SERVICE)).thenReturn(windowManager);
+        when(resources.getDisplayMetrics()).thenReturn(displayMetrics);
+        when(context.getResources()).thenReturn(resources);
+
+        AndroidUtils.getDeviceResolution(context);
+
+        assertEquals("Width: 0 px (0.0dp)| Height: 0 px (0.0dp)", AndroidUtils.getDeviceResolution(context));
     }
 
     @Test
@@ -152,8 +171,6 @@ public class AndroidUtilsUnitTests {
     public void testIsServiceRunningWithoutContextOrClass() {
         assertFalse(AndroidUtils.isServiceRunning(null, null));
     }
-
-
 
 
 }
