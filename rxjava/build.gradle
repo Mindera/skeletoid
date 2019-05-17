@@ -79,8 +79,8 @@ jacoco {
     toolVersion "0.8.1"
 }
 
-//Unit Test Coverage filtered
-task createSkeletoidUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest']) {
+//Unit Test Coverage filtered - Note: This is currently NOT being used on the Codacy report. This is to run locally if needed
+task createModuleSkeletoidUnitTestReport(type: JacocoReport, dependsOn: [':rxjava:testQaUnitTest']) {
 
     reports {
         html.enabled = true
@@ -95,20 +95,22 @@ task createSkeletoidUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTe
             '**/BuildConfig.*',
             'android/**/*.*',
             '**/Manifest*.*',
+            //Data Binding
+            '**/*databinding/**/*.*',
             //Test
             '**/**Test*.*']
 
     //To support Java coverage on Unit tests
-    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/qa/compileQaJavaWithJavac/classes", excludes: fileFilter)
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/qa/compileQaJavaWithJavac/classes/com/mindera/skeletoid", excludes: fileFilter)
     //To support Kotlin coverage on Unit tests
-    def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/qaUnitTest", excludes: fileFilter)
+    def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/qa/com/mindera/skeletoid", excludes: fileFilter)
 
     def mainSrc = "${project.projectDir}/src/main/java"
     def debugSrc = "${project.projectDir}/src/debug/java"
 
     sourceDirectories = files([mainSrc, debugSrc])
 
-
     classDirectories = files([debugTree], [kotlinDebugTree])
+
     executionData = files("${buildDir}/jacoco/testQaUnitTest.exec")
 }

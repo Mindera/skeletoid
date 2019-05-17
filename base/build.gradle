@@ -78,7 +78,7 @@ dependencies {
 
     // RxJava
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
-    implementation ("io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"){
+    implementation("io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion") {
         exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
     }
 
@@ -99,14 +99,7 @@ jacoco {
 }
 
 //Unit Test Coverage filtered - Note: This is currently NOT being used on the Codacy report. This is to run locally if needed
-task createSkeletoidUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest',
-                                                                   ':analytics-firebase:createSkeletoidUnitTestReport',
-                                                                   ':analytics-ga:createSkeletoidUnitTestReport',
-                                                                   ':kt-extensions:createSkeletoidUnitTestReport',
-                                                                   ':performance-firebase:createSkeletoidUnitTestReport',
-                                                                   ':rxjava:createSkeletoidUnitTestReport',
-                                                                   ':rxbindings:createSkeletoidUnitTestReport'
-]) {
+task createModuleSkeletoidUnitTestReport(type: JacocoReport, dependsOn: [':base:testQaUnitTest']) {
 
     reports {
         html.enabled = true
@@ -127,23 +120,115 @@ task createSkeletoidUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTe
             '**/**Test*.*']
 
     //To support Java coverage on Unit tests
-    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/qa/compileQaJavaWithJavac/classes", excludes: fileFilter)
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/qa/compileQaJavaWithJavac/classes/qa", excludes: fileFilter)
     //To support Kotlin coverage on Unit tests
-    def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/qaUnitTest", excludes: fileFilter)
+    def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/qa", excludes: fileFilter)
 
     def mainSrc = "${project.projectDir}/src/main/java"
     def debugSrc = "${project.projectDir}/src/debug/java"
 
     sourceDirectories = files([mainSrc, debugSrc])
 
-
     classDirectories = files([debugTree], [kotlinDebugTree])
+
     executionData = files("${buildDir}/jacoco/testQaUnitTest.exec")
+}
+
+//Unit Test Coverage filtered - Note: This is currently NOT being used on the Codacy report. This is to run locally if needed
+task createGlobalSkeletoidUnitTestReport(type: JacocoReport, dependsOn: [':analytics-firebase:createModuleSkeletoidUnitTestReport',
+                                                                         ':analytics-ga:createModuleSkeletoidUnitTestReport',
+                                                                         ':base:createModuleSkeletoidUnitTestReport',
+                                                                         ':kt-extensions:createModuleSkeletoidUnitTestReport',
+                                                                         ':performance-firebase:createModuleSkeletoidUnitTestReport',
+                                                                         ':rxjava:createModuleSkeletoidUnitTestReport',
+                                                                         ':rxbindings:createModuleSkeletoidUnitTestReport'
+]) {
+
+
+    reports {
+        html.enabled = true
+    }
+
+    def fileFilter = [
+            //Android stuff
+            '**/R.class',
+            '**/BR.class',
+            '**/R$*.class',
+            '**/BR$*.class',
+            '**/BuildConfig.*',
+            'android/**/*.*',
+            '**/Manifest*.*',
+            //Data Binding
+            '**/*databinding/**/*.*',
+            //Test
+            '**/**Test*.*']
+
+    def analyticsFbDebugTree = fileTree(dir: "../analytics-firebase/build/intermediates/javac/qa/compileQaJavaWithJavac/classes/com/mindera/skeletoid", excludes: fileFilter)
+    def analyticsFbKotlinDebugTree = fileTree(dir: "../analytics-firebase/build/tmp/kotlin-classes/qa/com/mindera/skeletoid", excludes: fileFilter)
+
+    def analyticsGaDebugTree = fileTree(dir: "../analytics-ga/build/intermediates/javac/qa/compileQaJavaWithJavac/classes/com/mindera/skeletoid", excludes: fileFilter)
+    def analyticsGaKotlinDebugTree = fileTree(dir: "../analytics-ga/build/tmp/kotlin-classes/qa/com/mindera/skeletoid", excludes: fileFilter)
+
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/qa/compileQaJavaWithJavac/classes/com/mindera/skeletoid", excludes: fileFilter)
+    def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/qa/com/mindera/skeletoid", excludes: fileFilter)
+
+    def ktExtensionsDebugTree = fileTree(dir: "../kt-extensions/build/intermediates/javac/qa/compileQaJavaWithJavac/classes/com/mindera/skeletoid", excludes: fileFilter)
+    def ktExtensionsKotlinDebugTree = fileTree(dir: "../kt-extensions/build/tmp/kotlin-classes/qa/com/mindera/skeletoid", excludes: fileFilter)
+
+    def performanceFbDebugTree = fileTree(dir: "../performance-firebase/build/intermediates/javac/qa/compileQaJavaWithJavac/classes/com/mindera/skeletoid", excludes: fileFilter)
+    def performanceFbKotlinDebugTree = fileTree(dir: "../performance-firebase/build/tmp/kotlin-classes/qa/com/mindera/skeletoid", excludes: fileFilter)
+
+    def rxBindingsDebugTree = fileTree(dir: "../rxbindings/build/intermediates/javac/qa/compileQaJavaWithJavac/classes/com/mindera/skeletoid", excludes: fileFilter)
+    def rxBindingsKotlinDebugTree = fileTree(dir: "../rxbindings/build/tmp/kotlin-classes/qa/com/mindera/skeletoid", excludes: fileFilter)
+
+    def rxJavaDebugTree = fileTree(dir: "../rxjava/build/intermediates/javac/qa/compileQaJavaWithJavac/classes/com/mindera/skeletoid", excludes: fileFilter)
+    def rxJavaKotlinDebugTree = fileTree(dir: "../rxjava/build/tmp/kotlin-classes/qa/com/mindera/skeletoid", excludes: fileFilter)
+
+    def analyticsFbSrc = "../analytics-firebase/src/main/java"
+    def analyticsFbDebugSrc = "../analytics-firebase/src/debug/java"
+
+    def analyticsGaSrc = "../analytics-ga/src/main/java"
+    def analyticsGaDebugSrc = "../analytics-ga/src/debug/java"
+
+    def mainSrc = "${project.projectDir}/src/main/java"
+    def debugSrc = "${project.projectDir}/src/debug/java"
+
+    def ktExtensionsSrc = "../kt-extensions/src/main/java"
+    def ktExtensionsDebugSrc = "../kt-extensions/src/debug/java"
+
+    def performanceFbSrc = "../performance-firebase/src/main/java"
+    def performanceFbDebugSrc = "../performance-firebase/src/debug/java"
+
+    def rxBindingsSrc = "../rxbindings/src/main/java"
+    def rxBindingsDebugSrc = "../rxbindings/src/debug/java"
+
+    def rxJavaSrc = "../rxjava/src/main/java"
+    def rxJavaDebugSrc = "../rxjava/src/debug/java"
+
+    sourceDirectories = files([mainSrc, debugSrc, analyticsFbSrc, analyticsFbDebugSrc,
+                               analyticsGaSrc, analyticsGaDebugSrc, ktExtensionsSrc, ktExtensionsDebugSrc,
+                               performanceFbSrc, performanceFbDebugSrc, rxBindingsSrc, rxBindingsDebugSrc,
+                               rxJavaSrc, rxJavaDebugSrc])
+
+
+    classDirectories = files([debugTree], [kotlinDebugTree, analyticsFbDebugTree, analyticsFbKotlinDebugTree,
+                                           analyticsGaDebugTree, analyticsGaKotlinDebugTree, ktExtensionsDebugTree, ktExtensionsKotlinDebugTree,
+                                           performanceFbDebugTree, performanceFbKotlinDebugTree, rxBindingsDebugTree, rxBindingsKotlinDebugTree,
+                                           rxJavaDebugTree, rxJavaKotlinDebugTree])
+
+    executionData = files("${buildDir}/jacoco/testQaUnitTest.exec",
+            "../analytics-firebase/build/jacoco/testQaUnitTest.exec",
+            "../analytics-firebase/build/jacoco/testQaUnitTest.exec",
+            "../analytics-ga/build/jacoco/testQaUnitTest.exec",
+            "../kt-extensions/build/jacoco/testQaUnitTest.exec",
+            "../performance-firebase/build/jacoco/testQaUnitTest.exec",
+            "../rxbindings/build/jacoco/testQaUnitTest.exec",
+            "../rxjava/build/jacoco/testQaUnitTest.exec")
 }
 
 tasks['sonarqube'].with {
     dependsOn.clear()
-    dependsOn createSkeletoidUnitTestReport
+    dependsOn createGlobalSkeletoidUnitTestReport
 }
 
 sonarqube {
