@@ -46,7 +46,7 @@ project.afterEvaluate {
         sourceDirectories = files(coverageSourceDirs)
         executionData = files("${project.buildDir}/jacoco/test${testCoverageBuildType.capitalize()}UnitTest.exec")
         reports {
-            xml.enabled = false
+            xml.enabled = true
             html.enabled = true
         }
     }
