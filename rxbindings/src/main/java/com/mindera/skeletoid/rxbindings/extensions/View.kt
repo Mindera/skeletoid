@@ -1,7 +1,7 @@
 package com.mindera.skeletoid.rxbindings.extensions
 
 import android.view.View
-import com.jakewharton.rxbinding2.view.clicks
+import com.jakewharton.rxbinding3.view.clicks
 import com.mindera.skeletoid.rxjava.observeOnMain
 import com.mindera.skeletoid.rxjava.subscribeOnMain
 import io.reactivex.Observable

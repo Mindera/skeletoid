@@ -31,14 +31,9 @@ android {
 
     configurations.all {
         resolutionStrategy {
-            resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
-            // annotation processor conflicts
-            resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-            // lint conflicts
-            resolutionStrategy.force "org.apache.httpcomponents:httpcore:$httpComponentsVersion"
-            resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
-            // powermock
-            resolutionStrategy.force "org.objenesis:objenesis:2.5"
+            resolutionStrategy.force "com.google.guava:guava:27.1-jre"
+            resolutionStrategy.force "com.google.code.findbugs:jsr305:3.0.2"
+
             // fail eagerly on version conflict (includes transitive dependencies)
             // e.g. multiple different versions of the same dependency (group and name are equal)
             failOnVersionConflict()
@@ -51,33 +46,13 @@ dependencies {
     //Depends on Base Skeletoid
     api project(path: ':base')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-
-    implementation ("com.google.android.gms:play-services-analytics:$rootProject.gaVersion"){
-        exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'com.android.support', module: 'support-compat'
-        exclude group: 'com.android.support', module: 'support-core-utils'
-        exclude group: 'com.android.support', module: 'support-core-ui'
-        exclude group: 'com.android.support', module: 'support-fragment'
-
+    implementation ("com.google.android.gms:play-services-analytics:16.0.5"){
+        exclude group: 'androidx.annotation', module: 'annotation'
+        exclude group: 'androidx.fragment', module: 'fragment'
+        exclude group: 'androidx.core', module: 'core'
+        exclude group: 'androidx.legacy', module: 'legacy-support-core-utils'
+        exclude group: 'androidx.legacy', module: 'legacy-support-core-ui'
     }
-
-    testImplementation "junit:junit:$rootProject.junitVersion"
-    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
-    testImplementation ("org.powermock:powermock-module-junit4:$rootProject.powermockVersion"){
-        exclude group: 'org.objenesis', module: 'objenesis'
-    }
-    testImplementation ("org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion"){
-        exclude group: 'org.objenesis', module: 'objenesis'
-    }
-    testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"
-    testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
-    testImplementation("org.robolectric:robolectric:$rootProject.robolectricVersion") {
-        exclude group: 'com.thoughtworks.xstream', module: 'xstream'
-        exclude group: 'org.codehaus.plexus', module: 'plexus-utils'
-
-    }
-
 }
 
 jacoco {

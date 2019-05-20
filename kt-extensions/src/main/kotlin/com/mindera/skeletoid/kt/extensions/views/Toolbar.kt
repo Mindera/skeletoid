@@ -1,6 +1,6 @@
 package com.mindera.skeletoid.kt.extensions.views
 
-import android.support.v7.widget.Toolbar
+import androidx.appcompat.widget.Toolbar
 
 fun Toolbar.setupToolbarMenuItemClickListener(menuItemClickListener: Toolbar.OnMenuItemClickListener) {
 

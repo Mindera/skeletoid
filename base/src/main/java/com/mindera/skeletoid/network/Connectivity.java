@@ -1,14 +1,9 @@
 package com.mindera.skeletoid.network;
 
-import com.mindera.skeletoid.generic.StringUtils;
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.annotation.VisibleForTesting;
-
-import java.net.MalformedURLException;
-import java.net.URI;
+import androidx.annotation.VisibleForTesting;
 
 /**
  * Class to validate if we are connected to a network and if we have internet access.

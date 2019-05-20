@@ -3,9 +3,9 @@
 package com.mindera.skeletoid.kt.extensions.context
 
 import android.content.Context
-import android.support.annotation.ColorRes
-import android.support.annotation.IntegerRes
-import android.support.v4.content.ContextCompat
+import androidx.annotation.ColorRes
+import androidx.annotation.IntegerRes
+import androidx.core.content.ContextCompat
 
 fun Context.getColorCompat(@ColorRes colorRes: Int): Int {
     return ContextCompat.getColor(this, colorRes)

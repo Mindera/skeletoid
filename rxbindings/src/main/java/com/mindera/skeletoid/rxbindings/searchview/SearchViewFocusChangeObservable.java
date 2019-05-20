@@ -3,7 +3,7 @@ package com.mindera.skeletoid.rxbindings.searchview;
 import android.view.View;
 import android.widget.SearchView;
 
-import com.jakewharton.rxbinding2.InitialValueObservable;
+import com.jakewharton.rxbinding3.InitialValueObservable;
 
 import io.reactivex.Observer;
 import io.reactivex.android.MainThreadDisposable;

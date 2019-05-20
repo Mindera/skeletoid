@@ -1,12 +1,10 @@
 package com.mindera.skeletoid.rxbindings.searchview;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.widget.SearchView;
 
-import com.jakewharton.rxbinding2.InitialValueObservable;
-import com.jakewharton.rxbinding2.widget.SearchViewQueryTextEvent;
-
-import io.reactivex.functions.Consumer;
+import com.jakewharton.rxbinding3.InitialValueObservable;
+import com.jakewharton.rxbinding3.appcompat.SearchViewQueryTextEvent;
 
 public class RxSearchView {
 
@@ -15,20 +13,20 @@ public class RxSearchView {
         return queryTextChangeEvents(view);
     }
 
-    public static InitialValueObservable<CharSequence> queryTextChanges(@NonNull android.support.v7.widget.SearchView view) {
-        return com.jakewharton.rxbinding2.support.v7.widget.RxSearchView.queryTextChanges(view);
+    /*public static InitialValueObservable<CharSequence> queryTextChanges(@NonNull androidx.appcompat.widget.SearchView view) {
+        return com.jakewharton.rxbinding3.widget.RxSearchView.queryTextChanges(view);
     }
 
-    public static Consumer<? super CharSequence> query(@NonNull final android.support.v7.widget.SearchView view,
+    public static Consumer<? super CharSequence> query(@NonNull final androidx.appcompat.widget.SearchView view,
             final boolean submit) {
-        return com.jakewharton.rxbinding2.support.v7.widget.RxSearchView.query(view, submit);
-    }
+        return com.jakewharton.rxbinding3.widget.RxSearchView.query(view, submit);
+    }*/
 
     public static InitialValueObservable<Boolean> focusChanges(@NonNull SearchView view) {
         return new SearchViewFocusChangeObservable(view);
     }
 
-    public static InitialValueObservable<Boolean> focusChanges(@NonNull android.support.v7.widget.SearchView view) {
+    public static InitialValueObservable<Boolean> focusChanges(@NonNull androidx.appcompat.widget.SearchView view) {
         return new com.mindera.skeletoid.rxbindings.searchview.support.SearchViewFocusChangeObservable(view);
     }
 

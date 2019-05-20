@@ -1,7 +1,7 @@
 package com.mindera.skeletoid.generic;
 
 import android.content.Context;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 public class UIUtils {
 
