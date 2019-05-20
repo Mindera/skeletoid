@@ -19,14 +19,15 @@ object CookiesUtils {
         val cookieManager = CookieManager.getInstance()
         val cookies = cookieManager.getCookie(url)
 
-        val temp = cookies.split(";".toRegex()).map { it.trim() }.dropLastWhile { it.isEmpty() }.toTypedArray()
+        val temp = cookies.split(";").map { it.trim() }.dropLastWhile { it.isEmpty() }
+            .toTypedArray()
 
         for (ar1 in temp) {
-            val temp1 = ar1.split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val temp1 = ar1.split("=", limit=2).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-            if(temp1.size == 2){
+            if (temp1.size == 2) {
                 cookiesMap[temp1[0]] = temp1[1]
-            }else{
+            } else {
                 LOG.e(LOG_TAG, "Cookie is malformed, skipping...")
             }
         }
@@ -39,16 +40,17 @@ object CookiesUtils {
         val cookieManager = CookieManager.getInstance()
         val cookies = cookieManager.getCookie(url)
 
-        val cookieArray = cookies.split(";".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val cookieArray = cookies.split(";").dropLastWhile { it.isEmpty() }.toTypedArray()
 
         for (nameAndCookie in cookieArray) {
             if (nameAndCookie.contains(cookieName)) {
 
-                val cookie = nameAndCookie.split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                val cookie =
+                    nameAndCookie.split("=", limit=2).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-                if(cookie.size == 2){
+                if (cookie.size == 2) {
                     cookieValue = cookie[1]
-                }else{
+                } else {
                     LOG.e(LOG_TAG, "$cookieName Cookie is malformed, skipping...")
                 }
                 break
