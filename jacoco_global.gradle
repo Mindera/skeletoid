@@ -1,0 +1,70 @@
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion "0.8.1"
+}
+
+rootProject.afterEvaluate {
+
+    def testCoverageBuildType = rootProject.getProperties().get('testBuildType') ?: 'qa'
+    def testTaskNames = []
+    def fileTrees = []
+    def coverageSourceDirs = []
+    def executionDataDirs = []
+    def fileFilter = [
+            //Android stuff
+            '**/R.class',
+            '**/BR.class',
+            '**/R$*.class',
+            '**/BR$*.class',
+            '**/BuildConfig.*',
+            'android/**/*.*',
+            '**/Manifest*.*',
+            //Data Binding
+            '**/*databinding/**/*.*',
+            //Test
+            '**/**Test*.*']
+
+    rootProject.subprojects.collect() { subproject ->
+        subproject.afterEvaluate {
+
+            testTaskNames.add(":${subproject.name}:test${testCoverageBuildType.capitalize()}UnitTest")
+
+            def javaFileTree = fileTree(
+                    dir: "${subproject.buildDir}/intermediates/javac/${testCoverageBuildType}/compileQaJavaWithJavac/classes",
+                    excludes: fileFilter
+            )
+            fileTrees.add(javaFileTree)
+
+            def kotlinFileTree = fileTree(
+                    dir: "${subproject.buildDir}/tmp/kotlin-classes/${testCoverageBuildType}",
+                    excludes: fileFilter
+            )
+            fileTrees.add(kotlinFileTree)
+
+            def coverageSourceDir = [
+                    "src/main/java",
+                    "src/${testCoverageBuildType}/java"
+            ]
+            coverageSourceDirs.add(coverageSourceDir)
+
+            def executionDataDir = "${subproject.buildDir}/jacoco/test${testCoverageBuildType.capitalize()}UnitTest.exec"
+            executionDataDirs.add(executionDataDir)
+        }
+    }
+
+    task "globalCoverage"(type: JacocoReport, dependsOn: testTaskNames) {
+        group = "Reporting"
+        description = "Generate Jacoco Global coverage report"
+
+        classDirectories = files(fileTrees)
+        additionalSourceDirs = files(coverageSourceDirs)
+        sourceDirectories = files(coverageSourceDirs)
+        executionData = files(executionDataDirs)
+
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
+}

@@ -29,6 +29,10 @@ allprojects {
     }
 }
 
+subprojects {
+    apply from: "$rootProject.projectDir/jacoco.gradle"
+}
+
 ext {
     // sdk and tools
     compileSdkVersion = 28
@@ -68,3 +72,5 @@ ext {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+apply from: "$rootProject.projectDir/jacoco_global.gradle"

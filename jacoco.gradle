@@ -1,0 +1,50 @@
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion "0.8.1"
+}
+
+project.afterEvaluate {
+    def testCoverageBuildType = rootProject.getProperties().get('testBuildType') ?: 'qa'
+
+    def fileFilter = [
+            //Android stuff
+            '**/R.class',
+            '**/BR.class',
+            '**/R$*.class',
+            '**/BR$*.class',
+            '**/BuildConfig.*',
+            'android/**/*.*',
+            '**/Manifest*.*',
+            //Data Binding
+            '**/*databinding/**/*.*',
+            //Test
+            '**/**Test*.*']
+
+    task "testQaUnitTestCoverage"(type: JacocoReport, dependsOn: ":$project.name:test${testCoverageBuildType.capitalize()}UnitTest") {
+        group = "Reporting"
+        def javaFileTree = fileTree(
+                dir: "${project.buildDir}/intermediates/javac/${testCoverageBuildType}/compileQaJavaWithJavac/classes",
+                excludes: fileFilter
+        )
+
+        def kotlinFileTree = fileTree(
+                dir: "${project.buildDir}/tmp/kotlin-classes/${testCoverageBuildType}",
+                excludes: fileFilter
+        )
+
+        def coverageSourceDirs = [
+                "src/main/java",
+                "src/${testCoverageBuildType}/java"
+        ]
+
+        classDirectories = files([javaFileTree, kotlinFileTree])
+        additionalSourceDirs = files(coverageSourceDirs)
+        sourceDirectories = files(coverageSourceDirs)
+        executionData = files("${project.buildDir}/jacoco/test${testCoverageBuildType.capitalize()}UnitTest.exec")
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
+}
