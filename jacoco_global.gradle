@@ -5,7 +5,6 @@ jacoco {
 }
 
 rootProject.afterEvaluate {
-
     def testCoverageBuildType = rootProject.getProperties().get('testBuildType') ?: 'qa'
     def testTaskNames = []
     def fileTrees = []
@@ -23,7 +22,8 @@ rootProject.afterEvaluate {
             //Data Binding
             '**/*databinding/**/*.*',
             //Test
-            '**/**Test*.*']
+            '**/**Test*.*',
+            '**/rxjava.schedulers/Schedulers.kt']
 
     rootProject.subprojects.collect() { subproject ->
         subproject.afterEvaluate {
@@ -53,6 +53,8 @@ rootProject.afterEvaluate {
         }
     }
 
+    //'qa' is a default test build type. To change run:
+    //gradlew createGlobalSkeletoidUnitTestReport -PtestBuildType={yourTestBuildType}
     task "createGlobalSkeletoidUnitTestReport"(type: JacocoReport, dependsOn: testTaskNames) {
         group = "Reporting"
         description = "Generate Jacoco Global coverage report"

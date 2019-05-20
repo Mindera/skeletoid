@@ -19,8 +19,11 @@ project.afterEvaluate {
             //Data Binding
             '**/*databinding/**/*.*',
             //Test
-            '**/**Test*.*']
+            '**/**Test*.*',
+            '**/rxjava.schedulers/Schedulers.kt']
 
+    //'qa' is a default test build type. To change run:
+    //gradlew createGlobalSkeletoidUnitTestReport -PtestBuildType={yourTestBuildType}
     task "createModuleUnitTestReport"(type: JacocoReport, dependsOn: ":$project.name:test${testCoverageBuildType.capitalize()}UnitTest") {
         group = "Reporting"
         def javaFileTree = fileTree(
