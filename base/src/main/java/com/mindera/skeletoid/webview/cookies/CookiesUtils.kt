@@ -19,7 +19,7 @@ object CookiesUtils {
         val cookieManager = CookieManager.getInstance()
         val cookies = cookieManager.getCookie(url)
 
-        val temp = cookies.split(";".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val temp = cookies.split(";".toRegex()).map { it.trim() }.dropLastWhile { it.isEmpty() }.toTypedArray()
 
         for (ar1 in temp) {
             val temp1 = ar1.split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
