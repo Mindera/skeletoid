@@ -64,6 +64,10 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test:$rootProject.kotlinVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    testImplementation "org.powermock:powermock-module-junit4:$rootProject.powermockVersion"
+    testImplementation "org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion"
+    testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"
+    testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
 
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

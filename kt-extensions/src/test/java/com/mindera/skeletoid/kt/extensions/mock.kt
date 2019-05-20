@@ -1,4 +1,4 @@
-package com.mindera.skeletoid.utils.extensions
+package com.mindera.skeletoid.kt.extensions
 
 import org.mockito.Mockito
 

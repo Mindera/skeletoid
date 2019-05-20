@@ -114,7 +114,7 @@ sonarqube {
         property "sonar.java.binaries", "${buildDir}/intermediates/javac/${android.testBuildType}/compile${android.testBuildType.capitalize()}JavaWithJavac/classes,${buildDir}/tmp/kotlin-classes/${android.testBuildType}UnitTest"
         property "sonar.java.source", "base/src/main/java"
         property "sonar.java.coveragePlugin", "jacoco"
-        property "sonar.coverage.jacoco.xmlReportPaths", fileTree(dir: "${buildDir}/reports/jacoco/", includes: ["**/createGlobalSkeletoidUnitTestReport.xml"])
+        property "sonar.coverage.jacoco.xmlReportPaths", fileTree(dir: "${rootProject.buildDir}/reports/jacoco/", includes: ["**/createGlobalSkeletoidUnitTestReport.xml"])
         property "sonar.jacoco.itReportPath", fileTree(dir: "${buildDir}/outputs/code-coverage/connected/", includes: ["**/*.ec"])
         property "sonar.android.lint.report", "${buildDir}/outputs/lint-results.xml"
     }
