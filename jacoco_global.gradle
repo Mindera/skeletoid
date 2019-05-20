@@ -53,7 +53,7 @@ rootProject.afterEvaluate {
         }
     }
 
-    task "globalCoverage"(type: JacocoReport, dependsOn: testTaskNames) {
+    task "createGlobalSkeletoidUnitTestReport"(type: JacocoReport, dependsOn: testTaskNames) {
         group = "Reporting"
         description = "Generate Jacoco Global coverage report"
 

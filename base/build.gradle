@@ -99,7 +99,7 @@ jacoco {
 
 tasks['sonarqube'].with {
     dependsOn.clear()
-//    dependsOn createGlobalSkeletoidUnitTestReport
+    dependsOn createGlobalSkeletoidUnitTestReport
 }
 
 sonarqube {
