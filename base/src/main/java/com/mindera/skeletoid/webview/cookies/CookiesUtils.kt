@@ -20,13 +20,12 @@ object CookiesUtils {
         return stringCookiesToMap(cookies)
     }
 
-    fun getCookie(url: String, cookieName: String): Map<String,String> {
+    fun getCookie(url: String, cookieName: String): Map<String, String> {
         var cookieValue: String? = null
 
         val cookieManager = CookieManager.getInstance()
         val cookies = cookieManager.getCookie(url)
-
-        return stringCookiesToMap(cookies).filterNot { it.key.contains(cookieName) }
+        return stringCookiesToMap(cookies).filter { it.key.contains(cookieName) }
     }
 
     fun stringCookiesToMap(cookies: String): HashMap<String, String> {
@@ -36,7 +35,7 @@ object CookiesUtils {
             .toTypedArray()
 
         for (ar1 in temp) {
-            val temp1 = ar1.split("=", limit=2).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val temp1 = ar1.split("=", limit = 2).dropLastWhile { it.isEmpty() }.toTypedArray()
 
             if (temp1.size == 2) {
                 cookiesMap[temp1[0]] = temp1[1]
