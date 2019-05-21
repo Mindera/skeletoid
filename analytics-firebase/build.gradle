@@ -43,7 +43,7 @@ android {
             resolutionStrategy.force "com.google.code.findbugs:jsr305:$findBugsVersion"
 
             // fail eagerly on version conflict (includes transitive dependencies)
-            // e.g. multiple different versions of the same dependency (group and name are equal)*/
+            // e.g. multiple different versions of the same dependency (group and name are equal)
             failOnVersionConflict()
         }
     }
