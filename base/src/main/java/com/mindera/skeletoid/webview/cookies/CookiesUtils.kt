@@ -14,24 +14,10 @@ object CookiesUtils {
     }
 
     fun getCookiesMap(url: String): HashMap<String, String> {
-        val cookiesMap = HashMap<String, String>()
-
         val cookieManager = CookieManager.getInstance()
         val cookies = cookieManager.getCookie(url)
 
-        val temp = cookies.split(";").map { it.trim() }.dropLastWhile { it.isEmpty() }
-            .toTypedArray()
-
-        for (ar1 in temp) {
-            val temp1 = ar1.split("=", limit=2).dropLastWhile { it.isEmpty() }.toTypedArray()
-
-            if (temp1.size == 2) {
-                cookiesMap[temp1[0]] = temp1[1]
-            } else {
-                LOG.e(LOG_TAG, "Cookie is malformed, skipping...")
-            }
-        }
-        return cookiesMap
+        return stringCookiesToMap(cookies)
     }
 
     fun getCookie(url: String, cookieName: String): Map<String,String> {
