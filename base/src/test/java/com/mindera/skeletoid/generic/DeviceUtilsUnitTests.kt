@@ -1,75 +1,134 @@
 package com.mindera.skeletoid.generic
 
+import android.os.Build
 import junit.framework.Assert.assertEquals
+import org.junit.After
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.powermock.core.classloader.annotations.PrepareForTest
+import org.powermock.modules.junit4.PowerMockRunner
+import org.powermock.reflect.Whitebox
 
+@RunWith(PowerMockRunner::class)
+@PrepareForTest(Build.VERSION::class, Build::class)
 class DeviceUtilsUnitTests {
 
     companion object {
 
-        private const val DEVICE_SPECIFICATIONS = "OS Release:  \n" +
-                "Brand:  \n" +
-                "Manufacturer:  \n" +
-                "Name:  \n" +
-                "SDK Version: 0 \n" +
-                "Product:  \n" +
-                "Hardware:  \n" +
-                "Device:  \n" +
-                "OS Name: BASE"
+        private const val DEVICE_SPECIFICATIONS = "OS Release: release \n" +
+                "Brand: Pixel \n" +
+                "Manufacturer: Google \n" +
+                "Name: Google Pixel 3 \n" +
+                "SDK Version: 28 \n" +
+                "Product: ? \n" +
+                "Hardware: FRF50 \n" +
+                "Device: GT-I9000 \n" +
+                "OS Name: P"
+    }
+
+    @After
+    fun cleanUp() {
+        Whitebox.setInternalState(Build.VERSION::class.java, "SDK_INT", 0)
+        Whitebox.setInternalState(Build.VERSION::class.java, "SDK", "")
+        Whitebox.setInternalState(Build::class.java, "HARDWARE", "")
+        Whitebox.setInternalState(Build::class.java, "PRODUCT", "")
+        Whitebox.setInternalState(Build::class.java, "DEVICE", "")
+        Whitebox.setInternalState(Build::class.java, "BRAND", "")
+        Whitebox.setInternalState(Build::class.java, "MANUFACTURER", "")
+        Whitebox.setInternalState(Build::class.java, "MODEL", "")
+        Whitebox.setInternalState(Build.VERSION::class.java, "RELEASE", "")
     }
 
     @Test
     fun testOSRelease() {
-        assertEquals("", DeviceUtils.osRelease)
+        Whitebox.setInternalState(Build.VERSION::class.java, "RELEASE", "release")
+
+        assertEquals("release", DeviceUtils.osRelease)
     }
 
     @Test
     fun testBrand() {
-        assertEquals("", DeviceUtils.brand)
+        Whitebox.setInternalState(Build::class.java, "BRAND", "Pixel")
+
+        assertEquals("Pixel", DeviceUtils.brand)
     }
 
     @Test
     fun testModel() {
-        assertEquals("", DeviceUtils.model)
+        Whitebox.setInternalState(Build::class.java, "MODEL", "Pixel 3")
+
+        assertEquals("Pixel 3", DeviceUtils.model)
     }
 
     @Test
     fun testManufacturer() {
-        assertEquals("", DeviceUtils.manufacturer)
+        Whitebox.setInternalState(Build::class.java, "MANUFACTURER", "Google")
+
+        assertEquals("Google", DeviceUtils.manufacturer)
     }
 
     @Test
-    fun testName() {
-        assertEquals("", DeviceUtils.name)
+    fun testNameContainingManufacturer() {
+        Whitebox.setInternalState(Build::class.java, "MODEL", "Google Pixel 3")
+
+        assertEquals("Google Pixel 3", DeviceUtils.name)
+    }
+
+    @Test
+    fun testNameNotContainingManufacturer() {
+        Whitebox.setInternalState(Build::class.java, "MANUFACTURER", "Google")
+        Whitebox.setInternalState(Build::class.java, "MODEL", "Pixel 3")
+
+        assertEquals("Google Pixel 3", DeviceUtils.name)
     }
 
     @Test
     fun testSdkVersion() {
-        assertEquals(0, DeviceUtils.sdkVersion)
+        Whitebox.setInternalState(Build.VERSION::class.java, "SDK_INT", 28)
+
+        assertEquals(28, DeviceUtils.sdkVersion)
     }
 
     @Test
     fun testProduct() {
-        assertEquals("", DeviceUtils.product)
+        Whitebox.setInternalState(Build::class.java, "PRODUCT", "?")
+
+        assertEquals("?", DeviceUtils.product)
     }
 
     @Test
     fun testHardware() {
-        assertEquals("", DeviceUtils.hardware)
+        Whitebox.setInternalState(Build::class.java, "HARDWARE", "FRF50")
+
+        assertEquals("FRF50", DeviceUtils.hardware)
     }
 
     @Test
     fun testDevice() {
-        assertEquals("", DeviceUtils.device)
+        Whitebox.setInternalState(Build::class.java, "DEVICE", "GT-I9000")
+
+        assertEquals("GT-I9000", DeviceUtils.device)
     }
 
     @Test
     fun testOSName() {
-        assertEquals("BASE", DeviceUtils.osName)
+        Whitebox.setInternalState(Build.VERSION::class.java, "SDK_INT", 28)
+
+        assertEquals("P", DeviceUtils.osName)
     }
 
     @Test
     fun testDeviceSpecifications() {
+        Whitebox.setInternalState(Build::class.java, "DEVICE", "GT-I9000")
+        Whitebox.setInternalState(Build::class.java, "HARDWARE", "FRF50")
+        Whitebox.setInternalState(Build::class.java, "PRODUCT", "?")
+        Whitebox.setInternalState(Build.VERSION::class.java, "SDK_INT", 28)
+        Whitebox.setInternalState(Build::class.java, "MODEL", "Google Pixel 3")
+        Whitebox.setInternalState(Build::class.java, "MANUFACTURER", "Google")
+        Whitebox.setInternalState(Build::class.java, "MODEL", "Pixel 3")
+        Whitebox.setInternalState(Build.VERSION::class.java, "RELEASE", "release")
+        Whitebox.setInternalState(Build::class.java, "BRAND", "Pixel")
+
         assertEquals(DEVICE_SPECIFICATIONS, DeviceUtils.deviceSpecifications)
     }
 }

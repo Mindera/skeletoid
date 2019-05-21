@@ -13,11 +13,11 @@ android {
     }
 
     buildTypes {
-        debug{
-            
+        debug {
+
         }
-        
-        qa{
+
+        qa {
             matchingFallbacks = ['debug']
             testCoverageEnabled = true
         }
@@ -52,7 +52,7 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
-    implementation ("com.google.android.gms:play-services-analytics:$rootProject.gaVersion"){
+    implementation("com.google.android.gms:play-services-analytics:$rootProject.gaVersion") {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-compat'
         exclude group: 'com.android.support', module: 'support-core-utils'
@@ -63,10 +63,10 @@ dependencies {
 
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
-    testImplementation ("org.powermock:powermock-module-junit4:$rootProject.powermockVersion"){
+    testImplementation("org.powermock:powermock-module-junit4:$rootProject.powermockVersion") {
         exclude group: 'org.objenesis', module: 'objenesis'
     }
-    testImplementation ("org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion"){
+    testImplementation("org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion") {
         exclude group: 'org.objenesis', module: 'objenesis'
     }
     testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"

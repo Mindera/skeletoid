@@ -11,9 +11,17 @@ class PerformanceTracesHelper {
     }
 
     @VisibleForTesting
-    public val runningTraces = HashMap<String, Trace>()
+    val runningTraces = HashMap<String, Trace>()
 
-    fun startTrace(tag: String): Trace {
+    fun startTrace(tag: String): Trace? {
+        if (tag.trim().isEmpty()) {
+            return null
+        }
+
+        if (runningTraces.containsKey(tag)) {
+            return null
+        }
+
         val trace = FirebasePerformance.getInstance().newTrace(tag)
         runningTraces[tag] = trace
 
