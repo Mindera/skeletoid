@@ -7,28 +7,23 @@ object CookiesUtils {
 
     private const val LOG_TAG = "CookiesUtils"
 
-    fun getCookiesString(url: String): String {
+    fun getCookiesFromUrl(url: String): String {
         val cookieManager = CookieManager.getInstance()
 
         return cookieManager.getCookie(url)
     }
 
-    fun getCookiesMap(url: String): HashMap<String, String> {
-        val cookieManager = CookieManager.getInstance()
-        val cookies = cookieManager.getCookie(url)
+    fun getCookiesFromUrlToMap(url: String): HashMap<String, String> {
+        val cookies = getCookiesFromUrl(url)
 
-        return stringCookiesToMap(cookies)
+        return getCookiesToMap(cookies)
     }
 
-    fun getCookie(url: String, cookieName: String): Map<String, String> {
-        var cookieValue: String? = null
-
-        val cookieManager = CookieManager.getInstance()
-        val cookies = cookieManager.getCookie(url)
-        return stringCookiesToMap(cookies).filter { it.key.contains(cookieName) }
+    fun getCookieFromUrlToMap(url: String, cookieName: String): Map<String, String> {
+        return getCookiesFromUrlToMap(url).filter { it.key.contains(cookieName) }
     }
 
-    fun stringCookiesToMap(cookies: String): HashMap<String, String> {
+    fun getCookiesToMap(cookies: String): HashMap<String, String> {
         val cookiesMap = HashMap<String, String>()
 
         val cookieList = cookies.split(";").map { it.trim() }.dropLastWhile { it.isEmpty() }
