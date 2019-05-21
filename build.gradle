@@ -68,9 +68,11 @@ ext {
     gaVersion = '16.0.5'
 
     //Rx
-    rxJavaVersion = '2.1.7'
-    rxAndroidVersion = '2.0.2'
-    rxBindingsVersion = '2.2.0'
+    rxJavaVersion = '2.2.8'
+    rxAndroidVersion = '2.1.1'
+    rxKotlinVersion = '2.3.0'
+    rxBindingsVersion = '3.0.0-alpha2'
+    rxJavaAkaitaVersion = '1.4.0'
 
     // Tests & Quality
     junitVersion = '4.12'
