@@ -25,8 +25,8 @@ private fun setupRxSchedulers() {
     RxJavaPlugins.reset()
 
     val immediate = object : Scheduler() {
-        override fun createWorker(): Scheduler.Worker {
-            return ExecutorScheduler.ExecutorWorker(Executor { it.run() })
+        override fun createWorker(): Worker {
+            return ExecutorScheduler.ExecutorWorker(Executor { it.run() }, true)
         }
     }
 
