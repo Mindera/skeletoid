@@ -31,8 +31,8 @@ android {
 
     configurations.all {
         resolutionStrategy {
-            resolutionStrategy.force "com.google.guava:guava:27.1-jre"
-            resolutionStrategy.force "com.google.code.findbugs:jsr305:3.0.2"
+            resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
+            resolutionStrategy.force "com.google.code.findbugs:jsr305:$findBugsVersion"
 
             // fail eagerly on version conflict (includes transitive dependencies)
             // e.g. multiple different versions of the same dependency (group and name are equal)
@@ -46,7 +46,7 @@ dependencies {
     //Depends on Base Skeletoid
     api project(path: ':base')
 
-    implementation ("com.google.android.gms:play-services-analytics:16.0.5"){
+    implementation ("com.google.android.gms:play-services-analytics:$playServicesAnalytics"){
         exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'androidx.fragment', module: 'fragment'
         exclude group: 'androidx.core', module: 'core'
