@@ -31,16 +31,16 @@ object CookiesUtils {
     fun stringCookiesToMap(cookies: String): HashMap<String, String> {
         val cookiesMap = HashMap<String, String>()
 
-        val temp = cookies.split(";").map { it.trim() }.dropLastWhile { it.isEmpty() }
+        val cookieList = cookies.split(";").map { it.trim() }.dropLastWhile { it.isEmpty() }
             .toTypedArray()
 
-        for (ar1 in temp) {
-            val temp1 = ar1.split("=", limit = 2).dropLastWhile { it.isEmpty() }.toTypedArray()
+        for (cookiePair in cookieList) {
+            val cookiePairAsList = cookiePair.split("=", limit = 2).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-            if (temp1.size == 2) {
-                cookiesMap[temp1[0]] = temp1[1]
+            if (cookiePairAsList.size == 2) {
+                cookiesMap[cookiePairAsList[0]] = cookiePairAsList[1]
             } else {
-                LOG.e(LOG_TAG, "Cookie is malformed, skipping...")
+                LOG.e(LOG_TAG, "Cookie is malformed, skipping: $cookiePairAsList")
             }
         }
 
