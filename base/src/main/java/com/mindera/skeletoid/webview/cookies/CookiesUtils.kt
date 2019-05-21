@@ -34,28 +34,32 @@ object CookiesUtils {
         return cookiesMap
     }
 
-    fun getCookie(url: String, cookieName: String): String? {
+    fun getCookie(url: String, cookieName: String): Map<String,String> {
         var cookieValue: String? = null
 
         val cookieManager = CookieManager.getInstance()
         val cookies = cookieManager.getCookie(url)
 
-        val cookieArray = cookies.split(";").dropLastWhile { it.isEmpty() }.toTypedArray()
+        return stringCookiesToMap(cookies).filterNot { it.key.contains(cookieName) }
+    }
 
-        for (nameAndCookie in cookieArray) {
-            if (nameAndCookie.contains(cookieName)) {
+    fun stringCookiesToMap(cookies: String): HashMap<String, String> {
+        val cookiesMap = HashMap<String, String>()
 
-                val cookie =
-                    nameAndCookie.split("=", limit=2).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val temp = cookies.split(";").map { it.trim() }.dropLastWhile { it.isEmpty() }
+            .toTypedArray()
 
-                if (cookie.size == 2) {
-                    cookieValue = cookie[1]
-                } else {
-                    LOG.e(LOG_TAG, "$cookieName Cookie is malformed, skipping...")
-                }
-                break
+        for (ar1 in temp) {
+            val temp1 = ar1.split("=", limit=2).dropLastWhile { it.isEmpty() }.toTypedArray()
+
+            if (temp1.size == 2) {
+                cookiesMap[temp1[0]] = temp1[1]
+            } else {
+                LOG.e(LOG_TAG, "Cookie is malformed, skipping...")
             }
         }
-        return cookieValue
+
+        return cookiesMap
     }
+
 }
