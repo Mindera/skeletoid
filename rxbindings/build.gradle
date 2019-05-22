@@ -121,10 +121,6 @@ dependencies {
         exclude group: 'androidx.vectordrawable', module: 'vectordrawable'
     }
 
-    // jakewharton'' libs use version 27.0.2 and we use 27.1.1, so we need to remove those.
-    // we also need to guarantee that any project using this lib will not crash due to the lack
-    // of these libs, so we should reference them here. But our project will not crash even
-    // without these
     implementation("androidx.recyclerview:recyclerview:$recyclerViewVersion") {
         exclude group: 'androidx.core', module: 'core'
     }
