@@ -59,6 +59,7 @@ ext {
 
     //Firebase
     firebaseVersion = '16.0.9'
+    firebaseCoreVersion = '16.0.9'
 
     //Play Services
     playServicesVersion = '15.0.1'
