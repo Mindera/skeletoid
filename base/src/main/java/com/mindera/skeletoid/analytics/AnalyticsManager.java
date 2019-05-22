@@ -101,7 +101,7 @@ public class AnalyticsManager implements IAnalyticsManager {
     @Override
     public void setUserID(String userID) {
         for (IAnalyticsAppender appender : mAnalyticsAppenders.values()) {
-            appender.setUserID(userID);
+            appender.setUserId(userID);
         }
     }
 

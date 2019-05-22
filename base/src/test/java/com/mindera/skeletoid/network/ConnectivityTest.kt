@@ -42,13 +42,13 @@ class ConnectivityTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun testIsNotConnectedToWIFIWithNullArguments() {
-        Connectivity.isConnectedToWIFI(null)
+        Connectivity.isConnectedToWifi(null)
     }
 
     @Test
     fun testIsNotConnectedToWIFI() {
         val context = mock<Context>()
-        assertFalse(Connectivity.isConnectedToWIFI(context))
+        assertFalse(Connectivity.isConnectedToWifi(context))
     }
 
     @Test
@@ -56,7 +56,7 @@ class ConnectivityTest {
         val context = mock<Context>()
         val connectivityManager = mock<ConnectivityManager>()
         Mockito.`when`(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager)
-        assertFalse(Connectivity.isConnectedToWIFI(context))
+        assertFalse(Connectivity.isConnectedToWifi(context))
     }
 
     @Test
@@ -67,6 +67,6 @@ class ConnectivityTest {
         Mockito.`when`(activeNetworkInfo.type).thenReturn(ConnectivityManager.TYPE_WIFI)
         Mockito.`when`(connectivityManager.activeNetworkInfo).thenReturn(activeNetworkInfo)
         Mockito.`when`(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager)
-        assertTrue(Connectivity.isConnectedToWIFI(context))
+        assertTrue(Connectivity.isConnectedToWifi(context))
     }
 }

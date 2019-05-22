@@ -172,7 +172,7 @@ class FbAppenderUnitTest {
     fun testSetUserId() {
         val userId = "userId"
 
-        appender.setUserID(userId)
+        appender.setUserId(userId)
 
         verify(firebaseAnalytics).setUserId(userId)
     }
@@ -182,7 +182,7 @@ class FbAppenderUnitTest {
         val userId = "userId"
 
         appender.disableAppender()
-        appender.setUserID(userId)
+        appender.setUserId(userId)
 
         verifyNoMoreInteractions(firebaseAnalytics)
     }

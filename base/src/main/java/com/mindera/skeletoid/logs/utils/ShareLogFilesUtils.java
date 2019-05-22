@@ -63,8 +63,7 @@ public class ShareLogFilesUtils {
      * @param emails             Emails to add on to: field (for email)
      * @param file               Log file to be sent
      */
-    public static void sendLogs(Activity activity, String intentChooserTitle, String subjectTitle,
-                                String bodyText, String[] emails, File file) {
+    public static void sendLogs(Activity activity, String intentChooserTitle, String subjectTitle, String bodyText, String[] emails, File file) {
 
 
         final Intent intent;
@@ -109,8 +108,7 @@ public class ShareLogFilesUtils {
      * @param bodyText           Body text
      * @param emails             Emails to add on to: field (for email)
      */
-    public static void sendLogsEmail(Activity activity, String intentChooserTitle, String subjectTitle,
-                                     String bodyText, String[] emails) {
+    public static void sendLogsEmail(Activity activity, String intentChooserTitle, String subjectTitle, String bodyText, String[] emails) {
 
         File output = new File(getCompressedLogsPath(activity));
         if (!zipLogFiles(getFileLogPath(activity) + File.separator, output.getAbsolutePath()) || !output.exists()) {

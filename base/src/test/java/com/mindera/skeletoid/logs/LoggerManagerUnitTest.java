@@ -383,12 +383,13 @@ public class LoggerManagerUnitTest {
         verify(appenderB, times(1)).log(LOG.PRIORITY.VERBOSE, null, log);
         verify(appenderC, times(1)).log(LOG.PRIORITY.VERBOSE, null, log);
     }
+
     @Test
     public void testDebugLogWithTagAndThrowable() {
         Context context = mock(Context.class);
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
-        Throwable throwable =  new Throwable();
+        Throwable throwable = new Throwable();
 
         List<ILogAppender> appenders = new ArrayList<>();
 
@@ -416,7 +417,7 @@ public class LoggerManagerUnitTest {
         Context context = mock(Context.class);
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
-        Throwable throwable =  new Throwable();
+        Throwable throwable = new Throwable();
 
         List<ILogAppender> appenders = new ArrayList<>();
 
@@ -444,7 +445,7 @@ public class LoggerManagerUnitTest {
         Context context = mock(Context.class);
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
-        Throwable throwable =  new Throwable();
+        Throwable throwable = new Throwable();
         List<ILogAppender> appenders = new ArrayList<>();
 
         ILogAppender appenderA = mockAppender("A");
@@ -471,7 +472,7 @@ public class LoggerManagerUnitTest {
         Context context = mock(Context.class);
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
-        Throwable throwable =  new Throwable();
+        Throwable throwable = new Throwable();
         List<ILogAppender> appenders = new ArrayList<>();
 
         ILogAppender appenderA = mockAppender("A");
@@ -498,7 +499,7 @@ public class LoggerManagerUnitTest {
         Context context = mock(Context.class);
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
-        Throwable throwable =  new Throwable();
+        Throwable throwable = new Throwable();
         List<ILogAppender> appenders = new ArrayList<>();
 
         ILogAppender appenderA = mockAppender("A");
@@ -526,7 +527,7 @@ public class LoggerManagerUnitTest {
         Context context = mock(Context.class);
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
-        Throwable throwable =  new Throwable();
+        Throwable throwable = new Throwable();
         List<ILogAppender> appenders = new ArrayList<>();
 
         ILogAppender appenderA = mockAppender("A");
@@ -712,7 +713,7 @@ public class LoggerManagerUnitTest {
         Context context = mock(Context.class);
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
-        Throwable throwable =  new Throwable();
+        Throwable throwable = new Throwable();
 
         List<ILogAppender> appenders = new ArrayList<>();
 
@@ -740,7 +741,7 @@ public class LoggerManagerUnitTest {
         Context context = mock(Context.class);
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
-        Throwable throwable =  new Throwable();
+        Throwable throwable = new Throwable();
 
         List<ILogAppender> appenders = new ArrayList<>();
 
@@ -768,7 +769,7 @@ public class LoggerManagerUnitTest {
         Context context = mock(Context.class);
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
-        Throwable throwable =  new Throwable();
+        Throwable throwable = new Throwable();
         List<ILogAppender> appenders = new ArrayList<>();
 
         ILogAppender appenderA = mockAppender("A");
@@ -795,7 +796,7 @@ public class LoggerManagerUnitTest {
         Context context = mock(Context.class);
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
-        Throwable throwable =  new Throwable();
+        Throwable throwable = new Throwable();
         List<ILogAppender> appenders = new ArrayList<>();
 
         ILogAppender appenderA = mockAppender("A");
@@ -822,7 +823,7 @@ public class LoggerManagerUnitTest {
         Context context = mock(Context.class);
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
-        Throwable throwable =  new Throwable();
+        Throwable throwable = new Throwable();
         List<ILogAppender> appenders = new ArrayList<>();
 
         ILogAppender appenderA = mockAppender("A");
@@ -850,7 +851,7 @@ public class LoggerManagerUnitTest {
         Context context = mock(Context.class);
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
-        Throwable throwable =  new Throwable();
+        Throwable throwable = new Throwable();
         List<ILogAppender> appenders = new ArrayList<>();
 
         ILogAppender appenderA = mockAppender("A");

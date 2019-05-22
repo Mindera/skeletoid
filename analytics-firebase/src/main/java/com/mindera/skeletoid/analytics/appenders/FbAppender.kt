@@ -11,7 +11,7 @@ import com.mindera.skeletoid.logs.LOG
 class FbAppender : IAnalyticsAppender {
 
     companion object {
-        private val LOG_TAG = "FBAppender"
+        private const val LOG_TAG = "FBAppender"
     }
 
     @VisibleForTesting
@@ -52,13 +52,13 @@ class FbAppender : IAnalyticsAppender {
         firebaseAnalytics?.setCurrentScreen(activity, screenName, screenClassOverload)
     }
 
-    override fun setUserID(userID: String) {
+    override fun setUserId(userId: String) {
         if (firebaseAnalytics == null) {
-            LOG.e(LOG_TAG, "setUserID failed: firebaseAnalytics is null")
+            LOG.e(LOG_TAG, "setUserId failed: firebaseAnalytics is null")
             return
         }
 
-        firebaseAnalytics?.setUserId(userID)
+        firebaseAnalytics?.setUserId(userId)
     }
 
     override fun setUserProperty(name: String, value: String) {

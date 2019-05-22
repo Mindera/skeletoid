@@ -16,14 +16,14 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
 
-class GAAppenderUnitTest {
+class GaAppenderUnitTest {
 
-    private lateinit var appender: GAAppender
+    private lateinit var appender: GaAppender
     private lateinit var tracker: Tracker
 
     @Before
     fun setUp() {
-        appender = GAAppender(0)
+        appender = GaAppender(0)
         tracker = mock(Tracker::class.java)
     }
 
@@ -47,12 +47,12 @@ class GAAppenderUnitTest {
         val product = Product().setName("product_name")
         val screenName = "screenName"
         val payloadMap = HashMap<String, Any>().apply {
-            put(GAAppender.CATEGORY, "category")
-            put(GAAppender.ACTION, "action")
-            put(GAAppender.LABEL, "label")
-            put(GAAppender.PRODUCT, product)
-            put(GAAppender.PRODUCT_ACTION, ProductAction("product_action"))
-            put(GAAppender.VALUE, 2500L)
+            put(GaAppender.CATEGORY, "category")
+            put(GaAppender.ACTION, "action")
+            put(GaAppender.LABEL, "label")
+            put(GaAppender.PRODUCT, product)
+            put(GaAppender.PRODUCT_ACTION, ProductAction("product_action"))
+            put(GaAppender.VALUE, 2500L)
         }
         val expectedPayload = HashMap<String, String>().apply {
             put("&ea", "action")
@@ -76,12 +76,12 @@ class GAAppenderUnitTest {
     fun testNoTrackEventDisabledAppender() {
         val screenName = "screenName"
         val payloadMap = HashMap<String, Any>().apply {
-            put(GAAppender.CATEGORY, "category")
-            put(GAAppender.ACTION, "action")
-            put(GAAppender.LABEL, "label")
-            put(GAAppender.PRODUCT, Product())
-            put(GAAppender.PRODUCT_ACTION, ProductAction("product_action"))
-            put(GAAppender.VALUE, 2500L)
+            put(GaAppender.CATEGORY, "category")
+            put(GaAppender.ACTION, "action")
+            put(GaAppender.LABEL, "label")
+            put(GaAppender.PRODUCT, Product())
+            put(GaAppender.PRODUCT_ACTION, ProductAction("product_action"))
+            put(GaAppender.VALUE, 2500L)
         }
         appender.tracker = tracker
 
@@ -97,12 +97,12 @@ class GAAppenderUnitTest {
         val eventName = "eventName"
         val payload = mock(Bundle::class.java)
         `when`(payload.containsKey(ArgumentMatchers.anyString())).thenReturn(true)
-        `when`(payload.get(GAAppender.CATEGORY)).thenReturn("category")
-        `when`(payload.get(GAAppender.ACTION)).thenReturn("action")
-        `when`(payload.get(GAAppender.VALUE)).thenReturn(2500L)
-        `when`(payload.get(GAAppender.LABEL)).thenReturn("label")
-        `when`(payload.get(GAAppender.PRODUCT)).thenReturn(product)
-        `when`(payload.get(GAAppender.PRODUCT_ACTION)).thenReturn(ProductAction("product_action"))
+        `when`(payload.get(GaAppender.CATEGORY)).thenReturn("category")
+        `when`(payload.get(GaAppender.ACTION)).thenReturn("action")
+        `when`(payload.get(GaAppender.VALUE)).thenReturn(2500L)
+        `when`(payload.get(GaAppender.LABEL)).thenReturn("label")
+        `when`(payload.get(GaAppender.PRODUCT)).thenReturn(product)
+        `when`(payload.get(GaAppender.PRODUCT_ACTION)).thenReturn(ProductAction("product_action"))
         val expectedPayload = HashMap<String, String>().apply {
             put("&ea", "action")
             put("&ec", "category")
@@ -125,15 +125,15 @@ class GAAppenderUnitTest {
     fun testNoTrackEventWithBundleDisabledAppender() {
         val eventName = "eventName"
         val payload = mock(Bundle::class.java)
-        `when`(payload.containsKey(GAAppender.CATEGORY)).thenReturn(true)
-        `when`(payload.containsKey(GAAppender.ACTION)).thenReturn(true)
-        `when`(payload.containsKey(GAAppender.VALUE)).thenReturn(true)
-        `when`(payload.get(GAAppender.CATEGORY)).thenReturn("category")
-        `when`(payload.get(GAAppender.ACTION)).thenReturn("action")
-        `when`(payload.get(GAAppender.LABEL)).thenReturn("action")
-        `when`(payload.get(GAAppender.PRODUCT)).thenReturn(Product())
-        `when`(payload.get(GAAppender.PRODUCT_ACTION)).thenReturn(ProductAction("product_action"))
-        `when`(payload.get(GAAppender.VALUE)).thenReturn(2500L)
+        `when`(payload.containsKey(GaAppender.CATEGORY)).thenReturn(true)
+        `when`(payload.containsKey(GaAppender.ACTION)).thenReturn(true)
+        `when`(payload.containsKey(GaAppender.VALUE)).thenReturn(true)
+        `when`(payload.get(GaAppender.CATEGORY)).thenReturn("category")
+        `when`(payload.get(GaAppender.ACTION)).thenReturn("action")
+        `when`(payload.get(GaAppender.LABEL)).thenReturn("action")
+        `when`(payload.get(GaAppender.PRODUCT)).thenReturn(Product())
+        `when`(payload.get(GaAppender.PRODUCT_ACTION)).thenReturn(ProductAction("product_action"))
+        `when`(payload.get(GaAppender.VALUE)).thenReturn(2500L)
         appender.tracker = tracker
 
         appender.disableAppender()
@@ -182,7 +182,7 @@ class GAAppenderUnitTest {
         val userId = "userId"
         appender.tracker = tracker
 
-        appender.setUserID(userId)
+        appender.setUserId(userId)
 
         verify(tracker).setClientId(userId)
     }
@@ -193,7 +193,7 @@ class GAAppenderUnitTest {
         appender.tracker = tracker
 
         appender.disableAppender()
-        appender.setUserID(userId)
+        appender.setUserId(userId)
 
         verifyNoMoreInteractions(tracker)
     }

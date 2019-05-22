@@ -21,12 +21,12 @@ object Connectivity {
         if (context == null) {
             throw IllegalArgumentException("Context must not be null")
         }
-        val cm: ConnectivityManager? = context.getSystemService(
+        val connectivityManager: ConnectivityManager? = context.getSystemService(
             Context.CONNECTIVITY_SERVICE
         ) as? ConnectivityManager
 
-        val ni = cm?.activeNetworkInfo
-        return ni != null
+        val networkInfo = connectivityManager?.activeNetworkInfo
+        return networkInfo != null
     }
 
     /**
@@ -37,15 +37,15 @@ object Connectivity {
      */
     @JvmStatic
     @SuppressLint("MissingPermission")
-    fun isConnectedToWIFI(context: Context?): Boolean {
+    fun isConnectedToWifi(context: Context?): Boolean {
         if (context == null) {
             throw IllegalArgumentException("Context must not be null")
         }
-        val cm: ConnectivityManager? = context.getSystemService(
+        val connectivityManager: ConnectivityManager? = context.getSystemService(
             Context.CONNECTIVITY_SERVICE
         ) as? ConnectivityManager
 
-        val ni = cm?.activeNetworkInfo
-        return ni != null && ni.type == ConnectivityManager.TYPE_WIFI
+        val networkInfo = connectivityManager?.activeNetworkInfo
+        return networkInfo != null && networkInfo.type == ConnectivityManager.TYPE_WIFI
     }
 }

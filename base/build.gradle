@@ -45,6 +45,11 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
     }
 
     configurations.all {
@@ -91,10 +96,6 @@ dependencies {
     testImplementation("org.robolectric:robolectric:$rootProject.robolectricVersion") {
         exclude group: 'com.thoughtworks.xstream', module: 'xstream'
     }
-}
-
-jacoco {
-    toolVersion "0.8.1"
 }
 
 tasks['sonarqube'].with {

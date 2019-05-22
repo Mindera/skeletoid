@@ -12,7 +12,7 @@ import com.google.android.gms.analytics.ecommerce.ProductAction
 import com.google.android.gms.common.util.VisibleForTesting
 import com.mindera.skeletoid.logs.LOG
 
-class GAAppender(private val configurationFileId: Int) : IAnalyticsAppender {
+class GaAppender(private val configurationFileId: Int) : IAnalyticsAppender {
 
     companion object {
         val CATEGORY = "CATEGORY"
@@ -21,9 +21,8 @@ class GAAppender(private val configurationFileId: Int) : IAnalyticsAppender {
         val VALUE = "VALUE"
         val PRODUCT = "PRODUCT"
         val PRODUCT_ACTION = "PRODUCT_ACTION"
+        private const val LOG_TAG = "GAAppender"
     }
-
-    private val LOG_TAG = "GAAppender"
 
     @VisibleForTesting
     var tracker: Tracker? = null
@@ -141,8 +140,8 @@ class GAAppender(private val configurationFileId: Int) : IAnalyticsAppender {
         return "GoogleAnalytics"
     }
 
-    override fun setUserID(userID: String) {
-        tracker?.setClientId(userID)
+    override fun setUserId(userId: String) {
+        tracker?.setClientId(userId)
     }
 
     override fun setUserProperty(name: String, value: String) {

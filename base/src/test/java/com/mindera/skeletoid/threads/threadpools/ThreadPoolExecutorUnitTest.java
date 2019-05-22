@@ -61,18 +61,6 @@ public class ThreadPoolExecutorUnitTest {
     }
 
     @Test
-    public void testExecuteTask() throws InterruptedException {
-//        Object mock = mock(Object.class);
-//
-//        TestRunnable testRunnable = new TestRunnable(mock);
-//
-//        mThreadPoolExecutor.execute(testRunnable);
-//        mThreadPoolExecutor.awaitTermination(1, TimeUnit.SECONDS);
-//
-//        verify(mock.toString());
-    }
-
-    @Test
     public void testExecuteNullTask() {
         mockStatic(LOG.class);
 
