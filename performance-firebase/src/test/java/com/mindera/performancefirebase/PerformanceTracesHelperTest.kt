@@ -157,4 +157,13 @@ class PerformanceTracesHelperTest {
         verify(trace1).stop()
         verify(trace2).stop()
     }
+
+    @Test
+    fun testClearEmptyTraces() {
+        val helper = PerformanceTracesHelper()
+
+        helper.clearTraces()
+
+        assertTrue(helper.runningTraces.isEmpty())
+    }
 }

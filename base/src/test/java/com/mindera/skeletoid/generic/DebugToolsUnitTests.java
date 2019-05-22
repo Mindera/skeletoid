@@ -2,7 +2,6 @@ package com.mindera.skeletoid.generic;
 
 import com.mindera.skeletoid.logs.LOG;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.internal.verification.VerificationModeFactory;
@@ -14,8 +13,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 
-//@RunWith(PowerMockRunner.class)
-//@PrepareForTest(LOG.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(LOG.class)
 public class DebugToolsUnitTests {
 
     @Test(expected = UnsupportedOperationException.class)
@@ -24,7 +23,6 @@ public class DebugToolsUnitTests {
     }
 
     @Test
-    @Ignore
     public void testPrintAllStackTraces() {
         mockStatic(LOG.class);
 

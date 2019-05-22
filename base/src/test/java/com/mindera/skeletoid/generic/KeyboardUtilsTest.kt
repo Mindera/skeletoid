@@ -14,8 +14,6 @@ import org.mockito.Mockito.verify
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
-@RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE)
 class KeyboardUtilsTest {
 
     lateinit var activity: Activity

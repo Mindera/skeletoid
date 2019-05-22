@@ -27,7 +27,7 @@ project.afterEvaluate {
     task "createModuleUnitTestReport"(type: JacocoReport, dependsOn: ":$project.name:test${testCoverageBuildType.capitalize()}UnitTest") {
         group = "Reporting"
         def javaFileTree = fileTree(
-                dir: "${project.buildDir}/intermediates/javac/${testCoverageBuildType}/compileQaJavaWithJavac/classes",
+                dir: "${project.buildDir}/intermediates/javac/${testCoverageBuildType}/compile${testCoverageBuildType.capitalize()}JavaWithJavac/classes",
                 excludes: fileFilter
         )
 
@@ -46,7 +46,7 @@ project.afterEvaluate {
         sourceDirectories = files(coverageSourceDirs)
         executionData = files("${project.buildDir}/jacoco/test${testCoverageBuildType.capitalize()}UnitTest.exec")
         reports {
-            xml.enabled = true
+            xml.enabled = false
             html.enabled = true
         }
     }

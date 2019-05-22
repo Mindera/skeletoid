@@ -31,7 +31,7 @@ rootProject.afterEvaluate {
             testTaskNames.add(":${subproject.name}:test${testCoverageBuildType.capitalize()}UnitTest")
 
             def javaFileTree = fileTree(
-                    dir: "${subproject.buildDir}/intermediates/javac/${testCoverageBuildType}/compileQaJavaWithJavac/classes",
+                    dir: "${subproject.buildDir}/intermediates/javac/${testCoverageBuildType}/compile${testCoverageBuildType.capitalize()}JavaWithJavac/classes",
                     excludes: fileFilter
             )
             fileTrees.add(javaFileTree)
@@ -43,8 +43,8 @@ rootProject.afterEvaluate {
             fileTrees.add(kotlinFileTree)
 
             def coverageSourceDir = [
-                    "src/main/java",
-                    "src/${testCoverageBuildType}/java"
+                    "${subproject.projectDir}/src/main/java",
+                    "${subproject.projectDir}/src/${testCoverageBuildType}/java"
             ]
             coverageSourceDirs.add(coverageSourceDir)
 
@@ -65,7 +65,7 @@ rootProject.afterEvaluate {
         executionData = files(executionDataDirs)
 
         reports {
-            xml.enabled = true
+            xml.enabled = false
             html.enabled = true
         }
     }
