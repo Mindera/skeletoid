@@ -103,6 +103,24 @@ class OptionalTest {
     }
 
     @Test
+    fun testNotEqualsNull() {
+        val testString = "testString"
+        val optionalString: Optional<String> = Optional.of(testString)
+
+        assertFalse(optionalString.equals(null))
+    }
+
+    @Test
+    fun testNotEqualsAnotherClass() {
+        val testString = "testString"
+        val optionalString: Optional<String> = Optional.of(testString)
+        val testInt = 3
+        val optionalInt : Optional<Int> = Optional.of(testInt)
+
+        assertFalse(optionalString.equals(optionalInt))
+    }
+
+    @Test
     fun testEmptyNotEqualsNullable() {
         val testString = "testString"
         val optionalString: Optional<String> = Optional.empty()
