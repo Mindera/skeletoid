@@ -7,53 +7,39 @@ object CookiesUtils {
 
     private const val LOG_TAG = "CookiesUtils"
 
-    fun getCookiesString(url: String): String {
+    fun getCookiesFromUrl(url: String): String {
         val cookieManager = CookieManager.getInstance()
 
         return cookieManager.getCookie(url)
     }
 
-    fun getCookiesMap(url: String): HashMap<String, String> {
+    fun getCookiesFromUrlToMap(url: String): HashMap<String, String> {
+        val cookies = getCookiesFromUrl(url)
+
+        return getCookiesToMap(cookies)
+    }
+
+    fun getCookieFromUrlToMap(url: String, cookieName: String): Map<String, String> {
+        return getCookiesFromUrlToMap(url).filter { it.key.contains(cookieName) }
+    }
+
+    fun getCookiesToMap(cookies: String): HashMap<String, String> {
         val cookiesMap = HashMap<String, String>()
 
-        val cookieManager = CookieManager.getInstance()
-        val cookies = cookieManager.getCookie(url)
+        val cookieList = cookies.split(";").map { it.trim() }.dropLastWhile { it.isEmpty() }
+            .toTypedArray()
 
-        val temp = cookies.split(";".toRegex()).map { it.trim() }.dropLastWhile { it.isEmpty() }.toTypedArray()
+        for (cookiePair in cookieList) {
+            val cookiePairAsList = cookiePair.split("=", limit = 2).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-        for (ar1 in temp) {
-            val temp1 = ar1.split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-
-            if(temp1.size == 2){
-                cookiesMap[temp1[0]] = temp1[1]
-            }else{
-                LOG.e(LOG_TAG, "Cookie is malformed, skipping...")
+            if (cookiePairAsList.size == 2) {
+                cookiesMap[cookiePairAsList[0]] = cookiePairAsList[1]
+            } else {
+                LOG.e(LOG_TAG, "Cookie is malformed, skipping: $cookiePairAsList")
             }
         }
+
         return cookiesMap
     }
 
-    fun getCookie(url: String, cookieName: String): String? {
-        var cookieValue: String? = null
-
-        val cookieManager = CookieManager.getInstance()
-        val cookies = cookieManager.getCookie(url)
-
-        val cookieArray = cookies.split(";".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-
-        for (nameAndCookie in cookieArray) {
-            if (nameAndCookie.contains(cookieName)) {
-
-                val cookie = nameAndCookie.split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-
-                if(cookie.size == 2){
-                    cookieValue = cookie[1]
-                }else{
-                    LOG.e(LOG_TAG, "$cookieName Cookie is malformed, skipping...")
-                }
-                break
-            }
-        }
-        return cookieValue
-    }
 }
