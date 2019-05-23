@@ -48,7 +48,12 @@ android {
         unitTests.returnDefaultValues = true
     }
 
+    configurations {
+        childTestDependencies.extendsFrom testImplementation
+    }
+
     configurations.all {
+
         resolutionStrategy {
             resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
             resolutionStrategy.force "com.google.code.findbugs:jsr305:$findBugsVersion"
@@ -61,9 +66,7 @@ android {
             // e.g. multiple different versions of the same dependency (group and name are equal)
             failOnVersionConflict()
         }
-    }
 
-    configurations.all {
         resolutionStrategy.force "org.codehaus.plexus:plexus-utils:$plexusVersion"
     }
 }
@@ -74,7 +77,7 @@ dependencies {
 
     implementation ("androidx.loader:loader:$loaderVersion") {
         exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module:'core'
+        exclude group: 'androidx.core', module: 'core'
     }
 
     implementation ("androidx.vectordrawable:vectordrawable-animated:$vectorDrawableVersion") {
@@ -102,18 +105,27 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
 
     testImplementation "junit:junit:$junitVersion"
-    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation ("org.mockito:mockito-core:$mockitoVersion") {
+        exclude group: 'org.objenesis', module: 'objenesis'
+    }
 
     testImplementation ("org.powermock:powermock-module-junit4:$powermockVersion") {
         exclude group: 'org.mockito', module: 'mockito-core'
+        exclude group: 'net.bytebuddy', module: 'byte-buddy'
+        exclude group: 'net.bytebuddy', module: 'byte-buddy-agent'
     }
-    testImplementation "org.powermock:powermock-module-junit4-rule:$powermockVersion"
+    testImplementation ("org.powermock:powermock-module-junit4-rule:$powermockVersion") {
+        exclude group: 'net.bytebuddy', module: 'byte-buddy'
+        exclude group: 'net.bytebuddy', module: 'byte-buddy-agent'
+    }
+
     testImplementation ("org.powermock:powermock-api-mockito2:$powermockVersion") {
         exclude group: 'org.mockito', module: 'mockito-core'
     }
     testImplementation "org.powermock:powermock-classloading-xstream:$powermockVersion"
     testImplementation ("org.robolectric:robolectric:$robolectricVersion") {
         exclude group: 'com.thoughtworks.xstream', module: 'xstream'
+        exclude group: 'org.codehaus.plexus', module:'plexus-utils'
     }
 }
 

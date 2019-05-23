@@ -21,7 +21,5 @@ public class FBAppenderUnitTest {
         fb.disableAppender();
 
         assertNotNull(fb);
-
-
     }
 }

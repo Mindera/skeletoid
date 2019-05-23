@@ -51,6 +51,9 @@ android {
             resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
             resolutionStrategy.force "com.google.code.findbugs:jsr305:$findBugsVersion"
 
+            resolutionStrategy.force "net.bytebuddy:byte-buddy:$byteBuddyVersion"
+            resolutionStrategy.force "net.bytebuddy:byte-buddy-agent:$byteBuddyVersion"
+
             // fail eagerly on version conflict (includes transitive dependencies)
             // e.g. multiple different versions of the same dependency (group and name are equal)
             failOnVersionConflict()
@@ -63,6 +66,7 @@ dependencies {
 
     //Depends on Base Skeletoid
     api project(path: ':base')
+    testImplementation project(path: ':base', configuration: 'childTestDependencies')
 
     api("com.google.firebase:firebase-perf:$firebasePerfVersion") {
         exclude group: "com.android.support", module: "support-v4"
