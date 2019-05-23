@@ -1,11 +1,9 @@
 package com.mindera.skeletoid.kt.extensions.utils
 
 import android.accounts.Account
-import android.os.Bundle
 import android.os.Parcel
-import android.os.Parcelable
-import android.text.style.URLSpan
 import com.mindera.skeletoid.kt.extensions.BuildConfig
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -14,35 +12,14 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.util.Date
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 @RunWith(RobolectricTestRunner::class)
 @Config(constants = BuildConfig::class, manifest = Config.NONE)
 class ParcelUnitTest {
 
-    @Test
-    fun testCreateDefaultParcel() {
-        val testParcel = TestParcel()
-        assertFalse(testParcel.isTest)
-        assertEquals("string", testParcel.nullable)
-        assertEquals(HideAndSeek.TWO, testParcel.hideAndSeek)
-        assertEquals(BigInteger("4"), testParcel.bigIntegr)
-        assertEquals(BigDecimal("12.2"), testParcel.bigDec)
-        assertEquals(Account("name", "type").toString(), testParcel.account.toString())
-
-        val parcel = Parcel.obtain()
-        testParcel.writeToParcel(parcel, testParcel.describeContents())
-        parcel.setDataPosition(0)
-
-        val resultTestParcel = TestParcel.CREATOR.createFromParcel(parcel)
-
-        assertFalse(resultTestParcel.isTest)
-        assertEquals("string", resultTestParcel.nullable)
-        assertEquals(HideAndSeek.TWO, resultTestParcel.hideAndSeek)
-        assertEquals(BigInteger("4"), resultTestParcel.bigIntegr)
-        assertEquals(BigDecimal("12.2"), resultTestParcel.bigDec)
-        assertEquals(Account("name", "type").toString(), resultTestParcel.account.toString())
-    }
+    private lateinit var parcel: Parcel
 
     enum class HideAndSeek {
         ONE,
@@ -50,46 +27,76 @@ class ParcelUnitTest {
         THREE
     }
 
-    class TestParcel() : Parcelable {
+    @Before
+    fun setUp() {
+        parcel = Parcel.obtain()
+    }
 
-        var isTest = false
-        var hideAndSeek: HideAndSeek? = HideAndSeek.TWO
-        var integr: Int = 1
-        var nullable: String? = "string"
-        var date: Date? = Date()
-        var bigIntegr: BigInteger? = BigInteger("4")
-        var bigDec: BigDecimal? = BigDecimal("12.2")
-        var account: Account? = Account("name", "type")
+    @Test
+    fun testWriteReadBoolean() {
+        parcel.writeBoolean(true)
+        parcel.setDataPosition(0)
 
-        constructor(parcel: Parcel) : this() {
-            isTest = parcel.readBoolean()
-            hideAndSeek = parcel.readEnum<HideAndSeek>()
-            integr = parcel.readInt()
-            nullable = parcel.readNullable { parcel.readString() }
-            date = parcel.readDate()
-            bigIntegr = parcel.readBigInteger()
-            bigDec = parcel.readBigDecimal()
-            account = parcel.readTypedObjectCompat(Account.CREATOR)
-        }
+        assertTrue(parcel.readBoolean())
+    }
 
-        override fun writeToParcel(parcel: Parcel, flags: Int) {
-            parcel.writeBoolean(isTest)
-            parcel.writeEnum(hideAndSeek)
-            parcel.writeInt(integr)
-            parcel.writeNullable(nullable) { parcel.writeString(nullable) }
-            parcel.writeDate(date)
-            parcel.writeBigInteger(bigIntegr)
-            parcel.writeBigDecimal(bigDec)
-            parcel.writeTypedObjectCompat(account, account?.describeContents() ?: 0)
-        }
+    @Test
+    fun testWriteReadNullable() {
+        val nullableString: String? = "string"
 
-        override fun describeContents(): Int {
-            return 0
-        }
+        parcel.writeNullable(nullableString) { parcel.writeString(nullableString) }
+        parcel.setDataPosition(0)
 
-        companion object {
-            @JvmField
-            val CREATOR = parcelableCreator(::TestParcel)
-        }
+        assertEquals("string", parcel.readNullable { parcel.readString() })
+    }
+
+    @Test
+    fun testWriteReadNullNullable() {
+        val nullableString: String? = null
+
+        parcel.writeNullable(nullableString) { parcel.writeString(nullableString) }
+        parcel.setDataPosition(0)
+
+        assertNull(parcel.readNullable { parcel.readString() })
+    }
+
+    @Test
+    fun testWriteReadDate() {
+        val date = Date()
+
+        parcel.writeDate(date)
+        parcel.setDataPosition(0)
+
+        assertEquals(date, parcel.readDate())
+    }
+
+    @Test
+    fun testWriteReadBigInteger() {
+        val bigInt = BigInteger("45343234")
+
+        parcel.writeBigInteger(bigInt)
+        parcel.setDataPosition(0)
+
+        assertEquals(bigInt, parcel.readBigInteger())
+    }
+
+    @Test
+    fun testWriteReadBigDecimal() {
+        val bigDecimal = BigDecimal("45343234.23")
+
+        parcel.writeBigDecimal(bigDecimal)
+        parcel.setDataPosition(0)
+
+        assertEquals(bigDecimal, parcel.readBigDecimal())
+    }
+
+    @Test
+    fun testWriteReadEnum() {
+        val enum = HideAndSeek.ONE
+
+        parcel.writeEnum(enum)
+        parcel.setDataPosition(0)
+
+        assertEquals(enum, parcel.readEnum<HideAndSeek>())
     }
 }
