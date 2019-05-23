@@ -258,7 +258,7 @@ public class LogFileAppenderUnitTest {
         val fileHandler = mock(FileHandler::class.java)
 
         appender.enableAppender(context)
-        Thread.sleep(500)
+        Thread.sleep(800)
         appender.fileHandler = fileHandler
 
         appender.log(LOG.PRIORITY.DEBUG, Throwable("oops"), "hello")
@@ -294,7 +294,7 @@ public class LogFileAppenderUnitTest {
         val fileHandler = mock(FileHandler::class.java)
         val context = RuntimeEnvironment.application
         appender.enableAppender(context)
-        Thread.sleep(500)
+        Thread.sleep(800)
         appender.fileHandler = fileHandler
         appender.disableAppender()
 
@@ -310,7 +310,7 @@ public class LogFileAppenderUnitTest {
         val fileHandler = mock(FileHandler::class.java)
         val context = RuntimeEnvironment.application
         appender.enableAppender(context)
-        Thread.sleep(500)
+        Thread.sleep(800)
         appender.fileHandler = fileHandler
 
         appender.log(LOG.PRIORITY.DEBUG, null, "hello")
