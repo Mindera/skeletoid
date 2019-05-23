@@ -40,6 +40,7 @@ ext {
     loaderVersion = '1.0.0'
     vectorDrawableVersion = '1.0.0'
     androidLegacyVersion = '1.0.0'
+    materialVersion = '1.0.0'
     appcompatVersion = '1.0.2'
     recyclerViewVersion = '1.0.0'
 
