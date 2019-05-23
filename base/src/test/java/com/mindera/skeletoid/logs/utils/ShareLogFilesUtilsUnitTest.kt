@@ -27,7 +27,7 @@ import java.io.IOException
 import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class)
+@Config(constants = BuildConfig::class, manifest = Config.NONE)
 @PowerMockIgnore("org.mockito.*", "org.robolectric.*", "android.*")
 @PrepareForTest(FileProvider::class)
 class ShareLogFilesUtilsUnitTests {
