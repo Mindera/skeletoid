@@ -1,6 +1,5 @@
 package com.mindera.skeletoid.analytics.appenders
 
-
 import android.content.Context
 import org.junit.Assert
 import org.junit.Before
