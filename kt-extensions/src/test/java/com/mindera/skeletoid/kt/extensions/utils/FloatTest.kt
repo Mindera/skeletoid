@@ -8,15 +8,6 @@ import kotlin.test.assertEquals
 class FloatTest {
 
     @Test
-    fun testFormatNumber() {
-        val float = 14.3F
-        val expectedFloat = "14,3"
-        val actualFloat = float.formatNumber()
-
-        assertEquals(expectedFloat, actualFloat)
-    }
-
-    @Test
     fun testFormatNumberWithFormatter() {
         val float = 14.3F
         val numberFormat = NumberFormat.getNumberInstance(Locale.ENGLISH)
