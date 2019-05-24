@@ -99,4 +99,24 @@ class ParcelUnitTest {
 
         assertEquals(enum, parcel.readEnum<HideAndSeek>())
     }
+
+    @Test
+    fun testWriteReadTypedObjectCompat() {
+        val typedObject = Account("name", "type")
+
+        parcel.writeTypedObjectCompat(typedObject, typedObject.describeContents())
+        parcel.setDataPosition(0)
+
+        assertEquals(typedObject, parcel.readTypedObjectCompat(Account.CREATOR))
+    }
+
+    @Test
+    fun testParcelableCreator() {
+        val typedObject = Account("name", "type")
+
+        parcel.writeTypedObjectCompat(typedObject, typedObject.describeContents())
+        parcel.setDataPosition(0)
+
+        assertEquals(typedObject, parcel.readTypedObjectCompat(parcelableCreator(::Account)))
+    }
 }
