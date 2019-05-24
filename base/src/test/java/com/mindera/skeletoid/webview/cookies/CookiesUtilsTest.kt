@@ -7,6 +7,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 @RunWith(RobolectricTestRunner::class)
 @Config(constants = BuildConfig::class, manifest = Config.NONE)
@@ -23,6 +24,15 @@ class CookiesUtilsTest {
         val cookies = CookiesUtils.getCookiesFromUrl(url)
 
         assertEquals("name=cookie_monster; type=oreo; category=biscuit", cookies)
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun testGetCookiesFromUrlNoCookies() {
+        val url = "https://github.com/Mindera/skeletoid/"
+
+        val cookies = CookiesUtils.getCookiesFromUrl(url)
+
+        assertEquals("", cookies)
     }
 
     @Test
@@ -64,61 +74,79 @@ class CookiesUtilsTest {
     }
 
     @Test
-    fun testGetCookieFromUrlToMap() {
+    fun testGetCookieValue() {
         val cookieManager = CookieManager.getInstance()
         val url = "https://github.com/Mindera/skeletoid/"
         cookieManager.setCookie(url, "name=cookie_monster")
         cookieManager.setCookie(url, "type=oreo")
         cookieManager.setCookie(url, "category=biscuit")
 
-        val cookies = CookiesUtils.getCookieFromUrlToMap(url, "name")
+        val value = CookiesUtils.getCookieValue(url, "name")
 
-        assertEquals(1, cookies.size)
-        assertEquals("cookie_monster", cookies["name"])
+        assertEquals("cookie_monster", value)
     }
 
     @Test
-    fun testGetEmptyValueCookieFromUrlToMap() {
+    fun testGetCookieValueEmptyValue() {
         val cookieManager = CookieManager.getInstance()
         val url = "https://github.com/Mindera/skeletoid/"
         cookieManager.setCookie(url, "name=")
 
-        val cookies = CookiesUtils.getCookieFromUrlToMap(url, "name")
+        val value = CookiesUtils.getCookieValue(url, "name")
 
-        assertEquals(0, cookies.size)
+        assertNull(value)
     }
 
     @Test
-    fun testGetEmptyNameCookieFromUrlToMap() {
+    fun testGetCookieValueEmptyName() {
         val cookieManager = CookieManager.getInstance()
         val url = "https://github.com/Mindera/skeletoid/"
         cookieManager.setCookie(url, "=cookie_monster")
 
-        val cookies = CookiesUtils.getCookieFromUrlToMap(url, "")
+        val value = CookiesUtils.getCookieValue(url, "")
 
-        assertEquals(1, cookies.size)
-        assertEquals("cookie_monster", cookies[""])
+        assertEquals("cookie_monster", value)
     }
 
     @Test
-    fun testGetEmptyNameAndValueCookieFromUrlToMap() {
+    fun testGetCookieNonExistingCookie() {
+        val cookieManager = CookieManager.getInstance()
+        val url = "https://github.com/Mindera/skeletoid/"
+        cookieManager.setCookie(url, "name=cookie_monster")
+
+        val value = CookiesUtils.getCookieValue(url, "")
+
+        assertNull(value)
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun testGetCookieNoCookies() {
+        val url = "https://github.com/Mindera/skeletoid/"
+
+        val value = CookiesUtils.getCookieValue(url, "name")
+
+        assertNull(value)
+    }
+
+    @Test
+    fun testGetCookieValueEmptyNameAndValue() {
         val cookieManager = CookieManager.getInstance()
         val url = "https://github.com/Mindera/skeletoid/"
         cookieManager.setCookie(url, "=")
 
-        val cookies = CookiesUtils.getCookieFromUrlToMap(url, "")
+        val value = CookiesUtils.getCookieValue(url, "")
 
-        assertEquals(0, cookies.size)
+        assertNull(value)
     }
 
     @Test
-    fun testGetEmptyCookieFromUrlToMap() {
+    fun testGetCookieValueEmptyCookie() {
         val cookieManager = CookieManager.getInstance()
         val url = "https://github.com/Mindera/skeletoid/"
         cookieManager.setCookie(url, "")
 
-        val cookies = CookiesUtils.getCookieFromUrlToMap(url, "")
+        val value = CookiesUtils.getCookieValue(url, "")
 
-        assertEquals(0, cookies.size)
+        assertNull(value)
     }
 }

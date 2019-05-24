@@ -19,8 +19,8 @@ object CookiesUtils {
         return getCookiesToMap(cookies)
     }
 
-    fun getCookieFromUrlToMap(url: String, cookieName: String): Map<String, String> {
-        return getCookiesFromUrlToMap(url).filter { it.key.contains(cookieName) }
+    fun getCookieValue(url: String, cookieName: String): String? {
+        return getCookiesFromUrlToMap(url).filter { it.key.contains(cookieName) }[cookieName]
     }
 
     fun getCookiesToMap(cookies: String): HashMap<String, String> {
