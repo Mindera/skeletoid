@@ -46,8 +46,11 @@ android {
 
     configurations.all {
         resolutionStrategy {
-            resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
+            //plexus conflicts from Robolectric
+            resolutionStrategy.force "org.codehaus.plexus:plexus-utils:1.5.15"
             // annotation processor conflicts
+            resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
+            //kotlin conflicts
             resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
             // lint conflicts
             resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
@@ -57,9 +60,9 @@ android {
             // fail eagerly on version conflict (includes transitive dependencies)
             // e.g. multiple different versions of the same dependency (group and name are equal)
             failOnVersionConflict()
+
         }
     }
-
 }
 
 dependencies {
@@ -76,6 +79,5 @@ dependencies {
     testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
     testImplementation("org.robolectric:robolectric:$rootProject.robolectricVersion") {
         exclude group: 'com.thoughtworks.xstream', module: 'xstream'
-        exclude group: 'org.codehaus.plexus', module: 'plexus-utils'
     }
 }
