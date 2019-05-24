@@ -35,6 +35,15 @@ android {
         }
     }
 
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
+    }
+
     configurations.all {
         resolutionStrategy {
             resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
