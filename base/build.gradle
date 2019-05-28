@@ -1,8 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-
-apply from: "$rootProject.projectDir/jacoco.gradle"
-apply from: "$rootProject.projectDir/jacoco_global.gradle"
 apply plugin: "org.sonarqube"
 
 android {
@@ -96,10 +93,16 @@ dependencies {
     }
 }
 
-tasks['sonarqube'].with {
-    dependsOn.clear()
-    dependsOn createGlobalSkeletoidUnitTestReport
+apply from: "$rootProject.projectDir/jacoco.gradle"
+apply from: "$rootProject.projectDir/jacoco_global.gradle"
+
+project.afterEvaluate {
+    tasks['sonarqube'].with {
+        dependsOn.clear()
+        dependsOn 'createGlobalSkeletoidUnitTestReport'
+    }
 }
+
 
 sonarqube {
     properties {

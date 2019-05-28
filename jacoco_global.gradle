@@ -26,19 +26,19 @@ rootProject.afterEvaluate {
             '**/rxjava.schedulers/Schedulers.kt']
 
     rootProject.subprojects.collect() { subproject ->
-        subproject.afterEvaluate {
-
-            if (isAndroidProject(subproject)) {
-                subproject.android {
-                    testOptions {
-                        unitTests.all {
-                            jacoco {
-                                includeNoLocationClasses = true
-                            }
+        if (isAndroidProject(subproject)) {
+            subproject.android {
+                testOptions {
+                    unitTests.all {
+                        jacoco {
+                            includeNoLocationClasses = true
                         }
                     }
                 }
             }
+        }
+
+        subproject.afterEvaluate {
 
             testTaskNames.add(":${subproject.name}:test${testCoverageBuildType.capitalize()}UnitTest")
 
@@ -67,7 +67,7 @@ rootProject.afterEvaluate {
 
     //'qa' is a default test build type. To change run:
     //gradlew createGlobalSkeletoidUnitTestReport -PtestBuildType={yourTestBuildType}
-    task "createGlobalSkeletoidUnitTestReport"(type: JacocoReport, dependsOn: testTaskNames) {
+    task createGlobalSkeletoidUnitTestReport(type: JacocoReport, dependsOn: testTaskNames) {
         group = "Reporting"
         description = "Generate Jacoco Global coverage report"
 

@@ -4,19 +4,19 @@ jacoco {
     toolVersion "0.8.1"
 }
 
-project.afterEvaluate {
-    if (isAndroidProject(project)) {
-        project.android {
-            testOptions {
-                unitTests.all {
-                    jacoco {
-                        includeNoLocationClasses = true
-                    }
+if (isAndroidProject(project)) {
+    project.android {
+        testOptions {
+            unitTests.all {
+                jacoco {
+                    includeNoLocationClasses = true
                 }
             }
         }
     }
+}
 
+project.afterEvaluate {
     def testCoverageBuildType = rootProject.getProperties().get('testBuildType') ?: 'qa'
 
     def fileFilter = [
@@ -36,7 +36,7 @@ project.afterEvaluate {
 
     //'qa' is a default test build type. To change run:
     //gradlew createGlobalSkeletoidUnitTestReport -PtestBuildType={yourTestBuildType}
-    task "createModuleUnitTestReport"(type: JacocoReport, dependsOn: ":$project.name:test${testCoverageBuildType.capitalize()}UnitTest") {
+    task createModuleUnitTestReport(type: JacocoReport, dependsOn: ":$project.name:test${testCoverageBuildType.capitalize()}UnitTest") {
         group = "Reporting"
         def javaFileTree = fileTree(
                 dir: "${project.buildDir}/intermediates/javac/${testCoverageBuildType}/compile${testCoverageBuildType.capitalize()}JavaWithJavac/classes",
