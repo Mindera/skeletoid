@@ -11,7 +11,7 @@ import com.mindera.skeletoid.logs.LOG
 class FbAppender : IAnalyticsAppender {
 
     companion object {
-        private const val LOG_TAG = "FBAppender"
+        private const val LOG_TAG = "FbAppender"
     }
 
     @VisibleForTesting
@@ -43,7 +43,7 @@ class FbAppender : IAnalyticsAppender {
         firebaseAnalytics?.logEvent(eventName, bundle)
     }
 
-    override fun trackPageHit(activity: Activity, screenName: String, screenClassOverload: String) {
+    override fun trackPageHit(activity: Activity, screenName: String, screenClassOverload: String?) {
         if (firebaseAnalytics == null) {
             LOG.e(LOG_TAG, "trackPageHit failed: firebaseAnalytics is null")
             return
