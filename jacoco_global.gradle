@@ -28,11 +28,13 @@ rootProject.afterEvaluate {
     rootProject.subprojects.collect() { subproject ->
         subproject.afterEvaluate {
 
-            subproject.android {
-                testOptions {
-                    unitTests.all {
-                        jacoco {
-                            includeNoLocationClasses = true
+            if (isAndroidProject(subproject)) {
+                subproject.android {
+                    testOptions {
+                        unitTests.all {
+                            jacoco {
+                                includeNoLocationClasses = true
+                            }
                         }
                     }
                 }
@@ -79,4 +81,10 @@ rootProject.afterEvaluate {
             html.enabled = true
         }
     }
+}
+
+protected static boolean isAndroidProject(final Project project) {
+    final boolean isAndroidLibrary = project.plugins.hasPlugin('com.android.library')
+    final boolean isAndroidApp = project.plugins.hasPlugin('com.android.application')
+    return isAndroidLibrary || isAndroidApp
 }

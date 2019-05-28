@@ -5,11 +5,13 @@ jacoco {
 }
 
 project.afterEvaluate {
-    project.android {
-        testOptions {
-            unitTests.all {
-                jacoco {
-                    includeNoLocationClasses = true
+    if (isAndroidProject(project)) {
+        project.android {
+            testOptions {
+                unitTests.all {
+                    jacoco {
+                        includeNoLocationClasses = true
+                    }
                 }
             }
         }
@@ -60,4 +62,10 @@ project.afterEvaluate {
             html.enabled = true
         }
     }
+}
+
+protected static boolean isAndroidProject(final Project project) {
+    final boolean isAndroidLibrary = project.plugins.hasPlugin('com.android.library')
+    final boolean isAndroidApp = project.plugins.hasPlugin('com.android.application')
+    return isAndroidLibrary || isAndroidApp
 }
