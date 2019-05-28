@@ -26,8 +26,6 @@ allprojects {
         mavenCentral()
         maven { url "http://dl.bintray.com/typesafe/maven-releases" }
         maven { url "https://maven.google.com" }
-        apply from: "$rootProject.projectDir/jacoco.gradle"
-        apply from: "$rootProject.projectDir/jacoco_global.gradle"
     }
 }
 

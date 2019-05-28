@@ -1,5 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+
+apply from: "$rootProject.projectDir/jacoco.gradle"
+apply from: "$rootProject.projectDir/jacoco_global.gradle"
 apply plugin: "org.sonarqube"
 
 android {
