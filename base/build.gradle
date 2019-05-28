@@ -93,8 +93,8 @@ dependencies {
     }
 }
 
-apply from: "$rootProject.projectDir/jacoco.gradle"
-apply from: "$rootProject.projectDir/jacoco_global.gradle"
+apply from: "../jacoco.gradle"
+apply from: "../jacoco_global.gradle"
 
 project.afterEvaluate {
     tasks['sonarqube'].with {
