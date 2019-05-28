@@ -5,6 +5,16 @@ jacoco {
 }
 
 project.afterEvaluate {
+    project.android {
+        testOptions {
+            unitTests.all {
+                jacoco {
+                    includeNoLocationClasses = true
+                }
+            }
+        }
+    }
+
     def testCoverageBuildType = rootProject.getProperties().get('testBuildType') ?: 'qa'
 
     def fileFilter = [

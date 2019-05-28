@@ -45,11 +45,6 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
-        unitTests.all {
-            jacoco {
-                includeNoLocationClasses = true
-            }
-        }
     }
 
     configurations.all {

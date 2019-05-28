@@ -28,6 +28,16 @@ rootProject.afterEvaluate {
     rootProject.subprojects.collect() { subproject ->
         subproject.afterEvaluate {
 
+            subproject.android {
+                testOptions {
+                    unitTests.all {
+                        jacoco {
+                            includeNoLocationClasses = true
+                        }
+                    }
+                }
+            }
+
             testTaskNames.add(":${subproject.name}:test${testCoverageBuildType.capitalize()}UnitTest")
 
             def javaFileTree = fileTree(
