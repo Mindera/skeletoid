@@ -40,7 +40,8 @@ public interface ILoggerManager {
 
     /**
      * Enable log appenders
-     * @param context Context
+     *
+     * @param context      Context
      * @param logAppenders Log appenders to enable
      * @return Ids of the logs enabled by their order
      */
@@ -49,7 +50,8 @@ public interface ILoggerManager {
 
     /**
      * Disable log appenders
-     * @param context Context
+     *
+     * @param context   Context
      * @param loggerIds Log ids of each of the loggers enabled by the order sent
      */
     void removeAppenders(Context context, Set<String> loggerIds);
@@ -59,5 +61,4 @@ public interface ILoggerManager {
      * Disable all log appenders
      */
     void removeAllAppenders();
-
 }

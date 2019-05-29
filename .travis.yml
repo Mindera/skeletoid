@@ -38,7 +38,7 @@ script:
   - ./gradlew assemble
 
   # Run initTests
-  - ./gradlew testQa
+  - ./gradlew createGlobalSkeletoidUnitTestReport
 
 
   # Send coverage report to Sonarcloud:

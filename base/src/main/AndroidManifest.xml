@@ -1,4 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mindera.skeletoid">
 
+    <application>
+        <activity android:name=".logs.utils.TestActivity"/>
+    </application>
+
 </manifest>
