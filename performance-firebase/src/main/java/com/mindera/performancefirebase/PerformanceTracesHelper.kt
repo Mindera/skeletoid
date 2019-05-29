@@ -1,5 +1,6 @@
 package com.mindera.performancefirebase
 
+import com.google.android.gms.common.util.VisibleForTesting
 import com.google.firebase.perf.FirebasePerformance
 import com.google.firebase.perf.metrics.Trace
 
@@ -9,9 +10,18 @@ class PerformanceTracesHelper {
         private const val LOG_TAG = "PerformanceTracesHelper"
     }
 
-    private val runningTraces = HashMap<String, Trace>()
+    @VisibleForTesting
+    val runningTraces = HashMap<String, Trace>()
 
-    fun startTrace(tag: String): Trace {
+    fun startTrace(tag: String): Trace? {
+        if (tag.trim().isEmpty()) {
+            return null
+        }
+
+        if (runningTraces.containsKey(tag)) {
+            return null
+        }
+
         val trace = FirebasePerformance.getInstance().newTrace(tag)
         runningTraces[tag] = trace
 

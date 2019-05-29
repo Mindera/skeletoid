@@ -1,14 +1,25 @@
 package com.mindera.skeletoid.threads.threadpools;
 
+import com.mindera.skeletoid.logs.LOG;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.concurrent.TimeUnit;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(LOG.class)
 public class ThreadPoolExecutorUnitTest {
 
     private static final int CORE_POOL_SIZE = 10;
@@ -32,12 +43,10 @@ public class ThreadPoolExecutorUnitTest {
         assertEquals(THREAD_FACTORY, mThreadPoolExecutor.getThreadFactory());
     }
 
-
     @Test
     public void testThreadPoolInitialization() {
         assertEquals(CORE_POOL_SIZE, mThreadPoolExecutor.getCorePoolSize());
     }
-
 
     @Test
     public void testShutdownThreadPool() {
@@ -45,10 +54,44 @@ public class ThreadPoolExecutorUnitTest {
         assertTrue(mThreadPoolExecutor.isShutdown());
     }
 
-
     @Test
     public void testShutdownNowThreadPool() {
         mThreadPoolExecutor.shutdownNow();
         assertTrue(mThreadPoolExecutor.isShutdown());
     }
+
+    @Test
+    public void testExecuteNullTask() {
+        mockStatic(LOG.class);
+
+        mThreadPoolExecutor.execute(null);
+
+        verifyStatic(LOG.class);
+        LOG.e(eq("ThreadPoolExecutor"), eq("Executing null runnable... ignoring"));
+    }
+
+    @Test
+    public void testSubmitNullTask() {
+        mockStatic(LOG.class);
+
+        mThreadPoolExecutor.submit((Runnable) null);
+
+        verifyStatic(LOG.class);
+        LOG.e(eq("ThreadPoolExecutor"), eq("Submitting null runnable... ignoring"));
+    }
+
+    private class TestRunnable implements Runnable {
+
+        private Object object;
+
+        public TestRunnable(final Object object) {
+            this.object = object;
+        }
+
+        @Override
+        public void run() {
+            object.toString();
+        }
+    }
 }
+

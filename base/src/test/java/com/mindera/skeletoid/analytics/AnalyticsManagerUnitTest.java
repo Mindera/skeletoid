@@ -9,9 +9,6 @@ import com.mindera.skeletoid.logs.LOG;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,8 +25,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest=Config.NONE)
 public class AnalyticsManagerUnitTest {
 
     private static final String mPackageName = "my.package.name";
@@ -265,9 +260,9 @@ public class AnalyticsManagerUnitTest {
 
         analyticsManager.setUserID("1234");
 
-        verify(appenderA, times(1)).setUserID("1234");
-        verify(appenderB, times(1)).setUserID("1234");
-        verify(appenderC, times(1)).setUserID("1234");
+        verify(appenderA, times(1)).setUserId("1234");
+        verify(appenderB, times(1)).setUserId("1234");
+        verify(appenderC, times(1)).setUserId("1234");
     }
 
     @Test

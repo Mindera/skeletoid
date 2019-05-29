@@ -41,9 +41,8 @@ public class AndroidUtils {
     /**
      * Get the device's manufacturer and model name
      *
-     * @deprecated Use DeviceUtils.name instead
-     *
      * @return String with the device's manufacturer and model name
+     * @deprecated Use DeviceUtils.name instead
      */
     @Deprecated()
     public static String getDeviceName() {
@@ -53,9 +52,8 @@ public class AndroidUtils {
     /**
      * Get the device's manufacturer and model name
      *
-     * @deprecated Use DeviceUtils.device instead
-     *
      * @return String with the device's manufacturer and model name
+     * @deprecated Use DeviceUtils.device instead
      */
     public static String getDeviceBrand() {
         return DeviceUtils.INSTANCE.getBrand();
@@ -64,9 +62,8 @@ public class AndroidUtils {
     /**
      * Get installed OS release name
      *
-     * @deprecated Use DeviceUtils.osRelease instead
-     *
      * @return String with the installed OS release version
+     * @deprecated Use DeviceUtils.osRelease instead
      */
     public static String getOSReleaseVersion() {
         return DeviceUtils.INSTANCE.getOsRelease();
@@ -75,9 +72,8 @@ public class AndroidUtils {
     /**
      * Get installed OS SDK version
      *
-     * @deprecated Use DeviceUtils.sdkVersion instead
-     *
      * @return String with the installed OS SDK version
+     * @deprecated Use DeviceUtils.sdkVersion instead
      */
     public static int getOSSDKVersion() {
         return DeviceUtils.INSTANCE.getSdkVersion();
@@ -125,7 +121,7 @@ public class AndroidUtils {
                 info = context.getPackageManager().getPackageInfo(context.getPackageName(),
                         PackageManager.GET_META_DATA);
             } catch (PackageManager.NameNotFoundException e) {
-                //This has Log instead of LOG in purpose to avoid infinite loops on error cases of logger startup
+                //This has Log instead of LOG on purpose to avoid infinite loops in error cases of logger startup
                 Log.e(AndroidUtils.class.getSimpleName(), "getApplicationVersionName", e);
             }
 
@@ -229,7 +225,7 @@ public class AndroidUtils {
      * android.content.res.Resources$NotFoundException if hardcoded.
      *
      * @param context The app context
-     * @return Label of the app, or App.
+     * @return Label of the app, or App.cd
      */
     public static String getApplicationName(Context context) {
 
@@ -302,11 +298,17 @@ public class AndroidUtils {
     /**
      * Get External Storage directory path
      *
-     * @param context              Context
      * @param separatorAndFilename filename
      * @return Path needed
      */
-    public static String getExternalPublicDirectory(Context context, String separatorAndFilename) {
+    public static String getExternalPublicDirectory(String separatorAndFilename) {
         return Environment.getExternalStorageDirectory().getPath() + separatorAndFilename;
+    }
+
+    @VisibleForTesting
+    public static void deinit() {
+        mAppVersionName = null;
+        mAppVersionCode = -1;
+        mAppPackage = null;
     }
 }
