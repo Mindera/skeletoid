@@ -103,7 +103,6 @@ dependencies {
         exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
         exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'androidx.core', module: 'core'
-        exclude group: 'androidx.legacy', module: 'legacy-support-core-ui'
         exclude group: 'androidx.recyclerview', module: 'recyclerview'
         exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
     }
@@ -152,11 +151,6 @@ dependencies {
     }
 
     implementation("androidx.recyclerview:recyclerview:$recyclerViewVersion") {
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module: 'core'
-    }
-
-    implementation ("androidx.legacy:legacy-support-core-ui:$legacyUiVersion") {
         exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'androidx.core', module: 'core'
     }
