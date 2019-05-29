@@ -143,6 +143,8 @@ public class LoggerManagerUnitTest {
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
         loggerManager.removeAppenders(context, null);
+
+        assertNotNull(loggerManager);
     }
 
     @Test
@@ -151,6 +153,8 @@ public class LoggerManagerUnitTest {
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
         loggerManager.removeAppenders(context, new HashSet<String>());
+
+        assertNotNull(loggerManager);
     }
 
     @Test

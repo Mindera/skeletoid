@@ -21,9 +21,9 @@ public class DebugTools {
         LOG.d(clazz.toString(), "DUMPING ALL STACK TRACES");
 
         Map<Thread, StackTraceElement[]> liveThreads = Thread.getAllStackTraces();
-        for (Thread thread : liveThreads.keySet()) {
-            LOG.d(clazz.toString(), "Thread " + thread.getName());
-            StackTraceElement[] traceElements = liveThreads.get(thread);
+        for (Map.Entry<Thread, StackTraceElement[]> entry : liveThreads.entrySet()) {
+            LOG.d(clazz.toString(), "Thread " + entry.getKey().getName());
+            StackTraceElement[] traceElements = entry.getValue();
             for (StackTraceElement traceElement : traceElements) {
                 LOG.d(clazz.toString(), "at " + traceElement);
             }

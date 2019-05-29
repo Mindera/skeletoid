@@ -40,7 +40,7 @@ public class AnalyticsUnitTest {
 
     @After
     public void cleanUp() {
-        Analytics.deinit(null);
+        Analytics.deinit();
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -95,7 +95,7 @@ public class AnalyticsUnitTest {
         LOG.init(mContext);
         Analytics.init(mContext, appenders);
 
-        Analytics.deinit(mContext);
+        Analytics.deinit();
 
         verify(appenderA, times(1)).disableAppender();
         verify(appenderB, times(1)).disableAppender();
