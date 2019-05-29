@@ -1,7 +1,6 @@
 package com.mindera.skeletoid.webview.cookies
 
 import android.webkit.CookieManager
-import com.mindera.skeletoid.BuildConfig
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -10,7 +9,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class, manifest = Config.NONE)
+@Config(manifest = Config.NONE)
 class CookiesUtilsTest {
 
     @Test

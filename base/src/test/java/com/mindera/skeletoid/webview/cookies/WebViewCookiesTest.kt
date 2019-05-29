@@ -21,7 +21,7 @@ import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class, manifest = Config.NONE)
+@Config(manifest = Config.NONE)
 @PowerMockIgnore("org.mockito.*", "org.robolectric.*", "android.*")
 @PrepareForTest(CookieManager::class, CookieSyncManager::class, Build.VERSION::class)
 class WebViewCookiesTest {
