@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'jacoco'
 apply plugin: "org.sonarqube"
 
 android {
@@ -75,12 +74,15 @@ dependencies {
 
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
+    api "androidx.annotation:annotation:$appcompatVersion"
+
     implementation ("androidx.loader:loader:$loaderVersion") {
         exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'androidx.core', module: 'core'
     }
 
     implementation ("androidx.vectordrawable:vectordrawable-animated:$vectorDrawableVersion") {
+        exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'androidx.vectordrawable', module: 'vectordrawable'
     }
 
@@ -96,7 +98,6 @@ dependencies {
         exclude group: 'androidx.core', module:'core'
     }
 
-    // RxJava
     api "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     api ("io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"){
         exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
@@ -105,6 +106,7 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
 
     testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$rootProject.kotlinVersion"
     testImplementation ("org.mockito:mockito-core:$mockitoVersion") {
         exclude group: 'org.objenesis', module: 'objenesis'
     }
@@ -124,59 +126,22 @@ dependencies {
     }
     testImplementation "org.powermock:powermock-classloading-xstream:$powermockVersion"
     testImplementation ("org.robolectric:robolectric:$robolectricVersion") {
+        exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'com.thoughtworks.xstream', module: 'xstream'
         exclude group: 'org.codehaus.plexus', module:'plexus-utils'
     }
 }
 
-jacoco {
-    toolVersion "0.8.1"
-}
+apply from: "../jacoco.gradle"
+apply from: "../jacoco_global.gradle"
 
-//Unit Test Coverage filtered - Note: This is currently NOT being used on the Codacy report. This is to run locally if needed
-task createSkeletoidUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest',
-                                                          ':analytics-firebase:createSkeletoidUnitTestReport',
-                                                          ':kt-extensions:createSkeletoidUnitTestReport',
-                                                          ':rxbindings:createSkeletoidUnitTestReport'
-]) {
-
-    reports {
-        html.enabled = true
+project.afterEvaluate {
+    tasks['sonarqube'].with {
+        dependsOn.clear()
+        dependsOn 'createGlobalSkeletoidUnitTestReport'
     }
-
-    def fileFilter = [
-            //Android stuff
-            '**/R.class',
-            '**/BR.class',
-            '**/R$*.class',
-            '**/BR$*.class',
-            '**/BuildConfig.*',
-            'android/**/*.*',
-            '**/Manifest*.*',
-            //Data Binding
-            '**/*databinding/**/*.*',
-            //Test
-            '**/**Test*.*']
-
-    //To support Java coverage on Unit tests
-    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/qa/compileQaJavaWithJavac/classes", excludes: fileFilter)
-    //To support Kotlin coverage on Unit tests
-    def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/qaUnitTest", excludes: fileFilter)
-
-    def mainSrc = "${project.projectDir}/src/main/java"
-    def debugSrc = "${project.projectDir}/src/debug/java"
-
-    sourceDirectories = files([mainSrc, debugSrc])
-
-
-    classDirectories = files([debugTree], [kotlinDebugTree])
-    executionData = files("${buildDir}/jacoco/testQaUnitTest.exec")
 }
 
-tasks['sonarqube'].with {
-    dependsOn.clear()
-    dependsOn createSkeletoidUnitTestReport
-}
 
 sonarqube {
     properties {
@@ -187,10 +152,10 @@ sonarqube {
         property "sonar.test.inclusions", "**/*test*/**"
         property "sonar.import_unknown_files", true
 
-        property "sonar.java.binaries", "${buildDir}/intermediates/javac/qa/compileQaJavaWithJavac/classes,${buildDir}/tmp/kotlin-classes/qaUnitTest"
+        property "sonar.java.binaries", "${buildDir}/intermediates/javac/${android.testBuildType}/compile${android.testBuildType.capitalize()}JavaWithJavac/classes,${buildDir}/tmp/kotlin-classes/${android.testBuildType}UnitTest"
         property "sonar.java.source", "base/src/main/java"
         property "sonar.java.coveragePlugin", "jacoco"
-        property "sonar.jacoco.reportPaths", fileTree(dir: "${buildDir}/jacoco/", includes: ["**/*.exec"])
+        property "sonar.coverage.jacoco.xmlReportPaths", fileTree(dir: "${rootProject.buildDir}/reports/jacoco/", includes: ["**/createGlobalSkeletoidUnitTestReport.xml"])
         property "sonar.jacoco.itReportPath", fileTree(dir: "${buildDir}/outputs/code-coverage/connected/", includes: ["**/*.ec"])
         property "sonar.android.lint.report", "${buildDir}/outputs/lint-results.xml"
     }

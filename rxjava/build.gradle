@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'jacoco'
+apply from: "../jacoco.gradle"
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -55,44 +55,11 @@ dependencies {
     //Depends on Base Skeletoid
     api project(path: ':base')
 
-    androidTestImplementation "androidx.test:runner:$testRunnerVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-}
-
-jacoco {
-    toolVersion "0.8.1"
-}
-
-//Unit Test Coverage filtered
-task createSkeletoidUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest']) {
-
-    reports {
-        html.enabled = true
+    androidTestImplementation ("androidx.test:runner:$testRunnerVersion") {
+        exclude group: 'androidx.annotation', module: 'annotation'
     }
 
-    def fileFilter = [
-            //Android stuff
-            '**/R.class',
-            '**/BR.class',
-            '**/R$*.class',
-            '**/BR$*.class',
-            '**/BuildConfig.*',
-            'android/**/*.*',
-            '**/Manifest*.*',
-            //Test
-            '**/**Test*.*']
-
-    //To support Java coverage on Unit tests
-    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/qa/compileQaJavaWithJavac/classes", excludes: fileFilter)
-    //To support Kotlin coverage on Unit tests
-    def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/qaUnitTest", excludes: fileFilter)
-
-    def mainSrc = "${project.projectDir}/src/main/java"
-    def debugSrc = "${project.projectDir}/src/debug/java"
-
-    sourceDirectories = files([mainSrc, debugSrc])
-
-
-    classDirectories = files([debugTree], [kotlinDebugTree])
-    executionData = files("${buildDir}/jacoco/testQaUnitTest.exec")
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion") {
+        exclude group: 'androidx.annotation', module: 'annotation'
+    }
 }

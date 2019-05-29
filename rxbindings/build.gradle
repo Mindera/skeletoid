@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'jacoco'
+apply from: "../jacoco.gradle"
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -62,14 +62,17 @@ android {
 
 dependencies {
     //Depends on Base RxJava
-    api project(path: ':rxjava')
+    api(project(path: ':rxjava'))
     testImplementation project(path: ':base', configuration: 'childTestDependencies')
 
     implementation ("com.jakewharton.rxbinding3:rxbinding:$rxBindingsVersion") {
         exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
         exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
+        exclude group: 'androidx.annotation', module: 'annotation'
+        exclude group: 'androidx.core', module: 'core'
         exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
     }
+
     implementation ("com.jakewharton.rxbinding3:rxbinding-core:$rxBindingsVersion") {
         exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
         exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
@@ -77,64 +80,89 @@ dependencies {
         exclude group: 'androidx.core', module: 'core'
         exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
     }
+
     implementation ("com.jakewharton.rxbinding3:rxbinding-appcompat:$rxBindingsVersion") {
         exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
         exclude group: 'androidx.appcompat', module: 'appcompat'
+        exclude group: 'androidx.core', module: 'core'
         exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
         exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
     }
+
     implementation ("com.jakewharton.rxbinding3:rxbinding-drawerlayout:$rxBindingsVersion") {
+
         exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
+        exclude group: 'androidx.annotation', module: 'annotation'
+        exclude group: 'androidx.core', module: 'core'
         exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
         exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
     }
+
     implementation ("com.jakewharton.rxbinding3:rxbinding-leanback:$rxBindingsVersion") {
         exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
         exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
+        exclude group: 'androidx.annotation', module: 'annotation'
+        exclude group: 'androidx.core', module: 'core'
+        exclude group: 'androidx.legacy', module: 'legacy-support-core-ui'
+        exclude group: 'androidx.recyclerview', module: 'recyclerview'
+        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
+    }
+
+    implementation ("com.jakewharton.rxbinding3:rxbinding-recyclerview:$rxBindingsVersion") {
+        exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
+        exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
+        exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'androidx.core', module: 'core'
         exclude group: 'androidx.recyclerview', module: 'recyclerview'
         exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
     }
-    implementation ("com.jakewharton.rxbinding3:rxbinding-recyclerview:$rxBindingsVersion") {
-        exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
-        exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
-        exclude group: 'androidx.recyclerview', module: 'recyclerview'
-        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
-    }
+
     implementation ("com.jakewharton.rxbinding3:rxbinding-slidingpanelayout:$rxBindingsVersion") {
         exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
         exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
+        exclude group: 'androidx.annotation', module: 'annotation'
+        exclude group: 'androidx.core', module: 'core'
         exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
     }
+
     implementation ("com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:$rxBindingsVersion") {
         exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
         exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
         exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
+        exclude group: 'androidx.annotation', module: 'annotation'
+        exclude group: 'androidx.core', module: 'core'
     }
+
     implementation ("com.jakewharton.rxbinding3:rxbinding-viewpager:$rxBindingsVersion") {
         exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
         exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
         exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
+        exclude group: 'androidx.annotation', module: 'annotation'
+        exclude group: 'androidx.core', module: 'core'
     }
+
     implementation ("com.jakewharton.rxbinding3:rxbinding-material:$rxBindingsVersion") {
         exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
         exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
         exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
+        exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'androidx.core', module:'core'
         exclude group: 'androidx.appcompat', module: 'appcompat'
         exclude group: 'androidx.vectordrawable', module: 'vectordrawable'
     }
 
     implementation("androidx.recyclerview:recyclerview:$recyclerViewVersion") {
+        exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'androidx.core', module: 'core'
     }
 
-    implementation ("androidx.loader:loader:$loaderVersion") {
+    implementation ("androidx.legacy:legacy-support-core-ui:$legacyUiVersion") {
         exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module:'core'
+        exclude group: 'androidx.core', module: 'core'
     }
 
     implementation ("androidx.vectordrawable:vectordrawable-animated:$vectorDrawableVersion") {
+        exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'androidx.vectordrawable', module: 'vectordrawable'
     }
 
@@ -152,46 +180,7 @@ dependencies {
 
     implementation("com.google.android.material:material:$materialVersion") {
         exclude group: 'androidx.appcompat', module: 'appcompat'
+        exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'androidx.core', module: 'core'
     }
-}
-
-jacoco {
-    toolVersion "0.8.1"
-}
-
-//Unit Test Coverage filtered - Note: This is currently NOT being used on the Codacy report. This is to run locally if needed
-task createSkeletoidUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest']) {
-
-    reports {
-        html.enabled = true
-    }
-
-    def fileFilter = [
-            //Android stuff
-            '**/R.class',
-            '**/BR.class',
-            '**/R$*.class',
-            '**/BR$*.class',
-            '**/BuildConfig.*',
-            'android/**/*.*',
-            '**/Manifest*.*',
-            //Data Binding
-            '**/*databinding/**/*.*',
-            //Test
-            '**/**Test*.*']
-
-    //To support Java coverage on Unit tests
-    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/qa/compileQaJavaWithJavac/classes", excludes: fileFilter)
-    //To support Kotlin coverage on Unit tests
-    def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/qaUnitTest", excludes: fileFilter)
-
-    def mainSrc = "${project.projectDir}/src/main/java"
-    def debugSrc = "${project.projectDir}/src/debug/java"
-
-    sourceDirectories = files([mainSrc, debugSrc])
-
-
-    classDirectories = files([debugTree], [kotlinDebugTree])
-    executionData = files("${buildDir}/jacoco/testQaUnitTest.exec")
 }

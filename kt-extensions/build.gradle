@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'jacoco'
+apply from: "../jacoco.gradle"
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -21,11 +21,11 @@ android {
 
     buildTypes {
 
-        debug{
+        debug {
             matchingFallbacks = ['debug']
         }
 
-        qa{
+        qa {
             matchingFallbacks = ['debug']
             testCoverageEnabled = true
         }
@@ -34,6 +34,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 
     configurations.all {
@@ -46,8 +50,6 @@ android {
             resolutionStrategy.force "net.bytebuddy:byte-buddy-agent:$byteBuddyVersion"
             resolutionStrategy.force "org.codehaus.plexus:plexus-utils:$plexusVersion"
 
-            // fail eagerly on version conflict (includes transitive dependencies)
-            // e.g. multiple different versions of the same dependency (group and name are equal)
             failOnVersionConflict()
         }
     }
@@ -56,11 +58,6 @@ android {
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-
-    implementation ("androidx.loader:loader:$loaderVersion") {
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module:'core'
-    }
 
     implementation ("androidx.vectordrawable:vectordrawable-animated:$vectorDrawableVersion") {
         exclude group: 'androidx.vectordrawable', module: 'vectordrawable'
@@ -80,6 +77,7 @@ dependencies {
     }
 
     testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$rootProject.kotlinVersion"
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
     testImplementation ("org.powermock:powermock-module-junit4:$powermockVersion") {
         exclude group: 'org.mockito', module: 'mockito-core'
@@ -90,46 +88,7 @@ dependencies {
     }
     testImplementation "org.powermock:powermock-classloading-xstream:$powermockVersion"
     testImplementation ("org.robolectric:robolectric:$robolectricVersion") {
+        exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'com.thoughtworks.xstream', module: 'xstream'
     }
-}
-
-jacoco {
-    toolVersion "0.8.1"
-}
-
-//Unit Test Coverage filtered
-task createSkeletoidUnitTestReport(type: JacocoReport, dependsOn: ['testQaUnitTest']) {
-
-    reports {
-        html.enabled = true
-    }
-
-    def fileFilter = [
-            //Android stuff
-            '**/R.class',
-            '**/BR.class',
-            '**/R$*.class',
-            '**/BR$*.class',
-            '**/BuildConfig.*',
-            'android/**/*.*',
-            '**/Manifest*.*',
-            //Data Binding
-            '**/*databinding/**/*.*',
-            //Test
-            '**/**Test*.*']
-
-    //To support Java coverage on Unit tests
-    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/qa/compileQaJavaWithJavac/classes", excludes: fileFilter)
-    //To support Kotlin coverage on Unit tests
-    def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/qaUnitTest", excludes: fileFilter)
-
-    def mainSrc = "${project.projectDir}/src/main/java"
-    def debugSrc = "${project.projectDir}/src/debug/java"
-
-    sourceDirectories = files([mainSrc, debugSrc])
-
-
-    classDirectories = files([debugTree], [kotlinDebugTree])
-    executionData = files("${buildDir}/jacoco/testQaUnitTest.exec")
 }

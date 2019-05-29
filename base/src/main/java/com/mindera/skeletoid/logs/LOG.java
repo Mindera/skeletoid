@@ -1,6 +1,7 @@
 package com.mindera.skeletoid.logs;
 
 import android.content.Context;
+import androidx.annotation.VisibleForTesting;
 
 import com.mindera.skeletoid.logs.appenders.ILogAppender;
 
@@ -145,7 +146,8 @@ public class LOG {
      * @param context
      * @return
      */
-    private static ILoggerManager getInstance(Context context) {
+    @VisibleForTesting
+    public static ILoggerManager getInstance(Context context) {
         if (context == null) {
             throw new IllegalArgumentException("Context cannot be null");
         }
