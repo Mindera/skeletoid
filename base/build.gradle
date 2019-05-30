@@ -132,29 +132,3 @@ dependencies {
 
 apply from: "../jacoco.gradle"
 apply from: "../jacoco_global.gradle"
-
-project.afterEvaluate {
-    tasks['sonarqube'].with {
-        dependsOn.clear()
-        dependsOn 'createGlobalSkeletoidUnitTestReport'
-    }
-}
-
-
-sonarqube {
-    properties {
-
-        property "sonar.sources", "src"
-        property "sonar.exclusions", "**/*test*/**,build/**,*.iml,**/*generated*,**extensions**"
-        property "sonar.tests", "./src/test/"
-        property "sonar.test.inclusions", "**/*test*/**"
-        property "sonar.import_unknown_files", true
-
-        property "sonar.java.binaries", "${buildDir}/intermediates/javac/${android.testBuildType}/compile${android.testBuildType.capitalize()}JavaWithJavac/classes,${buildDir}/tmp/kotlin-classes/${android.testBuildType}UnitTest"
-        property "sonar.java.source", "base/src/main/java"
-        property "sonar.java.coveragePlugin", "jacoco"
-        property "sonar.coverage.jacoco.xmlReportPaths", fileTree(dir: "${rootProject.buildDir}/reports/jacoco/", includes: ["**/createGlobalSkeletoidUnitTestReport.xml"])
-        property "sonar.jacoco.itReportPath", fileTree(dir: "${buildDir}/outputs/code-coverage/connected/", includes: ["**/*.ec"])
-        property "sonar.android.lint.report", "${buildDir}/outputs/lint-results.xml"
-    }
-}
