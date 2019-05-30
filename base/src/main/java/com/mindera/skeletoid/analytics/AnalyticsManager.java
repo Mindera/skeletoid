@@ -29,7 +29,7 @@ public class AnalyticsManager implements IAnalyticsManager {
 
     @Override
     public Set<String> addAppenders(Context context, List<IAnalyticsAppender> analyticsAppenders) {
-        if (analyticsAppenders == null || analyticsAppenders.size() == 0) {
+        if (analyticsAppenders == null || analyticsAppenders.isEmpty()) {
             return new HashSet<>();
         }
 

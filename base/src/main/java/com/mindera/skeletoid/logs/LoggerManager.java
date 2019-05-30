@@ -72,7 +72,7 @@ class LoggerManager implements ILoggerManager {
      * Enables or disables logging to console/logcat.
      */
     public Set<String> addAppenders(Context context, List<ILogAppender> logAppenders) {
-        if (logAppenders == null || logAppenders.size() == 0) {
+        if (logAppenders == null || logAppenders.isEmpty()) {
             return new HashSet<>();
         }
 

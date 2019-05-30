@@ -8,12 +8,14 @@ import com.mindera.skeletoid.logs.utils.LogAppenderUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Spy;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 
 import static com.mindera.skeletoid.logs.utils.LogAppenderUtils.getObjectHash;
@@ -25,6 +27,7 @@ import static junit.framework.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -143,6 +146,8 @@ public class LoggerManagerUnitTest {
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
         loggerManager.removeAppenders(context, null);
+
+        assertNotNull(loggerManager);
     }
 
     @Test
@@ -151,6 +156,8 @@ public class LoggerManagerUnitTest {
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
         loggerManager.removeAppenders(context, new HashSet<String>());
+
+        assertNotNull(loggerManager);
     }
 
     @Test
@@ -876,53 +883,57 @@ public class LoggerManagerUnitTest {
     @Test
     public void testNoLogForEmptyAppendersWithTag() {
         Context context = mock(Context.class);
-        List<ILogAppender> appenders = mock(List.class);
+        List<ILogAppender> appenders = new ArrayList<>();
+        List<ILogAppender> spyAppenders = spy(appenders);
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
         loggerManager.addAppenders(context, appenders);
 
         loggerManager.log(TAG, LOG.PRIORITY.VERBOSE, TEXT);
 
-        verify(appenders, times(0)).listIterator();
+        verify(spyAppenders, times(0)).listIterator();
     }
 
     @Test
     public void testNoLogForEmptyAppendersWithTagAndThrowable() {
         Context context = mock(Context.class);
-        List<ILogAppender> appenders = mock(List.class);
+        List<ILogAppender> appenders = new ArrayList<>();
+        List<ILogAppender> spyAppenders = spy(appenders);
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
         loggerManager.addAppenders(context, appenders);
 
         loggerManager.log(TAG, LOG.PRIORITY.VERBOSE, new Throwable(), TEXT);
 
-        verify(appenders, times(0)).listIterator();
+        verify(spyAppenders, times(0)).listIterator();
     }
 
     @Test
     public void testNoLogForEmptyAppendersWithClass() {
         Context context = mock(Context.class);
-        List<ILogAppender> appenders = mock(List.class);
+        List<ILogAppender> appenders = new ArrayList<>();
+        List<ILogAppender> spyAppenders = spy(appenders);
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
         loggerManager.addAppenders(context, appenders);
 
         loggerManager.log(String.class, LOG.PRIORITY.VERBOSE, TEXT);
 
-        verify(appenders, times(0)).listIterator();
+        verify(spyAppenders, times(0)).listIterator();
     }
 
     @Test
     public void testNoLogForEmptyAppendersWithClassAndThrowable() {
         Context context = mock(Context.class);
-        List<ILogAppender> appenders = mock(List.class);
+        List<ILogAppender> appenders = new ArrayList<>();
+        List<ILogAppender> spyAppenders = spy(appenders);
 
         LoggerManager loggerManager = new LoggerManager(mPackageName);
         loggerManager.addAppenders(context, appenders);
 
         loggerManager.log(String.class, LOG.PRIORITY.VERBOSE, TEXT, new Throwable());
 
-        verify(appenders, times(0)).listIterator();
+        verify(spyAppenders, times(0)).listIterator();
     }
 
     @Test

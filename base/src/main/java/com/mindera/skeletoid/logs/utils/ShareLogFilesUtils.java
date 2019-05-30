@@ -68,15 +68,7 @@ public class ShareLogFilesUtils {
 
         final Intent intent;
 
-        //TODO Currently this only supports 1 file. The code commented would support multiple.
-//        if (uris.size() == 1) {
         intent = new Intent(Intent.ACTION_SEND);
-//        }
-//        else {
-//            intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-//            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-//        }
-//        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{""});
         intent.putExtra(Intent.EXTRA_SUBJECT, subjectTitle);
 
         // Add emails to show on to: field
