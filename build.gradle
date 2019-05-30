@@ -83,8 +83,8 @@ subprojects {
 
     sonarqube {
         properties {
-            property "sonar.sources", "src"
-            property "sonar.exclusions", "**/*test*/**,build/**,*.iml,**/*generated*,**extensions**"
+            property "sonar.sources", "src/"
+            property "sonar.exclusions", "**/*test*/**,build/**,*.iml,**/*generated*"
             property "sonar.tests", "./src/test/"
             property "sonar.test.inclusions", "**/*test*/**"
             property "sonar.import_unknown_files", true
