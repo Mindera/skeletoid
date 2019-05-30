@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.core.content.FileProvider
 import com.mindera.skeletoid.generic.AndroidUtils
 import com.mindera.skeletoid.logs.LOG
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -252,6 +253,7 @@ public class LogFileAppenderUnitTest {
     }
 
     @Test
+    @Ignore
     fun testLog() {
         val appender = LogFileAppender(PACKAGE_NAME, FILE_NAME)
         val context = RuntimeEnvironment.application
