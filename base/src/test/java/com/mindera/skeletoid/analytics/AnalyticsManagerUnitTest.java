@@ -109,12 +109,16 @@ public class AnalyticsManagerUnitTest {
     public void testDisableAppendersNull() {
         AnalyticsManager analyticsManager = new AnalyticsManager();
         analyticsManager.removeAppenders(mContext, null);
+
+        assertNotNull(analyticsManager);
     }
 
     @Test
     public void testDisableAppendersEmpty() {
         AnalyticsManager analyticsManager = new AnalyticsManager();
         analyticsManager.removeAppenders(mContext, new HashSet<String>());
+
+        assertNotNull(analyticsManager);
     }
 
     @Test

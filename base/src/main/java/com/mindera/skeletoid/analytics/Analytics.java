@@ -13,8 +13,6 @@ import java.util.Set;
 
 public class Analytics {
 
-//    private static final String TAG = "Analytics";
-
     private static IAnalyticsManager mInstance;
 
     @VisibleForTesting
@@ -43,7 +41,7 @@ public class Analytics {
      * Deinit the analytics engine.
      * This method MUST be called if the Analytics engine is not needed any longer on the app
      */
-    public static void deinit(Context context) {
+    public static void deinit() {
         if (mInstance != null) {
             getInstance().removeAllAppenders();
             mInstance = null;

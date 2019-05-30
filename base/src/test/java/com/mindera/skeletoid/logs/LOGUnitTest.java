@@ -43,7 +43,7 @@ public class LOGUnitTest {
     @After
     public void cleanupLOG() {
         Context context = mock(Context.class);
-        LOG.deinit(context);
+        LOG.deinit();
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -279,7 +279,7 @@ public class LOGUnitTest {
         final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         LOG.init(context, mPackageName, appenders);
-        LOG.deinit(context);
+        LOG.deinit();
         LOG.d(TAG, TEXT);
 
         verify(appenderA, times(0)).log(LOG.PRIORITY.DEBUG, null, log);
@@ -295,7 +295,7 @@ public class LOGUnitTest {
         final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         LOG.init(context, mPackageName, appenders);
-        LOG.deinit(context);
+        LOG.deinit();
         LOG.e(TAG, TEXT);
 
         verify(appenderA, times(0)).log(LOG.PRIORITY.ERROR, null, log);
@@ -311,7 +311,7 @@ public class LOGUnitTest {
         final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         LOG.init(context, mPackageName, appenders);
-        LOG.deinit(context);
+        LOG.deinit();
         LOG.w(TAG, TEXT);
 
         verify(appenderA, times(0)).log(LOG.PRIORITY.WARN, null, log);
@@ -327,7 +327,7 @@ public class LOGUnitTest {
         final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         LOG.init(context, mPackageName, appenders);
-        LOG.deinit(context);
+        LOG.deinit();
         LOG.wtf(TAG, TEXT);
 
         verify(appenderA, times(0)).log(LOG.PRIORITY.FATAL, null, log);
@@ -343,7 +343,7 @@ public class LOGUnitTest {
         final String log = String.format(LOG_FORMAT_4ARGS, TAG, getObjectHash(TAG), getCurrentThreadName(), LogAppenderUtils.getLogString(TEXT));
 
         LOG.init(context, mPackageName, appenders);
-        LOG.deinit(context);
+        LOG.deinit();
         LOG.i(TAG, TEXT);
 
         verify(appenderA, times(0)).log(LOG.PRIORITY.INFO, null, log);
