@@ -110,13 +110,8 @@ dependencies {
 
     testImplementation ("org.powermock:powermock-module-junit4:$powermockVersion") {
         exclude group: 'org.mockito', module: 'mockito-core'
-        exclude group: 'net.bytebuddy', module: 'byte-buddy'
-        exclude group: 'net.bytebuddy', module: 'byte-buddy-agent'
     }
-    testImplementation ("org.powermock:powermock-module-junit4-rule:$powermockVersion") {
-        exclude group: 'net.bytebuddy', module: 'byte-buddy'
-        exclude group: 'net.bytebuddy', module: 'byte-buddy-agent'
-    }
+    testImplementation ("org.powermock:powermock-module-junit4-rule:$powermockVersion")
 
     testImplementation ("org.powermock:powermock-api-mockito2:$powermockVersion") {
         exclude group: 'org.mockito', module: 'mockito-core'
@@ -124,7 +119,6 @@ dependencies {
     testImplementation "org.powermock:powermock-classloading-xstream:$powermockVersion"
     testImplementation ("org.robolectric:robolectric:$robolectricVersion") {
         exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'com.thoughtworks.xstream', module: 'xstream'
     }
 }
 
