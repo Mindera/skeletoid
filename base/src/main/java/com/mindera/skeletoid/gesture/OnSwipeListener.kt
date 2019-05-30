@@ -16,10 +16,18 @@ open class OnSwipeListener(context: Context?) : View.OnTouchListener {
         return true
     }
 
-    protected open fun onSwipeLeft() {}
-    protected open fun onSwipeRight() {}
-    protected open fun onSwipeUp() {}
-    protected open fun onSwipeDown() {}
+    protected open fun onSwipeLeft() {
+        //unused
+    }
+    protected open fun onSwipeRight() {
+        //unused
+    }
+    protected open fun onSwipeUp() {
+        //unused
+    }
+    protected open fun onSwipeDown() {
+        //unused
+    }
 
     private enum class Direction {
         UP,

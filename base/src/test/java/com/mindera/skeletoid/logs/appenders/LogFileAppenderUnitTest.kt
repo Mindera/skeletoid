@@ -82,8 +82,9 @@ public class LogFileAppenderUnitTest {
         val appender = LogFileAppender(PACKAGE_NAME, FILE_NAME)
 
         appender.enableAppender(context)
+        Thread.sleep(2000)
 
-        assertFalse(appender.canWriteToFile())
+        assertTrue(appender.canWriteToFile())
     }
 
     @Test

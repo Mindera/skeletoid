@@ -53,8 +53,9 @@ public class AndroidUtils {
      * Get the device's manufacturer and model name
      *
      * @return String with the device's manufacturer and model name
-     * @deprecated Use DeviceUtils.device instead
+     * @deprecated Use DeviceUtils.brand instead
      */
+    @Deprecated
     public static String getDeviceBrand() {
         return DeviceUtils.INSTANCE.getBrand();
     }
@@ -65,6 +66,7 @@ public class AndroidUtils {
      * @return String with the installed OS release version
      * @deprecated Use DeviceUtils.osRelease instead
      */
+    @Deprecated
     public static String getOSReleaseVersion() {
         return DeviceUtils.INSTANCE.getOsRelease();
     }
@@ -75,6 +77,7 @@ public class AndroidUtils {
      * @return String with the installed OS SDK version
      * @deprecated Use DeviceUtils.sdkVersion instead
      */
+    @Deprecated
     public static int getOSSDKVersion() {
         return DeviceUtils.INSTANCE.getSdkVersion();
     }
@@ -234,6 +237,8 @@ public class AndroidUtils {
             int stringId = context.getApplicationInfo().labelRes;
             label = context.getString(stringId);
         } catch (Exception e) {
+            //This has Log instead of LOG on purpose to avoid infinite loops in error cases of logger startup
+            Log.e(AndroidUtils.class.getSimpleName(), "getApplicationName", e);
         }
         return label;
     }
@@ -253,8 +258,6 @@ public class AndroidUtils {
         PackageManager pm = context.getPackageManager();
         try {
             pm.getPackageInfo(targetPackage, PackageManager.GET_META_DATA);
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
         } catch (Exception e) {
             return false;
         }

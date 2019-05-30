@@ -19,8 +19,6 @@ public class LOG {
         VERBOSE, DEBUG, INFO, ERROR, WARN, FATAL
     }
 
-//    private static final String LOGGER = "LOG";
-
     private static ILoggerManager mInstance;
 
     /**
@@ -48,7 +46,7 @@ public class LOG {
      * @param context      Context app
      * @param logAppenders The log appenders to be started
      */
-    public synchronized static Set<String> init(Context context, List<ILogAppender> logAppenders) {
+    public static synchronized Set<String> init(Context context, List<ILogAppender> logAppenders) {
         ILoggerManager logger = getInstance(context);
         logger.removeAllAppenders();
 
@@ -63,7 +61,7 @@ public class LOG {
      * @param packageName  Packagename
      * @param logAppenders The log appenders to be started
      */
-    public synchronized static Set<String> init(Context context, String packageName, List<ILogAppender> logAppenders) {
+    public static synchronized Set<String> init(Context context, String packageName, List<ILogAppender> logAppenders) {
         ILoggerManager logger = getInstance(packageName);
         logger.removeAllAppenders();
 
@@ -75,7 +73,7 @@ public class LOG {
      * Deinit the logger
      * This method can be called if the LOG is not needed any longer on the app.
      */
-    public static void deinit(Context context) {
+    public static void deinit() {
         if (mInstance != null) {
             getInstance().removeAllAppenders();
             mInstance = null;

@@ -70,9 +70,13 @@ class AlertDialogFragment : AbstractDialogFragment() {
         }
     }
 
-    override fun setupRxBindings() {}
+    override fun setupRxBindings() {
+        //unused
+    }
 
-    override fun disposeRxBindings() {}
+    override fun disposeRxBindings() {
+        //unused
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
