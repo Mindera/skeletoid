@@ -258,7 +258,7 @@ public class LogFileAppenderUnitTest {
         val fileHandler = mock(FileHandler::class.java)
 
         appender.enableAppender(context)
-        Thread.sleep(2000)
+        Thread.sleep(5000)
         appender.fileHandler = fileHandler
 
         appender.log(LOG.PRIORITY.DEBUG, Throwable("oops"), "hello")
