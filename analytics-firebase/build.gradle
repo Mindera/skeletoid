@@ -50,6 +50,7 @@ android {
 
             resolutionStrategy.force "net.bytebuddy:byte-buddy:$byteBuddyVersion"
             resolutionStrategy.force "net.bytebuddy:byte-buddy-agent:$byteBuddyVersion"
+            resolutionStrategy.force "org.codehaus.plexus:plexus-utils:$plexusVersion"
 
             // fail eagerly on version conflict (includes transitive dependencies)
             // e.g. multiple different versions of the same dependency (group and name are equal)

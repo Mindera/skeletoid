@@ -60,13 +60,12 @@ android {
             resolutionStrategy.force "org.objenesis:objenesis:$objenesisVersion"
             resolutionStrategy.force "net.bytebuddy:byte-buddy:$byteBuddyVersion"
             resolutionStrategy.force "net.bytebuddy:byte-buddy-agent:$byteBuddyVersion"
+            resolutionStrategy.force "org.codehaus.plexus:plexus-utils:$plexusVersion"
 
             // fail eagerly on version conflict (includes transitive dependencies)
             // e.g. multiple different versions of the same dependency (group and name are equal)
             failOnVersionConflict()
         }
-
-        resolutionStrategy.force "org.codehaus.plexus:plexus-utils:$plexusVersion"
     }
 }
 
@@ -128,7 +127,6 @@ dependencies {
     testImplementation ("org.robolectric:robolectric:$robolectricVersion") {
         exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'com.thoughtworks.xstream', module: 'xstream'
-        exclude group: 'org.codehaus.plexus', module:'plexus-utils'
     }
 }
 
