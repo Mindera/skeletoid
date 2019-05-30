@@ -49,6 +49,7 @@ android {
         resolutionStrategy {
             resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
             resolutionStrategy.force "com.google.code.findbugs:jsr305:$findBugsVersion"
+            resolutionStrategy.force "org.objenesis:objenesis:$objenesisVersion"
 
             resolutionStrategy.force "net.bytebuddy:byte-buddy:$byteBuddyVersion"
             resolutionStrategy.force "net.bytebuddy:byte-buddy-agent:$byteBuddyVersion"
@@ -70,7 +71,7 @@ dependencies {
 
     api("com.google.firebase:firebase-perf:$firebasePerfVersion") {
         exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'androidx.legacy', module: 'legacy-support-v4'
     }
 
     androidTestImplementation("androidx.test:runner:$testRunnerVersion") {

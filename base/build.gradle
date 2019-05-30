@@ -106,9 +106,7 @@ dependencies {
 
     testImplementation "junit:junit:$junitVersion"
     testImplementation "org.jetbrains.kotlin:kotlin-test:$rootProject.kotlinVersion"
-    testImplementation ("org.mockito:mockito-core:$mockitoVersion") {
-        exclude group: 'org.objenesis', module: 'objenesis'
-    }
+    testImplementation ("org.mockito:mockito-core:$mockitoVersion")
 
     testImplementation ("org.powermock:powermock-module-junit4:$powermockVersion") {
         exclude group: 'org.mockito', module: 'mockito-core'
