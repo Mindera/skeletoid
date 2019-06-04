@@ -2,7 +2,7 @@ package com.mindera.skeletoid.apprating.controller
 
 import android.content.Context
 import com.mindera.skeletoid.apprating.callbacks.DialogResponse
-import com.mindera.skeletoid.apprating.callbacks.DialogResponseCallback
+import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogResponseCallback
 import com.mindera.skeletoid.apprating.job.AppRatingJobInitializer
 import com.mindera.skeletoid.apprating.store.AppRatingStore
 import com.mindera.skeletoid.apprating.utils.DateUtils
@@ -18,7 +18,7 @@ class AppRatingController {
         this.promptTimeInterval = promptTimeInterval
     }
 
-    fun promptDialog(context: Context, dialogResultCallback: DialogResponseCallback? = null): Boolean {
+    fun promptDialog(context: Context, dialogResultCallback: AppRatingDialogResponseCallback? = null): Boolean {
         val store = AppRatingStore(context)
         return shouldPromptDialog(store).also {
             if (it) {

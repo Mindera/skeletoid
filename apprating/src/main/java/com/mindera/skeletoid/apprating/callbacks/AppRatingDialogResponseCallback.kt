@@ -1,5 +1,5 @@
 package com.mindera.skeletoid.apprating.callbacks
 
-interface DialogResponseCallback {
+interface AppRatingDialogResponseCallback {
     fun onRateClick()
 }

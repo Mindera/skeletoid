@@ -3,7 +3,7 @@ package com.mindera.skeletoid.apprating
 import android.content.Context
 import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogCallback
 import com.mindera.skeletoid.apprating.callbacks.DialogResponse
-import com.mindera.skeletoid.apprating.callbacks.DialogResponseCallback
+import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogResponseCallback
 import com.mindera.skeletoid.apprating.controller.AppRatingController
 
 object AppRatingInitializer {
@@ -30,7 +30,7 @@ object AppRatingInitializer {
      * @param callback Callback to show the rating dialog. Null if it uses the default dialog
      * @param dialogResultCallback Callback to handle responses to the default dialog. Null if it uses a custom dialog.
      */
-    fun promptDialog(context: Context, callback: AppRatingDialogCallback? = null, dialogResultCallback: DialogResponseCallback? = null) {
+    fun promptDialog(context: Context, callback: AppRatingDialogCallback? = null, dialogResultCallback: AppRatingDialogResponseCallback? = null) {
         if (controller.promptDialog(context)){
             when {
                 callback != null && dialogResultCallback == null -> callback.showRatingDialog()
