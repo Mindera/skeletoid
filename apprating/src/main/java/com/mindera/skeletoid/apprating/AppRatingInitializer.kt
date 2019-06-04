@@ -2,7 +2,7 @@ package com.mindera.skeletoid.apprating
 
 import android.content.Context
 import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogCallback
-import com.mindera.skeletoid.apprating.callbacks.DialogResponse
+import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogResponse
 import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogResponseCallback
 import com.mindera.skeletoid.apprating.controller.AppRatingController
 
@@ -46,7 +46,7 @@ object AppRatingInitializer {
      * @param context Context
      * @param response Response to the dialog
      */
-    fun handleDialogResponse(context: Context, response: DialogResponse) {
+    fun handleDialogResponse(context: Context, response: AppRatingDialogResponse) {
         controller.handleDialogResponse(context, response)
     }
 }

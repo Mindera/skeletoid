@@ -1,7 +1,7 @@
 package com.mindera.skeletoid.apprating.controller
 
 import android.content.Context
-import com.mindera.skeletoid.apprating.callbacks.DialogResponse
+import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogResponse
 import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogResponseCallback
 import com.mindera.skeletoid.apprating.job.AppRatingJobInitializer
 import com.mindera.skeletoid.apprating.store.AppRatingStore
@@ -50,13 +50,13 @@ class AppRatingController {
      * @param context Context
      * @param response Selected response to the dialog
      */
-    fun handleDialogResponse(context: Context, response: DialogResponse) {
+    fun handleDialogResponse(context: Context, response: AppRatingDialogResponse) {
         val store = AppRatingStore(context)
         when (response) {
-            DialogResponse.RATE, DialogResponse.NEVER_RATE -> {
+            AppRatingDialogResponse.RATE, AppRatingDialogResponse.NEVER_RATE -> {
                 store.alreadyRated = true
             }
-            DialogResponse.RATE_LATER -> {
+            AppRatingDialogResponse.RATE_LATER -> {
                 promptTimeInterval?.let { AppRatingJobInitializer.schedule(it) }
             }
         }
