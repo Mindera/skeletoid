@@ -16,5 +16,4 @@ object AppRatingJobInitializer {
 
         WorkManager.getInstance().enqueue(job)
     }
-
 }
