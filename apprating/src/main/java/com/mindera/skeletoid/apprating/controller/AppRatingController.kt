@@ -23,7 +23,7 @@ class AppRatingController {
         return shouldPromptDialog(store).also {
             if (it) {
                 dialogResultCallback?.let {
-                    //TODO: SHOW DEFAULT DIALOG
+                    TODO("IMPLEMENT DEFAULT DIALOG")
                 }
                 store.promptedCount++
                 store.lastTimePrompted = DateUtils.formatDate(Date())
