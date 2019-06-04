@@ -3,6 +3,7 @@ package com.mindera.skeletoid.apprating.controller
 import android.content.Context
 import com.mindera.skeletoid.apprating.callbacks.DialogResponse
 import com.mindera.skeletoid.apprating.callbacks.DialogResponseCallback
+import com.mindera.skeletoid.apprating.job.AppRatingJobInitializer
 import com.mindera.skeletoid.apprating.store.AppRatingStore
 import com.mindera.skeletoid.apprating.utils.DateUtils
 import java.util.Date
@@ -37,7 +38,7 @@ class AppRatingController {
                 store.alreadyRated = true
             }
             DialogResponse.RATE_LATER -> {
-                //TODO: setup job?
+                promptTimeInterval?.let { AppRatingJobInitializer.schedule(it) }
             }
         }
     }
@@ -63,6 +64,8 @@ class AppRatingController {
             if (DateUtils.daysBetween(initialPromptDate, today) < range) {
                 store.promptedCount < count
             } else {
+                store.initialPromptDate = DateUtils.formatDate(Date())
+                store.promptedCount = 0
                 true
             }
         } ?: true

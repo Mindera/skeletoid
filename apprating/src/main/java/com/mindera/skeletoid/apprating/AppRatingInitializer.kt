@@ -12,16 +12,40 @@ object AppRatingInitializer {
         AppRatingController()
     }
 
+    /**
+     * Sets up the conditions to prompt the dialog.
+     *
+     * @param countsPerTimeInterval Pair<Int, Long> values with the maximum number of times the dialog can be prompt per time range (in days)
+     * @param promptTimeInterval Time distance between prompts (in days)
+     */
     fun init(countsPerTimeInterval: Pair<Int, Long>, promptTimeInterval: Long) {
         controller.setupConditions(countsPerTimeInterval, promptTimeInterval)
     }
 
-    fun promptDialog(context: Context, callback: AppRatingDialogCallback, dialogResultCallback: DialogResponseCallback? = null) {
-        if (controller.promptDialog(context) && dialogResultCallback != null){
-            callback.showRatingDialog()
+    /**
+     * Checks if it can prompt the rating dialog, and if it can, shows the default dialog/prompts the callback to show the dialog.
+     * Only one of the callbacks can be null.
+     *
+     * @param context Context
+     * @param callback Callback to show the rating dialog. Null if it uses the default dialog
+     * @param dialogResultCallback Callback to handle responses to the default dialog. Null if it uses a custom dialog.
+     */
+    fun promptDialog(context: Context, callback: AppRatingDialogCallback? = null, dialogResultCallback: DialogResponseCallback? = null) {
+        if (controller.promptDialog(context)){
+            when {
+                callback != null && dialogResultCallback == null -> callback.showRatingDialog()
+                dialogResultCallback != null && callback == null -> TODO("IMPLEMENT DEFAULT DIALOG")
+                else -> throw IllegalArgumentException("Should have one non-nullable callback")
+            }
         }
     }
 
+    /**
+     * Handles the response from the custom dialog, updating the store.
+     *
+     * @param context Context
+     * @param response Response to the dialog
+     */
     fun handleDialogResponse(context: Context, response: DialogResponse) {
         controller.handleDialogResponse(context, response)
     }
