@@ -29,7 +29,7 @@ public class AnalyticsManager implements IAnalyticsManager {
 
     @Override
     public Set<String> addAppenders(Context context, List<IAnalyticsAppender> analyticsAppenders) {
-        if (analyticsAppenders == null || analyticsAppenders.size() == 0) {
+        if (analyticsAppenders == null || analyticsAppenders.isEmpty()) {
             return new HashSet<>();
         }
 
@@ -101,7 +101,7 @@ public class AnalyticsManager implements IAnalyticsManager {
     @Override
     public void setUserID(String userID) {
         for (IAnalyticsAppender appender : mAnalyticsAppenders.values()) {
-            appender.setUserID(userID);
+            appender.setUserId(userID);
         }
     }
 

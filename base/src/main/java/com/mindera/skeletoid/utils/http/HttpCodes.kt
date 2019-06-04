@@ -6,6 +6,7 @@ object HttpCodes {
     const val HTTP_FORBIDDEN = 403
     const val HTTP_CONFLICT = 409
     const val HTTP_GONE = 410
+    const val HTTP_LOCKED = 423
 
     const val SERVER_UNAVAILABLE = 503
 }

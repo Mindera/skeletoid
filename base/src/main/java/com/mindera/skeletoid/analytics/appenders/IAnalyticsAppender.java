@@ -56,9 +56,9 @@ public interface IAnalyticsAppender {
     /**
      * Sets the user ID
      *
-     * @param userID ID of the user
+     * @param userId ID of the user
      */
-    void setUserID(String userID);
+    void setUserId(String userId);
 
     /**
      * Sets a custom property of the user

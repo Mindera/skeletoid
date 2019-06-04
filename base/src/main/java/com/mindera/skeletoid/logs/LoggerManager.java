@@ -1,6 +1,7 @@
 package com.mindera.skeletoid.logs;
 
 import android.content.Context;
+import android.support.annotation.VisibleForTesting;
 
 import com.mindera.skeletoid.generic.AndroidUtils;
 import com.mindera.skeletoid.logs.appenders.ILogAppender;
@@ -39,7 +40,8 @@ class LoggerManager implements ILoggerManager {
     /**
      * Define if the method name invoking the log should be printed or not (via exception stack)
      */
-    private boolean mAddMethodName = false;
+    @VisibleForTesting
+    public boolean mAddMethodName = false;
 
     /**
      * Define if the method name invoking the log should be printed or not (via exception stack)
@@ -70,7 +72,7 @@ class LoggerManager implements ILoggerManager {
      * Enables or disables logging to console/logcat.
      */
     public Set<String> addAppenders(Context context, List<ILogAppender> logAppenders) {
-        if (logAppenders == null || logAppenders.size() == 0) {
+        if (logAppenders == null || logAppenders.isEmpty()) {
             return new HashSet<>();
         }
 

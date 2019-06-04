@@ -1,0 +1,71 @@
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion "0.8.1"
+}
+
+if (isAndroidProject(project)) {
+    project.android {
+        testOptions {
+            unitTests.all {
+                jacoco {
+                    includeNoLocationClasses = true
+                }
+            }
+        }
+    }
+}
+
+project.afterEvaluate {
+    def testCoverageBuildType = rootProject.getProperties().get('testBuildType') ?: 'qa'
+
+    def fileFilter = [
+            //Android stuff
+            '**/R.class',
+            '**/BR.class',
+            '**/R$*.class',
+            '**/BR$*.class',
+            '**/BuildConfig.*',
+            'android/**/*.*',
+            '**/Manifest*.*',
+            //Data Binding
+            '**/*databinding/**/*.*',
+            //Test
+            '**/**Test*.*',
+            '**/rxjava.schedulers/Schedulers.kt']
+
+    //'qa' is a default test build type. To change run:
+    //gradlew createGlobalSkeletoidUnitTestReport -PtestBuildType={yourTestBuildType}
+    task createModuleUnitTestReport(type: JacocoReport, dependsOn: ":$project.name:test${testCoverageBuildType.capitalize()}UnitTest") {
+        group = "Reporting"
+        def javaFileTree = fileTree(
+                dir: "${project.buildDir}/intermediates/javac/${testCoverageBuildType}/compile${testCoverageBuildType.capitalize()}JavaWithJavac/classes",
+                excludes: fileFilter
+        )
+
+        def kotlinFileTree = fileTree(
+                dir: "${project.buildDir}/tmp/kotlin-classes/${testCoverageBuildType}",
+                excludes: fileFilter
+        )
+
+        def coverageSourceDirs = [
+                "src/main/java",
+                "src/${testCoverageBuildType}/java"
+        ]
+
+        classDirectories = files([javaFileTree, kotlinFileTree])
+        additionalSourceDirs = files(coverageSourceDirs)
+        sourceDirectories = files(coverageSourceDirs)
+        executionData = files("${project.buildDir}/jacoco/test${testCoverageBuildType.capitalize()}UnitTest.exec")
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
+}
+
+protected static boolean isAndroidProject(final Project project) {
+    final boolean isAndroidLibrary = project.plugins.hasPlugin('com.android.library')
+    final boolean isAndroidApp = project.plugins.hasPlugin('com.android.application')
+    return isAndroidLibrary || isAndroidApp
+}

@@ -28,9 +28,7 @@ public final class DateUtils {
         if (afterDateCal.get(Calendar.YEAR) > originalDateCal.get(Calendar.YEAR)) {
             return true;
         } else if (afterDateCal.get(Calendar.YEAR) == originalDateCal.get(Calendar.YEAR)) {
-            if (afterDateCal.get(Calendar.DAY_OF_YEAR) >= originalDateCal.get(Calendar.DAY_OF_YEAR)) {
-                return true;
-            }
+            return afterDateCal.get(Calendar.DAY_OF_YEAR) >= originalDateCal.get(Calendar.DAY_OF_YEAR);
         }
         return false;
     }

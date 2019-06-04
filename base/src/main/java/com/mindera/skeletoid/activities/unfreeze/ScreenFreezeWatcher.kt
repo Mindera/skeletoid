@@ -66,9 +66,11 @@ class ScreenFreezeWatcher(val application : Application, val activityInRisk: Act
 
     private val activityLifecycleCallback = object : Application.ActivityLifecycleCallbacks {
         override fun onActivityPaused(activity: Activity?) {
+            // not used
         }
 
         override fun onActivityResumed(activity: Activity?) {
+            // not used
         }
 
         override fun onActivityStarted(activity: Activity?) {
@@ -78,9 +80,11 @@ class ScreenFreezeWatcher(val application : Application, val activityInRisk: Act
         }
 
         override fun onActivityDestroyed(activity: Activity?) {
+            // not used
         }
 
         override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {
+            // not used
         }
 
         override fun onActivityStopped(activity: Activity?) {
@@ -90,6 +94,7 @@ class ScreenFreezeWatcher(val application : Application, val activityInRisk: Act
         }
 
         override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
+            // not used
         }
     }
 }

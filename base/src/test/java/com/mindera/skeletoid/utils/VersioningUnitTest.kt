@@ -6,7 +6,6 @@ import org.junit.Test
 
 class VersioningUnitTest{
 
-
     @Test
     fun testVersioningEqual() {
         val equals = Versioning.compareVersions("1.0.0", "1.0.0")
@@ -49,13 +48,45 @@ class VersioningUnitTest{
         assert(equals > 0)
     }
 
+    @Test
+    fun testVersioningBiggerDifferentLenghts() {
+        val equals = Versioning.compareVersions("1.2.3.5", "1.2.3")
+        assert(equals > 0)
+    }
+
+    @Test
+    fun testVersioningSmallerDifferentLenghts() {
+        val equals = Versioning.compareVersions("1.2.2.5", "1.2.3")
+        assert(equals < 0)
+    }
+
     @Test(expected = IllegalArgumentException::class)
-    fun testVersioningWrongInput() {
+    fun testVersioningEmptyInput() {
         Versioning.compareVersions("", "")
     }
 
+    @Test(expected = IllegalArgumentException::class)
+    fun testVersioningEmptyFirstInput() {
+        Versioning.compareVersions("", "1.2.3")
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testVersioningEmptySecondInput() {
+        Versioning.compareVersions("1.2.3", "")
+    }
+
     @Test(expected = NumberFormatException::class)
-    fun testVersioningWrongInputNonNumeric() {
+    fun testVersioningIncorrectInputNonNumeric() {
         Versioning.compareVersions("a", "b")
+    }
+
+    @Test(expected = NumberFormatException::class)
+    fun testVersioningMalformedInput() {
+        Versioning.compareVersions("1.2,4", "1.2.3")
+    }
+
+    @Test(expected = NumberFormatException::class)
+    fun testVersioningMalformedEmptyInput() {
+        Versioning.compareVersions("1..4", "1.2.3")
     }
 }
