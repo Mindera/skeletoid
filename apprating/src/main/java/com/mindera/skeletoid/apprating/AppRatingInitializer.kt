@@ -1,7 +1,9 @@
 package com.mindera.skeletoid.apprating
 
 import android.content.Context
-import com.mindera.skeletoid.apprating.callback.AppRatingDialogCallback
+import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogCallback
+import com.mindera.skeletoid.apprating.callbacks.DialogResponse
+import com.mindera.skeletoid.apprating.callbacks.DialogResponseCallback
 import com.mindera.skeletoid.apprating.controller.AppRatingController
 
 object AppRatingInitializer {
@@ -14,14 +16,13 @@ object AppRatingInitializer {
         controller.setupConditions(countsPerTimeInterval, promptTimeInterval)
     }
 
-    fun promptDialog(context: Context, callback: AppRatingDialogCallback) {
-        if (controller.promptDialog(context)){
+    fun promptDialog(context: Context, callback: AppRatingDialogCallback, dialogResultCallback: DialogResponseCallback? = null) {
+        if (controller.promptDialog(context) && dialogResultCallback != null){
             callback.showRatingDialog()
         }
     }
 
-    fun ratedDialog(context: Context) {
-        //TODO: update store; setup job to update flag in 30 days
-        controller.updateRated(context)
+    fun handleDialogResponse(context: Context, response: DialogResponse) {
+        controller.handleDialogResponse(context, response)
     }
 }

@@ -1,6 +1,8 @@
 package com.mindera.skeletoid.apprating.controller
 
 import android.content.Context
+import com.mindera.skeletoid.apprating.callbacks.DialogResponse
+import com.mindera.skeletoid.apprating.callbacks.DialogResponseCallback
 import com.mindera.skeletoid.apprating.store.AppRatingStore
 import com.mindera.skeletoid.apprating.utils.DateUtils
 import java.util.Date
@@ -15,23 +17,32 @@ class AppRatingController {
         this.promptTimeInterval = promptTimeInterval
     }
 
-    fun promptDialog(context: Context): Boolean {
+    fun promptDialog(context: Context, dialogResultCallback: DialogResponseCallback? = null): Boolean {
         val store = AppRatingStore(context)
-        return shouldPromptDialog(context, store).also {
+        return shouldPromptDialog(store).also {
             if (it) {
+                dialogResultCallback?.let {
+                    //TODO: SHOW DEFAULT DIALOG
+                }
                 store.promptedCount++
                 store.lastTimePrompted = DateUtils.formatDate(Date())
             }
         }
     }
 
-    fun updateRated(context: Context) {
-        AppRatingStore(context).apply {
-            alreadyRated = true
+    fun handleDialogResponse(context: Context, response: DialogResponse) {
+        val store = AppRatingStore(context)
+        when (response) {
+            DialogResponse.RATE, DialogResponse.NEVER_RATE -> {
+                store.alreadyRated = true
+            }
+            DialogResponse.RATE_LATER -> {
+                //TODO: setup job?
+            }
         }
     }
 
-    private fun shouldPromptDialog(context: Context, store: AppRatingStore): Boolean {
+    private fun shouldPromptDialog(store: AppRatingStore): Boolean {
         return if (store.initialPromptDate.isEmpty()) {
             store.initialPromptDate = DateUtils.formatDate(Date())
             store.promptedCount = 0
@@ -49,7 +60,7 @@ class AppRatingController {
             val initialPromptDate = DateUtils.parseDate(store.initialPromptDate)
             val today = Date()
 
-            if (DateUtils.daysBetween(today, initialPromptDate) < range) {
+            if (DateUtils.daysBetween(initialPromptDate, today) < range) {
                 store.promptedCount < count
             } else {
                 true
@@ -62,7 +73,7 @@ class AppRatingController {
             val lastTimeDate = DateUtils.parseDate(store.lastTimePrompted)
             val today = Date()
 
-            DateUtils.daysBetween(today, lastTimeDate) > it
+            DateUtils.daysBetween(lastTimeDate, today) > it
         } ?: true
     }
 }
