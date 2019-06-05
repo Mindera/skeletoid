@@ -44,18 +44,15 @@ android {
 
     configurations.all {
         resolutionStrategy {
-            resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
-            resolutionStrategy.force "com.google.android.gms:play-services-basement:16.0.1"
-            resolutionStrategy.force "com.google.android.gms:play-services-tasks:16.0.1"
-            // annotation processor conflicts
-            resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-            // lint conflicts
-            resolutionStrategy.force "org.apache.httpcomponents:httpcore:$httpComponentsVersion"
+
             resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
-            // Firebase -> com.google.firebase:firebase-core
-            resolutionStrategy.force "com.google.firebase:firebase-common:$firebaseCommonsVersion"
-            // powermock
-            resolutionStrategy.force "org.objenesis:objenesis:2.5"
+            resolutionStrategy.force "com.google.code.findbugs:jsr305:$findBugsVersion"
+            resolutionStrategy.force "org.objenesis:objenesis:$objenesisVersion"
+            
+            resolutionStrategy.force "net.bytebuddy:byte-buddy:$byteBuddyVersion"
+            resolutionStrategy.force "net.bytebuddy:byte-buddy-agent:$byteBuddyVersion"
+            resolutionStrategy.force "org.codehaus.plexus:plexus-utils:$plexusVersion"
+
             // fail eagerly on version conflict (includes transitive dependencies)
             // e.g. multiple different versions of the same dependency (group and name are equal)
             failOnVersionConflict()
@@ -67,29 +64,14 @@ dependencies {
 
     //Depends on Base Skeletoid
     api project(path: ':base')
+    testImplementation project(path: ':base', configuration: 'childTestDependencies')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-
-    api("com.google.firebase:firebase-core:$rootProject.firebaseVersion") {
-        exclude group: 'com.android.support', module: 'support-compat'
-        exclude group: 'com.android.support', module: 'support-core-utils'
-        exclude group: 'com.android.support', module: 'support-core-ui'
-        exclude group: 'com.android.support', module: 'support-fragment'
-    }
-
-    testImplementation "junit:junit:$rootProject.junitVersion"
-    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
-    testImplementation("org.powermock:powermock-module-junit4:$rootProject.powermockVersion") {
-        exclude group: 'org.objenesis', module: 'objenesis'
-    }
-    testImplementation("org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion") {
-        exclude group: 'org.objenesis', module: 'objenesis'
-    }
-    testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"
-    testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
-    testImplementation("org.robolectric:robolectric:$rootProject.robolectricVersion") {
-        exclude group: 'com.thoughtworks.xstream', module: 'xstream'
-        exclude group: 'org.codehaus.plexus', module: 'plexus-utils'
-
+    api ("com.google.firebase:firebase-core:$firebaseCoreVersion"){
+        exclude group: 'androidx.core', module: 'core'
+        exclude group: 'androidx.legacy', module: 'legacy-support-core-utils'
+        exclude group: 'androidx.legacy', module: 'legacy-support-core-ui'
+        exclude group: 'androidx.fragment', module: 'fragment'
+        exclude group: 'com.google.android.gms', module: 'play-services-basement'
+        exclude group: 'com.google.firebase', module: 'firebase-common'
     }
 }

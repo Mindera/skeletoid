@@ -3,7 +3,7 @@ package com.mindera.skeletoid.analytics;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
 

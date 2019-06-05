@@ -6,11 +6,6 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-/**
- * Created by Pedro Vicente - pedro.vicente@mindera.com
- * File created on 14/08/2017.
- */
-
 public class ScheduledThreadPoolUnitTest {
 
     @Test

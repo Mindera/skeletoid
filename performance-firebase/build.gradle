@@ -20,7 +20,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
 
@@ -44,6 +44,22 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+
+    configurations.all {
+        resolutionStrategy {
+            resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
+            resolutionStrategy.force "com.google.code.findbugs:jsr305:$findBugsVersion"
+            resolutionStrategy.force "org.objenesis:objenesis:$objenesisVersion"
+
+            resolutionStrategy.force "net.bytebuddy:byte-buddy:$byteBuddyVersion"
+            resolutionStrategy.force "net.bytebuddy:byte-buddy-agent:$byteBuddyVersion"
+            resolutionStrategy.force "org.codehaus.plexus:plexus-utils:$plexusVersion"
+
+            // fail eagerly on version conflict (includes transitive dependencies)
+            // e.g. multiple different versions of the same dependency (group and name are equal)
+            failOnVersionConflict()
+        }
+    }
 }
 
 dependencies {
@@ -51,24 +67,18 @@ dependencies {
 
     //Depends on Base Skeletoid
     api project(path: ':base')
+    testImplementation project(path: ':base', configuration: 'childTestDependencies')
 
-    api("com.google.firebase:firebase-perf:16.0.0") {
-        exclude group: "com.android.support", module: "support-v4"
-    }
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
-    implementation("io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion") {
-        exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
+    api("com.google.firebase:firebase-perf:$firebasePerfVersion") {
+        exclude group: 'androidx.annotation', module: 'annotation'
+        exclude group: 'androidx.legacy', module: 'legacy-support-v4'
     }
 
-    testImplementation "org.jetbrains.kotlin:kotlin-test:$rootProject.kotlinVersion"
-    testImplementation "junit:junit:$rootProject.junitVersion"
-    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
-    testImplementation "org.powermock:powermock-module-junit4:$rootProject.powermockVersion"
-    testImplementation "org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion"
-    testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"
-    testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
+    androidTestImplementation("androidx.test:runner:$testRunnerVersion") {
+        exclude group: 'androidx.annotation', module: 'annotation'
+    }
 
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion") {
+        exclude group: 'androidx.annotation', module: 'annotation'
+    }
 }

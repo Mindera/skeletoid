@@ -1,6 +1,6 @@
 package com.mindera.skeletoid.threads.utils;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 public class ThreadUtils {
 

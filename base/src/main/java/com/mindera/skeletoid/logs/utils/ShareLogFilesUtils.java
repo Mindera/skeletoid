@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.VisibleForTesting;
-import android.support.v4.content.FileProvider;
+import androidx.annotation.VisibleForTesting;
+import androidx.core.content.FileProvider;
 
 import com.mindera.skeletoid.generic.AndroidUtils;
 import com.mindera.skeletoid.logs.LOG;
@@ -23,7 +23,6 @@ import java.util.zip.ZipOutputStream;
  * Remember to add this to the Android Manifest of the App
  * <p>
  * <provider
- * android:name="android.support.v4.content.FileProvider"
  * android:authorities="${applicationId}"
  * android:exported="false"
  * android:grantUriPermissions="true">

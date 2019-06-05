@@ -46,49 +46,79 @@ android {
         unitTests.returnDefaultValues = true
     }
 
+    configurations {
+        childTestDependencies.extendsFrom testImplementation
+    }
+
     configurations.all {
+
         resolutionStrategy {
-            resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
-            // annotation processor conflicts
-            resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-            // lint conflicts
-            resolutionStrategy.force "org.apache.httpcomponents:httpcore:$httpComponentsVersion"
             resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
-            // powermock
-            resolutionStrategy.force "org.objenesis:objenesis:2.5"
+            resolutionStrategy.force "com.google.code.findbugs:jsr305:$findBugsVersion"
+
+            resolutionStrategy.force "org.objenesis:objenesis:$objenesisVersion"
+            resolutionStrategy.force "net.bytebuddy:byte-buddy:$byteBuddyVersion"
+            resolutionStrategy.force "net.bytebuddy:byte-buddy-agent:$byteBuddyVersion"
 
             // fail eagerly on version conflict (includes transitive dependencies)
             // e.g. multiple different versions of the same dependency (group and name are equal)
             failOnVersionConflict()
         }
-    }
 
-    configurations.all {
-        resolutionStrategy.force "org.codehaus.plexus:plexus-utils:1.5.15"
+        resolutionStrategy.force "org.codehaus.plexus:plexus-utils:$plexusVersion"
     }
 }
 
 dependencies {
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$rootProject.kotlinVersion"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
-    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    api "androidx.annotation:annotation:$appcompatVersion"
 
-    // RxJava
-    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
-    implementation("io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion") {
+    implementation ("androidx.loader:loader:$loaderVersion") {
+        exclude group: 'androidx.annotation', module: 'annotation'
+        exclude group: 'androidx.core', module: 'core'
+    }
+
+    implementation ("androidx.vectordrawable:vectordrawable-animated:$vectorDrawableVersion") {
+        exclude group: 'androidx.annotation', module: 'annotation'
+        exclude group: 'androidx.vectordrawable', module: 'vectordrawable'
+    }
+
+    implementation ("androidx.legacy:legacy-support-core-utils:$androidLegacyVersion") {
+        exclude group: 'android.loader', module: 'loader'
+        exclude group: 'androidx.annotation', module: 'annotation'
+        exclude group: 'androidx.core', module:'core'
+    }
+
+    implementation ("androidx.appcompat:appcompat:$appcompatVersion") {
+        exclude group: 'androidx.vectordrawable', module: 'vectordrawable-animated'
+        exclude group: 'androidx.annotation', module: 'annotation'
+        exclude group: 'androidx.core', module:'core'
+    }
+
+    api "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    api ("io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"){
         exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
     }
 
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+
+    testImplementation "junit:junit:$junitVersion"
     testImplementation "org.jetbrains.kotlin:kotlin-test:$rootProject.kotlinVersion"
-    testImplementation "junit:junit:$rootProject.junitVersion"
-    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
-    testImplementation "org.powermock:powermock-module-junit4:$rootProject.powermockVersion"
-    testImplementation "org.powermock:powermock-module-junit4-rule:$rootProject.powermockVersion"
-    testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"
-    testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
-    testImplementation("org.robolectric:robolectric:$rootProject.robolectricVersion") {
-        exclude group: 'com.thoughtworks.xstream', module: 'xstream'
+    testImplementation ("org.mockito:mockito-core:$mockitoVersion")
+
+    testImplementation ("org.powermock:powermock-module-junit4:$powermockVersion") {
+        exclude group: 'org.mockito', module: 'mockito-core'
+    }
+    testImplementation ("org.powermock:powermock-module-junit4-rule:$powermockVersion")
+
+    testImplementation ("org.powermock:powermock-api-mockito2:$powermockVersion") {
+        exclude group: 'org.mockito', module: 'mockito-core'
+    }
+    testImplementation "org.powermock:powermock-classloading-xstream:$powermockVersion"
+    testImplementation ("org.robolectric:robolectric:$robolectricVersion") {
+        exclude group: 'androidx.annotation', module: 'annotation'
     }
 }
 

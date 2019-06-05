@@ -4,8 +4,8 @@ package com.mindera.skeletoid.kt.extensions.activities
 
 import android.app.Activity
 import android.os.Build
-import android.support.annotation.ColorRes
-import android.support.v4.content.ContextCompat
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import android.view.View
 
 fun Activity.setStatusBarTextWhite() {
