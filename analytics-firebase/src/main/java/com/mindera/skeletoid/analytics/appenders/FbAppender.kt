@@ -3,7 +3,7 @@ package com.mindera.skeletoid.analytics.appenders
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
 
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.mindera.skeletoid.logs.LOG

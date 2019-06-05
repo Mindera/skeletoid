@@ -23,8 +23,6 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$rootProject.kotlinVersion"
 
-    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-
     implementation("android.arch.lifecycle:extensions:$rootProject.lifecycleVersion") {
         exclude group: 'com.android.support', module: 'support-fragment'
         exclude group: 'com.android.support', module: 'support-annotations'

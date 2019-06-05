@@ -16,7 +16,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class, manifest = Config.NONE)
+@Config(manifest = Config.NONE)
 class ParcelUnitTest {
 
     private lateinit var parcel: Parcel

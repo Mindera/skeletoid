@@ -2,7 +2,6 @@ package com.mindera.performancefirebase
 
 import com.google.firebase.perf.FirebasePerformance
 import com.google.firebase.perf.metrics.Trace
-import com.mindera.performancefirebase.FirebasePerformanceTracker
 import com.mindera.skeletoid.utils.extensions.mock
 import org.junit.Before
 import org.junit.Test

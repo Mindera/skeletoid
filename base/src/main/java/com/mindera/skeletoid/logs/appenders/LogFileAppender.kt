@@ -1,7 +1,7 @@
 package com.mindera.skeletoid.logs.appenders
 
 import android.content.Context
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
 import android.util.Log
 import com.mindera.skeletoid.generic.AndroidUtils
 import com.mindera.skeletoid.logs.LOG

@@ -3,8 +3,7 @@ package com.mindera.skeletoid.logs.utils
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.support.v4.content.FileProvider
-import com.mindera.skeletoid.BuildConfig
+import androidx.core.content.FileProvider
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,7 +26,7 @@ import java.io.IOException
 import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class, manifest = Config.NONE)
+@Config(manifest = Config.NONE)
 @PowerMockIgnore("org.mockito.*", "org.robolectric.*", "android.*")
 @PrepareForTest(FileProvider::class)
 class ShareLogFilesUtilsUnitTests {

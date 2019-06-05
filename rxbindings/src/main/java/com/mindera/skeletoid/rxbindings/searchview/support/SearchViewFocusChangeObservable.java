@@ -1,9 +1,9 @@
 package com.mindera.skeletoid.rxbindings.searchview.support;
 
-import android.support.v7.widget.SearchView;
 import android.view.View;
 
-import com.jakewharton.rxbinding2.InitialValueObservable;
+import androidx.appcompat.widget.SearchView;
+import com.jakewharton.rxbinding3.InitialValueObservable;
 
 import io.reactivex.Observer;
 import io.reactivex.android.MainThreadDisposable;

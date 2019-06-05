@@ -1,6 +1,6 @@
 package com.mindera.skeletoid.logs.utils;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 /**
  * Abstract LOG Appender

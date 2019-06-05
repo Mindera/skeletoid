@@ -1,7 +1,7 @@
 package com.mindera.skeletoid.rxbindings.searchview;
 
 import android.content.Context;
-import android.support.v7.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
 
 import org.junit.Before;
 import org.junit.Test;
