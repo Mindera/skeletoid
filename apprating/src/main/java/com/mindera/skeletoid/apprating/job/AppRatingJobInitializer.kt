@@ -9,7 +9,7 @@ object AppRatingJobInitializer {
     const val JOB_TAG = "AppRatingJob"
 
     fun schedule(duration: Long) {
-        val job = OneTimeWorkRequest.Builder(AppRatingDialogJob::class.java)
+        val job = OneTimeWorkRequest.Builder(AppRatingJob::class.java)
             .setInitialDelay(duration, TimeUnit.DAYS)
             .addTag(JOB_TAG)
             .build()
