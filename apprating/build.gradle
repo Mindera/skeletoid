@@ -36,6 +36,7 @@ dependencies {
     implementation "com.facebook.conceal:conceal:$rootProject.facebookConcealVersion"
 
     //WorkManager
+    //IMPORTANT: After we update to android x this also needs to be updated
     implementation("android.arch.work:work-runtime:$rootProject.workManagerVersion") {
         exclude group: "android.arch.lifecycle", module: "extensions"
         exclude group: "android.arch.persistence.room", module: "runtime"
