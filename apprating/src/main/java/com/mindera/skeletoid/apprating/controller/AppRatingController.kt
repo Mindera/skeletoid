@@ -92,7 +92,7 @@ class AppRatingController {
             val initialPromptDate = DateUtils.parseDate(store.initialPromptDate)
             val today = Date()
 
-            if (DateUtils.daysBetween(initialPromptDate, today) < range) {
+            if (DateUtils.daysBetween(today, initialPromptDate) < range) {
                 store.promptedCount < count
             } else {
                 store.initialPromptDate = DateUtils.formatDate(Date())
@@ -113,7 +113,7 @@ class AppRatingController {
             val lastTimeDate = DateUtils.parseDate(store.lastTimePrompted)
             val today = Date()
 
-            DateUtils.daysBetween(lastTimeDate, today) > it
+            DateUtils.daysBetween(today, lastTimeDate) > it
         } ?: true
     }
 }
