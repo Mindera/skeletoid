@@ -3,10 +3,43 @@ package com.mindera.skeletoid.utils.http
 object HttpCodes {
     const val HTTP_BAD_REQUEST = 400
     const val HTTP_UNAUTHORIZED = 401
+    const val HTTP_PAYMENT_REQUIRED = 402
     const val HTTP_FORBIDDEN = 403
+    const val HTTP_NOT_FOUND = 404
+    const val HTTP_METHOD_NOT_ALLOWED = 405
+    const val HTTP_NOT_ACCEPTABLE = 406
+    const val HTTP_PROXY_AUTHENTICATION_REQUIRED = 407
+    const val HTTP_REQUEST_TIMEOUT = 408
     const val HTTP_CONFLICT = 409
     const val HTTP_GONE = 410
-    const val HTTP_LOCKED = 423
+    const val HTTP_LENGTH_REQUIRED = 411
+    const val HTTP_PRECONDITION_FAILED = 412
+    const val HTTP_PAYLOAD_TOO_LARGE = 413
+    const val HTTP_URI_TOO_LONG = 414
+    const val HTTP_UNSUPPORTED_MEDIA_TYPE = 415
+    const val HTTP_RANGE_NOT_SATISFIABLE = 416
+    const val HTTP_EXPECTATION_FAILED = 417
 
-    const val SERVER_UNAVAILABLE = 503
+    const val HTTP_MISDIRECTED_REQUEST = 421
+    const val HTTP_UNPROCESSABLE_ENTITY = 422
+    const val HTTP_LOCKED = 423
+    const val HTTP_FAILED_DEPENDENCY = 424
+    const val HTTP_TOO_EARLY = 425
+    const val HTTP_UPGRADE_REQUIRED = 426
+    const val HTTP_PRECONDITION_REQUIRED = 428
+    const val HTTP_TOO_MANY_REQUESTS = 429
+    const val HTTP_REQUEST_HEADER_FIELDS_TOO_LARGE = 431
+    const val HTTP_UNAVAILABLE_FOR_LEGAL_REASONS = 451
+
+    const val HTTP_INTERNAL_SERVER_ERROR = 500
+    const val HTTP_NOT_IMPLEMENTED = 501
+    const val HTTP_BAD_GATEWAY = 502
+    const val HTTP_SERVER_UNAVAILABLE = 503
+    const val HTTP_GATEWAY_TIMEOUT = 504
+    const val HTTP_HTTP_VERSION_NOT_SUPPORTED = 505
+    const val HTTP_VARIANT_ALSO_NEGOTIATES = 506
+    const val HTTP_INSUFFICIENT_STORAGE = 507
+    const val HTTP_LOOP_DETECTED = 508
+    const val HTTP_NOT_EXTENDED = 510
+    const val HTTP_NETWORK_AUTHENTICATION_REQUIRED = 511
 }
