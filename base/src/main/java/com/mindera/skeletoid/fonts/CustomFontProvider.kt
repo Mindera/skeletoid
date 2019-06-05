@@ -23,5 +23,4 @@ interface CustomFontProvider {
     fun getSemiBoldFontSpan(context: Context?): CharacterStyle?
 
     fun applyFontToTextView(context: Context?, textView: TextView, fontPath: String)
-
 }
