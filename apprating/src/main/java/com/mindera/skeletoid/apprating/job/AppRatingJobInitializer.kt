@@ -6,11 +6,19 @@ import java.util.concurrent.TimeUnit
 
 object AppRatingJobInitializer {
 
+    /**
+     * Tag used in the work. Useful to observe the work status
+     */
     const val JOB_TAG = "AppRatingJob"
 
-    fun schedule(duration: Long) {
+    /**
+     * Schedules a work that runs after a delay
+     *
+     * @param delay Delay used to start the work
+     */
+    fun schedule(delay: Long) {
         val job = OneTimeWorkRequest.Builder(AppRatingJob::class.java)
-            .setInitialDelay(duration, TimeUnit.DAYS)
+            .setInitialDelay(delay, TimeUnit.DAYS)
             .addTag(JOB_TAG)
             .build()
 

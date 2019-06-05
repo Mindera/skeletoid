@@ -8,6 +8,9 @@ import com.mindera.skeletoid.apprating.store.AppRatingStore
 import com.mindera.skeletoid.apprating.utils.DateUtils
 import java.util.Date
 
+/**
+ * Controller responsible for handling the stored data and the dialog itself
+ */
 class AppRatingController {
 
     private var countsPerTimeInterval: Pair<Int, Long>? = null
@@ -46,6 +49,8 @@ class AppRatingController {
 
     /**
      * Handles the response of the dialog by updating the values in the store.
+     * If response is RATE_LATER it should schedule a one time work that starts after a delay equal to the promptTimeInterval (in days).
+     * If response is RATE_NOW or NEVER_RATE it simply updates the store.
      *
      * @param context Context
      * @param response Selected response to the dialog
@@ -53,7 +58,7 @@ class AppRatingController {
     fun handleDialogResponse(context: Context, response: AppRatingDialogResponse) {
         val store = AppRatingStore(context)
         when (response) {
-            AppRatingDialogResponse.RATE, AppRatingDialogResponse.NEVER_RATE -> {
+            AppRatingDialogResponse.RATE_NOW, AppRatingDialogResponse.NEVER_RATE -> {
                 store.alreadyRated = true
             }
             AppRatingDialogResponse.RATE_LATER -> {

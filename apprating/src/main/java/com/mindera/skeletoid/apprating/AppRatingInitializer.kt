@@ -6,6 +6,9 @@ import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogResponse
 import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogResponseCallback
 import com.mindera.skeletoid.apprating.controller.AppRatingController
 
+/**
+ * Entry point to setup and call the app rating dialog
+ */
 object AppRatingInitializer {
 
     private val controller: AppRatingController by lazy {
@@ -14,6 +17,7 @@ object AppRatingInitializer {
 
     /**
      * Sets up the conditions to prompt the dialog.
+     * If it's not called, promptDialog will prompt the rating dialog immediately.
      *
      * @param countsPerTimeInterval Pair<Int, Long> values with the maximum number of times the dialog can be prompt per time range (in days)
      * @param promptTimeInterval Time distance between prompts (in days)
