@@ -14,7 +14,6 @@ import java.util.Set;
  */
 public class LOG {
 
-
     public enum PRIORITY {
         VERBOSE, DEBUG, INFO, ERROR, WARN, FATAL
     }
@@ -348,5 +347,16 @@ public class LOG {
         return mInstance != null;
     }
 
-
+    /**
+     * Sets a custom property of the user
+     *
+     * @param key Property key
+     * @param value Property value
+     */
+    public static void setUserProperty(String key, String value) {
+        if (mInstance == null) {
+            return;
+        }
+        mInstance.setUserProperty(key, value);
+    }
 }

@@ -39,7 +39,17 @@ interface ILogAppender {
      *
      * @param type Type of log
      * @param t    Throwable (can be null)
-     * @param log  Log
+     * @param logs  Log
      */
-    fun log(type: LOG.PRIORITY, t: Throwable?, vararg log: String)
+    fun log(type: LOG.PRIORITY, t: Throwable?, vararg logs: String)
+
+    /**
+     * Sets a custom property of the user.
+     * Default implementation does nothing since there are logging services
+     * that don't need to set user properties.
+     *
+     * @param key  Property name
+     * @param value Property value
+     */
+    fun setUserProperty(key: String, value: String?) {}
 }
