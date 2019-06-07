@@ -42,14 +42,14 @@ class LogcatAppender(private val TAG: String) : ILogAppender {
         //Nothing needed here
     }
 
-    override fun log(type: LOG.PRIORITY, t: Throwable?, vararg log: String) {
+    override fun log(type: LOG.PRIORITY, t: Throwable?, vararg logs: String) {
         if (type.ordinal < minLogLevel.ordinal) {
             return
         }
-        val logString = getLogString(*log)
-        val logs = formatLog(logString)
+        val logString = getLogString(*logs)
+        val formattedLogs = formatLog(logString)
 
-        for (logText in logs) {
+        for (logText in formattedLogs) {
 
             when (type) {
                 LOG.PRIORITY.VERBOSE -> Log.v(TAG, logText, t)

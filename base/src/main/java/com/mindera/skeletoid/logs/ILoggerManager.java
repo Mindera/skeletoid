@@ -61,4 +61,12 @@ public interface ILoggerManager {
      * Disable all log appenders
      */
     void removeAllAppenders();
+
+    /**
+     * Sets a custom property of the user
+     *
+     * @param key Property key
+     * @param value Property value
+     */
+    void setUserProperty(String key, String value);
 }

@@ -123,6 +123,13 @@ class LoggerManager implements ILoggerManager {
         }
     }
 
+    @Override
+    public void setUserProperty(String key, String value) {
+        for (ILogAppender logAppender : mLogAppenders.values()) {
+            logAppender.setUserProperty(key, value);
+        }
+    }
+
     public void setMethodNameVisible(boolean visibility) {
         mAddMethodName = visibility;
     }
