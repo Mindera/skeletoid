@@ -29,7 +29,7 @@ dependencies {
     implementation "com.facebook.conceal:conceal:$rootProject.facebookConcealVersion"
 
     //WorkManager
-    implementation("androidx.work:work-runtime-ktx:$workManagerVersion")
+    implementation("androidx.work:work-runtime-ktx:$rootProject.workManagerVersion")
 
     testImplementation "org.jetbrains.kotlin:kotlin-test:$rootProject.kotlinVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
