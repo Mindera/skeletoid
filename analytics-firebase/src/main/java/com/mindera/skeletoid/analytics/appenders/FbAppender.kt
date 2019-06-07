@@ -61,7 +61,7 @@ class FbAppender : IAnalyticsAppender {
         firebaseAnalytics?.setUserId(userId)
     }
 
-    override fun setUserProperty(name: String, value: String) {
+    override fun setUserProperty(name: String, value: String?) {
         if (firebaseAnalytics == null) {
             LOG.e(LOG_TAG, "setUserProperty failed: firebaseAnalytics is null")
             return
