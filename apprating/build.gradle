@@ -4,7 +4,9 @@ apply from: "../jacoco.gradle"
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
 
+    testBuildType "qa"
 
     defaultConfig {
 
@@ -14,10 +16,24 @@ android {
     }
 
     buildTypes {
+
+        debug {
+            matchingFallbacks = ['debug']
+        }
+
+        qa {
+            matchingFallbacks = ['debug']
+            testCoverageEnabled = true
+        }
+
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 
