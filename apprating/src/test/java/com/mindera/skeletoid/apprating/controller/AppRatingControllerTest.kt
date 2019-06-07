@@ -9,7 +9,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.powermock.api.mockito.PowerMockito
-import org.powermock.core.classloader.annotations.Mock
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
 import java.util.Date
@@ -132,7 +131,7 @@ class AppRatingControllerTest {
 
         PowerMockito.whenNew(AppRatingStore::class.java).withArguments(context).thenReturn(mockedStore)
 
-        controller.handleDialogResponse(context, AppRatingDialogResponse.RATE)
+        controller.handleDialogResponse(context, AppRatingDialogResponse.RATE_NOW)
         assertTrue { mockedStore.alreadyRated }
 
         controller.handleDialogResponse(context, AppRatingDialogResponse.NEVER_RATE)
