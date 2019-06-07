@@ -84,11 +84,11 @@ ext {
     rxJavaAkaitaVersion = '1.4.0'
 
     //Secure Preferences
-    securePreferencesVersion = '1.0.0'
-    facebookConcealVersion = '1.1.3@aar'
+    securePreferencesVersion = '1.1.1'
+    facebookConcealVersion = '2.0.1@aar'
 
     //Work Manager
-    workManagerVersion = '1.0.0-alpha08'
+    workManagerVersion = '2.0.1'
 
     // Tests & Quality
     junitVersion = '4.12'

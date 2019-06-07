@@ -24,24 +24,12 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$rootProject.kotlinVersion"
 
-    implementation("android.arch.lifecycle:extensions:$rootProject.lifecycleVersion") {
-        exclude group: 'com.android.support', module: 'support-fragment'
-        exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'android.arch.lifecycle', module: 'runtime'
-    }
-
     //Secure Prefs
     implementation "com.github.KaKaVip:secure-preferences:$rootProject.securePreferencesVersion"
     implementation "com.facebook.conceal:conceal:$rootProject.facebookConcealVersion"
 
     //WorkManager
-    //IMPORTANT: After we update to android x this also needs to be updated
-    implementation("android.arch.work:work-runtime:$rootProject.workManagerVersion") {
-        exclude group: "android.arch.lifecycle", module: "extensions"
-        exclude group: "android.arch.persistence.room", module: "runtime"
-    }
-
-    //implementation "android.arch.work:work-runtime-ktx:$rootProject.workManagerVersion"
+    implementation("androidx.work:work-runtime-ktx:$workManagerVersion")
 
     testImplementation "org.jetbrains.kotlin:kotlin-test:$rootProject.kotlinVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
