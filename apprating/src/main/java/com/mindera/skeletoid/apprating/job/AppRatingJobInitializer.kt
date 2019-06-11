@@ -2,14 +2,10 @@ package com.mindera.skeletoid.apprating.job
 
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
+import com.mindera.skeletoid.apprating.job.AppRatingJob.Companion.JOB_TAG
 import java.util.concurrent.TimeUnit
 
 object AppRatingJobInitializer {
-
-    /**
-     * Tag used in the work. Useful to observe the work status
-     */
-    const val JOB_TAG = "AppRatingJob"
 
     /**
      * Schedules a work that runs after a delay

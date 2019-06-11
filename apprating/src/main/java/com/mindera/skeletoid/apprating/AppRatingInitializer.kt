@@ -35,10 +35,10 @@ object AppRatingInitializer {
      * @param dialogResultCallback Callback to handle responses to the default dialog. Null if it uses a custom dialog.
      */
     fun promptDialog(context: Context, callback: AppRatingDialogCallback? = null, dialogResultCallback: AppRatingDialogResponseCallback? = null) {
-        if (controller.promptDialog(context)){
+        if (controller.promptDialog(context)) {
             when {
                 callback != null && dialogResultCallback == null -> callback.showRatingDialog()
-                dialogResultCallback != null && callback == null -> TODO("IMPLEMENT DEFAULT DIALOG")
+                callback == null && dialogResultCallback != null  -> TODO("IMPLEMENT DEFAULT DIALOG")
                 else -> throw IllegalArgumentException("Should have one non-nullable callback")
             }
         }

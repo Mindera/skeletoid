@@ -36,8 +36,8 @@ class AppRatingController {
      */
     fun promptDialog(context: Context, dialogResultCallback: AppRatingDialogResponseCallback? = null): Boolean {
         val store = AppRatingStore(context)
-        return shouldPromptDialog(store).also {
-            if (it) {
+        return shouldPromptDialog(store).also { shouldPromptDialog ->
+            if (shouldPromptDialog) {
                 dialogResultCallback?.let {
                     TODO("IMPLEMENT DEFAULT DIALOG")
                 }
@@ -81,18 +81,18 @@ class AppRatingController {
             true
         } else {
             !store.alreadyRated &&
-                    checkCountPerTimeCondition(store) &&
-                    checkPromptTimeIntervalCondition(store)
+                    isWithinMaximumCount(store) &&
+                    hasPassedPromptTimeInterval(store)
         }
     }
 
     /**
-     * Checks if already reached the maximum amount of time that the rating dialog can be shown in a certain period of time.
+     * Checks if already reached the maximum amount of times that the rating dialog can be shown in a certain period of time.
      *
      * @param store Store that has the values related with the app rating conditions
      * @return true if the conditions were met
      */
-    private fun checkCountPerTimeCondition(store: AppRatingStore): Boolean {
+    private fun isWithinMaximumCount(store: AppRatingStore): Boolean {
         return countsPerTimeInterval?.let { (count, range) ->
             val initialPromptDate = DateUtils.parseDate(store.initialPromptDate)
             val today = Date()
@@ -113,7 +113,7 @@ class AppRatingController {
      * @param store Store that has the values related with the app rating conditions
      * @return true if the conditions were met
      */
-    private fun checkPromptTimeIntervalCondition(store: AppRatingStore): Boolean {
+    private fun hasPassedIPromptTimeInterval(store: AppRatingStore): Boolean {
         return promptTimeInterval?.let {
             val lastTimeDate = DateUtils.parseDate(store.lastTimePrompted)
             val today = Date()
