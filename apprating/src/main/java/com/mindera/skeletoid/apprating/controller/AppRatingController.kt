@@ -113,7 +113,7 @@ class AppRatingController {
      * @param store Store that has the values related with the app rating conditions
      * @return true if the conditions were met
      */
-    private fun hasPassedIPromptTimeInterval(store: AppRatingStore): Boolean {
+    private fun hasPassedPromptTimeInterval(store: AppRatingStore): Boolean {
         return promptTimeInterval?.let {
             val lastTimeDate = DateUtils.parseDate(store.lastTimePrompted)
             val today = Date()
