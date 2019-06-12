@@ -34,8 +34,19 @@ class AppRatingController {
      * @param dialogResultCallback Callback to handle default dialog response
      * @return true if the conditions were met, and the dialog can be prompted.
      */
-    fun promptDialog(context: Context, dialogResultCallback: AppRatingDialogResponseCallback? = null): Boolean {
+    fun promptDialog(
+        context: Context,
+        dialogResultCallback: AppRatingDialogResponseCallback? = null
+    ): Boolean {
         val store = AppRatingStore(context)
+
+        if (store.initialPromptDate.isEmpty()) {
+            store.initialPromptDate = DateUtils.formatDate(Date())
+            store.promptedCount = 0
+            store.alreadyRated = false
+            return true
+        }
+
         return shouldPromptDialog(store).also { shouldPromptDialog ->
             if (shouldPromptDialog) {
                 dialogResultCallback?.let {
@@ -74,16 +85,9 @@ class AppRatingController {
      * @return true if the conditions were met
      */
     private fun shouldPromptDialog(store: AppRatingStore): Boolean {
-        return if (store.initialPromptDate.isEmpty()) {
-            store.initialPromptDate = DateUtils.formatDate(Date())
-            store.promptedCount = 0
-            store.alreadyRated = false
-            true
-        } else {
-            !store.alreadyRated &&
-                    isWithinMaximumCount(store) &&
-                    hasPassedPromptTimeInterval(store)
-        }
+        return !store.alreadyRated &&
+                isWithinMaximumCount(store) &&
+                hasPassedPromptTimeInterval(store)
     }
 
     /**
