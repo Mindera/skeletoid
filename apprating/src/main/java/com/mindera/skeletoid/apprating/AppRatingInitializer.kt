@@ -11,6 +11,13 @@ import com.mindera.skeletoid.apprating.controller.AppRatingController
  */
 object AppRatingInitializer {
 
+    //Maximum count of times that a dialog can prompt
+    private const val MAXIMUM_COUNTS = 3
+    //Maximum time interval to reset the count
+    private const val MAXIMUM_COUNTS_TIME_INTERVAL = 30L
+    //Minimum time interval between prompts
+    private const val TIME_INTERVAL_BETWEEN_PROMPTS = 365L
+
     private val controller: AppRatingController by lazy {
         AppRatingController()
     }
@@ -22,7 +29,7 @@ object AppRatingInitializer {
      * @param countsPerTimeInterval Pair<Int, Long> values with the maximum number of times the dialog can be prompt per time range (in days)
      * @param promptTimeInterval Time distance between prompts (in days)
      */
-    fun init(countsPerTimeInterval: Pair<Int, Long>, promptTimeInterval: Long) {
+    fun init(countsPerTimeInterval: Pair<Int, Long> = Pair(MAXIMUM_COUNTS, MAXIMUM_COUNTS_TIME_INTERVAL), promptTimeInterval: Long = TIME_INTERVAL_BETWEEN_PROMPTS) {
         controller.setupConditions(countsPerTimeInterval, promptTimeInterval)
     }
 
