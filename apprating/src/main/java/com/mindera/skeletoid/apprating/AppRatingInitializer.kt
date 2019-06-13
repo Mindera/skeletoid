@@ -11,13 +11,6 @@ import com.mindera.skeletoid.apprating.controller.AppRatingController
  */
 object AppRatingInitializer {
 
-    //Maximum count of times that a dialog can prompt
-    private const val MAXIMUM_COUNTS = 3
-    //Maximum time interval to reset the count
-    private const val MAXIMUM_COUNTS_TIME_INTERVAL = 30L
-    //Minimum time interval between prompts
-    private const val TIME_INTERVAL_BETWEEN_PROMPTS = 365L
-
     private val controller: AppRatingController by lazy {
         AppRatingController()
     }
@@ -29,7 +22,14 @@ object AppRatingInitializer {
      * @param countsPerTimeInterval Pair<Int, Long> values with the maximum number of times the dialog can be prompt per time range (in days)
      * @param promptTimeInterval Time distance between prompts (in days)
      */
-    fun init(countsPerTimeInterval: Pair<Int, Long> = Pair(MAXIMUM_COUNTS, MAXIMUM_COUNTS_TIME_INTERVAL), promptTimeInterval: Long = TIME_INTERVAL_BETWEEN_PROMPTS) {
+    fun init(
+        context: Context,
+        countsPerTimeInterval: Pair<Int, Long> = Pair(
+            context.resources.getInteger(R.integer.maximum_counts),
+            context.resources.getInteger(R.integer.maximum_counts_time_interval).toLong()
+        ),
+        promptTimeInterval: Long = context.resources.getInteger(R.integer.minimum_time_between_prompt).toLong()
+    ) {
         controller.setupConditions(countsPerTimeInterval, promptTimeInterval)
     }
 
@@ -41,11 +41,16 @@ object AppRatingInitializer {
      * @param callback Callback to show the rating dialog. Null if it uses the default dialog
      * @param dialogResultCallback Callback to handle responses to the default dialog. Null if it uses a custom dialog.
      */
-    fun promptDialog(context: Context, callback: AppRatingDialogCallback? = null, dialogResultCallback: AppRatingDialogResponseCallback? = null) {
+    fun promptDialog(
+        context: Context,
+        callback: AppRatingDialogCallback? = null,
+        dialogResultCallback: AppRatingDialogResponseCallback? = null
+    ) {
+        controller.setupStore(context)
         if (controller.promptDialog(context)) {
             when {
                 callback != null && dialogResultCallback == null -> callback.showRatingDialog()
-                callback == null && dialogResultCallback != null  -> TODO("IMPLEMENT DEFAULT DIALOG")
+                callback == null && dialogResultCallback != null -> TODO("IMPLEMENT DEFAULT DIALOG")
                 else -> throw IllegalArgumentException("Should have one non-nullable callback")
             }
         }
