@@ -46,8 +46,8 @@ object AppRatingInitializer {
         callback: AppRatingDialogCallback? = null,
         dialogResultCallback: AppRatingDialogResponseCallback? = null
     ) {
-        controller.setupStore(context)
         if (controller.promptDialog(context)) {
+            controller.updateStore(context)
             when {
                 callback != null && dialogResultCallback == null -> callback.showRatingDialog()
                 callback == null && dialogResultCallback != null -> TODO("IMPLEMENT DEFAULT DIALOG")

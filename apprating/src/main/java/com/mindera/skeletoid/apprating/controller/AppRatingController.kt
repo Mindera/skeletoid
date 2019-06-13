@@ -28,15 +28,24 @@ class AppRatingController {
     }
 
     /**
-     * Sets up the store if it't no initialized
+     * Updates the values in the store.
      */
-    fun setupStore(context: Context) {
+    fun updateStore(context: Context) {
         val store = AppRatingStore(context)
+        val today = Date()
+        store.lastTimePrompted = DateUtils.formatDate(today)
 
-        if (store.initialPromptDate.isEmpty()) {
-            store.initialPromptDate = DateUtils.formatDate(Date())
-            store.promptedCount = 0
-            store.alreadyRated = false
+        countsPerTimeInterval?.let { (_, range) ->
+            if (store.initialPromptDate.isEmpty() || DateUtils.daysBetween(
+                    today,
+                    DateUtils.parseDate(store.initialPromptDate)
+                ) > range
+            ) {
+                store.initialPromptDate = DateUtils.formatDate(today)
+                store.promptedCount = 0
+            } else {
+                store.promptedCount++
+            }
         }
     }
 
@@ -58,7 +67,6 @@ class AppRatingController {
                 dialogResultCallback?.let {
                     TODO("IMPLEMENT DEFAULT DIALOG")
                 }
-                updateStore(store)
             }
         }
     }
@@ -96,25 +104,6 @@ class AppRatingController {
     }
 
     /**
-     * Updates the values in the store.
-     */
-    private fun updateStore(store: AppRatingStore) {
-        val today = Date()
-        store.lastTimePrompted = DateUtils.formatDate(today)
-
-        countsPerTimeInterval?.let { (_, range) ->
-            val initialPromptDate = DateUtils.parseDate(store.initialPromptDate)
-
-            if (DateUtils.daysBetween(today, initialPromptDate) > range) {
-                store.initialPromptDate = DateUtils.formatDate(today)
-                store.promptedCount = 0
-            } else {
-                store.promptedCount++
-            }
-        }
-    }
-
-    /**
      * Checks if already reached the maximum amount of times that the rating dialog can be shown in a certain period of time.
      *
      * @param store Store that has the values related with the app rating conditions
@@ -122,10 +111,12 @@ class AppRatingController {
      */
     private fun isWithinMaximumCount(store: AppRatingStore): Boolean {
         val (count, range) = countsPerTimeInterval ?: return true
+        if (store.initialPromptDate.isEmpty()) return true
+        
         val initialPromptDate = DateUtils.parseDate(store.initialPromptDate)
         val today = Date()
         val diff = DateUtils.daysBetween(today, initialPromptDate)
-        return  (diff < range && store.promptedCount < count) || diff > range
+        return (diff < range && store.promptedCount < count) || diff > range
     }
 
     /**
