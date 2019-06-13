@@ -42,7 +42,8 @@ class AppRatingController {
                 ) > range
             ) {
                 store.initialPromptDate = DateUtils.formatDate(today)
-                store.promptedCount = 0
+                //NOTE: This starts with 1 because when it arrives here the dialog was already shown for the first time
+                store.promptedCount = 1
             } else {
                 store.promptedCount++
             }
