@@ -124,10 +124,8 @@ class AppRatingController {
         val (count, range) = countsPerTimeInterval ?: return true
         val initialPromptDate = DateUtils.parseDate(store.initialPromptDate)
         val today = Date()
-        return DateUtils.daysBetween(
-            today,
-            initialPromptDate
-        ) < range && store.promptedCount < count
+        val diff = DateUtils.daysBetween(today, initialPromptDate)
+        return  (diff < range && store.promptedCount < count) || diff > range
     }
 
     /**
