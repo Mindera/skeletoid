@@ -41,7 +41,7 @@ class AppRatingControllerTest {
         PowerMockito.`when`(mockedStore.lastTimePrompted).thenReturn("")
         PowerMockito.whenNew(AppRatingStore::class.java).withArguments(context).thenReturn(mockedStore)
 
-        val actual = controller.promptDialog(context)
+        val actual = controller.shouldPromptDialog(context)
 
         assertTrue { actual }
     }
@@ -55,7 +55,7 @@ class AppRatingControllerTest {
         PowerMockito.`when`(mockedStore.lastTimePrompted).thenReturn(DateUtils.formatDate(Date()))
         PowerMockito.whenNew(AppRatingStore::class.java).withArguments(context).thenReturn(mockedStore)
 
-        val actual = controller.promptDialog(context)
+        val actual = controller.shouldPromptDialog(context)
 
         assertTrue { actual }
     }
@@ -69,7 +69,7 @@ class AppRatingControllerTest {
         PowerMockito.`when`(mockedStore.lastTimePrompted).thenReturn(DateUtils.formatDate(Date()))
         PowerMockito.whenNew(AppRatingStore::class.java).withArguments(context).thenReturn(mockedStore)
 
-        val actual = controller.promptDialog(context)
+        val actual = controller.shouldPromptDialog(context)
 
         assertTrue { !actual }
     }
@@ -84,7 +84,7 @@ class AppRatingControllerTest {
         PowerMockito.whenNew(AppRatingStore::class.java).withArguments(context).thenReturn(mockedStore)
 
         controller.setupConditions(countsPerTimeInterval, promptTimeInterval)
-        val actual = controller.promptDialog(context)
+        val actual = controller.shouldPromptDialog(context)
 
         assertTrue { !actual }
     }
@@ -99,7 +99,7 @@ class AppRatingControllerTest {
         PowerMockito.whenNew(AppRatingStore::class.java).withArguments(context).thenReturn(mockedStore)
 
         controller.setupConditions(countsPerTimeInterval, promptTimeInterval)
-        val actual = controller.promptDialog(context)
+        val actual = controller.shouldPromptDialog(context)
 
         assertTrue { !actual }
     }
@@ -114,7 +114,7 @@ class AppRatingControllerTest {
         PowerMockito.whenNew(AppRatingStore::class.java).withArguments(context).thenReturn(mockedStore)
 
         controller.setupConditions(countsPerTimeInterval, promptTimeInterval)
-        val actual = controller.promptDialog(context)
+        val actual = controller.shouldPromptDialog(context)
 
         assertTrue { actual }
     }

@@ -50,25 +50,17 @@ class AppRatingController {
     }
 
     /**
-     * Checks if the data in the store matches the conditions and updates the values in the store.
+     * Checks if the values in the store matches the conditions to prompt the dialog.
      *
      * @param context Context
-     * @param dialogResultCallback Callback to handle default dialog response
-     * @return true if the conditions were met, and the dialog can be prompted.
+     * @return true if the conditions were met
      */
-    fun promptDialog(
-        context: Context,
-        dialogResultCallback: AppRatingDialogResponseCallback? = null
-    ): Boolean {
+    fun shouldPromptDialog(context: Context): Boolean {
         val store = AppRatingStore(context)
 
-        return shouldPromptDialog(store).also { shouldPromptDialog ->
-            if (shouldPromptDialog) {
-                dialogResultCallback?.let {
-                    TODO("IMPLEMENT DEFAULT DIALOG")
-                }
-            }
-        }
+        return !store.alreadyRated &&
+                isWithinMaximumCount(store) &&
+                hasPassedPromptTimeInterval(store)
     }
 
     /**
@@ -92,18 +84,6 @@ class AppRatingController {
     }
 
     /**
-     * Checks if the values in the store matches the conditions to prompt the dialog.
-     *
-     * @param store Store that has the values related with the app rating conditions
-     * @return true if the conditions were met
-     */
-    private fun shouldPromptDialog(store: AppRatingStore): Boolean {
-        return !store.alreadyRated &&
-                isWithinMaximumCount(store) &&
-                hasPassedPromptTimeInterval(store)
-    }
-
-    /**
      * Checks if already reached the maximum amount of times that the rating dialog can be shown in a certain period of time.
      *
      * @param store Store that has the values related with the app rating conditions
@@ -112,7 +92,7 @@ class AppRatingController {
     private fun isWithinMaximumCount(store: AppRatingStore): Boolean {
         val (count, range) = countsPerTimeInterval ?: return true
         if (store.initialPromptDate.isEmpty()) return true
-        
+
         val initialPromptDate = DateUtils.parseDate(store.initialPromptDate)
         val today = Date()
         val diff = DateUtils.daysBetween(today, initialPromptDate)
