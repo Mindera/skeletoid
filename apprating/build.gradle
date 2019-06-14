@@ -38,6 +38,8 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':base')
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$rootProject.kotlinVersion"
 
     //Secure Prefs

@@ -3,7 +3,7 @@ package com.mindera.skeletoid.apprating.controller
 import android.content.Context
 import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogResponse
 import com.mindera.skeletoid.apprating.store.AppRatingStore
-import com.mindera.skeletoid.apprating.utils.DateUtils
+import com.mindera.skeletoid.generic.DateUtils
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
