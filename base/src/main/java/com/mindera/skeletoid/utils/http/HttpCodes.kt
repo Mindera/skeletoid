@@ -14,7 +14,7 @@ object HttpCodes {
     const val HTTP_204_NO_CONTENT = 204
     const val HTTP_205_RESET_CONTENT = 205
     const val HTTP_206_PARTIAL_CONTENT = 206
-    const val HTTP_207_MULTI_STATUS_WEBDAV = 207
+    const val HTTP_207_MULTI_STATUS = 207 //WEBDAV
     const val HTTP_208_ALREADY_REPORTED = 208 //WEBDAV
     const val HTTP_226_IM_USED = 226
 
