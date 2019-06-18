@@ -15,6 +15,8 @@ object AppRatingInitializer {
         AppRatingController()
     }
 
+    private lateinit var callback: AppRatingDialogCallback
+
     /**
      * Sets up the conditions to prompt the dialog.
      * If it's not called, promptDialog will prompt the rating dialog immediately.
@@ -24,12 +26,14 @@ object AppRatingInitializer {
      */
     fun init(
         context: Context,
+        callback: AppRatingDialogCallback,
         countsPerTimeInterval: Pair<Int, Long> = Pair(
             context.resources.getInteger(R.integer.maximum_counts),
             context.resources.getInteger(R.integer.maximum_counts_time_interval).toLong()
         ),
         promptTimeInterval: Long = context.resources.getInteger(R.integer.minimum_time_between_prompt).toLong()
     ) {
+        this.callback = callback
         controller.setupConditions(countsPerTimeInterval, promptTimeInterval)
     }
 
@@ -43,14 +47,13 @@ object AppRatingInitializer {
      */
     fun promptDialog(
         context: Context,
-        callback: AppRatingDialogCallback? = null,
         dialogResultCallback: AppRatingDialogResponseCallback? = null
     ) {
         if (controller.shouldPromptDialog(context)) {
             controller.updateStore(context)
             when {
-                callback != null && dialogResultCallback == null -> callback.showRatingDialog()
-                callback == null && dialogResultCallback != null -> TODO("IMPLEMENT DEFAULT DIALOG")
+                ::callback.isInitialized && dialogResultCallback == null -> callback.showRatingDialog()
+                !::callback.isInitialized && dialogResultCallback != null -> TODO("IMPLEMENT DEFAULT DIALOG")
                 else -> throw IllegalArgumentException("Should have one non-nullable callback")
             }
         }
