@@ -21,19 +21,21 @@ object AppRatingInitializer {
      * Sets up the conditions to prompt the dialog.
      * If it's not called, promptDialog will prompt the rating dialog immediately.
      *
+     * @param context Context
+     * @param callback Callback to show the rating dialog. Null if it uses the default dialog
      * @param countsPerTimeInterval Pair<Int, Long> values with the maximum number of times the dialog can be prompt per time range (in days)
      * @param promptTimeInterval Time distance between prompts (in days)
      */
     fun init(
         context: Context,
-        callback: AppRatingDialogCallback,
+        callback: AppRatingDialogCallback? = null,
         countsPerTimeInterval: Pair<Int, Long> = Pair(
             context.resources.getInteger(R.integer.maximum_counts),
             context.resources.getInteger(R.integer.maximum_counts_time_interval).toLong()
         ),
         promptTimeInterval: Long = context.resources.getInteger(R.integer.minimum_time_between_prompt).toLong()
     ) {
-        this.callback = callback
+        callback?.let { this.callback = it }
         controller.setupConditions(countsPerTimeInterval, promptTimeInterval)
     }
 
@@ -42,7 +44,6 @@ object AppRatingInitializer {
      * Only one of the callbacks can be null.
      *
      * @param context Context
-     * @param callback Callback to show the rating dialog. Null if it uses the default dialog
      * @param dialogResultCallback Callback to handle responses to the default dialog. Null if it uses a custom dialog.
      */
     fun promptDialog(
