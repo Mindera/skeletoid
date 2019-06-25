@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_store_app_deep_link" translatable="false">market://details?id=%1$s</string>
+    <string name="play_store_app_url" translatable="false">https://play.google.com/store/apps/details?id=%1$s</string>
+</resources>
