@@ -13,14 +13,12 @@ class OpenEmailCommand(
 ) : IRouteCommand {
 
     override fun navigate() {
-        val mailData = context.let {
-            context.getString(
+        val mailData = context.getString(
                 R.string.email_uri_data,
                 Uri.encode(context.getString(emailTo)),
                 Uri.encode(context.getString(emailSubject)),
                 Uri.encode(context.getString(emailBody))
             )
-        }
 
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse(mailData)

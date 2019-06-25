@@ -33,10 +33,14 @@ object AppRatingInitializer {
             context.resources.getInteger(R.integer.maximum_counts),
             context.resources.getInteger(R.integer.maximum_counts_time_interval).toLong()
         ),
-        promptTimeInterval: Long = context.resources.getInteger(R.integer.minimum_time_between_prompt).toLong()
+        promptTimeInterval: Long = context.resources.getInteger(R.integer.minimum_time_between_prompt).toLong(),
+        shouldSchedulePrompt: Boolean = false
     ) {
         callback?.let { this.callback = it }
         controller.setupConditions(countsPerTimeInterval, promptTimeInterval)
+        if (shouldSchedulePrompt) {
+            controller.schedulePromptDialogJob()
+        }
     }
 
     /**
