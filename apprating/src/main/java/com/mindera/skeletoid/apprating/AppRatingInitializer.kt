@@ -25,6 +25,7 @@ object AppRatingInitializer {
      * @param callback Callback to show the rating dialog. Null if it uses the default dialog
      * @param countsPerTimeInterval Pair<Int, Long> values with the maximum number of times the dialog can be prompt per time range (in days)
      * @param promptTimeInterval Time distance between prompts (in days)
+     * @param shouldSchedulePrompt Flag to init a time driven prompt
      */
     fun init(
         context: Context,
