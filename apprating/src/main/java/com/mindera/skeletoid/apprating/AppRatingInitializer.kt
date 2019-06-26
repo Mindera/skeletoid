@@ -64,7 +64,7 @@ object AppRatingInitializer {
             when {
                 ::callback.isInitialized && fragmentManager == null -> callback.showRatingDialog()
                 !::callback.isInitialized && fragmentManager != null -> controller.showDefaultDialog(fragmentManager)
-                else -> throw IllegalArgumentException("Should have one non-nullable callback")
+                else -> throw IllegalArgumentException("Should have one nullable and one non-nullable callback")
             }
         }
     }
