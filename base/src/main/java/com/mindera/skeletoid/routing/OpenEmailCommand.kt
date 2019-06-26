@@ -1,9 +1,11 @@
 package com.mindera.skeletoid.routing
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.mindera.skeletoid.R
+import com.mindera.skeletoid.logs.LOG
 
 class OpenEmailCommand(
     private val context: Context,
@@ -11,6 +13,10 @@ class OpenEmailCommand(
     private val emailSubject: Int,
     private val emailBody: Int
 ) : IRouteCommand {
+
+    companion object {
+        private const val LOG_TAG = "EmailRouting"
+    }
 
     override fun navigate() {
         val mailData = context.getString(
@@ -24,6 +30,10 @@ class OpenEmailCommand(
             data = Uri.parse(mailData)
         }
 
-        context.startActivity(intent)
+        try {
+            context.startActivity(intent)
+        } catch (exception: ActivityNotFoundException) {
+            LOG.e(LOG_TAG, exception, "No applications available to send an email!")
+        }
     }
 }
