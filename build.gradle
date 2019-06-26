@@ -83,10 +83,6 @@ ext {
     rxBindingsVersion = '3.0.0-alpha2'
     rxJavaAkaitaVersion = '1.4.0'
 
-    //Secure Preferences
-    securePreferencesVersion = '1.1.1'
-    facebookConcealVersion = '2.0.1@aar'
-
     //Work Manager
     workManagerVersion = '2.0.1'
 

@@ -2,7 +2,6 @@ package com.mindera.skeletoid.apprating.store
 
 import android.content.Context
 import android.content.SharedPreferences
-import asia.fivejuly.securepreferences.SecurePreferences
 
 class AppRatingStore {
 
@@ -25,9 +24,7 @@ class AppRatingStore {
         this.sharedPreferences = sharedPreferences
     }
 
-    private fun instantiateSharedPreferences(context: Context): SharedPreferences = SecurePreferences.Builder(context)
-        .filename(SHARED_PREFS_FILE)
-        .build()
+    private fun instantiateSharedPreferences(context: Context): SharedPreferences = context.getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE)
 
     var alreadyRated: Boolean
         get() = sharedPreferences.getBoolean(HAS_REVIEWED_KEY, false)

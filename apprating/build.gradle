@@ -42,10 +42,6 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$rootProject.kotlinVersion"
 
-    //Secure Prefs
-    implementation "com.github.KaKaVip:secure-preferences:$rootProject.securePreferencesVersion"
-    implementation "com.facebook.conceal:conceal:$rootProject.facebookConcealVersion"
-
     //WorkManager
     implementation("androidx.work:work-runtime-ktx:$rootProject.workManagerVersion")
 

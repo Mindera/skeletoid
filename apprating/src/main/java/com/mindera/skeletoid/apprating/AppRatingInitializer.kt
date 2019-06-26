@@ -5,11 +5,14 @@ import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogCallback
 import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogResponse
 import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogResponseCallback
 import com.mindera.skeletoid.apprating.controller.AppRatingController
+import com.mindera.skeletoid.logs.LOG
 
 /**
  * Entry point to setup and call the app rating dialog
  */
 object AppRatingInitializer {
+
+    private const val LOG_TAG = "AppRatingInitializer"
 
     private val controller: AppRatingController by lazy {
         AppRatingController()
@@ -59,7 +62,7 @@ object AppRatingInitializer {
             controller.updateStore(context)
             when {
                 ::callback.isInitialized && dialogResultCallback == null -> callback.showRatingDialog()
-                !::callback.isInitialized && dialogResultCallback != null -> TODO("IMPLEMENT DEFAULT DIALOG")
+                !::callback.isInitialized && dialogResultCallback != null -> LOG.d(LOG_TAG, "Calling default dialog TO BE IMPLEMENTED")
                 else -> throw IllegalArgumentException("Should have one non-nullable callback")
             }
         }
