@@ -1,3 +1,8 @@
 <resources>
     <string name="email_uri_data">mailto:%1$s?subject=%2$s&amp;body=%3$s</string>
+    <string name="dialog_title">Rate us on Google Play</string>
+    <string name="dialog_message">Your review is important to us.</string>
+    <string name="dialog_positive_button_text">OK, sure</string>
+    <string name="dialog_neutral_button_text">Not now</string>
+    <string name="dialog_negative_button_text">Don\'t ask me again</string>
 </resources>
