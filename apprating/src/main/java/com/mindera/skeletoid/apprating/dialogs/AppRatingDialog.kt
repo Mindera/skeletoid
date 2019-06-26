@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.mindera.skeletoid.apprating.R
 import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogResponseCallback
+import com.mindera.skeletoid.logs.LOG
 
 class AppRatingDialog: DialogFragment() {
 
@@ -52,16 +53,22 @@ class AppRatingDialog: DialogFragment() {
             .setPositiveButton(positiveButtonText) { _, _ ->
                 if (activity is AppRatingDialogResponseCallback) {
                     (activity as AppRatingDialogResponseCallback).onRateNowClick()
+                } else {
+                    LOG.e(TAG, "The activity that calls the prompt should implement AppRatingDialogResponseCallback")
                 }
             }
             .setNeutralButton(neutralButtonText) { _, _ ->
                 if (activity is AppRatingDialogResponseCallback) {
                     (activity as AppRatingDialogResponseCallback).onRateLaterClick()
+                } else {
+                    LOG.e(TAG, "The activity that calls the prompt should implement AppRatingDialogResponseCallback")
                 }
             }
             .setNegativeButton(negativeButtonText) { _, _ ->
                 if (activity is AppRatingDialogResponseCallback) {
                     (activity as AppRatingDialogResponseCallback).onNeverRateClick()
+                } else {
+                    LOG.e(TAG, "The activity that calls the prompt should implement AppRatingDialogResponseCallback")
                 }
             }
             .create()
