@@ -4,7 +4,9 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
+import com.mindera.skeletoid.apprating.AppRatingInitializer
 import com.mindera.skeletoid.apprating.R
+import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogResponse
 import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogResponseCallback
 import com.mindera.skeletoid.logs.LOG
 
@@ -51,24 +53,33 @@ class AppRatingDialog: DialogFragment() {
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(positiveButtonText) { _, _ ->
-                if (activity is AppRatingDialogResponseCallback) {
-                    (activity as AppRatingDialogResponseCallback).onRateNowClick()
-                } else {
-                    LOG.e(TAG, "The activity that calls the prompt should implement AppRatingDialogResponseCallback")
+                activity?.let {
+                    if (it is AppRatingDialogResponseCallback) {
+                        (it as AppRatingDialogResponseCallback).onRateNowClick()
+                        AppRatingInitializer.handleDialogResponse(it.applicationContext, AppRatingDialogResponse.RATE_NOW)
+                    } else {
+                        LOG.e(TAG, "The activity that calls the prompt should implement AppRatingDialogResponseCallback")
+                    }
                 }
             }
             .setNeutralButton(neutralButtonText) { _, _ ->
-                if (activity is AppRatingDialogResponseCallback) {
-                    (activity as AppRatingDialogResponseCallback).onRateLaterClick()
-                } else {
-                    LOG.e(TAG, "The activity that calls the prompt should implement AppRatingDialogResponseCallback")
+                activity?.let {
+                    if (it is AppRatingDialogResponseCallback) {
+                        (it as AppRatingDialogResponseCallback).onRateLaterClick()
+                        AppRatingInitializer.handleDialogResponse(it.applicationContext, AppRatingDialogResponse.RATE_LATER)
+                    } else {
+                        LOG.e(TAG, "The activity that calls the prompt should implement AppRatingDialogResponseCallback")
+                    }
                 }
             }
             .setNegativeButton(negativeButtonText) { _, _ ->
-                if (activity is AppRatingDialogResponseCallback) {
-                    (activity as AppRatingDialogResponseCallback).onNeverRateClick()
-                } else {
-                    LOG.e(TAG, "The activity that calls the prompt should implement AppRatingDialogResponseCallback")
+                activity?.let {
+                    if (it is AppRatingDialogResponseCallback) {
+                        (it as AppRatingDialogResponseCallback).onNeverRateClick()
+                        AppRatingInitializer.handleDialogResponse(it.applicationContext, AppRatingDialogResponse.NEVER_RATE)
+                    } else {
+                        LOG.e(TAG, "The activity that calls the prompt should implement AppRatingDialogResponseCallback")
+                    }
                 }
             }
             .create()
