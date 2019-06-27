@@ -19,7 +19,7 @@ object AppRatingInitializer {
         AppRatingController()
     }
 
-    private lateinit var callback: AppRatingDialogCallback
+    private var callback: AppRatingDialogCallback? = null
 
     /**
      * Sets up the conditions to prompt the dialog.
@@ -62,8 +62,8 @@ object AppRatingInitializer {
         if (controller.shouldPromptDialog(context)) {
             controller.updateStore(context)
             when {
-                ::callback.isInitialized && fragmentManager == null -> callback.showRatingDialog()
-                !::callback.isInitialized && fragmentManager != null -> controller.showDefaultDialog(fragmentManager)
+                callback != null && fragmentManager == null -> callback.showRatingDialog()
+                callback == null && fragmentManager != null -> controller.showDefaultDialog(fragmentManager)
                 else -> throw IllegalArgumentException("Should have one nullable and one non-nullable callback")
             }
         }
