@@ -65,8 +65,8 @@ ext {
     plexusVersion = '1.5.15'
 
     //Firebase
-    firebaseVersion = '16.0.9'
-    firebaseCoreVersion = '16.0.9'
+    firebaseVersion = '17.0.0'
+    firebaseCoreVersion = '17.0.0'
     firebasePerfVersion = '17.0.0'
 
     //Play Services

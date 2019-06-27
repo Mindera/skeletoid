@@ -64,14 +64,17 @@ dependencies {
 
     //Depends on Base Skeletoid
     api project(path: ':base')
-    testImplementation project(path: ':base', configuration: 'childTestDependencies')
 
     api ("com.google.firebase:firebase-core:$firebaseCoreVersion"){
         exclude group: 'androidx.core', module: 'core'
         exclude group: 'androidx.legacy', module: 'legacy-support-core-utils'
         exclude group: 'androidx.legacy', module: 'legacy-support-core-ui'
         exclude group: 'androidx.fragment', module: 'fragment'
+        exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'com.google.android.gms', module: 'play-services-basement'
         exclude group: 'com.google.firebase', module: 'firebase-common'
+
     }
+
+    testImplementation project(path: ':base', configuration: 'childTestDependencies')
 }
