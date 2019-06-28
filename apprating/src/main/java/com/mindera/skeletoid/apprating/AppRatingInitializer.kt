@@ -62,7 +62,7 @@ object AppRatingInitializer {
         if (controller.shouldPromptDialog(context)) {
             controller.updateStore(context)
             when {
-                callback != null && fragmentManager == null -> callback.showRatingDialog()
+                callback != null && fragmentManager == null -> callback?.showRatingDialog()
                 callback == null && fragmentManager != null -> controller.showDefaultDialog(fragmentManager)
                 else -> throw IllegalArgumentException("Should have one nullable and one non-nullable callback")
             }
