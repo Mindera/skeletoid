@@ -1,6 +1,7 @@
 package com.mindera.skeletoid.apprating
 
 import android.content.Context
+import androidx.fragment.app.FragmentManager
 import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogCallback
 import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogResponse
 import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogResponseCallback
@@ -18,7 +19,7 @@ object AppRatingInitializer {
         AppRatingController()
     }
 
-    private lateinit var callback: AppRatingDialogCallback
+    private var callback: AppRatingDialogCallback? = null
 
     /**
      * Sets up the conditions to prompt the dialog.
@@ -52,18 +53,18 @@ object AppRatingInitializer {
      * Only one of the callbacks can be null.
      *
      * @param context Context
-     * @param dialogResultCallback Callback to handle responses to the default dialog. Null if it uses a custom dialog.
+     * @param fragmentManager Fragment Manager to show default dialog
      */
     fun promptDialog(
         context: Context,
-        dialogResultCallback: AppRatingDialogResponseCallback? = null
+        fragmentManager: FragmentManager? = null
     ) {
         if (controller.shouldPromptDialog(context)) {
             controller.updateStore(context)
             when {
-                ::callback.isInitialized && dialogResultCallback == null -> callback.showRatingDialog()
-                !::callback.isInitialized && dialogResultCallback != null -> LOG.d(LOG_TAG, "Calling default dialog TO BE IMPLEMENTED")
-                else -> throw IllegalArgumentException("Should have one non-nullable callback")
+                callback != null && fragmentManager == null -> callback?.showRatingDialog()
+                callback == null && fragmentManager != null -> controller.showDefaultDialog(fragmentManager)
+                else -> throw IllegalArgumentException("Should have one nullable and one non-nullable callback")
             }
         }
     }

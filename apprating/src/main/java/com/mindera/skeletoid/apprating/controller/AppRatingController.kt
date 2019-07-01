@@ -1,7 +1,9 @@
 package com.mindera.skeletoid.apprating.controller
 
 import android.content.Context
+import androidx.fragment.app.FragmentManager
 import com.mindera.skeletoid.apprating.callbacks.AppRatingDialogResponse
+import com.mindera.skeletoid.apprating.dialogs.AppRatingDialog
 import com.mindera.skeletoid.apprating.job.AppRatingJobInitializer
 import com.mindera.skeletoid.apprating.store.AppRatingStore
 import com.mindera.skeletoid.generic.DateUtils
@@ -28,6 +30,8 @@ class AppRatingController {
 
     /**
      * Updates the values in the store.
+     *
+     * @param context Context to access store
      */
     fun updateStore(context: Context) {
         val store = AppRatingStore(context)
@@ -88,6 +92,16 @@ class AppRatingController {
      */
     fun schedulePromptDialogJob() {
         promptTimeInterval?.let { AppRatingJobInitializer.schedule(it) }
+    }
+
+    /**
+     * Shows the default app rating dialog.
+     *
+     * @param fragmentManager Fragment manager used to show dialog
+     */
+    fun showDefaultDialog(fragmentManager: FragmentManager) {
+        AppRatingDialog.newInstance()
+            .show(fragmentManager, AppRatingDialog.TAG)
     }
 
     /**
