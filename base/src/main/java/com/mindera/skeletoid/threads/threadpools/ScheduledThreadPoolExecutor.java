@@ -30,9 +30,9 @@ public class ScheduledThreadPoolExecutor extends java.util.concurrent.ScheduledT
                 if (future.isDone())
                     future.get();
             } catch (CancellationException ce) {
-                LOG.e(LOG_TAG, "Task was cancelled: " + r.toString());
+                LOG.w(LOG_TAG, "Task was cancelled: " + r.toString());
             } catch (InterruptedException ie) {
-                LOG.e(LOG_TAG, "Task was interrupted: " + r.toString());
+                LOG.w(LOG_TAG, "Task was interrupted: " + r.toString());
                 Thread.currentThread().interrupt(); // ignore/reset
             } catch (Exception e) {
                 t = e.getCause();
