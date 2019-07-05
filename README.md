@@ -26,12 +26,19 @@ Instead of copy pasting the same utils packages to each new project (and not hav
 This library is divided into modules to enable you to just use those that you need:
 
 [Base module](https://github.com/Mindera/skeletoid/blob/master/base/README.md)
+
 [Kotlin extensions module](https://github.com/Mindera/skeletoid/blob/master/kt-extensions/README.md)
+
 [RxJava module](https://github.com/Mindera/skeletoid/blob/master/rxjava/README.md)
+
 [RxBindings module](https://github.com/Mindera/skeletoid/blob/master/rxbindings/README.md)
+
 [Analytics Firebase module - Support for Firebase](https://github.com/Mindera/skeletoid/blob/master/analytics-firebase/README.md)
+
 [Analytics GA module - Support for Google Analytics](https://github.com/Mindera/skeletoid/blob/master/analytics-ga/README.md)
+
 [Performance Firebase module - Support for Firebase](https://github.com/Mindera/skeletoid/blob/master/performance-firebase/README.md)
+
 [App Rating module](https://github.com/Mindera/skeletoid/blob/master/apprating/README.md)
 
 ## Note
