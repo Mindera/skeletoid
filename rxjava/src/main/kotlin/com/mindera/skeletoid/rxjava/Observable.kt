@@ -14,18 +14,25 @@ fun <T : Any> Observable<T>.subscribeOnIO(): Observable<T> = subscribeOn(Schedul
 fun <T : Any> Observable<T>.observeOnIO(): Observable<T> = observeOn(Schedulers.io())
 
 
-fun <T : Any> Observable<T>.subscribeOnComputation(): Observable<T> = subscribeOn(Schedulers.computation())
+fun <T : Any> Observable<T>.subscribeOnComputation(): Observable<T> =
+    subscribeOn(Schedulers.computation())
 
-fun <T : Any> Observable<T>.observeOnComputation(): Observable<T> = observeOn(Schedulers.computation())
+fun <T : Any> Observable<T>.observeOnComputation(): Observable<T> =
+    observeOn(Schedulers.computation())
 
 
-fun <T : Any> Observable<T>.subscribeOnMain(): Observable<T> = subscribeOn(AndroidSchedulers.mainThread())
+fun <T : Any> Observable<T>.subscribeOnMain(): Observable<T> =
+    subscribeOn(AndroidSchedulers.mainThread())
 
-fun <T : Any> Observable<T>.observeOnMain(): Observable<T> = observeOn(AndroidSchedulers.mainThread())
+fun <T : Any> Observable<T>.observeOnMain(): Observable<T> =
+    observeOn(AndroidSchedulers.mainThread())
 
 
 //Use this to maintain a list of shared Observables (use together with allowMultipleSubscribers)
-fun <T : Any> Observable<T>.createUniqueConcurrentRequestCache(requestMap: ConcurrentHashMap<String, Observable<*>>, key: String): Observable<T> {
+fun <T : Any> Observable<T>.createUniqueConcurrentRequestCache(
+    requestMap: ConcurrentHashMap<String, Observable<*>>,
+    key: String
+): Observable<T> {
 
     val obs = this.doFinally {
         requestMap.remove(key)
@@ -38,7 +45,7 @@ fun <T : Any> Observable<T>.createUniqueConcurrentRequestCache(requestMap: Concu
 /**
  * Holds an item and an exception. Used in [delayAtLeast]
  */
-internal data class DataHolder<T>(val something: T? = null, val throwable: Throwable? = null)
+internal data class DataHolder<T>(val something: T?= null, val throwable: Throwable? = null)
 
 /**
  * Extension that always waits for at least timeToWait in the provided timeUnit before emitting. This will happen even if an exception is thrown. Used to prevent loadings to just blink when a connection is too fast.
@@ -46,20 +53,34 @@ internal data class DataHolder<T>(val something: T? = null, val throwable: Throw
  * @param timeToWait - the time to wait
  * @param timeUnit - the unit of timeToWait
  */
-fun <T> Observable<T>.delayAtLeast(timeToWait: Long = 1000, timeUnit: TimeUnit = TimeUnit.MILLISECONDS): Observable<T> {
+fun <T> Observable<T>.delayAtLeast(
+    timeToWait: Long = 1000,
+    timeUnit: TimeUnit = TimeUnit.MILLISECONDS
+): Observable<T> {
+    var data : DataHolder<T>
     return Observable.zip<DataHolder<T>, Long, DataHolder<T>>(this.map {
-        DataHolder(
-            something = it
-        )
-    }.onErrorReturn { DataHolder(throwable = it) },
-            Observable.timer(timeToWait, timeUnit), BiFunction { t, _ -> t }).map { it.something ?: it.throwable?.let { throwable -> throw throwable } ?: throw Exception() }
+        data = DataHolder(something = it)
+        data
+    }
+        .onErrorReturn { DataHolder(throwable = it) },
+        Observable.timer(timeToWait, timeUnit), BiFunction { t, _ -> t })
+        .map {
+            it.something ?: it.throwable?.let { throwable -> throw throwable } ?: throw Exception()
+        }
 }
 
 fun <T> Observable<T>.allowMultipleSubscribers(): Observable<T> =
-        share()
-                .replay(1)
-                .autoConnect(1)
+    share()
+        .replay(1)
+        .autoConnect(1)
 
+fun <T> Observable<T>.filterAndDo(condition: Boolean, elseFunction: () -> Unit): Observable<T> =
+    doOnSubscribe {
+        if (condition) {
+            elseFunction()
+        }
+    }
+        .filter { condition }
 
 
 
