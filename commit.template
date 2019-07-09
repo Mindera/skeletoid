@@ -1,0 +1,43 @@
+#################################################
+
+# |<----   Preferably using up to 50 chars   --->|<------------------->|
+# [feature] or [fix] ticket or Crash url or [refactor,style,
+doc, test...]
+
+# |<----   Try To Limit Each Line to a Maximum Of 72 Characters   ---->|
+# Description - Explain why this change is being made
+
+# |<----   Try To Limit Each Line to a Maximum Of 72 Characters   ---->|
+# (Optional) Provide links or keys to any relevant tickets, articles or
+ other resources
+# Example: Crash from Firebase - www.xpto.com 
+
+
+#################################################
+# |<----   Preferably using up to 50 chars   --->
+# --- COMMIT END ---
+# Tag can be 
+#    feature  (new feature)
+#    fix      (bug/crash fix)
+#    refactor (refactoring code)
+#    style    (formatting, missing semi colons, etc; no code change)
+#    doc      (changes to documentation)
+#    test     (adding or refactoring tests; no production code change)
+#    version  (version bump/new release; no production code change)
+#    debug    (Changes in debugging code/frameworks; no production code change)
+#    license  (Edits regarding licensing; no production code change)
+#    hack     (Temporary fix to make things move forward; please avoid it)
+#    WIP      (Work In Progress; for intermediate commits to keep patches reasonably sized)
+#    defaults (changes default options)
+#
+# Note: Multiple tags can be combined, e.g. [fix][version] Fix issue X with methodhandles and bump to version 1.2.3
+# --------------------
+# Remember to:
+#   * This can (should) use the title and description as the pull request
+#   * Capitalize the subject line
+#   * Use the imperative mood in the subject line
+#   * Do not end the subject line with a period
+#   * Separate subject from body with a blank line
+#   * Use the body to explain what and why vs. how
+#   * Can use multiple lines with "-" or "*" for bullet points in body
+# --------------------
