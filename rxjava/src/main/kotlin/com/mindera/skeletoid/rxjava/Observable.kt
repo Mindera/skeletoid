@@ -75,7 +75,7 @@ fun <T> Observable<T>.allowMultipleSubscribers(): Observable<T> =
         .autoConnect(1)
 
 fun <T> Observable<T>.filterAndDo(condition: Boolean, elseFunction: () -> Unit): Observable<T> =
-    doOnSubscribe {
+    doOnNext {
         if (condition) {
             elseFunction()
         }
