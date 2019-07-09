@@ -65,7 +65,7 @@ fun <T> Observable<T>.delayAtLeast(
         .onErrorReturn { DataHolder(throwable = it) },
         Observable.timer(timeToWait, timeUnit), BiFunction { t, _ -> t })
         .map {
-            it.something ?: it.throwable?.let { throwable -> throw throwable } ?: throw Exception()
+            it.something ?: throw it.throwable ?: Exception()
         }
 }
 
@@ -82,6 +82,13 @@ fun <T> Observable<T>.filterAndDo(condition: Boolean, elseFunction: () -> Unit):
     }
         .filter { condition }
 
+fun <T> Observable<T>.skipWhileAndDo(condition: Boolean, doAction: () -> Unit): Observable<T> =
+    doOnNext {
+        if (condition) {
+            doAction()
+        }
+    }
+        .skipWhile { condition }
 
 
 
