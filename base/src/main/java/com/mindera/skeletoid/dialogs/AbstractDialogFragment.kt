@@ -105,6 +105,11 @@ abstract class AbstractDialogFragment : DialogFragment() {
             return
         }
 
+        if (targetFragment?.isVisible == false) {
+            LOG.e(LOG_TAG, "Fragment is not visible, ignoring to avoid crash...")
+            return
+        }
+
         val activity = targetFragment?.activity ?: activity
 
         if (isActivityFinishing(activity)) {
