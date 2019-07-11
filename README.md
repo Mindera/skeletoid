@@ -21,9 +21,10 @@ An utils library for Android Applications made at Mindera.
 
 ### Why should you use it?
 Instead of copy pasting the same utils packages to each new project (and not having improvements propagated), just have this lib to help you! 
+Also this provides out of the box a broad range of  utils.
 
+This library is **divided into modules** to enable you to just use just those that you need (click on them to get more info on how to use them):
 
-This library is divided into modules to enable you to just use those that you need:
 
 [Base module](https://github.com/Mindera/skeletoid/blob/master/base/README.md)
 - This provides vanilla utilities for Android (logging, analytics, threading..) without bring any library attached to it
