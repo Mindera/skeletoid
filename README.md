@@ -27,16 +27,16 @@ This library is **divided into modules** to enable you to just use just those th
 
 
 [Base module](https://github.com/Mindera/skeletoid/blob/master/base/README.md)
-- This provides vanilla utilities for Android (logging, analytics, threading..) without bring any library attached to it
+- This provides vanilla utilities for Android (logging, analytics, threading..) without bring any other big library attached to it
 
 [Kotlin extensions module](https://github.com/Mindera/skeletoid/blob/master/kt-extensions/README.md)
-- This provides some useful Kotlin extensions that we have been using. It is a ever growing module.
+- This provides some useful Kotlin extensions that we have been using. It is a evergrowing module.
 
-[RxJava module](https://github.com/Mindera/skeletoid/blob/master/rxjava/README.md)
-- Do you use RxJava 2 & Kotlin? Well, this might be interesting for you! From operators to extensions we are adding it all!
+[RxJava 2 module](https://github.com/Mindera/skeletoid/blob/master/rxjava/README.md)
+- Do you use RxJava 2 & Kotlin? Well, this might be interesting for you! From operators to rx chain extensions we are adding it all here!
 
 [App Rating module](https://github.com/Mindera/skeletoid/blob/master/apprating/README.md)
-- Do you want to ask you users to give rating to your app? Here you go, quick and easy!
+- Do you want to ask you users to rate to your app? Here you go, quick and easy!
 
 
 
