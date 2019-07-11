@@ -26,16 +26,16 @@ Also this provides out of the box a broad range of  utils.
 This library is **divided into modules** to enable you to just use just those that you need (click on them to get more info on how to use them):
 
 
-## [Base module](https://github.com/Mindera/skeletoid/blob/master/base/)
+### [Base module](https://github.com/Mindera/skeletoid/blob/master/base/)
 - This provides vanilla utilities for Android (logging, analytics, threading..) without bring any other big library attached to it
 
-## [Kotlin extensions module](https://github.com/Mindera/skeletoid/blob/master/kt-extensions/)
+### [Kotlin extensions module](https://github.com/Mindera/skeletoid/blob/master/kt-extensions/)
 - This provides some useful Kotlin extensions that we have been using. It is a evergrowing module.
 
-## [RxJava 2 module](https://github.com/Mindera/skeletoid/blob/master/rxjava/)
+### [RxJava 2 module](https://github.com/Mindera/skeletoid/blob/master/rxjava/)
 - Do you use RxJava 2 & Kotlin? Well, this might be interesting for you! From operators to rx chain extensions we are adding it all here!
 
-## [App Rating module](https://github.com/Mindera/skeletoid/blob/master/apprating/)
+### [App Rating module](https://github.com/Mindera/skeletoid/blob/master/apprating/)
 - Do you want to ask you users to rate to your app? Here you go, quick and easy!
 
 ---
@@ -44,17 +44,17 @@ This library is **divided into modules** to enable you to just use just those th
 
 You are using [Base module](https://github.com/Mindera/skeletoid/blob/master/base/) and want it to be plug and play:
 
-## [Analytics - Module for Firebase](https://github.com/Mindera/skeletoid/blob/master/analytics-firebase/)
+### [Analytics - Module for Firebase](https://github.com/Mindera/skeletoid/blob/master/analytics-firebase/)
 - With Firebase
 
-## [Analytics - Module for Google Analytics](https://github.com/Mindera/skeletoid/blob/master/analytics-ga/)
+### [Analytics - Module for Google Analytics](https://github.com/Mindera/skeletoid/blob/master/analytics-ga/)
 - With Google Analytics
 
 ---
 
 ## Helpers for external libraries:
 
-## [RxJava 2 - Performance Firebase](https://github.com/Mindera/skeletoid/blob/master/performance-firebase/)
+### [RxJava 2 - Performance Firebase](https://github.com/Mindera/skeletoid/blob/master/performance-firebase/)
 - Some utils to help integrate RxJava 2 chain with Firebase performance tooling
 
 ---
