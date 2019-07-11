@@ -44,16 +44,20 @@ This library is **divided into modules** to enable you to just use just those th
 
 You are using [Base module](https://github.com/Mindera/skeletoid/blob/master/base/) and want it to be plug and play:
 
-[Analytics Firebase module - Support for Firebase](https://github.com/Mindera/skeletoid/blob/master/analytics-firebase/)
+[Analytics - Module for Firebase](https://github.com/Mindera/skeletoid/blob/master/analytics-firebase/)
 - With Firebase
 
-[Analytics GA module - Support for Google Analytics](https://github.com/Mindera/skeletoid/blob/master/analytics-ga/)
+[Analytics - Module for Google Analytics](https://github.com/Mindera/skeletoid/blob/master/analytics-ga/)
 - With Google Analytics
 
-### Wrappers for external libraries:
 
-[Performance Firebase module - Support for Firebase](https://github.com/Mindera/skeletoid/blob/master/performance-firebase/)
-- Some utils to help integrate with Firebase performance tooling
+### Helpers for external libraries:
+
+[RxJava 2 - Performance Firebase](https://github.com/Mindera/skeletoid/blob/master/performance-firebase/)
+- Some utils to help integrate RxJava 2 chain with Firebase performance tooling
+
+
+### Wrappers for external libraries:
 
 [RxBindings module](https://github.com/Mindera/skeletoid/blob/master/rxbindings/)
 - This is a simple wrapper around [RxBindings](https://github.com/JakeWharton/RxBinding) that aims to solve some specific issues
