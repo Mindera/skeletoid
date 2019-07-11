@@ -72,10 +72,6 @@ Analytics.trackEvent(eventName, analyticsPayload);
    ```
 
 
-## Performance Rx Operators
-Have your own implementation of performance tracking using `PerformanceObservableOperator` and `PerformanceSingleOperator`. Create your tracker by implementing `PerformanceTracker` interface.
-
-
 ## Usage
 
 The plugin is available in [JitPack](https://jitpack.io/). Just add the following to your buildscript dependencies:
