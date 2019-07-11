@@ -74,17 +74,17 @@ fun <T> Observable<T>.allowMultipleSubscribers(): Observable<T> =
         .replay(1)
         .autoConnect(1)
 
-fun <T> Observable<T>.filterAndDo(condition: Boolean, runIfFiltered: () -> Unit): Observable<T> =
+fun <T> Observable<T>.filterOrElse(condition: Boolean, action: () -> Unit): Observable<T> =
     doOnNext {
-        if (condition) {
-            runIfFiltered()
+        if (!condition) {
+            action()
         }
     }.filter { condition }
 
-fun <T> Observable<T>.skipWhileAndDo(condition: Boolean, runIfSkipped: () -> Unit): Observable<T> =
+fun <T> Observable<T>.skipWhileAndDo(condition: Boolean, action: () -> Unit): Observable<T> =
     doOnNext {
         if (condition) {
-            runIfSkipped()
+            action()
         }
     }.skipWhile { condition }
 

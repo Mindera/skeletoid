@@ -30,9 +30,9 @@ fun <T> Single<T>.allowMultipleSubscribers(): Observable<T> =
         .autoConnect(1)
 
 
-fun <T> Single<T>.filterAndDo(condition: Boolean, runIfFiltered: () -> Unit): Maybe<T> =
+fun <T> Single<T>.filterOrElse(condition: Boolean, action: () -> Unit): Maybe<T> =
     doOnSubscribe {
-        if (condition) {
-            runIfFiltered()
+        if (!condition) {
+            action()
         }
     }.filter { condition }
