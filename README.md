@@ -38,7 +38,7 @@ This library is **divided into modules** to enable you to just use just those th
 ## [App Rating module](https://github.com/Mindera/skeletoid/blob/master/apprating/)
 - Do you want to ask you users to rate to your app? Here you go, quick and easy!
 
-
+---
 
 ## Plugins for Base module
 
@@ -50,17 +50,21 @@ You are using [Base module](https://github.com/Mindera/skeletoid/blob/master/bas
 ## [Analytics - Module for Google Analytics](https://github.com/Mindera/skeletoid/blob/master/analytics-ga/)
 - With Google Analytics
 
+---
 
 ## Helpers for external libraries:
 
 [RxJava 2 - Performance Firebase](https://github.com/Mindera/skeletoid/blob/master/performance-firebase/)
 - Some utils to help integrate RxJava 2 chain with Firebase performance tooling
 
+---
 
 ## Wrappers for external libraries:
 
 ### [RxBindings module](https://github.com/Mindera/skeletoid/blob/master/rxbindings/)
 - This is a simple wrapper around [RxBindings](https://github.com/JakeWharton/RxBinding) that aims to solve some specific issues
+
+---
 
 ## Notes
 
