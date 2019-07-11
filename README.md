@@ -26,23 +26,38 @@ Instead of copy pasting the same utils packages to each new project (and not hav
 This library is divided into modules to enable you to just use those that you need:
 
 [Base module](https://github.com/Mindera/skeletoid/blob/master/base/README.md)
+- This provides vanilla utilities for Android (logging, analytics, threading..) without bring any library attached to it
 
 [Kotlin extensions module](https://github.com/Mindera/skeletoid/blob/master/kt-extensions/README.md)
+- This provides some useful Kotlin extensions that we have been using. It is a ever growing module.
 
 [RxJava module](https://github.com/Mindera/skeletoid/blob/master/rxjava/README.md)
-
-[RxBindings module](https://github.com/Mindera/skeletoid/blob/master/rxbindings/README.md)
-
-[Analytics Firebase module - Support for Firebase](https://github.com/Mindera/skeletoid/blob/master/analytics-firebase/README.md)
-
-[Analytics GA module - Support for Google Analytics](https://github.com/Mindera/skeletoid/blob/master/analytics-ga/README.md)
-
-[Performance Firebase module - Support for Firebase](https://github.com/Mindera/skeletoid/blob/master/performance-firebase/README.md)
+- Do you use RxJava 2 & Kotlin? Well, this might be interesting for you! From operators to extensions we are adding it all!
 
 [App Rating module](https://github.com/Mindera/skeletoid/blob/master/apprating/README.md)
+- Do you want to ask you users to give rating to your app? Here you go, quick and easy!
 
-## Note
 
-All the module will be converted to Kotlin in due time.
 
-The parts of this lib in Java will soon be migrated to Kotlin
+### Plugins for previous modules
+
+You are using [Base module](https://github.com/Mindera/skeletoid/blob/master/base/README.md) and want it to be plug and play:
+
+[Analytics Firebase module - Support for Firebase](https://github.com/Mindera/skeletoid/blob/master/analytics-firebase/README.md)
+- With Firebase
+
+[Analytics GA module - Support for Google Analytics](https://github.com/Mindera/skeletoid/blob/master/analytics-ga/README.md)
+- With Google Analytics
+
+### Wrappers for external libraries:
+
+[Performance Firebase module - Support for Firebase](https://github.com/Mindera/skeletoid/blob/master/performance-firebase/README.md)
+- Some utils to help integrate with Firebase performance tooling
+
+[RxBindings module](https://github.com/Mindera/skeletoid/blob/master/rxbindings/README.md)
+- This is a simple wrapper around [RxBindings](https://github.com/JakeWharton/RxBinding) that aims to solve some specific issues
+
+## Notes
+
+- We are moving to a full Kotlin world, but you might still find some Java along the road.
+- We move fast and we break things.. but we are friendly. Please drop us an issue/feature request and we will address it asap.
