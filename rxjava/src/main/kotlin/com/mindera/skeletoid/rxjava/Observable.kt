@@ -45,7 +45,7 @@ fun <T : Any> Observable<T>.createUniqueConcurrentRequestCache(
 /**
  * Holds an item and an exception. Used in [delayAtLeast]
  */
-internal data class DataHolder<T>(val something: T?= null, val throwable: Throwable? = null)
+internal data class DataHolder<T>(val something: T? = null, val throwable: Throwable? = null)
 
 /**
  * Extension that always waits for at least timeToWait in the provided timeUnit before emitting. This will happen even if an exception is thrown. Used to prevent loadings to just blink when a connection is too fast.
@@ -57,7 +57,7 @@ fun <T> Observable<T>.delayAtLeast(
     timeToWait: Long = 1000,
     timeUnit: TimeUnit = TimeUnit.MILLISECONDS
 ): Observable<T> {
-    var data : DataHolder<T>
+    var data: DataHolder<T>
     return Observable.zip<DataHolder<T>, Long, DataHolder<T>>(this.map {
         data = DataHolder(something = it)
         data
@@ -74,21 +74,19 @@ fun <T> Observable<T>.allowMultipleSubscribers(): Observable<T> =
         .replay(1)
         .autoConnect(1)
 
-fun <T> Observable<T>.filterAndDo(condition: Boolean, elseFunction: () -> Unit): Observable<T> =
+fun <T> Observable<T>.filterAndDo(condition: Boolean, runIfFiltered: () -> Unit): Observable<T> =
     doOnNext {
         if (condition) {
-            elseFunction()
+            runIfFiltered()
         }
-    }
-        .filter { condition }
+    }.filter { condition }
 
-fun <T> Observable<T>.skipWhileAndDo(condition: Boolean, doAction: () -> Unit): Observable<T> =
+fun <T> Observable<T>.skipWhileAndDo(condition: Boolean, runIfSkipped: () -> Unit): Observable<T> =
     doOnNext {
         if (condition) {
-            doAction()
+            runIfSkipped()
         }
-    }
-        .skipWhile { condition }
+    }.skipWhile { condition }
 
 
 
