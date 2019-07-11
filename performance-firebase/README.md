@@ -1,4 +1,4 @@
-# Performance Firebase - Support for Firebase
+# Performance Module - With support for Firebase
 
 ## Features
 Contains `FirebasePerformanceObservableOperator` and `FirebasePerformanceSingleOperator` that allows to track your reactive calls performance using Firebase Performance.
