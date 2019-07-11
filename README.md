@@ -51,7 +51,7 @@ You are using [Base module](https://github.com/Mindera/skeletoid/blob/master/bas
 - With Google Analytics
 
 
-### Helpers for external libraries:
+## Helpers for external libraries:
 
 [RxJava 2 - Performance Firebase](https://github.com/Mindera/skeletoid/blob/master/performance-firebase/)
 - Some utils to help integrate RxJava 2 chain with Firebase performance tooling
