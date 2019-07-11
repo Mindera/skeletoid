@@ -85,6 +85,8 @@ dependencies {
         exclude group: 'androidx.vectordrawable', module: 'vectordrawable'
     }
 
+    implementation "com.jakewharton:disklrucache:$diskCache"
+
     implementation ("androidx.legacy:legacy-support-core-utils:$androidLegacyVersion") {
         exclude group: 'android.loader', module: 'loader'
         exclude group: 'androidx.annotation', module: 'annotation'
