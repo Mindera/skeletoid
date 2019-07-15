@@ -23,14 +23,14 @@ fun <T : Any> Single<T>.subscribeOnMain(): Single<T> = subscribeOn(AndroidSchedu
 fun <T : Any> Single<T>.observeOnMain(): Single<T> = observeOn(AndroidSchedulers.mainThread())
 
 
-fun <T> Single<T>.allowMultipleSubscribers(): Observable<T> =
+fun <T : Any> Single<T>.allowMultipleSubscribers(): Observable<T> =
     toObservable()
         .share()
         .replay(1)
         .autoConnect(1)
 
 
-fun <T> Single<T>.filterOrElse(condition: Boolean, action: () -> Unit): Maybe<T> =
+fun <T : Any> Single<T>.filterOrElse(condition: Boolean, action: () -> Unit): Maybe<T> =
     doOnSubscribe {
         if (!condition) {
             action()

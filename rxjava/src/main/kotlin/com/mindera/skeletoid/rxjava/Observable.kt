@@ -53,7 +53,7 @@ internal data class DataHolder<T>(val something: T? = null, val throwable: Throw
  * @param timeToWait - the time to wait
  * @param timeUnit - the unit of timeToWait
  */
-fun <T> Observable<T>.delayAtLeast(
+fun <T : Any> Observable<T>.delayAtLeast(
     timeToWait: Long = 1000,
     timeUnit: TimeUnit = TimeUnit.MILLISECONDS
 ): Observable<T> {
@@ -69,19 +69,19 @@ fun <T> Observable<T>.delayAtLeast(
         }
 }
 
-fun <T> Observable<T>.allowMultipleSubscribers(): Observable<T> =
+fun <T : Any> Observable<T>.allowMultipleSubscribers(): Observable<T> =
     share()
         .replay(1)
         .autoConnect(1)
 
-fun <T> Observable<T>.filterOrElse(condition: Boolean, action: () -> Unit): Observable<T> =
+fun <T : Any> Observable<T>.filterOrElse(condition: Boolean, action: () -> Unit): Observable<T> =
     doOnNext {
         if (!condition) {
             action()
         }
     }.filter { condition }
 
-fun <T> Observable<T>.skipWhileAndDo(condition: Boolean, action: () -> Unit): Observable<T> =
+fun <T : Any> Observable<T>.skipWhileAndDo(condition: Boolean, action: () -> Unit): Observable<T> =
     doOnNext {
         if (condition) {
             action()
