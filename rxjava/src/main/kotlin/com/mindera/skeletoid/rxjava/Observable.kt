@@ -48,7 +48,9 @@ fun <T : Any> Observable<T>.createUniqueConcurrentRequestCache(
 internal data class DataHolder<T>(val something: T? = null, val throwable: Throwable? = null)
 
 /**
- * Extension that always waits for at least timeToWait in the provided timeUnit before emitting. This will happen even if an exception is thrown. Used to prevent loadings to just blink when a connection is too fast.
+ * Extension that always waits for at least timeToWait in the provided timeUnit before emitting.
+ * This will happen even if an exception is thrown.
+ * Used to prevent loadings to just blink when a connection is too fast.
  *
  * @param timeToWait - the time to wait
  * @param timeUnit - the unit of timeToWait
@@ -57,16 +59,12 @@ fun <T : Any> Observable<T>.delayAtLeast(
     timeToWait: Long = 1000,
     timeUnit: TimeUnit = TimeUnit.MILLISECONDS
 ): Observable<T> {
-    var data: DataHolder<T>
-    return Observable.zip<DataHolder<T>, Long, DataHolder<T>>(this.map {
-        data = DataHolder(something = it)
-        data
-    }
-        .onErrorReturn { DataHolder(throwable = it) },
-        Observable.timer(timeToWait, timeUnit), BiFunction { t, _ -> t })
-        .map {
-            it.something ?: throw it.throwable ?: Exception()
-        }
+    return Observable.zip<DataHolder<T>, Long, DataHolder<T>>(
+        this.map { DataHolder(something = it) }.onErrorReturn { DataHolder(throwable = it) },
+        Observable.timer(timeToWait, timeUnit),
+        BiFunction { t, _ -> t }
+    )
+    .map { it.something ?: throw it.throwable ?: Exception() }
 }
 
 fun <T : Any> Observable<T>.allowMultipleSubscribers(): Observable<T> =
@@ -79,14 +77,16 @@ fun <T : Any> Observable<T>.filterOrElse(condition: Boolean, action: () -> Unit)
         if (!condition) {
             action()
         }
-    }.filter { condition }
+    }
+    .filter { condition }
 
 fun <T : Any> Observable<T>.skipWhileAndDo(condition: Boolean, action: () -> Unit): Observable<T> =
     doOnNext {
         if (condition) {
             action()
         }
-    }.skipWhile { condition }
+    }
+    .skipWhile { condition }
 
 
 
