@@ -9,7 +9,7 @@ object ProxyUtils {
         var proxyAddress: StringBuilder? = null
         try {
             System.getProperty("http.proxyHost")?.run { proxyAddress = StringBuilder(this) }
-            proxyAddress?.apply { this.append(":${System.getProperty("http.proxyPort")}") }
+            proxyAddress?.append(":${System.getProperty("http.proxyPort")}")
         } catch (exception: Exception) {
             LOG.e(LOG_TAG, exception, "Get proxy details exception: ${exception.message}")
         }
