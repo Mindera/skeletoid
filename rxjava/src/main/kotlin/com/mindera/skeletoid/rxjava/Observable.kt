@@ -6,6 +6,7 @@ import com.mindera.skeletoid.rxjava.schedulers.Schedulers
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Predicate
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
@@ -72,14 +73,6 @@ fun <T : Any> Observable<T>.allowMultipleSubscribers(): Observable<T> =
         .replay(1)
         .autoConnect(1)
 
-fun <T : Any> Observable<T>.filterOrElse(condition: Boolean, action: () -> Unit): Observable<T> =
-    doOnNext {
-        if (!condition) {
-            action()
-        }
-    }
-    .filter { condition }
-
 fun <T : Any> Observable<T>.skipWhileAndDo(condition: Boolean, action: () -> Unit): Observable<T> =
     doOnNext {
         if (condition) {
@@ -88,5 +81,12 @@ fun <T : Any> Observable<T>.skipWhileAndDo(condition: Boolean, action: () -> Uni
     }
     .skipWhile { condition }
 
+fun <T : Any> Observable<T>.filterOrElse(predicate: Predicate<T>, action: (value: T) -> Unit): Observable<T> =
+    doOnNext {
+        if (!predicate.test(it)) {
+            action(it)
+        }
+    }
+    .filter(predicate)
 
 

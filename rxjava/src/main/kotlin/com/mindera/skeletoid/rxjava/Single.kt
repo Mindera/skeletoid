@@ -35,4 +35,5 @@ fun <T : Any> Single<T>.filterOrElse(condition: Boolean, action: () -> Unit): Ma
         if (!condition) {
             action()
         }
-    }.filter { condition }
+    }
+    .filter { condition }

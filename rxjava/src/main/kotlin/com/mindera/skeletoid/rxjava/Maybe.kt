@@ -29,4 +29,5 @@ fun <T : Any> Maybe<T>.filterOrElse(condition: Boolean, action: () -> Unit): May
         if (!condition) {
             action()
         }
-    }.filter { condition }
+    }
+    .filter { condition }
