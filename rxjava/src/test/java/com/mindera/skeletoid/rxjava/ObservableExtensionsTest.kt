@@ -70,4 +70,64 @@ class ObservableExtensionsTest {
 
         assertEquals(emptyList<Int>(), list)
     }
+
+    @Test
+    fun testSkipWhileAndDoWithPredicate() {
+        val list = mutableListOf<Int>()
+        val subject = PublishSubject.create<Int>()
+        subject
+            .doOnNext { list.add(it) }
+            .test()
+
+        Observable.just(1, 2, 3, 4, 5, 6)
+            .skipWhileAndDo(Predicate { it < 4 }, {
+                subject.onNext(it)
+            })
+            .test()
+            .assertNoErrors()
+            .assertComplete()
+            .assertValues(4, 5, 6)
+
+        assertEquals(listOf(1, 2, 3), list)
+    }
+
+    @Test
+    fun testSkipWhileAndDoWithConditionTrue() {
+        val list = mutableListOf<Int>()
+        val subject = PublishSubject.create<Int>()
+        subject
+            .doOnNext { list.add(it) }
+            .test()
+
+        Observable.just(1, 2, 3, 4, 5, 6)
+            .skipWhileAndDo(Predicate { true }, {
+                subject.onNext(it)
+            })
+            .test()
+            .assertNoErrors()
+            .assertComplete()
+            .assertNoValues()
+
+        assertEquals(listOf(1, 2, 3, 4, 5, 6), list)
+    }
+
+    @Test
+    fun testSkipWhileAndDoWithConditionFalse() {
+        val list = mutableListOf<Int>()
+        val subject = PublishSubject.create<Int>()
+        subject
+            .doOnNext { list.add(it) }
+            .test()
+
+        Observable.just(1, 2, 3, 4, 5, 6)
+            .skipWhileAndDo(Predicate { false }, {
+                subject.onNext(it)
+            })
+            .test()
+            .assertNoErrors()
+            .assertComplete()
+            .assertValues(1, 2, 3, 4, 5, 6)
+
+        assertEquals(emptyList<Int>(), list)
+    }
 }

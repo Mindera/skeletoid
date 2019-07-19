@@ -73,13 +73,13 @@ fun <T : Any> Observable<T>.allowMultipleSubscribers(): Observable<T> =
         .replay(1)
         .autoConnect(1)
 
-fun <T : Any> Observable<T>.skipWhileAndDo(condition: Boolean, action: () -> Unit): Observable<T> =
+fun <T : Any> Observable<T>.skipWhileAndDo(predicate: Predicate<T>, action: (value: T) -> Unit): Observable<T> =
     doOnNext {
-        if (condition) {
-            action()
+        if (predicate.test(it)) {
+            action(it)
         }
     }
-    .skipWhile { condition }
+    .skipWhile(predicate)
 
 fun <T : Any> Observable<T>.filterOrElse(predicate: Predicate<T>, action: (value: T) -> Unit): Observable<T> =
     doOnNext {
