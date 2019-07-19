@@ -168,6 +168,7 @@ abstract class AbstractDialogFragment : DialogFragment() {
                 (activity as DialogFragmentHandler).onDialogResult(targetActivityRequestCode, state, getParameters())
                 return true
             } else {
+                //This logs should use getTag()
                 LOG.e(LOG_TAG, "Invalid targetActivityRequestCode: $targetActivityRequestCode")
             }
         } else {
