@@ -15,3 +15,5 @@ fun String.matchesEntireRegex(regex: Regex): Boolean {
 fun String.isEmailValid(): Boolean {
     return this.isNotBlank() && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
 }
+
+fun String?.nullIfBlank(): String? = if (isNullOrBlank()) null else this
