@@ -1,0 +1,96 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+
+    testBuildType "qa"
+
+    defaultConfig {
+
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+
+    }
+
+    buildTypes {
+
+        debug {
+
+        }
+
+        qa {
+            matchingFallbacks = ['debug']
+            testCoverageEnabled = true
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        // set to true to turn off analysis progress reporting by lint
+        quiet true
+
+        // if true, stop the gradle build if errors are found
+        abortOnError false
+
+        // do not ignore warnings
+        warningsAsErrors true
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
+    configurations {
+        childTestDependencies.extendsFrom testImplementation
+    }
+
+    configurations.all {
+
+        resolutionStrategy {
+            resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
+            resolutionStrategy.force "com.google.code.findbugs:jsr305:$findBugsVersion"
+
+            resolutionStrategy.force "org.objenesis:objenesis:$objenesisVersion"
+            resolutionStrategy.force "net.bytebuddy:byte-buddy:$byteBuddyVersion"
+            resolutionStrategy.force "net.bytebuddy:byte-buddy-agent:$byteBuddyVersion"
+
+            // fail eagerly on version conflict (includes transitive dependencies)
+            // e.g. multiple different versions of the same dependency (group and name are equal)
+            failOnVersionConflict()
+        }
+
+        resolutionStrategy.force "org.codehaus.plexus:plexus-utils:$plexusVersion"
+    }
+}
+
+
+dependencies {
+    implementation project(path: ':base')
+
+    implementation ("com.google.android.gms:play-services-vision:$rootProject.playServicesVision") {
+        exclude group: 'androidx.annotation', module: 'annotation'
+    }
+
+    implementation ("com.google.android.material:material:$rootProject.materialVersion") {
+        exclude group: 'androidx.annotation', module: 'annotation'
+        exclude group: 'androidx.core', module: 'core'
+        exclude group: 'androidx.appcompat', module: 'appcompat'
+        exclude group: 'androidx.vectordrawable', module: 'vectordrawable'
+    }
+
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$rootProject.kotlinVersion"
+    testImplementation "junit:junit:$rootProject.junitVersion"
+
+    androidTestImplementation ("androidx.test:runner:$testRunnerVersion") {
+        exclude group: 'androidx.annotation', module: 'annotation'
+    }
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion") {
+        exclude group: 'androidx.annotation', module: 'annotation'
+    }
+}
