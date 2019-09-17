@@ -21,7 +21,7 @@
     </string>
 
     <string name="barcode_scanner_fragment_request_camera_permission_dont_ask_again">
-        You have chosen "Don't ask again". Please change your device settings to grant camera access to use this feature.
+        You have chosen the do not ask again option. Please change your device settings to grant camera access to use this feature.
     </string>
 
     <string name="barcode_scanner_fragment_low_storage_warning">

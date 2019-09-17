@@ -31,12 +31,15 @@ import com.mindera.skeletoid.barcodescanner.camera.CameraSourcePreview
 import com.mindera.skeletoid.barcodescanner.camera.GraphicOverlay
 import com.mindera.skeletoid.kt.extensions.views.afterDrawn
 import com.mindera.skeletoid.logs.LOG
+import java.io.IOException
 import kotlin.math.sqrt
 
 
 @Suppress("Unused")
-class BarcodeScannerFragment(private val barcodeCallback: BarcodeScannerCallback,
-                             private val permissionsCallback: BarcodeScannerPermissionsCallback?) : Fragment(), BarcodeGraphicTracker.BarcodeDetectorListener {
+class BarcodeScannerFragment(
+        private val barcodeCallback: BarcodeScannerCallback,
+        private val permissionsCallback: BarcodeScannerPermissionsCallback?
+) : Fragment(), BarcodeGraphicTracker.BarcodeDetectorListener {
     companion object {
         const val BARCODE_FORMATS_BUNDLE_KEY = "barcodeFormats"
         const val BARCODE_STORAGE_MIN_PERCENTAGE_BUNDLE_KEY = "BARCODE_STORAGE_MIN"
@@ -78,9 +81,6 @@ class BarcodeScannerFragment(private val barcodeCallback: BarcodeScannerCallback
     private val readBarcodes = mutableListOf<Barcode>()
     //Triggered when we read the first barcode. Used to start cameraDetectionDelay countdown.
     private val hasBarcode = MutableLiveData<Boolean>() //Ensure this variable is only changed ONCE.
-    //To sync barcode detections and avoid dupes.
-    private val lock = Any()
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_barcode_reader, container, false)
@@ -194,14 +194,20 @@ class BarcodeScannerFragment(private val barcodeCallback: BarcodeScannerCallback
         //Checks if the device has Google Play Services enabled.
         val googleApiAvailability = GoogleApiAvailability.getInstance()
         val isGoogleApiAvailable = googleApiAvailability.isGooglePlayServicesAvailable(activity?.applicationContext)
-        if (isGoogleApiAvailable != ConnectionResult.SUCCESS) googleApiAvailability.getErrorDialog(activity, isGoogleApiAvailable, RC_HANDLE_GOOGLE_MOBILE_SERVICES)
+
+        if (isGoogleApiAvailable != ConnectionResult.SUCCESS) {
+            googleApiAvailability.getErrorDialog(activity, isGoogleApiAvailable, RC_HANDLE_GOOGLE_MOBILE_SERVICES)
+        }
 
         //Guarantee that the source is actually initialized, we don't want crashes in my town.
         if (::source.isInitialized) {
             try {
                 sourcePreview.start(source, overlay)
-            } catch (throwable: Throwable) {
-                throwable.printStackTrace()
+            } catch (e: SecurityException) {
+                e.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            } finally {
                 source.release()
             }
         }
@@ -262,7 +268,6 @@ class BarcodeScannerFragment(private val barcodeCallback: BarcodeScannerCallback
     /**
      * Converts a barcode bounding box to a Rect object.
      * a^2 + b^2 = c^2
-     *
      */
     private fun barcodeToRect(barcode: Barcode): Rect {
         return Rect(barcode.boundingBox.left, barcode.boundingBox.top, barcode.boundingBox.left + barcode.boundingBox.right, barcode.boundingBox.top + barcode.boundingBox.bottom)
@@ -272,7 +277,6 @@ class BarcodeScannerFragment(private val barcodeCallback: BarcodeScannerCallback
      * Distance to center using pythagoras theorem.
      *
      * We want the hypotenuse which is c^2, so, c = sqrt(a^2 + b^2)
-     *
      */
     private fun distanceToCenter(a: Rect, b: Rect) : Double {
         return sqrt(Math.pow((a.centerX() - b.centerX()).toDouble(), 2.0) + Math.pow((a.centerY() - b.centerY()).toDouble(), 2.0))
@@ -289,9 +293,9 @@ class BarcodeScannerFragment(private val barcodeCallback: BarcodeScannerCallback
         //we are trying to find an item that does not yet exist in the list, but is already
         //ready to be added, and our comparison will not return false, adding duplicates.
         //To avoid that, RACE CONDITIONS!
-        synchronized(lock) {
+        synchronized(BarcodeScannerFragment::class) {
             //Avoid duplicates & null data..
-            if (data != null && readBarcodes.find { it.rawValue == data.rawValue } == null) {
+            if (data != null && readBarcodes.none { it.rawValue == data.rawValue }) {
                 //All good, add the new bar code.
                 readBarcodes.add(data)
                 //Get the closest barcode and save it on our active barcode live data.
@@ -307,8 +311,11 @@ class BarcodeScannerFragment(private val barcodeCallback: BarcodeScannerCallback
      */
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == RC_HANDLE_CAMERA_PERMISSION) {
-            if (grantResults.isNotEmpty() && grantResults.first() == PackageManager.PERMISSION_GRANTED) initCamera()
-            else Snackbar.make(snackbarView, R.string.barcode_scanner_fragment_no_camera_permission, Snackbar.LENGTH_SHORT).show()
+            if (grantResults.isNotEmpty() && grantResults.first() == PackageManager.PERMISSION_GRANTED) {
+                initCamera()
+            } else {
+                Snackbar.make(snackbarView, R.string.barcode_scanner_fragment_no_camera_permission, Snackbar.LENGTH_SHORT).show()
+            }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }

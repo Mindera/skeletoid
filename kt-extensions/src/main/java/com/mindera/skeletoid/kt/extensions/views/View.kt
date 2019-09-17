@@ -3,7 +3,9 @@
 package com.mindera.skeletoid.kt.extensions.views
 
 import android.view.View
-import android.view.View.*
+import android.view.View.INVISIBLE
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 
