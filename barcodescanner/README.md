@@ -29,7 +29,7 @@ dependencies {
       - Default: 1920
       - Type: Int
       
-    - `BARCODE_CAMERA_RESOLUTION_WIDTH_BUNDLE_KEY`Camera height resolution
+    - `BARCODE_CAMERA_RESOLUTION_WIDTH_BUNDLE_KEY` Camera height resolution
       - Default: 1080 
       - Type: Int
       
@@ -43,7 +43,7 @@ dependencies {
       
 4. Start reading barcodes!
 
-Optional: Implement the `BarcodeScannerPermissionsCallback`interface to override the permissions request behaviour as you can see below on the code samples.
+Optional: Implement the `BarcodeScannerPermissionsCallback` interface to override the permissions request behaviour as you can see below on the code samples.
 
 ## Sample code
 
@@ -75,7 +75,6 @@ class MainActivity : AppCompatActivity(), BarcodeReaderCallback {
             transaction.add(R.id.container, fragment, BarcodeReaderFragment.BARCODE_FRAGMENT_TAG)
             transaction.addToBackStack(null)
             transaction.commit()
-
         }
     }
 
@@ -117,7 +116,6 @@ class MainActivity : AppCompatActivity(), BarcodeReaderCallback, BarcodeScannerP
             transaction.add(R.id.container, fragment, BarcodeReaderFragment.BARCODE_FRAGMENT_TAG)
             transaction.addToBackStack(null)
             transaction.commit()
-
         }
     }
 
