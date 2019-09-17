@@ -27,7 +27,7 @@ This library is **divided into modules** to enable you to just use just those th
 
 
 ### [Base module](https://github.com/Mindera/skeletoid/blob/master/base/)
-- This provides vanilla utilities for Android (logging, analytics, threading..) without bring any other big library attached to it
+- This provides vanilla utilities for Android (logging, analytics, threading..) without bringing any other big library attached to it
 
 ### [Kotlin extensions module](https://github.com/Mindera/skeletoid/blob/master/kt-extensions/)
 - This provides some useful Kotlin extensions that we have been using. It is a evergrowing module.
@@ -37,6 +37,9 @@ This library is **divided into modules** to enable you to just use just those th
 
 ### [App Rating module](https://github.com/Mindera/skeletoid/blob/master/apprating/)
 - Do you want to ask you users to rate to your app? Here you go, quick and easy!
+
+### [App Rating module](https://github.com/Mindera/skeletoid/blob/master/barcodescanner/)
+- Read all types of barcodes, even the weird and obscure ones with a few lines of code!
 
 ---
 
