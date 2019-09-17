@@ -26,7 +26,6 @@ import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.os.Build;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -39,6 +38,7 @@ import androidx.annotation.StringDef;
 import com.google.android.gms.common.images.Size;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.Frame;
+import com.mindera.skeletoid.logs.LOG;
 
 import java.io.IOException;
 import java.lang.Thread.State;
@@ -405,7 +405,7 @@ public class CameraSource {
                     // quickly after stop).
                     mProcessingThread.join();
                 } catch (InterruptedException e) {
-                    Log.d(TAG, "Frame processing thread interrupted on release.");
+                    LOG.d(TAG, "Frame processing thread interrupted on release.");
                 }
                 mProcessingThread = null;
             }
@@ -429,7 +429,7 @@ public class CameraSource {
                         mCamera.setPreviewDisplay(null);
                     }
                 } catch (Exception e) {
-                    Log.e(TAG, "Failed to clear camera preview: " + e);
+                    LOG.e(TAG, "Failed to clear camera preview: " + e);
                 }
                 mCamera.release();
                 mCamera = null;
@@ -461,7 +461,7 @@ public class CameraSource {
             int maxZoom;
             Camera.Parameters parameters = mCamera.getParameters();
             if (!parameters.isZoomSupported()) {
-                Log.w(TAG, "Zoom is not supported on this device");
+                LOG.w(TAG, "Zoom is not supported on this device");
                 return currentZoom;
             }
             maxZoom = parameters.getMaxZoom();
@@ -779,7 +779,7 @@ public class CameraSource {
                     mFocusMode)) {
                 parameters.setFocusMode(mFocusMode);
             } else {
-                Log.i(TAG, "Camera focus mode: " + mFocusMode + " is not supported on this device.");
+                LOG.i(TAG, "Camera focus mode: " + mFocusMode + " is not supported on this device.");
             }
         }
 
@@ -792,7 +792,7 @@ public class CameraSource {
                         mFlashMode)) {
                     parameters.setFlashMode(mFlashMode);
                 } else {
-                    Log.i(TAG, "Camera flash mode: " + mFlashMode + " is not supported on this device.");
+                    LOG.i(TAG, "Camera flash mode: " + mFlashMode + " is not supported on this device.");
                 }
             }
         }
@@ -931,7 +931,7 @@ public class CameraSource {
         // of the preview sizes and hope that the camera can handle it.  Probably unlikely, but we
         // still account for it.
         if (validPreviewSizes.size() == 0) {
-            Log.w(TAG, "No preview sizes have a corresponding same-aspect-ratio picture size");
+            LOG.w(TAG, "No preview sizes have a corresponding same-aspect-ratio picture size");
             for (android.hardware.Camera.Size previewSize : supportedPreviewSizes) {
                 // The null picture size will let us know that we shouldn't set a picture size.
                 validPreviewSizes.add(new SizePair(previewSize, null));
@@ -1000,7 +1000,7 @@ public class CameraSource {
                 degrees = 270;
                 break;
             default:
-                Log.e(TAG, "Bad rotation value: " + rotation);
+                LOG.e(TAG, "Bad rotation value: " + rotation);
         }
 
         CameraInfo cameraInfo = new CameraInfo();
@@ -1127,7 +1127,7 @@ public class CameraSource {
                 }
 
                 if (!mBytesToByteBuffer.containsKey(data)) {
-                    Log.d(TAG,
+                    LOG.d(TAG,
                             "Skipping frame.  Could not find ByteBuffer associated with the image " +
                                     "data from the camera.");
                     return;
@@ -1171,7 +1171,7 @@ public class CameraSource {
                             // don't have it yet.
                             mLock.wait();
                         } catch (InterruptedException e) {
-                            Log.d(TAG, "Frame processing loop terminated.", e);
+                            LOG.d(TAG, e, "Frame processing loop terminated.");
                             return;
                         }
                     }
@@ -1206,7 +1206,7 @@ public class CameraSource {
                 try {
                     mDetector.receiveFrame(outputFrame);
                 } catch (Throwable t) {
-                    Log.e(TAG, "Exception thrown from receiver.", t);
+                    LOG.e(TAG, t, "Exception thrown from receiver.");
                 } finally {
                     mCamera.addCallbackBuffer(data.array());
                 }

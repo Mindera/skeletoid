@@ -50,17 +50,17 @@ class BarcodeScannerFragment(private val barcodeCallback: BarcodeScannerCallback
     }
 
     //Flags that represent the barcode formats we want to read.
-    private var barcodeFormats: Int = R.integer.barcodeFormats
+    private var barcodeFormats: Int = resources.getInteger(R.integer.barcodeFormats)
     //Minimum percentage of available storage on the device (check initCamera commentaries)
-    private var deviceStorageMinPercentage = R.integer.deviceStorageMinPercentage
+    private var deviceStorageMinPercentage = resources.getInteger(R.integer.deviceStorageMinPercentage)
     //Camera width resolution
-    private var cameraResolutionWidth = R.integer.cameraResolutionWidth
+    private var cameraResolutionWidth = resources.getInteger(R.integer.cameraResolutionWidth)
     //Camera height resolution
-    private var cameraResolutionHeight = R.integer.cameraResolutionHeight
+    private var cameraResolutionHeight = resources.getInteger(R.integer.cameraResolutionHeight)
     //Camera FPS
-    private var cameraFramesPerSeconds = R.integer.cameraFramesPerSeconds.toFloat()
+    private var cameraFramesPerSeconds = resources.getInteger(R.integer.cameraFramesPerSeconds).toFloat()
     //The amount of time the camera will detect barcodes after the first detection.
-    private var cameraDetectionDelay = R.integer.cameraDetectionDelay.toLong()
+    private var cameraDetectionDelay =  resources.getInteger(R.integer.cameraDetectionDelay).toLong()
     //The barcode closest to the center of the screen in portrait mode.
     private var activeBarcode : Barcode? = null
 

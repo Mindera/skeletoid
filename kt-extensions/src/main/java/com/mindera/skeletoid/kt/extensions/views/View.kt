@@ -48,12 +48,12 @@ fun View.setPaddingBottom(paddingBottom: Int) {
     setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
 }
 
-inline fun <T: View> T.afterDrawn(crossinline f: T.() -> Unit) {
+inline fun <T: View> T.afterDrawn(crossinline nextFunction: T.() -> Unit) {
     viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
         override fun onGlobalLayout() {
             if (measuredWidth > 0 && measuredHeight > 0) {
                 viewTreeObserver.removeOnGlobalLayoutListener(this)
-                f()
+                nextFunction()
             }
         }
     })
