@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/layout"
               android:orientation="vertical"
               android:layout_width="match_parent"
@@ -19,4 +19,4 @@
 
     </com.mindera.skeletoid.barcodescanner.camera_aosp.CameraSourcePreview>
 
-</LinearLayout>
+</FrameLayout>

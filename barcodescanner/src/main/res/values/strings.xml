@@ -25,7 +25,7 @@
     </string>
 
     <string name="barcode_scanner_fragment_low_storage_warning">
-        "Low storage, please free up some space on the device.."
+        "Low storage, please free up some space on the device."
     </string>
 
     <string name="barcode_scanner_fragment_snackbar_confirm">

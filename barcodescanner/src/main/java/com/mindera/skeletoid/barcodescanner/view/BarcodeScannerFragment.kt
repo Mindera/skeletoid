@@ -6,7 +6,6 @@ import android.graphics.Rect
 import android.hardware.Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,17 +24,19 @@ import com.mindera.skeletoid.barcodescanner.R
 import com.mindera.skeletoid.barcodescanner.barcode.BarcodeGraphic
 import com.mindera.skeletoid.barcodescanner.barcode.BarcodeGraphicTracker
 import com.mindera.skeletoid.barcodescanner.barcode.BarcodeTrackerFactory
-import com.mindera.skeletoid.barcodescanner.callback.BarcodeReaderCallback
+import com.mindera.skeletoid.barcodescanner.callback.BarcodeScannerCallback
+import com.mindera.skeletoid.barcodescanner.callback.BarcodeScannerPermissionsCallback
 import com.mindera.skeletoid.barcodescanner.camera.CameraSource
 import com.mindera.skeletoid.barcodescanner.camera.CameraSourcePreview
 import com.mindera.skeletoid.barcodescanner.camera.GraphicOverlay
-import com.mindera.skeletoid.barcodescanner.inline.afterMeasured
+import com.mindera.skeletoid.kt.extensions.views.afterDrawn
+import com.mindera.skeletoid.logs.LOG
 import kotlin.math.sqrt
 
 
 @Suppress("Unused")
-class BarcodeScannerFragment(private val barcodeCallback: BarcodeReaderCallback) : Fragment(), BarcodeGraphicTracker.BarcodeDetectorListener {
-
+class BarcodeScannerFragment(private val barcodeCallback: BarcodeScannerCallback,
+                             private val permissionsCallback: BarcodeScannerPermissionsCallback?) : Fragment(), BarcodeGraphicTracker.BarcodeDetectorListener {
     companion object {
         const val BARCODE_FORMATS_BUNDLE_KEY = "barcodeFormats"
         const val BARCODE_STORAGE_MIN_PERCENTAGE_BUNDLE_KEY = "BARCODE_STORAGE_MIN"
@@ -49,17 +50,17 @@ class BarcodeScannerFragment(private val barcodeCallback: BarcodeReaderCallback)
     }
 
     //Flags that represent the barcode formats we want to read.
-    private var barcodeFormats: Int = 0
+    private var barcodeFormats: Int = R.integer.barcodeFormats
     //Minimum percentage of available storage on the device (check initCamera commentaries)
-    private var deviceStorageMinPercentage = 15
+    private var deviceStorageMinPercentage = R.integer.deviceStorageMinPercentage
     //Camera width resolution
-    private var cameraResolutionWidth = 1920
+    private var cameraResolutionWidth = R.integer.cameraResolutionWidth
     //Camera height resolution
-    private var cameraResolutionHeight = 1080
+    private var cameraResolutionHeight = R.integer.cameraResolutionHeight
     //Camera FPS
-    private var cameraFramesPerSeconds = 30.0f
+    private var cameraFramesPerSeconds = R.integer.cameraFramesPerSeconds.toFloat()
     //The amount of time the camera will detect barcodes after the first detection.
-    private var cameraDetectionDelay = 2000L
+    private var cameraDetectionDelay = R.integer.cameraDetectionDelay.toLong()
     //The barcode closest to the center of the screen in portrait mode.
     private var activeBarcode : Barcode? = null
 
@@ -105,13 +106,13 @@ class BarcodeScannerFragment(private val barcodeCallback: BarcodeReaderCallback)
         if (permissionStatus == PackageManager.PERMISSION_GRANTED) {
             //If the permission is granted, we need to wait for the system to measure the camera preview screen.
             //After we have that information, we need to save it to calculate the closest barcode to the center.
-            sourcePreview.afterMeasured {
+            sourcePreview.afterDrawn {
                 sourcePreviewMeasurements = Rect(left, top, right, bottom)
             }
 
             initCamera()
         } else {
-            requestCameraPermission()
+            permissionsCallback?.let { permissionsCallback.requestCameraPermissions() } ?: run { requestCameraPermissions() }
         }
 
         return view
@@ -206,10 +207,11 @@ class BarcodeScannerFragment(private val barcodeCallback: BarcodeReaderCallback)
         }
     }
 
+
     /**
      * Requests permission to use the camera.
      */
-    private fun requestCameraPermission() {
+    private fun requestCameraPermissions() {
         val permissions = arrayOf(android.Manifest.permission.CAMERA)
         activity?.let { activity ->
 
@@ -217,7 +219,7 @@ class BarcodeScannerFragment(private val barcodeCallback: BarcodeReaderCallback)
                 ActivityCompat.requestPermissions(activity, permissions, RC_HANDLE_CAMERA_PERMISSION)
             }.show()
 
-        } ?: run { Log.w(BARCODE_FRAGMENT_TAG, "Activity is null on requestCameraPermission")}
+        } ?: run { LOG.w(BARCODE_FRAGMENT_TAG, "Activity is null on requestCameraPermission")}
     }
 
     /**
@@ -313,19 +315,19 @@ class BarcodeScannerFragment(private val barcodeCallback: BarcodeReaderCallback)
     }
 
     override fun onResume() {
-        Log.w(BARCODE_FRAGMENT_TAG, "Re-opening the camera onResume.")
+        LOG.w(BARCODE_FRAGMENT_TAG, "Re-opening the camera onResume.")
         super.onResume()
         openCamera()
     }
 
     override fun onPause() {
-        Log.w(BARCODE_FRAGMENT_TAG, "Stopping the camera onPause.")
+        LOG.w(BARCODE_FRAGMENT_TAG, "Stopping the camera onPause.")
         super.onPause()
         sourcePreview.stop()
     }
 
     override fun onDestroy() {
-        Log.w(BARCODE_FRAGMENT_TAG, "Releasing the camera onDestroy.")
+        LOG.w(BARCODE_FRAGMENT_TAG, "Releasing the camera onDestroy.")
         super.onDestroy()
         sourcePreview.release()
     }

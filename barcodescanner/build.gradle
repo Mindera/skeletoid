@@ -72,12 +72,15 @@ android {
 
 dependencies {
     implementation project(path: ':base')
-
-    implementation ("com.google.android.gms:play-services-vision:$rootProject.playServicesVision") {
+    implementation(project(path: ':kt-extensions')) {
         exclude group: 'androidx.annotation', module: 'annotation'
     }
 
-    implementation ("com.google.android.material:material:$rootProject.materialVersion") {
+    implementation("com.google.android.gms:play-services-vision:$rootProject.playServicesVision") {
+        exclude group: 'androidx.annotation', module: 'annotation'
+    }
+
+    implementation("com.google.android.material:material:$rootProject.materialVersion") {
         exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'androidx.core', module: 'core'
         exclude group: 'androidx.appcompat', module: 'appcompat'
@@ -87,7 +90,7 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test:$rootProject.kotlinVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
 
-    androidTestImplementation ("androidx.test:runner:$testRunnerVersion") {
+    androidTestImplementation("androidx.test:runner:$testRunnerVersion") {
         exclude group: 'androidx.annotation', module: 'annotation'
     }
     androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion") {

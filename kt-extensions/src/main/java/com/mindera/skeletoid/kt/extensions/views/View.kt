@@ -3,10 +3,9 @@
 package com.mindera.skeletoid.kt.extensions.views
 
 import android.view.View
-import android.view.View.GONE
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 
 fun View.visible() {
     visibility = VISIBLE
@@ -47,6 +46,17 @@ fun View.setPaddingTop(paddingTop: Int) {
 
 fun View.setPaddingBottom(paddingBottom: Int) {
     setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
+}
+
+inline fun <T: View> T.afterDrawn(crossinline f: T.() -> Unit) {
+    viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            if (measuredWidth > 0 && measuredHeight > 0) {
+                viewTreeObserver.removeOnGlobalLayoutListener(this)
+                f()
+            }
+        }
+    })
 }
 
 
