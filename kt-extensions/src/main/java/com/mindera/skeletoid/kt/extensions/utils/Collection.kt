@@ -1,5 +1,5 @@
 package com.mindera.skeletoid.kt.extensions.utils
 
-fun Collection<*>.nullIfEmpty(): Collection<*>? {
+fun <T: Any> Collection<T>.nullIfEmpty(): Collection<T>? {
     return if (isEmpty()) null else this
 }
