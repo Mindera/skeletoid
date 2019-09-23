@@ -232,4 +232,16 @@ class StringUnitTest {
 
         assertFalse(email.isEmailValid())
     }
+
+    @Test
+    fun testNullIfEmptyNull() {
+        val text: String? = null
+        assertEquals(null, text.nullIfEmpty())
+    }
+
+    @Test
+    fun testNullIfEmptyEmpty() {
+        val text: String = ""
+        assertEquals(null, text.nullIfEmpty())
+    }
 }
