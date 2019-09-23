@@ -244,4 +244,10 @@ class StringUnitTest {
         val text: String = ""
         assertEquals(null, text.nullIfEmpty())
     }
+
+    @Test
+    fun testNullIfEmpty() {
+        val text: String = "text"
+        assertEquals("text", text.nullIfEmpty())
+    }
 }
