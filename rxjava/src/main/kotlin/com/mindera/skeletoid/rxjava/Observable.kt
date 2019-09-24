@@ -89,4 +89,9 @@ fun <T : Any> Observable<T>.filterOrElse(predicate: Predicate<T>, action: (value
     }
     .filter(predicate)
 
+var CLICK_SHORT_THROTTLE = 1000L
+var CLICK_LONG_THROTTLE = 2000L
 
+fun <T> Observable<T>.throttle(throttleTime: Long = CLICK_LONG_THROTTLE): Observable<T> = throttleFirst(throttleTime, TimeUnit.MILLISECONDS)
+
+fun <T> Observable<T>.throttleUnit(throttleTime: Long = CLICK_LONG_THROTTLE): Observable<Unit> = throttle(throttleTime).map { Unit }
