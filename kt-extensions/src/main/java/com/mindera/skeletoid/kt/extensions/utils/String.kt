@@ -17,3 +17,5 @@ fun String.isEmailValid(): Boolean {
 }
 
 fun String?.nullIfBlank(): String? = if (isNullOrBlank()) null else this
+
+fun String?.nullIfEmpty(): String? = if (isNullOrEmpty()) null else this
