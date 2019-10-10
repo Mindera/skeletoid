@@ -68,6 +68,8 @@ class AlertDialogFragment : AbstractDialogFragment() {
             neutralButtonText = it.getString(ARG_NEUTRAL_BUTTON_TEXT)
             cancellable = it.getBoolean(ARG_CANCELLABLE)
         }
+
+        isCancelable = cancellable ?: true
     }
 
     override fun setupRxBindings() {
