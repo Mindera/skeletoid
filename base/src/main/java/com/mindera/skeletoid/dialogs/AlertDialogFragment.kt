@@ -2,7 +2,11 @@ package com.mindera.skeletoid.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
+import android.view.KeyEvent
+import com.mindera.skeletoid.logs.LOG
 
 class AlertDialogFragment : AbstractDialogFragment() {
 
@@ -89,7 +93,23 @@ class AlertDialogFragment : AbstractDialogFragment() {
                     onPositiveClick()
                 }
 
-        cancellable?.let { builder.setCancelable(it) }
+        cancellable?.let {
+            builder.setCancelable(it)
+
+            if(!it) {
+                //on cancellable == true, set this to listen to the back button
+                builder.setOnKeyListener { _, keyCode, event ->
+                    if (keyCode == KeyEvent.KEYCODE_BACK &&
+                        event.action == KeyEvent.ACTION_UP) {
+                        Log.v(TAG, "keyPressed")
+                        activity?.onBackPressed()
+                        true
+                    } else {
+                        false
+                    }
+                }
+            }
+        }
 
         negativeButtonText?.let {
             builder.setNegativeButton(it) { _, _ ->
