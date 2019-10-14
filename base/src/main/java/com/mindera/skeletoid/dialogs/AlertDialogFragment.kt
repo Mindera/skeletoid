@@ -102,7 +102,7 @@ class AlertDialogFragment : AbstractDialogFragment() {
                     if (keyCode == KeyEvent.KEYCODE_BACK &&
                         event.action == KeyEvent.ACTION_UP) {
                         Log.v(TAG, "keyPressed")
-                        activity?.onBackPressed()
+                        onBackPressed()
                         true
                     } else {
                         false
