@@ -50,7 +50,7 @@ object DateUtils {
      * @param formatPattern Format pattern
      * @return Date
      */
-    fun parseDate(dateString: String, formatPattern: String = DATE_FORMAT): Date {
+    fun parseDate(dateString: String, formatPattern: String = DATE_FORMAT): Date? {
         return SimpleDateFormat(formatPattern, Locale.getDefault()).apply { this.timeZone = TimeZone.getTimeZone(TIME_ZONE) }.parse(dateString)
     }
 

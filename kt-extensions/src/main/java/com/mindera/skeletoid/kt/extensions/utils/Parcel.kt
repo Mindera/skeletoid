@@ -6,7 +6,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.util.*
+import java.util.Date
 
 // Creator factory functions
 inline fun <reified T> parcelableCreator(
@@ -15,20 +15,6 @@ inline fun <reified T> parcelableCreator(
             override fun createFromParcel(source: Parcel) = create(source)
             override fun newArray(size: Int) = arrayOfNulls<T>(size)
         }
-
-
-//inline fun <reified T> parcelableClassLoaderCreator(
-//        crossinline create: (Parcel, ClassLoader) -> T) =
-//        object : Parcelable.ClassLoaderCreator<T> {
-//            override fun createFromParcel(source: Parcel, loader: ClassLoader) =
-//                    create(source, loader)
-//
-//            override fun createFromParcel(source: Parcel) =
-//                    createFromParcel(source, T::class.java.classLoader)
-//
-//            override fun newArray(size: Int) = arrayOfNulls<T>(size)
-//        }
-
 
 fun Parcel.readBoolean() = readInt() != 0
 

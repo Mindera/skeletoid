@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.BACK_PRESSED
 import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CANCELED
 import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CLICK_NEGATIVE
@@ -11,6 +12,7 @@ import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CLICK_NE
 import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CLICK_POSITIVE
 import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.DISMISSED
 import com.mindera.skeletoid.logs.LOG
+import org.jetbrains.annotations.NotNull
 
 abstract class AbstractDialogFragment : DialogFragment() {
 
@@ -93,45 +95,40 @@ abstract class AbstractDialogFragment : DialogFragment() {
         targetActivityRequestCode = requestCode
     }
 
-//    override fun show(manager: FragmentManager?, tag: String) {
-////        Note that since
-//        require(!(!hasValidTargetFragment() && !hasValidTargetActivity())) { "Must define either a targetActivityRequestCode or a targetFragmentRequestCode" }
-//
-//        fragmentManager?.let { fragmentManager ->
-//            if (targetFragment?.isVisible == false) {
-//                LOG.e(LOG_TAG, "Fragment is not visible, ignoring to avoid crash...")
-//                return
-//            }
-//
-//            val activity = targetFragment?.activity ?: activity
-//
-//            if (isActivityFinishing(activity)) {
-//                LOG.e(LOG_TAG, Exception("Invalid state for Activity"),
-//                    "show(): Fragment Activity cannot be finishing or null...")
-//                return
-//            }
-//
-//            // If true allows only one with this tag to avoid multiple dialogs
-//            if (isSingleTop && fragmentManager.findFragmentByTag(tag) is AbstractDialogFragment) {
-//                LOG.e(LOG_TAG, "show(): Dialog already present for $tag")
-//                return
-//            }
-//
-//            val ft = fragmentManager.beginTransaction()
-//            ft.add(this, tag)
-//
-//            LOG.d(LOG_TAG, "Committing Dialog transaction ", tag, " for dialog ", this.toString())
-//
-//            try {
-//                ft.commit()
-//            } catch (t: Throwable) {
-//                LOG.e(LOG_TAG, "[Dialog] Failed to show: $tag")
-//            }
-//        } ?: run {
-//            LOG.e(LOG_TAG, Exception("Check StackTrace -> "),
-//                "Fragment.show():: FragmentManager cannot be null")
-//        }
-//    }
+    override fun show(@NotNull fragmentManager: FragmentManager, @NotNull tag: String) {
+
+        require(!(!hasValidTargetFragment() && !hasValidTargetActivity())) { "Must define either a targetActivityRequestCode or a targetFragmentRequestCode" }
+
+        if (targetFragment?.isVisible == false) {
+            LOG.e(LOG_TAG, "Fragment is not visible, ignoring to avoid crash...")
+            return
+        }
+
+        val activity = targetFragment?.activity ?: activity
+
+        if (isActivityFinishing(activity)) {
+            LOG.e(
+                LOG_TAG, Exception("Invalid state for Activity"),
+                "show(): Fragment Activity cannot be finishing or null..."
+            )
+            return
+        }
+
+        // If true allows only one with this tag to avoid multiple dialogs
+        if (isSingleTop && fragmentManager.findFragmentByTag(tag) is AbstractDialogFragment) {
+            LOG.e(LOG_TAG, "show(): Dialog already present for $tag")
+            return
+        }
+
+
+        LOG.d(LOG_TAG, "Showing dialog ", tag, " for dialog ", this.toString())
+
+        try {
+            super.show(fragmentManager, tag)
+        } catch (t: Throwable) {
+            LOG.e(LOG_TAG, "[Dialog] Failed to show: $tag")
+        }
+    }
 
     private fun hasValidTargetFragment(): Boolean {
         return targetFragment != null && targetRequestCode >= 0
@@ -213,7 +210,7 @@ abstract class AbstractDialogFragment : DialogFragment() {
         onClick(BACK_PRESSED)
     }
 
-    protected fun onClick(state: DialogState) {
+    private fun onClick(state: DialogState) {
         if (hasReturnedValueAlready) {
             return
         }
