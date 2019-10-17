@@ -72,6 +72,7 @@ ext {
     //Play Services
     playServicesVersion = '15.0.1'
     playServicesAnalytics = '16.0.5'
+    playServicesVision = '18.0.0'
 
     //Google Analytics
     gaVersion = '16.0.5'
