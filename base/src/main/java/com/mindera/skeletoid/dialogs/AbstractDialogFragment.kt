@@ -14,7 +14,7 @@ import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.DISMISSE
 import com.mindera.skeletoid.logs.LOG
 import org.jetbrains.annotations.NotNull
 
-abstract class AbstractDialogFragment : DialogFragment() {
+abstract class AbstractDialogFragment : IntermediateDialog() {
 
     companion object {
         private const val LOG_TAG = "AbstractDialogFragment"
@@ -95,7 +95,7 @@ abstract class AbstractDialogFragment : DialogFragment() {
         targetActivityRequestCode = requestCode
     }
 
-    override fun show(@NotNull fragmentManager: FragmentManager, @NotNull tag: String) {
+    override fun show(@NotNull fragmentManager: FragmentManager, tag: String) {
 
         require(!(!hasValidTargetFragment() && !hasValidTargetActivity())) { "Must define either a targetActivityRequestCode or a targetFragmentRequestCode" }
 
@@ -210,7 +210,7 @@ abstract class AbstractDialogFragment : DialogFragment() {
         onClick(BACK_PRESSED)
     }
 
-    private fun onClick(state: DialogState) {
+    protected fun onClick(state: DialogState) {
         if (hasReturnedValueAlready) {
             return
         }
