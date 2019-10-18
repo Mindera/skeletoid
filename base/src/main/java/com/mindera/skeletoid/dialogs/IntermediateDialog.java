@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  * solution.
  * https://stackoverflow.com/questions/36343280/how-can-i-override-a-java-method-and-change-the-nullability-of-a-parameter
  */
-class IntermediateDialog extends DialogFragment {
+public class IntermediateDialog extends DialogFragment {
     @Override
     public void show(FragmentManager manager, @NotNull String tag) {
         super.show(manager, tag);
