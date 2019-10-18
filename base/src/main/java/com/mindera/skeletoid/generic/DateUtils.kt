@@ -1,5 +1,6 @@
 package com.mindera.skeletoid.generic
 
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -52,6 +53,7 @@ object DateUtils {
      */
     fun parseDate(dateString: String, formatPattern: String = DATE_FORMAT): Date {
         return SimpleDateFormat(formatPattern, Locale.getDefault()).apply { this.timeZone = TimeZone.getTimeZone(TIME_ZONE) }.parse(dateString)
+            ?: throw ParseException("There was an issue parsing the date($dateString) with format($formatPattern)", 0)
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.mindera.skeletoid.rxbindings.searchview.support;
+package com.mindera.skeletoid.rxbindings.extensions.views.searchview.support;
 
 import android.view.View;
 
