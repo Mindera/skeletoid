@@ -10,7 +10,7 @@ object CookiesUtils {
     fun getCookiesFromUrl(url: String): String {
         val cookieManager = CookieManager.getInstance()
 
-        return cookieManager.getCookie(url)
+        return cookieManager.getCookie(url).orEmpty()
     }
 
     fun getCookiesFromUrlToMap(url: String): HashMap<String, String> {
