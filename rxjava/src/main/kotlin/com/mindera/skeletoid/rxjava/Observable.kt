@@ -2,6 +2,7 @@
 
 package com.mindera.skeletoid.rxjava
 
+import com.mindera.skeletoid.logs.LOG
 import com.mindera.skeletoid.rxjava.schedulers.Schedulers
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -35,7 +36,12 @@ fun <T : Any> Observable<T>.createUniqueConcurrentRequestCache(
     key: String
 ): Observable<T> {
 
-    val obs = this.doFinally {
+    val obs = this.doAfterNext{
+        requestMap.remove(key)
+    }
+    .doFinally {
+        //safe case for when there is an error or dispose..
+        //https://stackoverflow.com/questions/47306699/difference-between-doafterterminate-and-dofinally
         requestMap.remove(key)
     }
 
