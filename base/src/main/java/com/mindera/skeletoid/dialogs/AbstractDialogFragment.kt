@@ -37,7 +37,8 @@ abstract class AbstractDialogFragment : DialogFragment() {
         CLICK_NEGATIVE,
         CLICK_NEUTRAL,
         DISMISSED,
-        CANCELED
+        CANCELED,
+        BACK_PRESSED
     }
 
     interface DialogFragmentHandler {
