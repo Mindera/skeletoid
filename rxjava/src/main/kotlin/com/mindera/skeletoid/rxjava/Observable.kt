@@ -35,6 +35,10 @@ fun <T : Any> Observable<T>.createUniqueConcurrentRequestCache(
     key: String
 ): Observable<T> {
 
+    if (requestMap[key] is Observable) {
+        return requestMap[key] as Observable<T>
+    }
+
     val obs = this.doFinally {
         requestMap.remove(key)
     }
