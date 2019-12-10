@@ -22,6 +22,7 @@ class AlertDialogFragment : AbstractDialogFragment() {
         private const val ARG_NEGATIVE_BUTTON_TEXT = "ARG_NEGATIVE_BUTTON_TEXT"
         private const val ARG_NEUTRAL_BUTTON_TEXT = "ARG_NEUTRAL_BUTTON_TEXT"
         private const val ARG_CANCELLABLE = "ARG_CANCELLABLE"
+        private const val ARG_IGNORE_BACK_PRESS = "ARG_IGNORE_BACK_PRESS"
 
 
         fun newInstance(title: String? = null,
@@ -30,6 +31,7 @@ class AlertDialogFragment : AbstractDialogFragment() {
                         negativeButtonText: String? = null,
                         neutralButtonText: String? = null,
                         cancellable: Boolean = true,
+                        ignoreBackPress: Boolean = false,
                         args: Bundle = Bundle()): AlertDialogFragment {
 
             val frag = AlertDialogFragment()
@@ -45,6 +47,7 @@ class AlertDialogFragment : AbstractDialogFragment() {
             args.putString(ARG_NEGATIVE_BUTTON_TEXT, negativeButtonText)
             args.putString(ARG_NEUTRAL_BUTTON_TEXT, neutralButtonText)
             args.putBoolean(ARG_CANCELLABLE, cancellable)
+            args.putBoolean(ARG_IGNORE_BACK_PRESS, ignoreBackPress)
 
             //Dialog related parameters
             frag.arguments = args
@@ -59,6 +62,7 @@ class AlertDialogFragment : AbstractDialogFragment() {
     private var negativeButtonText: String? = null
     private var neutralButtonText: String? = null
     private var cancellable: Boolean? = null
+    private var ignoreBackPress: Boolean? = null
 
     override var isSingleTop = true
 
@@ -71,9 +75,11 @@ class AlertDialogFragment : AbstractDialogFragment() {
             negativeButtonText = it.getString(ARG_NEGATIVE_BUTTON_TEXT)
             neutralButtonText = it.getString(ARG_NEUTRAL_BUTTON_TEXT)
             cancellable = it.getBoolean(ARG_CANCELLABLE)
+            ignoreBackPress = it.getBoolean(ARG_IGNORE_BACK_PRESS)
         }
 
         isCancelable = cancellable ?: true
+        ignoreBackPress = ignoreBackPress ?: false
     }
 
     override fun setupRxBindings() {
@@ -93,19 +99,22 @@ class AlertDialogFragment : AbstractDialogFragment() {
                     onPositiveClick()
                 }
 
-        cancellable?.let {
-            builder.setCancelable(it)
+        cancellable?.let { cancellable ->
+            builder.setCancelable(cancellable)
 
-            if(!it) {
-                //on cancellable == true, set this to listen to the back button
-                builder.setOnKeyListener { _, keyCode, event ->
-                    if (keyCode == KeyEvent.KEYCODE_BACK &&
-                        event.action == KeyEvent.ACTION_UP) {
-                        Log.v(TAG, "keyPressed")
-                        onBackPressed()
-                        true
-                    } else {
-                        false
+            ignoreBackPress?.let { ignoreBackPress ->
+                if (!cancellable && !ignoreBackPress) {
+                    //on cancellable == true, set this to listen to the back button
+                    builder.setOnKeyListener { _, keyCode, event ->
+                        if (keyCode == KeyEvent.KEYCODE_BACK &&
+                            event.action == KeyEvent.ACTION_UP
+                        ) {
+                            Log.v(TAG, "keyPressed")
+                            onBackPressed()
+                            true
+                        } else {
+                            false
+                        }
                     }
                 }
             }
