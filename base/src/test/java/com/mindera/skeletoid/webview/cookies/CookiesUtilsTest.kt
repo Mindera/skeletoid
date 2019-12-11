@@ -25,7 +25,7 @@ class CookiesUtilsTest {
         assertEquals("name=cookie_monster; type=oreo; category=biscuit", cookies)
     }
 
-    @Test(expected = IllegalStateException::class)
+    @Test
     fun testGetCookiesFromUrlNoCookies() {
         val url = "https://github.com/Mindera/skeletoid/"
 
@@ -118,7 +118,7 @@ class CookiesUtilsTest {
         assertNull(value)
     }
 
-    @Test(expected = IllegalStateException::class)
+    @Test
     fun testGetCookieNoCookies() {
         val url = "https://github.com/Mindera/skeletoid/"
 
