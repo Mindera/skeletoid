@@ -59,7 +59,6 @@ class AlertDialogFragment : AbstractDialogFragment() {
     private var negativeButtonText: String? = null
     private var neutralButtonText: String? = null
     private var cancellable: Boolean? = null
-    private var ignoreBackPress: Boolean? = null
 
     override var isSingleTop = true
 
