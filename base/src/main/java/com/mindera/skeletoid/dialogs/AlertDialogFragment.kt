@@ -93,22 +93,8 @@ class AlertDialogFragment : AbstractDialogFragment() {
                     onPositiveClick()
                 }
 
-        cancellable?.let {
-            builder.setCancelable(it)
-
-            if(!it) {
-                //on cancellable == true, set this to listen to the back button
-                builder.setOnKeyListener { _, keyCode, event ->
-                    if (keyCode == KeyEvent.KEYCODE_BACK &&
-                        event.action == KeyEvent.ACTION_UP) {
-                        Log.v(TAG, "keyPressed")
-                        onBackPressed()
-                        true
-                    } else {
-                        false
-                    }
-                }
-            }
+        cancellable?.let { cancellable ->
+            builder.setCancelable(cancellable)
         }
 
         negativeButtonText?.let {

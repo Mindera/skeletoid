@@ -40,7 +40,8 @@ class KeyboardUtilsTest {
     fun testHideKeyboardFrom() {
         val view = mock(View::class.java)
         val binder = mock(IBinder::class.java)
-        `when`(view.windowToken).thenReturn(binder)
+        `when`(view.rootView).thenReturn(view)
+        `when`(view.rootView.windowToken).thenReturn(binder)
 
         KeyboardUtils.hideKeyboardFrom(activity, view)
 

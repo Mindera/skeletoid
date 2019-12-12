@@ -2,10 +2,8 @@ package com.mindera.skeletoid.dialogs
 
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.BACK_PRESSED
 import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CANCELED
 import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CLICK_NEGATIVE
 import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CLICK_NEUTRAL
@@ -40,7 +38,6 @@ abstract class AbstractDialogFragment : IntermediateDialog() {
         CLICK_NEUTRAL,      //Neutral button clicked on dialog
         DISMISSED,          //Dialog dismissed
         CANCELED,           //Dialog cancelled
-        BACK_PRESSED        //Back button pressed on a non cancellable dialog
     }
 
     interface DialogFragmentHandler {
@@ -204,10 +201,6 @@ abstract class AbstractDialogFragment : IntermediateDialog() {
 
     protected fun onCancel() {
         onClick(CANCELED)
-    }
-
-    protected fun onBackPressed() {
-        onClick(BACK_PRESSED)
     }
 
     protected fun onClick(state: DialogState) {

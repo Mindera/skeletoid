@@ -82,7 +82,7 @@ object DeviceUtils {
      * @return String with the name of the OS version code or empty String if not found
      */
     val osName: String
-        get() = Build.VERSION_CODES::class.java.fields[sdkVersion].name ?: ""
+        get() = Build.VERSION_CODES::class.java.fields[sdkVersion].name
 
     val deviceSpecifications: String
         get() = "OS Release: $osRelease \n" +
