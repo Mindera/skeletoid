@@ -92,17 +92,10 @@ abstract class AbstractDialogFragment : DialogFragment() {
         targetActivityRequestCode = requestCode
     }
 
-    override fun show(fragmentManager: FragmentManager?, tag: String) {
+    override fun show(manager: FragmentManager, tag: String?) {
 
-        //Note that since
         if (!hasValidTargetFragment() && !hasValidTargetActivity()) {
             throw IllegalArgumentException("Must define either a targetActivityRequestCode or a targetFragmentRequestCode")
-        }
-
-        if (fragmentManager == null) {
-            LOG.e(LOG_TAG, Exception("Check StackTrace -> "),
-                    "Fragment.show():: FragmentManager cannot be null")
-            return
         }
 
         if (targetFragment?.isVisible == false) {
@@ -114,17 +107,17 @@ abstract class AbstractDialogFragment : DialogFragment() {
 
         if (isActivityFinishing(activity)) {
             LOG.e(LOG_TAG, Exception("Invalid state for Activity"),
-                    "show(): Fragment Activity cannot be finishing or null...")
+                "show(): Fragment Activity cannot be finishing or null...")
             return
         }
 
         // If true allows only one with this tag to avoid multiple dialogs
-        if (isSingleTop && fragmentManager.findFragmentByTag(tag) is AbstractDialogFragment) {
+        if (isSingleTop && manager.findFragmentByTag(tag) is AbstractDialogFragment) {
             LOG.e(LOG_TAG, "show(): Dialog already present for $tag")
             return
         }
 
-        val ft = fragmentManager.beginTransaction()
+        val ft = manager.beginTransaction()
         ft.add(this, tag)
 
         LOG.d(LOG_TAG, "Committing Dialog transaction ", tag, " for dialog ", this.toString())
@@ -133,6 +126,12 @@ abstract class AbstractDialogFragment : DialogFragment() {
             ft.commit()
         } catch (t: Throwable) {
             LOG.e(LOG_TAG, "[Dialog] Failed to show: $tag")
+        }
+    }
+
+    open fun showDialog(fragmentManager: FragmentManager?, tag: String?) {
+        fragmentManager?.let {
+            show(it, tag)
         }
     }
 
