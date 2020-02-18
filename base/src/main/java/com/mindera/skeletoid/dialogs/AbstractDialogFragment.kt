@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CANCELED
 import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CLICK_NEGATIVE
 import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CLICK_NEUTRAL
@@ -92,7 +93,7 @@ abstract class AbstractDialogFragment : DialogFragment() {
         targetActivityRequestCode = requestCode
     }
 
-    override fun show(fragmentManager: FragmentManager?, tag: String) {
+    override fun show(fragmentManager: FragmentManager, tag: String?) {
 
         //Note that since
         if (!hasValidTargetFragment() && !hasValidTargetActivity()) {
