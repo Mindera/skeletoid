@@ -92,17 +92,11 @@ abstract class AbstractDialogFragment : DialogFragment() {
         targetActivityRequestCode = requestCode
     }
 
-    override fun show(fragmentManager: FragmentManager?, tag: String) {
+    override fun show(fragmentManager: FragmentManager, tag: String?) {
 
         //Note that since
         if (!hasValidTargetFragment() && !hasValidTargetActivity()) {
             throw IllegalArgumentException("Must define either a targetActivityRequestCode or a targetFragmentRequestCode")
-        }
-
-        if (fragmentManager == null) {
-            LOG.e(LOG_TAG, Exception("Check StackTrace -> "),
-                    "Fragment.show():: FragmentManager cannot be null")
-            return
         }
 
         if (targetFragment?.isVisible == false) {
