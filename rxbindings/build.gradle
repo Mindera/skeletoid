@@ -44,139 +44,21 @@ android {
         // do not ignore warnings
         warningsAsErrors true
     }
-
-    configurations.all {
-        resolutionStrategy {
-            resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
-            resolutionStrategy.force "com.google.code.findbugs:jsr305:$findBugsVersion"
-            resolutionStrategy.force "org.objenesis:objenesis:$objenesisVersion"
-
-            resolutionStrategy.force "net.bytebuddy:byte-buddy:$byteBuddyVersion"
-            resolutionStrategy.force "net.bytebuddy:byte-buddy-agent:$byteBuddyVersion"
-            resolutionStrategy.force "org.codehaus.plexus:plexus-utils:$plexusVersion"
-            
-            // fail eagerly on version conflict (includes transitive dependencies)
-            // e.g. multiple different versions of the same dependency (group and name are equal)
-            failOnVersionConflict()
-        }
-    }
 }
 
 dependencies {
-    //Depends on Base RxJava
-    api(project(path: ':rxjava'))
+
+    api project(path: ':rxjava')
     testImplementation project(path: ':base', configuration: 'childTestDependencies')
 
-    implementation ("com.jakewharton.rxbinding3:rxbinding:$rxBindingsVersion") {
-        exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
-        exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module: 'core'
-        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
-    }
-
-    implementation ("com.jakewharton.rxbinding3:rxbinding-core:$rxBindingsVersion") {
-        exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
-        exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
-        exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
-        exclude group: 'androidx.core', module: 'core'
-        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
-    }
-
-    implementation ("com.jakewharton.rxbinding3:rxbinding-appcompat:$rxBindingsVersion") {
-        exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
-        exclude group: 'androidx.appcompat', module: 'appcompat'
-        exclude group: 'androidx.core', module: 'core'
-        exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
-        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
-    }
-
-    implementation ("com.jakewharton.rxbinding3:rxbinding-drawerlayout:$rxBindingsVersion") {
-
-        exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module: 'core'
-        exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
-        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
-    }
-
-    implementation ("com.jakewharton.rxbinding3:rxbinding-leanback:$rxBindingsVersion") {
-        exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
-        exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module: 'core'
-        exclude group: 'androidx.recyclerview', module: 'recyclerview'
-        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
-    }
-
-    implementation ("com.jakewharton.rxbinding3:rxbinding-recyclerview:$rxBindingsVersion") {
-        exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
-        exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module: 'core'
-        exclude group: 'androidx.recyclerview', module: 'recyclerview'
-        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
-    }
-
-    implementation ("com.jakewharton.rxbinding3:rxbinding-slidingpanelayout:$rxBindingsVersion") {
-        exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
-        exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module: 'core'
-        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
-    }
-
-    implementation ("com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:$rxBindingsVersion") {
-        exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
-        exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
-        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module: 'core'
-    }
-
-    implementation ("com.jakewharton.rxbinding3:rxbinding-viewpager:$rxBindingsVersion") {
-        exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
-        exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
-        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module: 'core'
-    }
-
-    implementation ("com.jakewharton.rxbinding3:rxbinding-material:$rxBindingsVersion") {
-        exclude group: 'com.jakewharton.rxbinding3', module: 'rxbinding'
-        exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
-        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module:'core'
-        exclude group: 'androidx.appcompat', module: 'appcompat'
-        exclude group: 'androidx.vectordrawable', module: 'vectordrawable'
-    }
-
-    implementation("androidx.recyclerview:recyclerview:$recyclerViewVersion") {
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module: 'core'
-    }
-
-    implementation ("androidx.vectordrawable:vectordrawable-animated:$vectorDrawableVersion") {
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.vectordrawable', module: 'vectordrawable'
-    }
-
-    implementation ("androidx.legacy:legacy-support-core-utils:$androidLegacyVersion") {
-        exclude group: 'android.loader', module: 'loader'
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module:'core'
-    }
-
-    implementation ("androidx.appcompat:appcompat:$appcompatVersion") {
-        exclude group: 'androidx.vectordrawable', module: 'vectordrawable-animated'
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module:'core'
-    }
-
-    implementation("com.google.android.material:material:$materialVersion") {
-        exclude group: 'androidx.appcompat', module: 'appcompat'
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module: 'core'
-    }
+    implementation "com.jakewharton.rxbinding3:rxbinding:$rxBindingsVersion"
+    implementation "com.jakewharton.rxbinding3:rxbinding-core:$rxBindingsVersion"
+    implementation "com.jakewharton.rxbinding3:rxbinding-appcompat:$rxBindingsVersion"
+    implementation "com.jakewharton.rxbinding3:rxbinding-drawerlayout:$rxBindingsVersion"
+    implementation "com.jakewharton.rxbinding3:rxbinding-leanback:$rxBindingsVersion"
+    implementation "com.jakewharton.rxbinding3:rxbinding-recyclerview:$rxBindingsVersion"
+    implementation "com.jakewharton.rxbinding3:rxbinding-slidingpanelayout:$rxBindingsVersion"
+    implementation "com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:$rxBindingsVersion"
+    implementation "com.jakewharton.rxbinding3:rxbinding-viewpager:$rxBindingsVersion"
+    implementation "com.jakewharton.rxbinding3:rxbinding-material:$rxBindingsVersion"
 }
