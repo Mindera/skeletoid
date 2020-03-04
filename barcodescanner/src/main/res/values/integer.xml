@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <integer name="barcodeFormats">0</integer>
-    <integer name="deviceStorageMinPercentage">15</integer>
-    <integer name="cameraResolutionWidth">1920</integer>
-    <integer name="cameraResolutionHeight">1080</integer>
-    <integer name="cameraFramesPerSeconds">30</integer>
-    <integer name="cameraDetectionDelay">2000</integer>
-</resources>
