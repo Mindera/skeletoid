@@ -1,10 +1,11 @@
-package com.mindera.skeletoid.rxbindings.searchview;
+package com.mindera.skeletoid.rxbindings.extensions.views.searchview;
 
 import androidx.annotation.NonNull;
-import android.widget.SearchView;
 
 import com.jakewharton.rxbinding3.InitialValueObservable;
 import com.jakewharton.rxbinding3.appcompat.SearchViewQueryTextEvent;
+import com.mindera.skeletoid.rxbindings.extensions.views.searchview.support.SearchViewFocusChangeObservable;
+import androidx.appcompat.widget.SearchView;
 
 public class RxSearchView {
 
@@ -13,8 +14,8 @@ public class RxSearchView {
         return queryTextChangeEvents(view);
     }
 
-    public static InitialValueObservable<Boolean> focusChanges(@NonNull androidx.appcompat.widget.SearchView view) {
-        return new com.mindera.skeletoid.rxbindings.searchview.support.SearchViewFocusChangeObservable(view);
+    public static InitialValueObservable<Boolean> focusChanges(@NonNull SearchView view) {
+        return new SearchViewFocusChangeObservable(view);
     }
 
     private RxSearchView() {

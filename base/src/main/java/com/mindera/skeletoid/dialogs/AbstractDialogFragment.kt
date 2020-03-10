@@ -2,7 +2,6 @@ package com.mindera.skeletoid.dialogs
 
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CANCELED
@@ -11,8 +10,9 @@ import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CLICK_NE
 import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.CLICK_POSITIVE
 import com.mindera.skeletoid.dialogs.AbstractDialogFragment.DialogState.DISMISSED
 import com.mindera.skeletoid.logs.LOG
+import org.jetbrains.annotations.NotNull
 
-abstract class AbstractDialogFragment : DialogFragment() {
+abstract class AbstractDialogFragment : IntermediateDialog() {
 
     companion object {
         private const val LOG_TAG = "AbstractDialogFragment"
@@ -33,11 +33,11 @@ abstract class AbstractDialogFragment : DialogFragment() {
     private var targetActivityRequestCode: Int = -1
 
     enum class DialogState {
-        CLICK_POSITIVE,
-        CLICK_NEGATIVE,
-        CLICK_NEUTRAL,
-        DISMISSED,
-        CANCELED
+        CLICK_POSITIVE,     //Positive button clicked on dialog
+        CLICK_NEGATIVE,     //Negative button clicked on dialog
+        CLICK_NEUTRAL,      //Neutral button clicked on dialog
+        DISMISSED,          //Dialog dismissed
+        CANCELED,           //Dialog cancelled
     }
 
     interface DialogFragmentHandler {
@@ -92,12 +92,9 @@ abstract class AbstractDialogFragment : DialogFragment() {
         targetActivityRequestCode = requestCode
     }
 
-    override fun show(fragmentManager: FragmentManager, tag: String?) {
+    override fun show(@NotNull fragmentManager: FragmentManager, tag: String) {
 
-        //Note that since
-        if (!hasValidTargetFragment() && !hasValidTargetActivity()) {
-            throw IllegalArgumentException("Must define either a targetActivityRequestCode or a targetFragmentRequestCode")
-        }
+        require(!(!hasValidTargetFragment() && !hasValidTargetActivity())) { "Must define either a targetActivityRequestCode or a targetFragmentRequestCode" }
 
         if (targetFragment?.isVisible == false) {
             LOG.e(LOG_TAG, "Fragment is not visible, ignoring to avoid crash...")
@@ -107,8 +104,10 @@ abstract class AbstractDialogFragment : DialogFragment() {
         val activity = targetFragment?.activity ?: activity
 
         if (isActivityFinishing(activity)) {
-            LOG.e(LOG_TAG, Exception("Invalid state for Activity"),
-                    "show(): Fragment Activity cannot be finishing or null...")
+            LOG.e(
+                LOG_TAG, Exception("Invalid state for Activity"),
+                "show(): Fragment Activity cannot be finishing or null..."
+            )
             return
         }
 
@@ -118,13 +117,11 @@ abstract class AbstractDialogFragment : DialogFragment() {
             return
         }
 
-        val ft = fragmentManager.beginTransaction()
-        ft.add(this, tag)
 
-        LOG.d(LOG_TAG, "Committing Dialog transaction ", tag, " for dialog ", this.toString())
+        LOG.d(LOG_TAG, "Showing dialog ", tag, " for dialog ", this.toString())
 
         try {
-            ft.commit()
+            super.show(fragmentManager, tag)
         } catch (t: Throwable) {
             LOG.e(LOG_TAG, "[Dialog] Failed to show: $tag")
         }

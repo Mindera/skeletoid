@@ -27,12 +27,11 @@ object KeyboardUtils {
      * Hide keyboard. This can be called from everywhere (Fragments for example)
      *
      * @param context App context
-     * @param view    A view
+     * @param view    A view - Please pass fragment.getView().getRootView().getWindowToken() to here.
      */
-    fun hideKeyboardFrom(context: Context, view: View) {
-        val imm = context
-            .getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    fun hideKeyboardFrom(context : Context, view: View) {
+        val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.rootView.windowToken, 0)
     }
 
     /**

@@ -2,7 +2,11 @@ package com.mindera.skeletoid.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
+import android.view.KeyEvent
+import com.mindera.skeletoid.logs.LOG
 
 class AlertDialogFragment : AbstractDialogFragment() {
 
@@ -68,6 +72,8 @@ class AlertDialogFragment : AbstractDialogFragment() {
             neutralButtonText = it.getString(ARG_NEUTRAL_BUTTON_TEXT)
             cancellable = it.getBoolean(ARG_CANCELLABLE)
         }
+
+        isCancelable = cancellable ?: true
     }
 
     override fun setupRxBindings() {
@@ -87,7 +93,9 @@ class AlertDialogFragment : AbstractDialogFragment() {
                     onPositiveClick()
                 }
 
-        cancellable?.let { builder.setCancelable(it) }
+        cancellable?.let { cancellable ->
+            builder.setCancelable(cancellable)
+        }
 
         negativeButtonText?.let {
             builder.setNegativeButton(it) { _, _ ->
