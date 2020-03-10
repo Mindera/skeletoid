@@ -28,22 +28,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    configurations.all {
-        resolutionStrategy {
-            resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
-            resolutionStrategy.force "com.google.code.findbugs:jsr305:$findBugsVersion"
-            resolutionStrategy.force "org.objenesis:objenesis:$objenesisVersion"
-            
-            resolutionStrategy.force "net.bytebuddy:byte-buddy:$byteBuddyVersion"
-            resolutionStrategy.force "net.bytebuddy:byte-buddy-agent:$byteBuddyVersion"
-            resolutionStrategy.force "org.codehaus.plexus:plexus-utils:$plexusVersion"
-
-            // fail eagerly on version conflict (includes transitive dependencies)
-            // e.g. multiple different versions of the same dependency (group and name are equal)
-            failOnVersionConflict()
-        }
-    }
 }
 
 dependencies {
@@ -53,11 +37,5 @@ dependencies {
 
     testImplementation project(path: ':base', configuration: 'childTestDependencies')
 
-    implementation ("com.google.android.gms:play-services-analytics:$playServicesAnalytics"){
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.fragment', module: 'fragment'
-        exclude group: 'androidx.core', module: 'core'
-        exclude group: 'androidx.legacy', module: 'legacy-support-core-utils'
-        exclude group: 'androidx.legacy', module: 'legacy-support-core-ui'
-    }
+    implementation ("com.google.android.gms:play-services-analytics:$playServicesAnalytics")
 }

@@ -49,24 +49,6 @@ android {
     configurations {
         childTestDependencies.extendsFrom testImplementation
     }
-
-    configurations.all {
-
-        resolutionStrategy {
-            resolutionStrategy.force "com.google.guava:guava:$guavaVersion"
-            resolutionStrategy.force "com.google.code.findbugs:jsr305:$findBugsVersion"
-
-            resolutionStrategy.force "org.objenesis:objenesis:$objenesisVersion"
-            resolutionStrategy.force "net.bytebuddy:byte-buddy:$byteBuddyVersion"
-            resolutionStrategy.force "net.bytebuddy:byte-buddy-agent:$byteBuddyVersion"
-
-            // fail eagerly on version conflict (includes transitive dependencies)
-            // e.g. multiple different versions of the same dependency (group and name are equal)
-            failOnVersionConflict()
-        }
-
-        resolutionStrategy.force "org.codehaus.plexus:plexus-utils:$plexusVersion"
-    }
 }
 
 dependencies {
@@ -75,32 +57,16 @@ dependencies {
 
     api "androidx.annotation:annotation:$appcompatVersion"
 
-    implementation ("androidx.loader:loader:$loaderVersion") {
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module: 'core'
-    }
+    implementation ("androidx.loader:loader:$loaderVersion")
 
-    implementation ("androidx.vectordrawable:vectordrawable-animated:$vectorDrawableVersion") {
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.vectordrawable', module: 'vectordrawable'
-    }
+    implementation ("androidx.vectordrawable:vectordrawable-animated:$vectorDrawableVersion")
 
-    implementation ("androidx.legacy:legacy-support-core-utils:$androidLegacyVersion") {
-        exclude group: 'android.loader', module: 'loader'
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module:'core'
-    }
+    implementation ("androidx.legacy:legacy-support-core-utils:$androidLegacyVersion")
 
-    implementation ("androidx.appcompat:appcompat:$appcompatVersion") {
-        exclude group: 'androidx.vectordrawable', module: 'vectordrawable-animated'
-        exclude group: 'androidx.annotation', module: 'annotation'
-        exclude group: 'androidx.core', module:'core'
-    }
+    implementation ("androidx.appcompat:appcompat:$appcompatVersion")
 
     api "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
-    api ("io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"){
-        exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
-    }
+    api ("io.reactivex.rxjava2:rxandroid:$rxAndroidVersion")
 
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
 
@@ -108,18 +74,12 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test:$rootProject.kotlinVersion"
     testImplementation ("org.mockito:mockito-core:$mockitoVersion")
 
-    testImplementation ("org.powermock:powermock-module-junit4:$powermockVersion") {
-        exclude group: 'org.mockito', module: 'mockito-core'
-    }
+    testImplementation ("org.powermock:powermock-module-junit4:$powermockVersion")
     testImplementation ("org.powermock:powermock-module-junit4-rule:$powermockVersion")
 
-    testImplementation ("org.powermock:powermock-api-mockito2:$powermockVersion") {
-        exclude group: 'org.mockito', module: 'mockito-core'
-    }
+    testImplementation ("org.powermock:powermock-api-mockito2:$powermockVersion")
     testImplementation "org.powermock:powermock-classloading-xstream:$powermockVersion"
-    testImplementation ("org.robolectric:robolectric:$robolectricVersion") {
-        exclude group: 'androidx.annotation', module: 'annotation'
-    }
+    testImplementation ("org.robolectric:robolectric:$robolectricVersion")
 }
 
 apply from: "../jacoco.gradle"
