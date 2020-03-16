@@ -12,7 +12,7 @@ import java.util.Locale
  */
 fun String?.parseCurrency(locale: Locale = Locale.UK, convertCents: Boolean = false): Float? {
     return this?.let { amount ->
-        val value = NumberFormat.getInstance(locale).parse(amount).toFloat()
+        val value = NumberFormat.getInstance(locale).parse(amount)?.toFloat() ?: throw NumberFormatException()
         return if (convertCents) value / 100f else value
     }
 }
