@@ -2,7 +2,6 @@
 
 package com.mindera.skeletoid.rxjava
 
-import com.mindera.skeletoid.logs.LOG
 import com.mindera.skeletoid.rxjava.schedulers.Schedulers
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
