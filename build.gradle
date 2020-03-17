@@ -2,7 +2,7 @@ apply plugin: "org.sonarqube"
 
 buildscript {
     ext.gradleVersion = '3.4.1'
-    ext.kotlinVersion = '1.3.31'
+    ext.kotlinVersion = '1.3.41'
 
     repositories {
         google()
@@ -16,7 +16,7 @@ buildscript {
 
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7"
     }
 }
 
@@ -63,6 +63,9 @@ ext {
     objenesisVersion = '3.0.1'
     byteBuddyVersion = '1.9.10'
     plexusVersion = '1.5.15'
+
+    //Disk cache
+    diskCache = '2.0.2'
 
     //Firebase
     firebaseVersion = '17.0.0'
