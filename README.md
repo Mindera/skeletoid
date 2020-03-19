@@ -38,9 +38,6 @@ This library is **divided into modules** to enable you to just use just those th
 ### [App Rating module](https://github.com/Mindera/skeletoid/blob/master/apprating/)
 - Do you want to ask you users to rate to your app? Here you go, quick and easy!
 
-### [Barcode Scanner](https://github.com/Mindera/skeletoid/blob/master/barcodescanner/)
-- Read all types of barcodes, even the weird and obscure ones with a few lines of code!
-
 ---
 
 ## Plugins for Base module
