@@ -39,7 +39,12 @@ fun <T : Any> Observable<T>.createUniqueConcurrentRequestCache(
         return requestMap[key] as Observable<T>
     }
 
-    val obs = this.doFinally {
+    val obs = this.doAfterNext{
+        requestMap.remove(key)
+    }
+    .doFinally {
+        //safe case for when there is an error or dispose..
+        //https://stackoverflow.com/questions/47306699/difference-between-doafterterminate-and-dofinally
         requestMap.remove(key)
     }
 
