@@ -20,7 +20,7 @@ class OpenUriCommand(private val context: Context, private val deepLink: String)
         try {
             context.startActivity(intent)
         } catch (exception: ActivityNotFoundException) {
-            LOG.e(LOG_TAG, e, )
+            LOG.e(LOG_TAG, exception, "Could not find an activity to handle $intent")
         }
     }
 }
