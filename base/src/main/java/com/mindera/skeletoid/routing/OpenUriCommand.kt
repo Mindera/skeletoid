@@ -1,12 +1,15 @@
 package com.mindera.skeletoid.routing
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import com.mindera.skeletoid.logs.LOG
 
 class OpenUriCommand(private val context: Context, private val deepLink: String) : IRouteCommand {
 
     companion object {
+        private const val LOG_TAG = "OpenUriCommand"
         const val IS_INTERNAL_APP_NAVIGATION_EXTRA = "IS_INTERNAL_APP_NAVIGATION_EXTRA"
     }
 
@@ -14,6 +17,10 @@ class OpenUriCommand(private val context: Context, private val deepLink: String)
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(deepLink)
         intent.putExtra(IS_INTERNAL_APP_NAVIGATION_EXTRA, true)
-        context.startActivity(intent)
+        try {
+            context.startActivity(intent)
+        } catch (exception: ActivityNotFoundException) {
+            LOG.e(LOG_TAG, e, )
+        }
     }
 }
