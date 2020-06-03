@@ -9,6 +9,6 @@ And add the following script to the app dependencies:
 
 ```groovy
 dependencies {
-    implementation 'com.github.mindera.skeletoid:analytics-ga:1.0.0'
+    implementation 'com.github.mindera.skeletoid:analytics-ga:1.1.0'
 }
 ```

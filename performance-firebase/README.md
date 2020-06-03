@@ -7,7 +7,7 @@ Contains `FirebasePerformanceObservableOperator` and `FirebasePerformanceSingleO
 
 ```groovy
 dependencies {
-    implementation 'com.github.mindera.skeletoid:performance-firebase:1.0.0'
+    implementation 'com.github.mindera.skeletoid:performance-firebase:1.1.0'
 }
 ```
 

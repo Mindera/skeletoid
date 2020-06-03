@@ -6,7 +6,7 @@ Prompt a dialog for the user to rate your app. There's two ways to use this, usi
 
 ```groovy
 dependencies {
-    implementation 'com.github.mindera.skeletoid:apprating:1.0.0'
+    implementation 'com.github.mindera.skeletoid:apprating:1.1.0'
 }
 ```
 
