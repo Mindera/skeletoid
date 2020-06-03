@@ -39,53 +39,25 @@ ext {
     minSdkVersion = 19
     targetSdkVersion = 27
 
-    //Support
-    lifecycleVersion = '1.1.1'
-
-    // Other Android Libs
+    //Androidx
+    androidxFragmentVersion = '1.2.4'
     loaderVersion = '1.1.0'
     vectorDrawableVersion = '1.0.0'
     androidLegacyVersion = '1.0.0'
-    materialVersion = '1.0.0'
     appcompatVersion = '1.1.0'
-    recyclerViewVersion = '1.0.0'
-
-    // Kotlin'
-    coroutinesVersion = '1.2.1'
-
-    // Google
-    guavaVersion = '27.1-jre'
-
-    // Tests & Quality
-    findBugsVersion = '3.0.2'
-
-    // External Utilities
-    objenesisVersion = '3.0.1'
-    byteBuddyVersion = '1.9.10'
-    plexusVersion = '1.5.15'
+    workManagerVersion = '2.3.4'
 
     //Firebase
-    firebaseVersion = '17.0.0'
     firebaseAnalyticsVersion = '17.4.2'
     firebasePerfVersion = '19.0.7'
 
     //Play Services
-    playServicesVersion = '15.0.1'
     playServicesAnalytics = '17.0.0'
-    playServicesVision = '18.0.0'
-
-    //Google Analytics
-    gaVersion = '16.0.5'
 
     //Rx
     rxJavaVersion = '2.2.9'
     rxAndroidVersion = '2.1.1'
-    rxKotlinVersion = '2.3.0'
     rxBindingsVersion = '3.0.0-alpha2'
-    rxJavaAkaitaVersion = '1.4.0'
-
-    //Work Manager
-    workManagerVersion = '2.3.4'
 
     // Tests & Quality
     junitVersion = '4.13'
