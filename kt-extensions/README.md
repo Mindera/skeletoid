@@ -28,6 +28,6 @@ And add the following script to the app dependencies:
 
 ```groovy
 dependencies {
-    implementation 'com.github.mindera.skeletoid:kt-extensions:1.0.0'
+    implementation 'com.github.mindera.skeletoid:kt-extensions:1.1.0'
 }
 ```

@@ -47,8 +47,6 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
     //Depends on Base Skeletoid
     api project(path: ':base')
     testImplementation project(path: ':base', configuration: 'childTestDependencies')
