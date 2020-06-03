@@ -48,7 +48,7 @@ dependencies {
     //Depends on Base Skeletoid
     api project(path: ':base')
 
-    api ("com.google.firebase:firebase-core:$firebaseCoreVersion")
+    api ("com.google.firebase:firebase-analytics-ktx:$firebaseAnalyticsVersion")
 
     testImplementation project(path: ':base', configuration: 'childTestDependencies')
 }
