@@ -125,10 +125,9 @@ object AndroidUtils {
      * @return The application package.
      */
     @JvmStatic
-    fun getApplicationPackage(context: Context?): String? {
-        if (mAppPackage == null && context != null) {
-            mAppPackage =
-                context.applicationContext.packageName
+    fun getApplicationPackage(context: Context): String {
+        if (mAppPackage == null) {
+            mAppPackage = context.applicationContext.packageName
             if (mAppPackage != null) {
                 try {
                     val info = context.packageManager
@@ -147,7 +146,7 @@ object AndroidUtils {
                 }
             }
         }
-        return mAppPackage
+        return mAppPackage ?: "unknown.package"
     }
 
     /**

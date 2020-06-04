@@ -57,7 +57,7 @@ internal class LoggerManager : ILoggerManager {
     /**
      * The logger itself
      */
-    constructor(context: Context?) {
+    constructor(context: Context) {
         PACKAGE_NAME = AndroidUtils.getApplicationPackage(context)
     }
 

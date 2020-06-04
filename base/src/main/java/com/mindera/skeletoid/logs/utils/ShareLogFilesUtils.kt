@@ -127,7 +127,7 @@ object ShareLogFilesUtils {
      * @return path   The default path where the application logs are being stored
      * @see AndroidUtils
      */
-    fun getFileLogPath(context: Context?): String {
+    fun getFileLogPath(context: Context): String {
         return AndroidUtils.getFileDirPath(context, "")
     }
 
