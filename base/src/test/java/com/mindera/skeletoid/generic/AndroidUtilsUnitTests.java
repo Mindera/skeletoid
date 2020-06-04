@@ -20,8 +20,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -41,11 +39,6 @@ public class AndroidUtilsUnitTests {
     @After
     public void cleanUp() {
         AndroidUtils.deinit();
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testConstructor() {
-        new AndroidUtils();
     }
 
     @Test
@@ -86,26 +79,6 @@ public class AndroidUtilsUnitTests {
         when(Environment.getExternalStorageDirectory()).thenReturn(file);
 
         assertEquals("com.mindera.skeletoid/dir", AndroidUtils.getExternalPublicDirectory("/dir"));
-    }
-
-    @Test
-    public void testDeviceName() {
-        assertEquals("", AndroidUtils.getDeviceName());
-    }
-
-    @Test
-    public void testDeviceBrand() {
-        assertEquals("", AndroidUtils.getDeviceBrand());
-    }
-
-    @Test
-    public void testOSReleaseVersion() {
-        assertEquals("", AndroidUtils.getOSReleaseVersion());
-    }
-
-    @Test
-    public void testOSSDKVersion() {
-        assertEquals(0, AndroidUtils.getOSSDKVersion());
     }
 
     @Test
@@ -363,69 +336,6 @@ public class AndroidUtilsUnitTests {
     @Test(expected = IllegalArgumentException.class)
     public void testIsPhoneAvailableWithoutContext() {
         assertFalse(AndroidUtils.isPhoneAvailable(null));
-    }
-
-    @Test
-    public void testIsServiceRunning() {
-        Context context = mock(Context.class);
-        ActivityManager activityManager = mock(ActivityManager.class);
-        List<ActivityManager.RunningServiceInfo> runningServiceInfos = new ArrayList<>();
-        ActivityManager.RunningServiceInfo runningServiceInfoA = mockRunningServiceInfo("com.mindera.skeletoid.generic.AndroidUtils");
-        ActivityManager.RunningServiceInfo runningServiceInfoB = mockRunningServiceInfo("B");
-        runningServiceInfos.add(runningServiceInfoA);
-        runningServiceInfos.add(runningServiceInfoB);
-        when(activityManager.getRunningServices(Integer.MAX_VALUE)).thenReturn(runningServiceInfos);
-        when(context.getSystemService(Context.ACTIVITY_SERVICE)).thenReturn(activityManager);
-
-        assertTrue(AndroidUtils.isServiceRunning(context, AndroidUtils.class));
-    }
-
-    @Test
-    public void testIsServiceNotRunning() {
-        Context context = mock(Context.class);
-        ActivityManager activityManager = mock(ActivityManager.class);
-        List<ActivityManager.RunningServiceInfo> runningServiceInfos = new ArrayList<>();
-        ActivityManager.RunningServiceInfo runningServiceInfoA = mockRunningServiceInfo("A");
-        ActivityManager.RunningServiceInfo runningServiceInfoB = mockRunningServiceInfo("B");
-        runningServiceInfos.add(runningServiceInfoA);
-        runningServiceInfos.add(runningServiceInfoB);
-        when(activityManager.getRunningServices(Integer.MAX_VALUE)).thenReturn(runningServiceInfos);
-        when(context.getSystemService(Context.ACTIVITY_SERVICE)).thenReturn(activityManager);
-
-        assertFalse(AndroidUtils.isServiceRunning(context, AndroidUtils.class));
-    }
-
-    @Test
-    public void testIsServiceNotRunningNoServices() {
-        Context context = mock(Context.class);
-        ActivityManager activityManager = mock(ActivityManager.class);
-        List<ActivityManager.RunningServiceInfo> runningServiceInfos = new ArrayList<>();
-        when(activityManager.getRunningServices(Integer.MAX_VALUE)).thenReturn(runningServiceInfos);
-        when(context.getSystemService(Context.ACTIVITY_SERVICE)).thenReturn(activityManager);
-
-        assertFalse(AndroidUtils.isServiceRunning(context, AndroidUtils.class));
-    }
-
-    @Test
-    public void testIsServiceNotRunningNoActivityManager() {
-        Context context = mock(Context.class);
-        assertFalse(AndroidUtils.isServiceRunning(context, AndroidUtils.class));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testIsServiceRunningWithoutContext() {
-        assertFalse(AndroidUtils.isServiceRunning(null, AndroidUtils.class));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testIsServiceRunningWithoutClass() {
-        Context context = mock(Context.class);
-        assertFalse(AndroidUtils.isServiceRunning(context, null));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testIsServiceRunningWithoutContextAndClass() {
-        assertFalse(AndroidUtils.isServiceRunning(null, null));
     }
 
     private ActivityManager.RunningServiceInfo mockRunningServiceInfo(final String name) {

@@ -56,6 +56,7 @@ class Optional<T> {
 
         private val EMPTY = Optional<Any>()
 
+        @Suppress("UNCHECKED_CAST")
         fun <T> empty(): Optional<T> {
             return EMPTY as Optional<T>
         }

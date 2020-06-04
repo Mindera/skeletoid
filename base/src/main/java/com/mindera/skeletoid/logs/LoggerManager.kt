@@ -26,10 +26,6 @@ internal class LoggerManager : ILoggerManager {
          */
         const val LOG_FORMAT_4ARGS = "%s %s %s | %s"
 
-        /**
-         * Log format
-         */
-        private const val LOG_FORMAT_3ARGS = "%s %s | %s"
     }
     /**
      * Application TAG for logs
@@ -42,11 +38,6 @@ internal class LoggerManager : ILoggerManager {
     @JvmField
     @VisibleForTesting
     var mAddMethodName = false
-
-    /**
-     * Define if the method name invoking the log should be printed or not (via exception stack)
-     */
-    private val mAddPackageName = false
 
     /**
      * List of appenders (it can be improved to an ArrayMap if we want to add the support lib as dependency
@@ -157,23 +148,6 @@ internal class LoggerManager : ILoggerManager {
                 LogAppenderUtils.getLogString(*text)
             )
             pushLogToAppenders(priority, t, log)
-        }
-    }
-
-    fun log(
-        clazz: Class<*>,
-        type: PRIORITY,
-        text: String,
-        t: Throwable?
-    ) {
-        if(mLogAppenders.isNotEmpty()) {
-            val log = String.format(
-                LOG_FORMAT_3ARGS,
-                LogAppenderUtils.getTag(clazz, mAddPackageName, PACKAGE_NAME, mAddMethodName),
-                ThreadUtils.getCurrentThreadName(),
-                LogAppenderUtils.getLogString(text)
-            )
-            pushLogToAppenders(type, t, log)
         }
     }
 }

@@ -48,8 +48,8 @@ object LOG {
     @Synchronized
     fun init(
         context: Context,
-        packageName: String?,
-        logAppenders: List<ILogAppender>
+        packageName: String? = null,
+        logAppenders: List<ILogAppender> = emptyList()
     ): Set<String> {
         val logger = getInstance(context, packageName)
         logger.removeAllAppenders()

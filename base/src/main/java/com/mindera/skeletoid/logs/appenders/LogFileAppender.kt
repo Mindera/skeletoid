@@ -202,7 +202,7 @@ class LogFileAppender(
                     val level = getFileHandlerLevel(type)
 
                     try {
-                        val logText = formatLog(type, t, *logs)
+                        val logText = formatLog(type, *logs)
                         val logRecord = LogRecord(level, logText)
 
                         t?.run {
@@ -223,10 +223,9 @@ class LogFileAppender(
      * Formats the log
      *
      * @param type Type of log
-     * @param t    Throwable (can be null)
      * @param logs Log
      */
-    fun formatLog(type: LOG.PRIORITY, t: Throwable?, vararg logs: String): String {
+    fun formatLog(type: LOG.PRIORITY, vararg logs: String): String {
         val builder = StringBuilder()
         builder.append(dateFormatter.format(Date()))
         builder.append(": ")
