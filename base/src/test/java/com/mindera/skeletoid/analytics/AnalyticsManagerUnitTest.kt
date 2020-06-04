@@ -5,7 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender
 import com.mindera.skeletoid.logs.LOG.init
-import junit.framework.Assert
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
@@ -14,27 +14,22 @@ import java.util.HashMap
 import java.util.HashSet
 
 class AnalyticsManagerUnitTest {
-    private var mContext: Context? = null
+    companion object {
+        private const val packageName = "my.package.name"
+    }
+
+    private var context: Context? = null
 
     @Before
     fun setUp() {
-        mContext = Mockito.mock(Context::class.java)
-    }
-
-    @Test
-    fun testAddAppendersNull() {
-        val analyticsManager = AnalyticsManager()
-        val appendersIds =
-            analyticsManager.addAppenders(mContext, null)
-        Assert.assertNotNull(appendersIds)
-        Assert.assertEquals(0, appendersIds.size)
+        context = Mockito.mock(Context::class.java)
     }
 
     @Test
     fun testAddAppendersEmpty() {
         val analyticsManager = AnalyticsManager()
         val appendersIds =
-            analyticsManager.addAppenders(mContext, ArrayList())
+            analyticsManager.addAppenders(context!!, ArrayList())
         Assert.assertNotNull(appendersIds)
         Assert.assertEquals(0, appendersIds.size)
     }
@@ -51,10 +46,10 @@ class AnalyticsManagerUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         val appendersIds =
-            analyticsManager.addAppenders(mContext, appenders)
-        Mockito.verify(appenderA, Mockito.times(1)).enableAppender(mContext)
-        Mockito.verify(appenderB, Mockito.times(1)).enableAppender(mContext)
-        Mockito.verify(appenderC, Mockito.times(1)).enableAppender(mContext)
+            analyticsManager.addAppenders(context!!, appenders)
+        Mockito.verify(appenderA, Mockito.times(1)).enableAppender(context)
+        Mockito.verify(appenderB, Mockito.times(1)).enableAppender(context)
+        Mockito.verify(appenderC, Mockito.times(1)).enableAppender(context)
         Assert.assertNotNull(appendersIds)
         Assert.assertEquals(3, appendersIds.size)
         Assert.assertTrue(appendersIds.contains("A"))
@@ -75,9 +70,9 @@ class AnalyticsManagerUnitTest {
         appenders.add(appenderB2)
 
         //We must initialize the LOG since it prints an error
-        init(mContext!!, mPackageName)
+        init(context!!, packageName)
         val appendersIds =
-            analyticsManager.addAppenders(mContext, appenders)
+            analyticsManager.addAppenders(context!!, appenders)
         Assert.assertNotNull(appendersIds)
         Assert.assertEquals(2, appendersIds.size)
         Assert.assertTrue(appendersIds.contains("A"))
@@ -85,16 +80,9 @@ class AnalyticsManagerUnitTest {
     }
 
     @Test
-    fun testDisableAppendersNull() {
-        val analyticsManager = AnalyticsManager()
-        analyticsManager.removeAppenders(mContext, null)
-        Assert.assertNotNull(analyticsManager)
-    }
-
-    @Test
     fun testDisableAppendersEmpty() {
         val analyticsManager = AnalyticsManager()
-        analyticsManager.removeAppenders(mContext, HashSet())
+        analyticsManager.removeAppenders(context!!, HashSet())
         Assert.assertNotNull(analyticsManager)
     }
 
@@ -110,8 +98,8 @@ class AnalyticsManagerUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         val appendersIds =
-            analyticsManager.addAppenders(mContext, appenders)
-        analyticsManager.removeAppenders(mContext, appendersIds)
+            analyticsManager.addAppenders(context!!, appenders)
+        analyticsManager.removeAppenders(context!!, appendersIds)
         Mockito.verify(appenderA, Mockito.times(1)).disableAppender()
         Mockito.verify(appenderB, Mockito.times(1)).disableAppender()
         Mockito.verify(appenderC, Mockito.times(1)).disableAppender()
@@ -128,7 +116,7 @@ class AnalyticsManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        analyticsManager.addAppenders(mContext, appenders)
+        analyticsManager.addAppenders(context!!, appenders)
         analyticsManager.removeAllAppenders()
         Mockito.verify(appenderA, Mockito.times(1)).disableAppender()
         Mockito.verify(appenderB, Mockito.times(1)).disableAppender()
@@ -146,7 +134,7 @@ class AnalyticsManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        analyticsManager.addAppenders(mContext, appenders)
+        analyticsManager.addAppenders(context!!, appenders)
         val analyticsPayload: MutableMap<String, Any> =
             HashMap()
         analyticsPayload["A"] = "A1"
@@ -172,7 +160,7 @@ class AnalyticsManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        analyticsManager.addAppenders(mContext, appenders)
+        analyticsManager.addAppenders(context!!, appenders)
         val analyticsPayload = Bundle()
         analyticsPayload.putString("A", "A1")
         analyticsPayload.putString("B", "B1")
@@ -198,7 +186,7 @@ class AnalyticsManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        analyticsManager.addAppenders(mContext, appenders)
+        analyticsManager.addAppenders(context!!, appenders)
         analyticsManager.trackPageHit(activity, "test", "screen class")
         Mockito.verify(appenderA, Mockito.times(1))
             .trackPageHit(activity, "test", "screen class")
@@ -219,7 +207,7 @@ class AnalyticsManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        analyticsManager.addAppenders(mContext, appenders)
+        analyticsManager.addAppenders(context!!, appenders)
         analyticsManager.setUserID("1234")
         Mockito.verify(appenderA, Mockito.times(1)).setUserId("1234")
         Mockito.verify(appenderB, Mockito.times(1)).setUserId("1234")
@@ -237,7 +225,7 @@ class AnalyticsManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        analyticsManager.addAppenders(mContext, appenders)
+        analyticsManager.addAppenders(context!!, appenders)
         analyticsManager.setUserProperty("name", "banana")
         analyticsManager.setUserProperty("age", "30")
         Mockito.verify(appenderA, Mockito.times(1))
@@ -256,9 +244,5 @@ class AnalyticsManagerUnitTest {
             Mockito.mock(IAnalyticsAppender::class.java)
         Mockito.`when`(appender.analyticsId).thenReturn(analyticsId)
         return appender
-    }
-
-    companion object {
-        private const val mPackageName = "my.package.name"
     }
 }

@@ -3,7 +3,6 @@ package com.mindera.skeletoid.network
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Build
 
@@ -22,26 +21,21 @@ object Connectivity {
      */
     @SuppressLint("MissingPermission")
     fun isConnected(context: Context): Boolean {
-        val connectivityManager: ConnectivityManager? = context.getSystemService(
-            Context.CONNECTIVITY_SERVICE
-        ) as? ConnectivityManager
-
-        connectivityManager?.let { conManager ->
-
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                val network = conManager.activeNetwork
-                val capabilities = conManager
-                    .getNetworkCapabilities(network)
-
-                capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-                        && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
-            } else {
-                val networkInfo = conManager.activeNetworkInfo
-                networkInfo != null
-            }
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            doesActiveNetworkHasTransportTypeAndNetworkCapability(
+                context,
+                emptyList(),
+                listOf(
+                    NetworkCapabilities.NET_CAPABILITY_INTERNET,
+                    NetworkCapabilities.NET_CAPABILITY_VALIDATED
+                )
+            )
+        } else {
+            val networkInfo = context.getSystemService(
+                Context.CONNECTIVITY_SERVICE
+            ) as? ConnectivityManager
+            networkInfo?.activeNetworkInfo != null
         }
-
-        return false
     }
 
     /**
@@ -54,22 +48,57 @@ object Connectivity {
     @SuppressLint("MissingPermission")
     fun isConnectedToWifi(context: Context): Boolean {
 
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            doesActiveNetworkHasTransportTypeAndNetworkCapability(
+                context,
+                listOf(NetworkCapabilities.TRANSPORT_WIFI),
+                listOf(NetworkCapabilities.NET_CAPABILITY_INTERNET,
+                    NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+            )
+        } else {
+            val networkInfo = context.getSystemService(
+                Context.CONNECTIVITY_SERVICE
+            ) as? ConnectivityManager
+            networkInfo?.activeNetworkInfo != null
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun doesActiveNetworkHasTransportTypeAndNetworkCapability(
+        context: Context,
+        transportTypes: List<Int>,
+        networkCapabilities: List<Int>
+    ): Boolean {
         val connectivityManager: ConnectivityManager? = context.getSystemService(
             Context.CONNECTIVITY_SERVICE
         ) as? ConnectivityManager
 
         connectivityManager?.let { conManager ->
 
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val network = conManager.activeNetwork
                 val capabilities = conManager
                     .getNetworkCapabilities(network)
 
-                capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-                        && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+                capabilities?.let {
+                    transportTypes.forEach {
+                        if (!capabilities.hasTransport(it)) {
+                            return false
+                        }
+                    }
+                    networkCapabilities.forEach {
+                        if (!capabilities.hasCapability(it)) {
+                            return false
+                        }
+                    }
+
+                    return true
+                }
             } else {
-                val networkInfo = conManager.activeNetworkInfo
-                networkInfo != null
+                val networkInfo = context.getSystemService(
+                    Context.CONNECTIVITY_SERVICE
+                ) as? ConnectivityManager
+                return networkInfo?.activeNetworkInfo != null
             }
         }
 
