@@ -114,20 +114,15 @@ object LOG {
      * @return
      */
     private fun getInstance(
-        context: Context?,
+        context: Context,
         packageName: String? = null
     ): ILoggerManager {
-
-        if (context == null && packageName == null) {
-            throw Exception("Cant have context and packageName null")
-        }
 
         instance ?: synchronized(LOG.javaClass) {
             instance = packageName?.let { LoggerManager(it) } ?: LoggerManager(context)
         }
         return instance!!
     }
-
 
     /**
      * Log with a DEBUG level
