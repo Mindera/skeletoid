@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger
  */
 object ThreadPoolUtils {
     @JvmField
-    val mThreadTotal =
+    val threadTotal =
         AtomicInteger(0)
 
     /**
@@ -56,7 +56,7 @@ object ThreadPoolUtils {
      */
     @JvmStatic
     fun shutdown(threadPoolExecutor: java.util.concurrent.ThreadPoolExecutor) {
-        mThreadTotal.addAndGet(-threadPoolExecutor.corePoolSize)
+        threadTotal.addAndGet(-threadPoolExecutor.corePoolSize)
         threadPoolExecutor.shutdown()
     }
 
@@ -67,7 +67,7 @@ object ThreadPoolUtils {
      */
     @JvmStatic
     fun shutdownNow(threadPoolExecutor: java.util.concurrent.ThreadPoolExecutor) {
-        mThreadTotal.addAndGet(-threadPoolExecutor.corePoolSize)
+        threadTotal.addAndGet(-threadPoolExecutor.corePoolSize)
         threadPoolExecutor.shutdownNow()
     }
 }

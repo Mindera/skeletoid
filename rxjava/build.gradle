@@ -42,6 +42,8 @@ android {
 dependencies {
     //Depends on Base Skeletoid
     api project(path: ':base')
+    implementation "com.akaita.java:rxjava2-debug:$rxJavaDebug"
+
     testImplementation project(path: ':base', configuration: 'childTestDependencies')
 
     androidTestImplementation ("androidx.test:runner:$testRunnerVersion")

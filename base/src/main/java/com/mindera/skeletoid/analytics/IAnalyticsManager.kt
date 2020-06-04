@@ -1,20 +1,14 @@
-package com.mindera.skeletoid.analytics;
+package com.mindera.skeletoid.analytics
 
-import android.app.Activity;
-import android.content.Context;
-import android.os.Bundle;
-
-import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import android.app.Activity
+import android.content.Context
+import android.os.Bundle
+import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender
 
 /**
  * Analytics interface
  */
-public interface IAnalyticsManager {
-
+interface IAnalyticsManager {
     /**
      * Enable analytics appenders
      *
@@ -22,7 +16,10 @@ public interface IAnalyticsManager {
      * @param analyticsAppenders Log appenders to enable
      * @return Ids of the logs enabled by their order
      */
-    Set<String> addAppenders(Context context, List<IAnalyticsAppender> analyticsAppenders);
+    fun addAppenders(
+        context: Context,
+        analyticsAppenders: List<IAnalyticsAppender>
+    ): Set<String>
 
     /**
      * Disable analytics appenders
@@ -30,12 +27,15 @@ public interface IAnalyticsManager {
      * @param context      Context
      * @param analyticsIds Log ids of each of the analytics enabled by the order sent
      */
-    void removeAppenders(Context context, Set<String> analyticsIds);
+    fun removeAppenders(
+        context: Context,
+        analyticsIds: Set<String>
+    )
 
     /**
      * Disable all analytics appenders
      */
-    void removeAllAppenders();
+    fun removeAllAppenders()
 
     /**
      * Track app event
@@ -43,7 +43,10 @@ public interface IAnalyticsManager {
      * @param eventName        Event name
      * @param analyticsPayload Generic analytics payload
      */
-    void trackEvent(String eventName, Map<String, Object> analyticsPayload);
+    fun trackEvent(
+        eventName: String,
+        analyticsPayload: Map<String, Any>
+    )
 
     /**
      * Track app event
@@ -51,7 +54,7 @@ public interface IAnalyticsManager {
      * @param eventName        Event name
      * @param analyticsPayload Generic analytics payload
      */
-    void trackEvent(String eventName, Bundle analyticsPayload);
+    fun trackEvent(eventName: String, analyticsPayload: Bundle)
 
     /**
      * Track app page hit
@@ -60,14 +63,18 @@ public interface IAnalyticsManager {
      * @param screenName          Screen name
      * @param screenClassOverride Screen class override name
      */
-    void trackPageHit(Activity activity, String screenName, String screenClassOverride);
+    fun trackPageHit(
+        activity: Activity,
+        screenName: String,
+        screenClassOverride: String
+    )
 
     /**
      * Sets the user ID
      *
      * @param userID ID of the user
      */
-    void setUserID(String userID);
+    fun setUserID(userID: String)
 
     /**
      * Sets a custom property of the user
@@ -75,6 +82,5 @@ public interface IAnalyticsManager {
      * @param name  Property name
      * @param value Property value
      */
-    void setUserProperty(String name, String value);
-
+    fun setUserProperty(name: String, value: String)
 }

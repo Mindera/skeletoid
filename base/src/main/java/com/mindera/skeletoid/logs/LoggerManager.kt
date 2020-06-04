@@ -144,7 +144,7 @@ internal class LoggerManager : ILoggerManager {
                 LOG_FORMAT_4ARGS,
                 tag,
                 LogAppenderUtils.getObjectHash(tag),
-                ThreadUtils.getCurrentThreadName(),
+                ThreadUtils.currentThreadName,
                 LogAppenderUtils.getLogString(*text)
             )
             pushLogToAppenders(priority, t, log)

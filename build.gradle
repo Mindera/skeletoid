@@ -58,6 +58,7 @@ ext {
     rxJavaVersion = '2.2.9'
     rxAndroidVersion = '2.1.1'
     rxBindingsVersion = '3.0.0-alpha2'
+    rxJavaDebug = '1.4.0'
 
     // Tests & Quality
     junitVersion = '4.13'

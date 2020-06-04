@@ -207,7 +207,7 @@ class LoggerManagerUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1)).log(PRIORITY.DEBUG, null, log)
@@ -235,7 +235,7 @@ class LoggerManagerUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1)).log(PRIORITY.ERROR, null, log)
@@ -263,7 +263,7 @@ class LoggerManagerUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1)).log(PRIORITY.WARN, null, log)
@@ -291,7 +291,7 @@ class LoggerManagerUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1)).log(PRIORITY.FATAL, null, log)
@@ -319,7 +319,7 @@ class LoggerManagerUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1)).log(PRIORITY.INFO, null, log)
@@ -347,7 +347,7 @@ class LoggerManagerUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1))
@@ -379,7 +379,7 @@ class LoggerManagerUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1))
@@ -411,7 +411,7 @@ class LoggerManagerUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1))
@@ -443,7 +443,7 @@ class LoggerManagerUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1))
@@ -475,7 +475,7 @@ class LoggerManagerUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1))
@@ -507,7 +507,7 @@ class LoggerManagerUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1))
@@ -539,7 +539,7 @@ class LoggerManagerUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1))

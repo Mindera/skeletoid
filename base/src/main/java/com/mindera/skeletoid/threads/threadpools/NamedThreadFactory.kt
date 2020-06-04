@@ -37,7 +37,7 @@ class NamedThreadFactory internal constructor(
         if (t.priority != Thread.NORM_PRIORITY) {
             t.priority = Thread.NORM_PRIORITY
         }
-        val threadTotal = ThreadPoolUtils.mThreadTotal.incrementAndGet()
+        val threadTotal = ThreadPoolUtils.threadTotal.incrementAndGet()
         LOG.d(
             LOG_TAG,
             "Created one more thread: "

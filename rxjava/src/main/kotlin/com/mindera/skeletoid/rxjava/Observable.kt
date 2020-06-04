@@ -30,6 +30,7 @@ fun <T : Any> Observable<T>.observeOnMain(): Observable<T> =
 
 
 //Use this to maintain a list of shared Observables (use together with allowMultipleSubscribers)
+@Suppress("UNCHECKED_CAST")
 fun <T : Any> Observable<T>.createUniqueConcurrentRequestCache(
     requestMap: ConcurrentHashMap<String, Observable<*>>,
     key: String

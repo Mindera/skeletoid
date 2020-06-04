@@ -1,11 +1,13 @@
 package com.mindera.skeletoid.rxjava.handlers
 
+import com.akaita.java.rxjava2debug.RxJava2Debug
 import com.mindera.skeletoid.logs.LOG
 import io.reactivex.functions.Consumer
 import io.reactivex.plugins.RxJavaPlugins
 
 class RxDefaultCrashHandler(
     private val crashHandlerConfigurator: CrashConfigurator,
+    packageNames: List<String>,
     debugMode: Boolean = false
 ) :
     Consumer<Throwable> {
@@ -24,12 +26,12 @@ class RxDefaultCrashHandler(
         //https://blog.danlew.net/2015/12/08/error-handling-in-rxjava/
         RxJavaPlugins.setErrorHandler(this)
 
-        // Disabled since this seems to cause crashes.
+        // Beware this can cause crashes.
         // In debug in will pinpoint the source of the error.. but if the stack if too large it will crash
-//        if (debugMode) {
+        if (debugMode) {
             // https://github.com/akaita/RxJava2Debug
-//             RxJava2Debug.enableRxJava2AssemblyTracking(arrayOf(BuildConfig.APPLICATION_ID, "com.smartbox.partner"))
-//        }
+            RxJava2Debug.enableRxJava2AssemblyTracking(packageNames.toTypedArray())
+        }
     }
 
     override fun accept(t: Throwable?) {

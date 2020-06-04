@@ -6,11 +6,6 @@ import static junit.framework.Assert.assertTrue;
 
 public class ThreadUtilsUnitTests {
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testConstructor() {
-        new ThreadUtils();
-    }
-
     @Test
     public void testThreadName() {
         //TODO This would be better with a regex that validates against [T# .+]

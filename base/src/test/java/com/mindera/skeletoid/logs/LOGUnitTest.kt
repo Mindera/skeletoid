@@ -148,7 +148,7 @@ class LOGUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.DEBUG, null, log)
@@ -176,7 +176,7 @@ class LOGUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.ERROR, null, log)
@@ -204,7 +204,7 @@ class LOGUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.WARN, null, log)
@@ -229,7 +229,7 @@ class LOGUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         init(context, mPackageName, appenders)
@@ -256,7 +256,7 @@ class LOGUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         init(context, mPackageName, appenders)
@@ -279,7 +279,7 @@ class LOGUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         init(context, mPackageName, appenders)
@@ -301,7 +301,7 @@ class LOGUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         init(context, mPackageName, appenders)
@@ -323,7 +323,7 @@ class LOGUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         init(context, mPackageName, appenders)
@@ -345,7 +345,7 @@ class LOGUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         init(context, mPackageName, appenders)
@@ -367,7 +367,7 @@ class LOGUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         init(context, mPackageName, appenders)
@@ -396,7 +396,7 @@ class LOGUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.DEBUG, e, log)
@@ -424,7 +424,7 @@ class LOGUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.ERROR, e, log)
@@ -452,7 +452,7 @@ class LOGUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.WARN, e, log)
@@ -480,7 +480,7 @@ class LOGUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.FATAL, e, log)
@@ -508,7 +508,7 @@ class LOGUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.INFO, e, log)
@@ -536,7 +536,7 @@ class LOGUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.VERBOSE, e, log)
@@ -563,7 +563,7 @@ class LOGUnitTest {
             LOG_FORMAT_4ARGS,
             TAG,
             getObjectHash(TAG),
-            ThreadUtils.getCurrentThreadName(),
+            ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
         Mockito.verify(appenderA, Mockito.times(1))
