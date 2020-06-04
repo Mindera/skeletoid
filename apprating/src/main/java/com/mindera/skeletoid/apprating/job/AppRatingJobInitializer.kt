@@ -1,5 +1,6 @@
 package com.mindera.skeletoid.apprating.job
 
+import android.content.Context
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.mindera.skeletoid.apprating.job.AppRatingJob.Companion.JOB_TAG
@@ -12,12 +13,12 @@ object AppRatingJobInitializer {
      *
      * @param delay Delay used to start the work
      */
-    fun schedule(delay: Long) {
+    fun schedule(context: Context, delay: Long) {
         val job = OneTimeWorkRequest.Builder(AppRatingJob::class.java)
             .setInitialDelay(delay, TimeUnit.DAYS)
             .addTag(JOB_TAG)
             .build()
 
-        WorkManager.getInstance().enqueue(job)
+        WorkManager.getInstance(context).enqueue(job)
     }
 }
