@@ -5,7 +5,7 @@ import com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils.getMethodName
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils.getObjectHash
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils.getTag
-import junit.framework.Assert
+import org.junit.Assert
 import org.junit.Test
 
 class LogAppenderUtilsUnitTests {

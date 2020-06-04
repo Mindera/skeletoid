@@ -1,7 +1,7 @@
 package com.mindera.skeletoid.generic
 
 import com.mindera.skeletoid.generic.StringUtils.ordinalIndexOf
-import junit.framework.Assert
+import org.junit.Assert
 import org.junit.Test
 
 class StringUtilsUnitTests {

@@ -73,7 +73,8 @@ dependencies {
 
     testImplementation "junit:junit:$junitVersion"
     testImplementation "org.jetbrains.kotlin:kotlin-test:$rootProject.kotlinVersion"
-    testImplementation ("org.mockito:mockito-core:$mockitoVersion")
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "androidx.test:core:$androidCoreTest"
 
     testImplementation ("org.powermock:powermock-module-junit4:$powermockVersion")
     testImplementation ("org.powermock:powermock-module-junit4-rule:$powermockVersion")

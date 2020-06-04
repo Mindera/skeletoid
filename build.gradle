@@ -67,6 +67,7 @@ ext {
     robolectricVersion = '4.3'
     testRunnerVersion = '1.1.1'
     espressoVersion = '3.1.1'
+    androidCoreTest = '1.2.0'
 }
 
 task clean(type: Delete) {

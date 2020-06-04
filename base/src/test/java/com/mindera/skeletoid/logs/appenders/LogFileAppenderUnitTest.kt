@@ -1,7 +1,9 @@
 package com.mindera.skeletoid.logs.appenders
 
+import android.content.Context
 import android.content.Intent
 import androidx.core.content.FileProvider
+import androidx.test.core.app.ApplicationProvider
 import com.mindera.skeletoid.generic.AndroidUtils
 import com.mindera.skeletoid.logs.LOG
 import org.junit.Ignore
@@ -79,7 +81,7 @@ public class LogFileAppenderUnitTest {
 
     @Test
     fun testEnableAppender() {
-        val context = RuntimeEnvironment.application
+        val context = ApplicationProvider.getApplicationContext<Context>()
         val appender = LogFileAppender(PACKAGE_NAME, FILE_NAME)
 
         appender.enableAppender(context)
@@ -90,7 +92,7 @@ public class LogFileAppenderUnitTest {
 
     @Test
     fun testDisableAppender() {
-        val context = RuntimeEnvironment.application
+        val context = ApplicationProvider.getApplicationContext<Context>()
         val appender = LogFileAppender(PACKAGE_NAME, FILE_NAME)
         appender.enableAppender(context)
         Thread.sleep(2000)
@@ -149,7 +151,7 @@ public class LogFileAppenderUnitTest {
 
     @Test
     fun testGetFileLogPath() {
-        val context = RuntimeEnvironment.application
+        val context = ApplicationProvider.getApplicationContext<Context>()
         val appender = LogFileAppender(PACKAGE_NAME, FILE_NAME)
         PowerMockito.mockStatic(AndroidUtils::class.java)
         `when`(
@@ -170,7 +172,7 @@ public class LogFileAppenderUnitTest {
 
     @Test
     fun testGetExternalFileLogPath() {
-        val context = RuntimeEnvironment.application
+        val context = ApplicationProvider.getApplicationContext<Context>()
         val appender = LogFileAppender(PACKAGE_NAME, FILE_NAME, true)
         PowerMockito.mockStatic(AndroidUtils::class.java)
         `when`(
@@ -227,7 +229,7 @@ public class LogFileAppenderUnitTest {
     @Test
     fun testIsThreadPoolRunningWhenAppenderEnabled() {
         val appender = LogFileAppender(PACKAGE_NAME, FILE_NAME)
-        val context = RuntimeEnvironment.application
+        val context = ApplicationProvider.getApplicationContext<Context>()
 
         appender.enableAppender(context)
 
@@ -243,7 +245,7 @@ public class LogFileAppenderUnitTest {
 
     @Test
     fun testIsThreadPoolNotRunningWhenAppenderDisabled() {
-        val context = RuntimeEnvironment.application
+        val context = ApplicationProvider.getApplicationContext<Context>()
         val appender = LogFileAppender(PACKAGE_NAME, FILE_NAME)
         appender.enableAppender(context)
 
@@ -256,7 +258,7 @@ public class LogFileAppenderUnitTest {
     @Ignore
     fun testLog() {
         val appender = LogFileAppender(PACKAGE_NAME, FILE_NAME)
-        val context = RuntimeEnvironment.application
+        val context = ApplicationProvider.getApplicationContext<Context>()
         val fileHandler = mock(FileHandler::class.java)
 
         appender.enableAppender(context)
@@ -294,7 +296,7 @@ public class LogFileAppenderUnitTest {
     fun testNoLogIfAppenderDisabled() {
         val appender = LogFileAppender(PACKAGE_NAME, FILE_NAME)
         val fileHandler = mock(FileHandler::class.java)
-        val context = RuntimeEnvironment.application
+        val context = ApplicationProvider.getApplicationContext<Context>()
         appender.enableAppender(context)
         Thread.sleep(2000)
         appender.fileHandler = fileHandler
@@ -310,7 +312,7 @@ public class LogFileAppenderUnitTest {
         val appender = LogFileAppender(PACKAGE_NAME, FILE_NAME)
         appender.minLogLevel = LOG.PRIORITY.ERROR
         val fileHandler = mock(FileHandler::class.java)
-        val context = RuntimeEnvironment.application
+        val context = ApplicationProvider.getApplicationContext<Context>()
         appender.enableAppender(context)
         Thread.sleep(2000)
         appender.fileHandler = fileHandler

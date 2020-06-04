@@ -1,8 +1,10 @@
 package com.mindera.skeletoid.webview.cookies
 
+import android.content.Context
 import android.os.Build
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
+import androidx.test.core.app.ApplicationProvider
 import com.mindera.skeletoid.BuildConfig
 import org.junit.After
 import org.junit.Rule
@@ -38,7 +40,7 @@ class WebViewCookiesTest {
     @Test
     fun testClearWebViewCookiesApiEqualOrGreaterThan22() {
         Whitebox.setInternalState(Build.VERSION::class.java, "SDK_INT", 27)
-        val context = RuntimeEnvironment.application
+        val context = ApplicationProvider.getApplicationContext<Context>()
         val cookieManager = mock(CookieManager::class.java)
         mockStatic(CookieManager::class.java)
         `when`(CookieManager.getInstance()).thenReturn(cookieManager)
@@ -52,7 +54,7 @@ class WebViewCookiesTest {
     @Test
     fun testClearWebViewCookiesApiLowerThan22() {
         Whitebox.setInternalState(Build.VERSION::class.java, "SDK_INT", 21)
-        val context = RuntimeEnvironment.application
+        val context = ApplicationProvider.getApplicationContext<Context>()
         val cookieManager = mock(CookieManager::class.java)
         mockStatic(CookieManager::class.java)
         `when`(CookieManager.getInstance()).thenReturn(cookieManager)

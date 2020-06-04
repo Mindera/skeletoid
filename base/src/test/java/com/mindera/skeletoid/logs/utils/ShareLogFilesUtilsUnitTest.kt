@@ -48,7 +48,7 @@ class ShareLogFilesUtilsUnitTests {
 
     @Test
     fun testSendLogsSingle() {
-        val activity = Robolectric.buildActivity(TestActivity::class.java!!)
+        val activity = Robolectric.buildActivity(TestActivity::class.java)
             .create()
             .resume()
             .get()
@@ -87,7 +87,7 @@ class ShareLogFilesUtilsUnitTests {
 
     @Test
     fun testSendLogsEmail() {
-        val activity = Robolectric.buildActivity(TestActivity::class.java!!)
+        val activity = Robolectric.buildActivity(TestActivity::class.java)
             .create()
             .resume()
             .get()

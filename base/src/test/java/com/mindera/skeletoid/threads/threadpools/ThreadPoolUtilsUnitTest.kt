@@ -1,11 +1,10 @@
 package com.mindera.skeletoid.threads.threadpools
 
-import android.content.Context
 import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils.getFixedThreadPool
 import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils.getScheduledThreadPool
 import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils.shutdown
 import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils.shutdownNow
-import junit.framework.Assert
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
