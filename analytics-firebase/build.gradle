@@ -45,6 +45,8 @@ android {
 
 dependencies {
 
+    annotationProcessor 'com.google.auto.value:auto-value:1.5.2'
+
     //Depends on Base Skeletoid
     api project(path: ':base')
 
