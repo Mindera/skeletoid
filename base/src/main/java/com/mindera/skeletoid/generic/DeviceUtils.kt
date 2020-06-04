@@ -5,20 +5,34 @@ import android.os.Build
 object DeviceUtils {
 
     /**
+         * Get installed OS release name
+         *
+         * @return String with the installed OS release version
+         *//**
      * Get installed OS release name
      *
      * @return String with the installed OS release version or empty if not found
      */
-    val osRelease: String
+    val oSReleaseVersion: String
         get() = Build.VERSION.RELEASE ?: ""
+@Deprecated("Use DeviceUtils.osRelease instead") get() {
+            return osRelease
+        }
 
     /**
+         * Get the device's manufacturer and model name
+         *
+         * @return String with the device's manufacturer and model name
+         *//**
      * Get the device's brand name
      *
      * @return String with the device's brand name or empty String if not found
      */
-    val brand: String
+    val deviceBrand: String
         get() = Build.BRAND ?: ""
+@Deprecated("Use DeviceUtils.brand instead") get() {
+            return brand
+        }
 
     /**
      * Get the device's manufacturer name
@@ -37,20 +51,34 @@ object DeviceUtils {
         get() = Build.MODEL ?: ""
 
     /**
+         * Get the device's manufacturer and model name
+         *
+         * @return String with the device's manufacturer and model name
+         *//**
      * Get the device's manufacturer and model name
      *
      * @return String with the device's manufacturer and model name or empty String if not found
      */
-    val name: String
+    val deviceName: String
         get() = if (model.startsWith(manufacturer)) model else "$manufacturer $model"
+@Deprecated("Use DeviceUtils.name instead") get() {
+            return name
+        }
 
     /**
+         * Get installed OS SDK version
+         *
+         * @return String with the installed OS SDK version
+         *//**
      * Get installed OS SDK version
      *
      * @return String with the installed OS SDK version or empty String if not found
      */
-    val sdkVersion: Int
+    val oSSDKVersion: Int
         get() = Build.VERSION.SDK_INT
+@Deprecated("Use DeviceUtils.sdkVersion instead") get() {
+            return sdkVersion
+        }
 
     /**
      * Get the name of the overall product
