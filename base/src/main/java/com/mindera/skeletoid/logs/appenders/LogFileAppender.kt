@@ -132,11 +132,12 @@ class LogFileAppender(
                     fileHandler = FileHandler(
                         getFileLogPath(context),
                         logFileSize * megabyteInBytes, numberOfLogFiles, true
-                    )
-                    fileHandler!!.formatter = SimpleFormatter()
-                    fileHandler!!.formatter = object : Formatter() {
-                        override fun format(logRecord: LogRecord): String {
-                            return logRecord.message + "\n"
+                    ).apply {
+                        formatter = SimpleFormatter()
+                        formatter = object : Formatter() {
+                            override fun format(logRecord: LogRecord): String {
+                                return logRecord.message + "\n"
+                            }
                         }
                     }
 
@@ -187,6 +188,14 @@ class LogFileAppender(
             LOG.e(LOG_TAG, "Error on submitToFileLoggingQueue: fileLoggingTP is not available")
         }
 
+        submitLog(type, t, logs)
+    }
+
+    private fun submitLog(
+        type: LOG.PRIORITY,
+        t: Throwable?,
+        logs: Array<out String>
+    ) {
         fileLoggingTP?.run {
             submit {
                 fileHandler?.run {

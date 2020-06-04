@@ -11,6 +11,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.WindowManager
 import androidx.annotation.VisibleForTesting
+import androidx.core.content.pm.PackageInfoCompat
 
 /**
  * Utility class for Android related info
@@ -28,7 +29,7 @@ object AndroidUtils {
      * Cached app version code
      */
     @JvmField
-    var mAppVersionCode = -1
+    var mAppVersionCode = -1L
 
     /**
      * Cached app package
@@ -97,7 +98,7 @@ object AndroidUtils {
      * @return The int with the application versionCode or -1 if an exception occurs
      */
     @JvmStatic
-    fun getApplicationVersionCode(context: Context): Int {
+    fun getApplicationVersionCode(context: Context): Long {
         if (mAppVersionCode < 0) {
             try {
                 val info = context.packageManager
@@ -105,7 +106,7 @@ object AndroidUtils {
                         context.packageName,
                         PackageManager.GET_META_DATA
                     )
-                mAppVersionCode = info.versionCode
+                mAppVersionCode = PackageInfoCompat.getLongVersionCode(info)
             } catch (e: Exception) {
                 //This has Log instead of LOG in purpose to avoid infinite loops on error cases of logger startup
                 Log.e(
@@ -147,29 +148,6 @@ object AndroidUtils {
             }
         }
         return mAppPackage ?: "unknown.package"
-    }
-
-    /**
-     * Check if a service is running
-     *
-     * @param context      The context
-     * @param serviceClass The class of the service to check
-     * @return true if it is, false if not.
-     */
-    @JvmStatic
-    fun isServiceRunning(
-        context: Context,
-        serviceClass: Class<*>
-    ): Boolean {
-        val manager = context
-            .getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        for (service in manager
-            .getRunningServices(Int.MAX_VALUE)) {
-            if (serviceClass.name == service.service.className) {
-                return true
-            }
-        }
-        return false
     }
 
     /**
