@@ -35,11 +35,6 @@ class ShareLogFilesUtilsUnitTests {
     @JvmField
     public var rule = PowerMockRule()
 
-    @Test(expected = UnsupportedOperationException::class)
-    fun testConstructor() {
-        ShareLogFilesUtils()
-    }
-
     @Test
     fun testGetFileLogPath() {
         val context = mock(Context::class.java)
