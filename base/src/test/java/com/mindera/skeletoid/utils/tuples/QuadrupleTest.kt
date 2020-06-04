@@ -10,11 +10,6 @@ class QuadrupleTest {
     fun testQuadruple() {
         val quadruple = Quadruple(1, "Mindera", 123456L, 3.14F)
 
-        assertTrue(quadruple.first is Int)
-        assertTrue(quadruple.second is String)
-        assertTrue(quadruple.third is Long)
-        assertTrue(quadruple.fourth is Float)
-
         assertEquals(1, quadruple.first)
         assertEquals("Mindera", quadruple.second)
         assertEquals(123456L, quadruple.third)
@@ -34,12 +29,6 @@ class QuadrupleTest {
     @Test
     fun testQuintuple() {
         val quintuple = Quintuple(1, "Mindera", 123456L, 3.14F, arrayOf("hi", "there", "Skeletoid"))
-
-        assertTrue(quintuple.first is Int)
-        assertTrue(quintuple.second is String)
-        assertTrue(quintuple.third is Long)
-        assertTrue(quintuple.fourth is Float)
-        assertTrue(quintuple.fifth is Array<String>)
 
         assertEquals(1, quintuple.first)
         assertEquals("Mindera", quintuple.second)

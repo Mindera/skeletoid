@@ -3,7 +3,7 @@ package com.mindera.skeletoid.generic
 import android.content.Context
 import android.content.res.Resources
 import com.mindera.skeletoid.generic.UIUtils.getStatusBarHeighPixels
-import junit.framework.Assert
+import org.junit.Assert
 import org.junit.Test
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito

@@ -2,9 +2,9 @@ package com.mindera.skeletoid.logs.appenders
 
 import android.util.Log
 import com.mindera.skeletoid.logs.LOG
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertFalse
-import junit.framework.Assert.assertTrue
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.internal.verification.VerificationModeFactory

@@ -1,8 +1,8 @@
 package com.mindera.skeletoid.generic
 
 import android.os.Build
-import junit.framework.Assert.assertEquals
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.powermock.core.classloader.annotations.PrepareForTest

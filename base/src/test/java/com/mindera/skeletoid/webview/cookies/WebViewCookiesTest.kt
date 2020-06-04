@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
+import android.webkit.ValueCallback
 import androidx.test.core.app.ApplicationProvider
 import com.mindera.skeletoid.BuildConfig
 import org.junit.After
@@ -30,7 +31,7 @@ class WebViewCookiesTest {
 
     @Rule
     @JvmField
-    public var rule = PowerMockRule()
+    var rule = PowerMockRule()
 
     @After
     fun tearDown() {
@@ -47,7 +48,7 @@ class WebViewCookiesTest {
 
         WebViewCookies.clearWebViewCookies(context)
 
-        verify(cookieManager).removeAllCookies(null)
+        verify(cookieManager).removeAllCookies {}
         verify(cookieManager).flush()
     }
 
@@ -59,17 +60,9 @@ class WebViewCookiesTest {
         mockStatic(CookieManager::class.java)
         `when`(CookieManager.getInstance()).thenReturn(cookieManager)
 
-        val cookieSyncManager = mock(CookieSyncManager::class.java)
-        mockStatic(CookieSyncManager::class.java)
-        `when`(CookieSyncManager.createInstance(context)).thenReturn(cookieSyncManager)
-
         WebViewCookies.clearWebViewCookies(context)
-
-        verify(cookieManager).removeAllCookie()
-        verify(cookieManager).removeSessionCookie()
-
-        verify(cookieSyncManager).startSync()
-        verify(cookieSyncManager).stopSync()
-        verify(cookieSyncManager).sync()
+        
+        verify(cookieManager).removeAllCookies {}
+        cookieManager.flush()
     }
 }

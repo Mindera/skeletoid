@@ -18,8 +18,8 @@ import com.mindera.skeletoid.logs.appenders.ILogAppender
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils.getObjectHash
 import com.mindera.skeletoid.threads.utils.ThreadUtils
-import junit.framework.Assert
 import org.junit.After
+import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
