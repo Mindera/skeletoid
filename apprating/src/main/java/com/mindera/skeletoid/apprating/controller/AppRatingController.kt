@@ -82,7 +82,7 @@ class AppRatingController {
                 store.alreadyRated = true
             }
             AppRatingDialogResponse.RATE_LATER -> {
-                schedulePromptDialogJob()
+                schedulePromptDialogJob(context)
             }
         }
     }
