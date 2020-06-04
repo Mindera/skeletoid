@@ -1,25 +1,13 @@
-package com.mindera.skeletoid.logs;
+package com.mindera.skeletoid.logs
 
-import android.content.Context;
-
-import com.mindera.skeletoid.logs.appenders.ILogAppender;
-
-import java.util.List;
-import java.util.Set;
+import android.content.Context
+import com.mindera.skeletoid.logs.LOG.PRIORITY
+import com.mindera.skeletoid.logs.appenders.ILogAppender
 
 /**
  * LOG interface
  */
-public interface ILoggerManager {
-
-    /**
-     * Log to all log appenders
-     *
-     * @param tag      Log tag
-     * @param priority Log priority
-     * @param text     Log text
-     */
-    void log(String tag, LOG.PRIORITY priority, String... text);
+interface ILoggerManager {
 
     /**
      * Log to all log appenders
@@ -29,14 +17,19 @@ public interface ILoggerManager {
      * @param t        Trowable
      * @param text     Log text
      */
-    void log(String tag, LOG.PRIORITY priority, Throwable t, String... text);
+    fun log(
+        tag: String,
+        priority: PRIORITY,
+        t: Throwable? = null,
+        vararg text: String
+    )
 
     /**
      * Set method name visible in logs (careful this is a HEAVY operation)
      *
      * @param visibility true if enabled
      */
-    void setMethodNameVisible(boolean visibility);
+    fun setMethodNameVisible(visibility: Boolean)
 
     /**
      * Enable log appenders
@@ -45,8 +38,10 @@ public interface ILoggerManager {
      * @param logAppenders Log appenders to enable
      * @return Ids of the logs enabled by their order
      */
-    Set<String> addAppenders(Context context, List<ILogAppender> logAppenders);
-
+    fun addAppenders(
+        context: Context,
+        logAppenders: List<ILogAppender>
+    ): Set<String>
 
     /**
      * Disable log appenders
@@ -54,13 +49,15 @@ public interface ILoggerManager {
      * @param context   Context
      * @param loggerIds Log ids of each of the loggers enabled by the order sent
      */
-    void removeAppenders(Context context, Set<String> loggerIds);
-
+    fun removeAppenders(
+        context: Context,
+        loggerIds: Set<String>
+    )
 
     /**
      * Disable all log appenders
      */
-    void removeAllAppenders();
+    fun removeAllAppenders()
 
     /**
      * Sets a custom property of the user
@@ -68,5 +65,5 @@ public interface ILoggerManager {
      * @param key Property key
      * @param value Property value
      */
-    void setUserProperty(String key, String value);
+    fun setUserProperty(key: String, value: String)
 }

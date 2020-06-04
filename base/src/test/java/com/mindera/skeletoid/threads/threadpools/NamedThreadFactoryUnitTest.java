@@ -12,8 +12,8 @@ public class NamedThreadFactoryUnitTest {
     public void testGetThreads() {
         NamedThreadFactory namedThreadFactory = new NamedThreadFactory("name", 10);
 
-        assertNotNull(namedThreadFactory.getThreads());
-        assertEquals(0, namedThreadFactory.getThreads().size());
+        assertNotNull(namedThreadFactory.threads);
+        assertEquals(0, namedThreadFactory.threads.size());
     }
 
     @Test
@@ -23,7 +23,7 @@ public class NamedThreadFactoryUnitTest {
         Thread thread = namedThreadFactory.newThread(runnable);
 
         assertNotNull(thread);
-        assertEquals(1, namedThreadFactory.getThreads().size());
+        assertEquals(1, namedThreadFactory.threads.size());
     }
 
     @Test
@@ -31,7 +31,7 @@ public class NamedThreadFactoryUnitTest {
         NamedThreadFactory namedThreadFactory = new NamedThreadFactory("name", 10);
 
         namedThreadFactory.clearThreads();
-        assertNotNull(namedThreadFactory.getThreads());
-        assertEquals(0, namedThreadFactory.getThreads().size());
+        assertNotNull(namedThreadFactory.threads);
+        assertEquals(0, namedThreadFactory.threads.size());
     }
 }
