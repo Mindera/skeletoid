@@ -153,7 +153,7 @@ public class AndroidUtilsUnitTests {
     @Test
     public void testDefaultGetApplicationVersionCode() {
         Context context = mock(Context.class);
-        assertEquals(AndroidUtils.mAppVersionCode, AndroidUtils.getApplicationVersionCode(context));
+        assertEquals(AndroidUtils.appVersionCode, AndroidUtils.getApplicationVersionCode(context));
     }
 
     @Test
@@ -180,12 +180,12 @@ public class AndroidUtilsUnitTests {
         when(packageManager.getPackageInfo("packageName", PackageManager.GET_META_DATA)).thenThrow(new PackageManager.NameNotFoundException());
         when(context.getPackageManager()).thenReturn(packageManager);
 
-        assertEquals(AndroidUtils.mAppVersionCode, AndroidUtils.getApplicationVersionCode(context));
+        assertEquals(AndroidUtils.appVersionCode, AndroidUtils.getApplicationVersionCode(context));
     }
 
     @Test
     public void testGetApplicationVersionCodeWithoutContext() {
-        assertEquals(AndroidUtils.mAppVersionCode, AndroidUtils.getApplicationVersionCode(null));
+        assertEquals(AndroidUtils.appVersionCode, AndroidUtils.getApplicationVersionCode(null));
     }
 
     @Test
@@ -269,7 +269,7 @@ public class AndroidUtilsUnitTests {
 
     @Test
     public void testGetApplicationPackageWithoutContext() {
-        assertEquals(AndroidUtils.mAppPackage, AndroidUtils.getApplicationPackage(null));
+        assertEquals(AndroidUtils.appPackage, AndroidUtils.getApplicationPackage(null));
     }
 
     @Test

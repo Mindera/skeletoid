@@ -46,7 +46,6 @@ class LOGUnitTest {
 
     @After
     fun cleanupLOG() {
-        val context = Mockito.mock(Context::class.java)
         deinit()
     }
 

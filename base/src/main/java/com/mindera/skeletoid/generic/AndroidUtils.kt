@@ -1,10 +1,8 @@
 package com.mindera.skeletoid.generic
 
-import android.app.ActivityManager
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Environment
 import android.telephony.TelephonyManager
 import android.util.DisplayMetrics
@@ -23,19 +21,19 @@ object AndroidUtils {
     /**
      * Cached app version name
      */
-    private var mAppVersionName: String? = null
+    private var appVersionName: String? = null
 
     /**
      * Cached app version code
      */
     @JvmField
-    var mAppVersionCode = -1L
+    var appVersionCode = -1L
 
     /**
      * Cached app package
      */
     @JvmField
-    var mAppPackage: String? = null
+    var appPackage: String? = null
 
     /**
      * Get Device resolution
@@ -71,7 +69,7 @@ object AndroidUtils {
      */
     @JvmStatic
     fun getApplicationVersionName(context: Context): String? {
-        if (mAppVersionName == null) {
+        if (appVersionName == null) {
             var info: PackageInfo? = null
             try {
                 info = context.packageManager.getPackageInfo(
@@ -86,9 +84,9 @@ object AndroidUtils {
                     e
                 )
             }
-            mAppVersionName = if (info != null) info.versionName else ""
+            appVersionName = if (info != null) info.versionName else ""
         }
-        return mAppVersionName
+        return appVersionName
     }
 
     /**
@@ -99,14 +97,14 @@ object AndroidUtils {
      */
     @JvmStatic
     fun getApplicationVersionCode(context: Context): Long {
-        if (mAppVersionCode < 0) {
+        if (appVersionCode < 0) {
             try {
                 val info = context.packageManager
                     .getPackageInfo(
                         context.packageName,
                         PackageManager.GET_META_DATA
                     )
-                mAppVersionCode = PackageInfoCompat.getLongVersionCode(info)
+                appVersionCode = PackageInfoCompat.getLongVersionCode(info)
             } catch (e: Exception) {
                 //This has Log instead of LOG in purpose to avoid infinite loops on error cases of logger startup
                 Log.e(
@@ -116,7 +114,7 @@ object AndroidUtils {
                 )
             }
         }
-        return mAppVersionCode
+        return appVersionCode
     }
 
     /**
@@ -127,16 +125,16 @@ object AndroidUtils {
      */
     @JvmStatic
     fun getApplicationPackage(context: Context): String {
-        if (mAppPackage == null) {
-            mAppPackage = context.applicationContext.packageName
-            if (mAppPackage != null) {
+        if (appPackage == null) {
+            appPackage = context.applicationContext.packageName
+            if (appPackage != null) {
                 try {
                     val info = context.packageManager
                         .getPackageInfo(
                             context.packageName,
                             PackageManager.GET_META_DATA
                         )
-                    mAppPackage = info.packageName
+                    appPackage = info.packageName
                 } catch (e: Exception) {
                     //This has Log instead of LOG in purpose to avoid infinite loops on error cases of logger startup
                     Log.e(
@@ -147,7 +145,7 @@ object AndroidUtils {
                 }
             }
         }
-        return mAppPackage ?: "unknown.package"
+        return appPackage ?: "unknown.package"
     }
 
     /**
@@ -245,9 +243,9 @@ object AndroidUtils {
     @JvmStatic
     @VisibleForTesting
     fun deinit() {
-        mAppVersionName = null
-        mAppVersionCode = -1
-        mAppPackage = null
+        appVersionName = null
+        appVersionCode = -1
+        appPackage = null
     }
 
 }

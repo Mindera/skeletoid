@@ -26,7 +26,7 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(manifest = Config.NONE)
 @PowerMockIgnore("org.mockito.*", "org.robolectric.*", "android.*")
-@PrepareForTest(CookieManager::class, CookieSyncManager::class, Build.VERSION::class)
+@PrepareForTest(CookieManager::class, Build.VERSION::class)
 class WebViewCookiesTest {
 
     @Rule
@@ -61,7 +61,7 @@ class WebViewCookiesTest {
         `when`(CookieManager.getInstance()).thenReturn(cookieManager)
 
         WebViewCookies.clearWebViewCookies(context)
-        
+
         verify(cookieManager).removeAllCookies {}
         cookieManager.flush()
     }
