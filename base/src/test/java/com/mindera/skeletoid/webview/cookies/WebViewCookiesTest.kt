@@ -3,10 +3,7 @@ package com.mindera.skeletoid.webview.cookies
 import android.content.Context
 import android.os.Build
 import android.webkit.CookieManager
-import android.webkit.CookieSyncManager
-import android.webkit.ValueCallback
 import androidx.test.core.app.ApplicationProvider
-import com.mindera.skeletoid.BuildConfig
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -20,7 +17,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.rule.PowerMockRule
 import org.powermock.reflect.Whitebox
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
