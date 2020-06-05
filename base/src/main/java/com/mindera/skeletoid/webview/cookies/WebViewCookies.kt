@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.mindera.skeletoid.webview.cookies
 
 import android.content.Context
@@ -9,6 +7,7 @@ import android.webkit.CookieSyncManager
 
 object WebViewCookies {
 
+    @Suppress("DEPRECATION")
     fun clearWebViewCookies(context : Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             CookieManager.getInstance().removeAllCookies(null)
