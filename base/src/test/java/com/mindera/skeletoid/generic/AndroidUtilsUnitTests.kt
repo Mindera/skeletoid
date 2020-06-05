@@ -1,7 +1,5 @@
 package com.mindera.skeletoid.generic
 
-import android.app.ActivityManager
-import android.content.ComponentName
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo

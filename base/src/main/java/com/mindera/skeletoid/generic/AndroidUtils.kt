@@ -199,8 +199,8 @@ object AndroidUtils {
     @JvmStatic
     fun isPhoneAvailable(context: Context): Boolean {
         val telephonyManager = context
-            .getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        return telephonyManager.phoneType != TelephonyManager.PHONE_TYPE_NONE
+            .getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager?
+        return telephonyManager?.phoneType != null && telephonyManager.phoneType != TelephonyManager.PHONE_TYPE_NONE
     }
 
     /**
