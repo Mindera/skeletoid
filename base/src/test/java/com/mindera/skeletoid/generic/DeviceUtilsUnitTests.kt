@@ -10,7 +10,7 @@ import org.powermock.modules.junit4.PowerMockRunner
 import org.powermock.reflect.Whitebox
 
 @RunWith(PowerMockRunner::class)
-@PrepareForTest(Build.VERSION::class, Build::class)
+@PrepareForTest(Build::class)
 class DeviceUtilsUnitTests {
 
     companion object {
@@ -40,6 +40,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testOSRelease() {
         Whitebox.setInternalState(Build.VERSION::class.java, "RELEASE", "release")
 
@@ -47,6 +48,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testNullOSRelease() {
         Whitebox.setInternalState(Build.VERSION::class.java, "RELEASE", null as String?)
 
@@ -54,6 +56,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testBrand() {
         Whitebox.setInternalState(Build::class.java, "BRAND", "Pixel")
 
@@ -61,6 +64,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testNullBrand() {
         Whitebox.setInternalState(Build::class.java, "BRAND", null as String?)
 
@@ -68,6 +72,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testModel() {
         Whitebox.setInternalState(Build::class.java, "MODEL", "Pixel 3")
 
@@ -75,6 +80,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testNullModel() {
         Whitebox.setInternalState(Build::class.java, "MODEL", null as String?)
 
@@ -82,6 +88,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testManufacturer() {
         Whitebox.setInternalState(Build::class.java, "MANUFACTURER", "Google")
 
@@ -89,6 +96,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testNullManufacturer() {
         Whitebox.setInternalState(Build::class.java, "MANUFACTURER", null as String?)
 
@@ -96,6 +104,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testNameContainingManufacturer() {
         Whitebox.setInternalState(Build::class.java, "MANUFACTURER", "Google")
         Whitebox.setInternalState(Build::class.java, "MODEL", "Google Pixel 3")
@@ -104,6 +113,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testNameNotContainingManufacturer() {
         Whitebox.setInternalState(Build::class.java, "MANUFACTURER", "Google")
         Whitebox.setInternalState(Build::class.java, "MODEL", "Pixel 3")
@@ -112,6 +122,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testNullName() {
         Whitebox.setInternalState(Build::class.java, "MANUFACTURER", null as String?)
         Whitebox.setInternalState(Build::class.java, "MODEL", null as String?)
@@ -120,6 +131,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testSdkVersion() {
         Whitebox.setInternalState(Build.VERSION::class.java, "SDK_INT", 28)
 
@@ -127,6 +139,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testProduct() {
         Whitebox.setInternalState(Build::class.java, "PRODUCT", "?")
 
@@ -134,6 +147,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testNullProduct() {
         Whitebox.setInternalState(Build::class.java, "PRODUCT", null as String?)
 
@@ -141,6 +155,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testHardware() {
         Whitebox.setInternalState(Build::class.java, "HARDWARE", "FRF50")
 
@@ -148,6 +163,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testNullHardware() {
         Whitebox.setInternalState(Build::class.java, "HARDWARE", null as String?)
 
@@ -155,6 +171,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testDevice() {
         Whitebox.setInternalState(Build::class.java, "DEVICE", "GT-I9000")
 
@@ -162,6 +179,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testNullDevice() {
         Whitebox.setInternalState(Build::class.java, "DEVICE", null as String?)
 
@@ -169,6 +187,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class)
     fun testOSName() {
         Whitebox.setInternalState(Build.VERSION::class.java, "SDK_INT", 0)
 
@@ -176,6 +195,7 @@ class DeviceUtilsUnitTests {
     }
 
     @Test
+    @PrepareForTest(Build::class, Build.VERSION::class)
     fun testDeviceSpecifications() {
         Whitebox.setInternalState(Build::class.java, "DEVICE", "GT-I9000")
         Whitebox.setInternalState(Build::class.java, "HARDWARE", "FRF50")

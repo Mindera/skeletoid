@@ -44,6 +44,7 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+        unitTests.includeAndroidResources = true
     }
 
     configurations {
@@ -58,16 +59,16 @@ dependencies {
 
     api "androidx.annotation:annotation:$appcompatVersion"
 
-    implementation ("androidx.loader:loader:$loaderVersion")
+    implementation("androidx.loader:loader:$loaderVersion")
 
-    implementation ("androidx.vectordrawable:vectordrawable-animated:$vectorDrawableVersion")
+    implementation("androidx.vectordrawable:vectordrawable-animated:$vectorDrawableVersion")
 
-    implementation ("androidx.legacy:legacy-support-core-utils:$androidLegacyVersion")
+    implementation("androidx.legacy:legacy-support-core-utils:$androidLegacyVersion")
 
-    implementation ("androidx.appcompat:appcompat:$appcompatVersion")
+    implementation("androidx.appcompat:appcompat:$appcompatVersion")
 
     api "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
-    api ("io.reactivex.rxjava2:rxandroid:$rxAndroidVersion")
+    api("io.reactivex.rxjava2:rxandroid:$rxAndroidVersion")
 
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
 
@@ -76,12 +77,12 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
     testImplementation "androidx.test:core:$androidCoreTest"
 
-    testImplementation ("org.powermock:powermock-module-junit4:$powermockVersion")
-    testImplementation ("org.powermock:powermock-module-junit4-rule:$powermockVersion")
+    testImplementation("org.powermock:powermock-module-junit4:$powermockVersion")
+    testImplementation("org.powermock:powermock-module-junit4-rule:$powermockVersion")
 
-    testImplementation ("org.powermock:powermock-api-mockito2:$powermockVersion")
+    testImplementation("org.powermock:powermock-api-mockito2:$powermockVersion")
     testImplementation "org.powermock:powermock-classloading-xstream:$powermockVersion"
-    testImplementation ("org.robolectric:robolectric:$robolectricVersion")
+    testImplementation("org.robolectric:robolectric:$robolectricVersion")
 }
 
 apply from: "../jacoco.gradle"
