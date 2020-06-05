@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger
 /**
  * Factory for threads that provides custom naming
  */
-class NamedThreadFactory internal constructor(
+open class NamedThreadFactory internal constructor(
     threadPoolName: String,
     maxFactoryThreads: Int
 ) : ThreadFactory {

@@ -580,48 +580,6 @@ class LoggerManagerUnitTest {
             .listIterator()
     }
 
-    @Test
-    fun testNoLogForNullTextWithTag() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
-        val appenderA = mockAppender("A")
-        appenders.add(appenderA)
-        val loggerManager =
-            LoggerManager(mPackageName)
-        loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.DEBUG, null)
-        Mockito.verify(appenderA, Mockito.times(0)).log(
-            ArgumentMatchers.any(
-                PRIORITY::class.java
-            ),
-            ArgumentMatchers.any(Throwable::class.java),
-            ArgumentMatchers.anyString()
-        )
-    }
-
-    @Test
-    fun testNoLogForNullThrowableWithTagAndThrowable() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
-        val appenderA = mockAppender("A")
-        appenders.add(appenderA)
-        val loggerManager =
-            LoggerManager(mPackageName)
-        loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.DEBUG, null, TEXT)
-        Mockito.verify(appenderA, Mockito.times(0)).log(
-            ArgumentMatchers.any(
-                PRIORITY::class.java
-            ),
-            ArgumentMatchers.any(Throwable::class.java),
-            ArgumentMatchers.anyString()
-        )
-    }
-
     private fun mockAppender(analyticsId: String): ILogAppender {
         val appender = Mockito.mock(ILogAppender::class.java)
         Mockito.`when`(appender.loggerId).thenReturn(analyticsId)

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender
-import com.mindera.skeletoid.logs.LOG.init
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
@@ -45,7 +44,6 @@ class AnalyticsUnitTest {
         appenders.add(appenderC)
 
         //Must have logger initialized for this test
-        init(context!!)
         Analytics.init(context!!, appenders)
         Assert.assertTrue(Analytics.isInitialized)
     }
@@ -69,7 +67,6 @@ class AnalyticsUnitTest {
         appenders.add(appenderC)
 
         //Must have logger initialized for this test
-        init(context!!)
         Analytics.init(context!!, appenders)
         Analytics.deinit()
         Mockito.verify(appenderA, Mockito.times(1)).disableAppender()
@@ -109,7 +106,7 @@ class AnalyticsUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB1)
         appenders.add(appenderB2)
-        init(context!!, packageName)
+        Analytics.init(context!!)
         val appendersIds =
             Analytics.init(context!!, appenders)
         Assert.assertNotNull(appendersIds)
@@ -136,7 +133,7 @@ class AnalyticsUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        init(context!!, packageName)
+        Analytics.init(context!!)
         val appendersIds =
             Analytics.addAppenders(context!!, appenders)
         Analytics.removeAppenders(context!!, appendersIds)
@@ -155,7 +152,7 @@ class AnalyticsUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        init(context!!, packageName)
+        Analytics.init(context!!)
         Analytics.addAppenders(context!!, appenders)
         Analytics.removeAllAppenders()
         Mockito.verify(appenderA, Mockito.times(1)).disableAppender()

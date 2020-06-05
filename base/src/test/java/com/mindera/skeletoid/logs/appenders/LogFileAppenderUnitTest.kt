@@ -35,7 +35,7 @@ import kotlin.test.assertTrue
 @Config(manifest = Config.NONE)
 @PowerMockIgnore("org.mockito.*", "org.robolectric.*", "android.*")
 @PrepareForTest(FileProvider::class, Intent::class, AndroidUtils::class)
-public class LogFileAppenderUnitTest {
+class LogFileAppenderUnitTest {
 
     companion object {
         private const val PACKAGE_NAME = "my.package.name"

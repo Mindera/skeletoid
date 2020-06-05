@@ -44,9 +44,11 @@ object AndroidUtils {
     @JvmStatic
     fun getDeviceResolution(context: Context): String? {
         val wm =
-            context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            context.getSystemService(Context.WINDOW_SERVICE) as WindowManager?
+                ?: return null
+
         val metrics = DisplayMetrics()
-        wm.defaultDisplay.getMetrics(metrics)
+        wm.defaultDisplay?.getMetrics(metrics)
         val density =
             context.resources.displayMetrics.densityDpi.toFloat()
         val str = StringBuilder()
