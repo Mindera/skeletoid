@@ -23,8 +23,6 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
-import com.mindera.skeletoid.kt.extensions.stlib.multipleLet
-import com.mindera.skeletoid.kt.extensions.views.afterDrawn
 
 class PopupTooltip(
         //Required parameters
@@ -113,11 +111,13 @@ class PopupTooltip(
         /**
          * Clears the current reference to the tooltip and dismisses if it is present.
          */
-        fun clearTooltipIfNotNull() {
-            tooltip?.apply {
-                if (isShowing) dismiss()
-                tooltip = null
-            }
+        private fun PopupWindow.dismissIfShowing() {
+            if (isShowing) dismiss()
+        }
+
+        fun clearTooltip() {
+            tooltip?.dismissIfShowing()
+            tooltip = null
         }
 
         /**
@@ -278,7 +278,7 @@ class PopupTooltip(
         handler.removeCallbacksAndMessages(null)
 
         if (tooltip != null) {
-            clearTooltipIfNotNull()
+            clearTooltip()
             return
         }
 
@@ -327,7 +327,7 @@ class PopupTooltip(
 
         //Handle timed dismiss
         if (!indefinite) {
-            handler.postDelayed({ clearTooltipIfNotNull() }, showDuration)
+            handler.postDelayed({ clearTooltip() }, showDuration)
         }
 
         showTooltipAtLocation(x, y, displayFrame.top, screenPos[0], tooltipWidth, context)
@@ -338,9 +338,9 @@ class PopupTooltip(
      * required place, at the top center of the anchor view.
      */
     private fun setupArrow(layout: View, context: Context, tooltipArrowWidth: Float, anchorViewAbsoluteX: Int) {
-        multipleLet(arrowBackgroundId, arrowStrokeId) { arrowBackgroundId, arrowStrokeId ->
-            val arrow = layout.findViewById<ImageView>(arrowBackgroundId)
-            val stroke = layout.findViewById<ImageView>(arrowStrokeId)
+        if (arrowBackgroundId != null && arrowStrokeId != null) {
+            val arrow = layout.findViewById<ImageView>(arrowBackgroundId ?: 0)
+            val stroke = layout.findViewById<ImageView>(arrowStrokeId ?: 0)
             val elevation = getValueInPixels(elevation, context)
 
             arrowDrawable?.let {
@@ -356,7 +356,7 @@ class PopupTooltip(
             stroke.setColorFilter(arrowStrokeColor)
             stroke.visibility = View.VISIBLE
 
-            arrow.afterDrawn {
+            arrow.post {
                 val arrowScreenPositions = IntArray(2)
                 arrow.getLocationOnScreen(arrowScreenPositions)
 
