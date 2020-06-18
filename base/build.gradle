@@ -52,6 +52,7 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':kt-extensions')
 
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
