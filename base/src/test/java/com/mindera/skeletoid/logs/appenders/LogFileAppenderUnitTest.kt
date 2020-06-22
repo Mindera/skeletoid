@@ -44,7 +44,7 @@ class LogFileAppenderUnitTest {
 
     @Rule
     @JvmField
-    public var rule = PowerMockRule()
+    var rule = PowerMockRule()
 
     @Test(expected = IllegalArgumentException::class)
     fun testConstructorFileNameInvalid() {

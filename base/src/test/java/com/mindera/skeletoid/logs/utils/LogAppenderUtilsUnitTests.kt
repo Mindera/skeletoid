@@ -9,7 +9,9 @@ import org.junit.Assert
 import org.junit.Test
 
 class LogAppenderUtilsUnitTests {
-    private val mPackageName = "my.package.name"
+    companion object{
+        private const val packageName = "my.package.name"
+    }
 
     @Test
     fun testGetLogString() {
@@ -43,7 +45,7 @@ class LogAppenderUtilsUnitTests {
     fun testGetTag() {
         Assert.assertEquals(
             LogAppenderUtilsUnitTests::class.java.canonicalName, getTag(
-                LogAppenderUtilsUnitTests::class.java, false, mPackageName, false
+                LogAppenderUtilsUnitTests::class.java, false, packageName, false
             )
         )
     }
@@ -51,9 +53,9 @@ class LogAppenderUtilsUnitTests {
     @Test
     fun testGetTagWithPackageName() {
         Assert.assertEquals(
-            mPackageName + "/" + LogAppenderUtilsUnitTests::class.java.canonicalName,
+            packageName + "/" + LogAppenderUtilsUnitTests::class.java.canonicalName,
             getTag(
-                LogAppenderUtilsUnitTests::class.java, true, mPackageName, false
+                LogAppenderUtilsUnitTests::class.java, true, packageName, false
             )
         )
     }
@@ -61,8 +63,8 @@ class LogAppenderUtilsUnitTests {
     @Test
     fun testGetTagWithPackageNameAndMethodName() {
         Assert.assertEquals(
-            mPackageName + "/" + LogAppenderUtilsUnitTests::class.java.canonicalName + ".testGetTagWithPackageNameAndMethodName",
-            getTag(LogAppenderUtilsUnitTests::class.java, true, mPackageName, true)
+            packageName + "/" + LogAppenderUtilsUnitTests::class.java.canonicalName + ".testGetTagWithPackageNameAndMethodName",
+            getTag(LogAppenderUtilsUnitTests::class.java, true, packageName, true)
         )
     }
 
@@ -73,7 +75,7 @@ class LogAppenderUtilsUnitTests {
             getTag(
                 LogAppenderUtilsUnitTests::class.java,
                 false,
-                mPackageName,
+                packageName,
                 true
             )
         )

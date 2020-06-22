@@ -53,10 +53,8 @@ class LoggerManagerUnitTest {
     @Test
     fun testCreateLoggerManagerWithContext() {
         PowerMockito.mockStatic(AndroidUtils::class.java)
-        Mockito.`when`(getApplicationPackage(context))
-            .thenReturn(packageName)
-        val loggerManager =
-            LoggerManager(context)
+        Mockito.`when`(getApplicationPackage(context)).thenReturn(packageName)
+        val loggerManager = LoggerManager(context)
         Assert.assertNotNull(loggerManager)
     }
 
@@ -486,8 +484,7 @@ class LoggerManagerUnitTest {
         val loggerManager = LoggerManager(packageName)
         loggerManager.addAppenders(context, appenders)
         loggerManager.log(TAG, PRIORITY.VERBOSE, null, TEXT)
-        Mockito.verify(spyAppenders, Mockito.times(0))
-            .listIterator()
+        Mockito.verify(spyAppenders, Mockito.times(0)).listIterator()
     }
 
     @Test
@@ -497,8 +494,7 @@ class LoggerManagerUnitTest {
         val loggerManager = LoggerManager(packageName)
         loggerManager.addAppenders(context, appenders)
         loggerManager.log(TAG, PRIORITY.VERBOSE, Throwable(), TEXT)
-        Mockito.verify(spyAppenders, Mockito.times(0))
-            .listIterator()
+        Mockito.verify(spyAppenders, Mockito.times(0)).listIterator()
     }
 
     private fun mockAppender(analyticsId: String): ILogAppender {
