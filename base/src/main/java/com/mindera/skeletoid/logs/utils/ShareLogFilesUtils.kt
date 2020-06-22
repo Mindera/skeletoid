@@ -3,11 +3,9 @@ package com.mindera.skeletoid.logs.utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.annotation.VisibleForTesting
 import androidx.core.content.FileProvider
 import com.mindera.skeletoid.generic.AndroidUtils
-import com.mindera.skeletoid.logs.LOG.d
-import com.mindera.skeletoid.logs.LOG.e
+import com.mindera.skeletoid.logs.LOG
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -97,22 +95,10 @@ object ShareLogFilesUtils {
         emails: Array<String>?
     ) {
         val output = File(getCompressedLogsPath(activity))
-        if (!zipLogFiles(
-                getFileLogPath(
-                    activity
-                ) + File.separator, output.absolutePath
-            ) || !output.exists()
-        ) {
+        if (!zipLogFiles(getFileLogPath(activity) + File.separator, output.absolutePath) || !output.exists()) {
             return
         }
-        sendLogs(
-            activity,
-            intentChooserTitle,
-            subjectTitle,
-            bodyText,
-            emails,
-            output
-        )
+        sendLogs(activity, intentChooserTitle, subjectTitle, bodyText, emails, output)
     }
 
     /**
@@ -127,8 +113,7 @@ object ShareLogFilesUtils {
     }
 
     private fun getCompressedLogsPath(context: Context): String {
-        val path =
-            getFileLogPath(context) + File.separator + FOLDER_LOGS
+        val path = getFileLogPath(context) + File.separator + FOLDER_LOGS
         ensureFolderExists(path)
         return path + File.separator + FILE_LOG_ZIP
     }
@@ -146,15 +131,12 @@ object ShareLogFilesUtils {
             zos = ZipOutputStream(fos)
             val srcFile = File(source)
             val files = srcFile.listFiles()
-            d(
-                TAG,
-                "Compress directory: " + srcFile.name + " via zip."
-            )
+            LOG.d(TAG, "Compress directory: " + srcFile.name + " via zip.")
             for (file in files) {
                 if (file.isDirectory) {
                     continue
                 }
-                d(TAG, "Adding file: " + file.name)
+                LOG.d(TAG, "Adding file: " + file.name)
                 val buffer = ByteArray(1024)
                 fis = FileInputStream(file)
                 zos.putNextEntry(ZipEntry(file.name))
@@ -166,23 +148,23 @@ object ShareLogFilesUtils {
             }
             true
         } catch (ex: IOException) {
-            e(TAG, "Unable to zip folder: " + ex.message)
+            LOG.e(TAG, "Unable to zip folder: " + ex.message)
             false
         } finally {
             try {
                 fis?.close()
             } catch (e: Exception) {
-                e(TAG, e, "Unable to close FileInputStream")
+                LOG.e(TAG, e, "Unable to close FileInputStream")
             }
             try {
                 fos?.close()
             } catch (e: Exception) {
-                e(TAG, e, "Unable to close FileOutputStream")
+                LOG.e(TAG, e, "Unable to close FileOutputStream")
             }
             try {
                 zos?.close()
             } catch (e: Exception) {
-                e(TAG, e, "Unable to close ZipOutputStream")
+                LOG.e(TAG, e, "Unable to close ZipOutputStream")
             }
         }
     }

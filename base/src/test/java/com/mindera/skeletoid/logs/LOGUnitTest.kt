@@ -1,6 +1,7 @@
 package com.mindera.skeletoid.logs
 
 import android.content.Context
+import android.content.res.Resources
 import com.mindera.skeletoid.generic.AndroidUtils
 import com.mindera.skeletoid.generic.AndroidUtils.getApplicationPackage
 import com.mindera.skeletoid.logs.LOG.addAppenders
@@ -18,11 +19,15 @@ import com.mindera.skeletoid.logs.appenders.ILogAppender
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils.getObjectHash
 import com.mindera.skeletoid.threads.utils.ThreadUtils
+import com.mindera.skeletoid.utils.extensions.mock
 import org.junit.After
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.MockitoAnnotations
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
@@ -38,11 +43,18 @@ class LOGUnitTest {
          * Should be the same as [LoggerManager.LOG_FORMAT_4ARGS]
          */
         private const val LOG_FORMAT_4ARGS = "%s %s %s | %s"
+        private const val TAG = "TAG"
+        private const val TEXT = "Text"
+        private const val packageName = "my.package.name"
     }
 
-    private val TAG = "TAG"
-    private val TEXT = "Text"
-    private val mPackageName = "my.package.name"
+    @Mock
+    private lateinit var context: Context
+
+    @Before
+    fun setup() {
+        MockitoAnnotations.initMocks(this)
+    }
 
     @After
     fun cleanupLOG() {
@@ -57,10 +69,7 @@ class LOGUnitTest {
     @Test
     @Throws(Exception::class)
     fun testInitWithContext() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -80,18 +89,13 @@ class LOGUnitTest {
 
     @Test
     fun testInitWithContextAndPackageName() {
-        val context =
-            Mockito.mock(Context::class.java)
-        init(context, mPackageName)
+        init(context, packageName)
         Assert.assertTrue(isInitialized)
     }
 
     @Test
     fun testInitWithContextAndAppenders() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -110,17 +114,14 @@ class LOGUnitTest {
 
     @Test
     fun testInitWithContextAndPackageNameAndAppenders() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         Mockito.verify(appenderA, Mockito.times(1)).enableAppender(context)
         Mockito.verify(appenderB, Mockito.times(1)).enableAppender(context)
         Mockito.verify(appenderC, Mockito.times(1)).enableAppender(context)
@@ -129,17 +130,14 @@ class LOGUnitTest {
 
     @Test
     fun testDebugLog() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         d(TAG, TEXT)
 
         //This is ugly.. but I don't see another way.
@@ -157,17 +155,14 @@ class LOGUnitTest {
 
     @Test
     fun testErrorLog() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         e(TAG, TEXT)
 
         //This is ugly.. but I don't see another way.
@@ -185,17 +180,14 @@ class LOGUnitTest {
 
     @Test
     fun testWarnLog() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         w(TAG, TEXT)
 
         //This is ugly.. but I don't see another way.
@@ -213,10 +205,7 @@ class LOGUnitTest {
 
     @Test
     fun testFatalLog() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -231,7 +220,7 @@ class LOGUnitTest {
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         wtf(TAG, TEXT)
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.FATAL, null, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(LOG.PRIORITY.FATAL, null, log)
@@ -240,10 +229,7 @@ class LOGUnitTest {
 
     @Test
     fun testInfoLog() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -258,7 +244,7 @@ class LOGUnitTest {
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         i(TAG, TEXT)
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.INFO, null, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(LOG.PRIORITY.INFO, null, log)
@@ -267,10 +253,7 @@ class LOGUnitTest {
 
     @Test
     fun testNoDebugLogDeinitialised() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         appenders.add(appenderA)
         //This is ugly.. but I don't see another way.
@@ -281,7 +264,7 @@ class LOGUnitTest {
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         deinit()
         d(TAG, TEXT)
         Mockito.verify(appenderA, Mockito.times(0)).log(LOG.PRIORITY.DEBUG, null, log)
@@ -289,10 +272,7 @@ class LOGUnitTest {
 
     @Test
     fun testNoErrorLogDeinitialised() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         appenders.add(appenderA)
         //This is ugly.. but I don't see another way.
@@ -303,7 +283,7 @@ class LOGUnitTest {
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         deinit()
         e(TAG, TEXT)
         Mockito.verify(appenderA, Mockito.times(0)).log(LOG.PRIORITY.ERROR, null, log)
@@ -311,10 +291,7 @@ class LOGUnitTest {
 
     @Test
     fun testNoWarnLogDeinitialised() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         appenders.add(appenderA)
         //This is ugly.. but I don't see another way.
@@ -325,7 +302,7 @@ class LOGUnitTest {
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         deinit()
         w(TAG, TEXT)
         Mockito.verify(appenderA, Mockito.times(0)).log(LOG.PRIORITY.WARN, null, log)
@@ -333,10 +310,7 @@ class LOGUnitTest {
 
     @Test
     fun testNoFatalLogDeinitialised() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         appenders.add(appenderA)
         //This is ugly.. but I don't see another way.
@@ -347,7 +321,7 @@ class LOGUnitTest {
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         deinit()
         wtf(TAG, TEXT)
         Mockito.verify(appenderA, Mockito.times(0)).log(LOG.PRIORITY.FATAL, null, log)
@@ -355,10 +329,7 @@ class LOGUnitTest {
 
     @Test
     fun testNoInfoLogDeinitialised() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         appenders.add(appenderA)
         //This is ugly.. but I don't see another way.
@@ -369,7 +340,7 @@ class LOGUnitTest {
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         deinit()
         i(TAG, TEXT)
         Mockito.verify(appenderA, Mockito.times(0)).log(LOG.PRIORITY.INFO, null, log)
@@ -377,17 +348,14 @@ class LOGUnitTest {
 
     @Test
     fun testDebugWithExceptionLog() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         val e = Exception()
         d(TAG, e, TEXT)
         //This is ugly.. but I don't see another way.
@@ -405,17 +373,14 @@ class LOGUnitTest {
 
     @Test
     fun testErrorWithExceptionLog() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         val e = Exception()
         e(TAG, e, TEXT)
         //This is ugly.. but I don't see another way.
@@ -433,17 +398,14 @@ class LOGUnitTest {
 
     @Test
     fun testWarnWithExceptionLog() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         val e = Exception()
         w(TAG, e, TEXT)
         //This is ugly.. but I don't see another way.
@@ -461,17 +423,14 @@ class LOGUnitTest {
 
     @Test
     fun testFatalWithExceptionLog() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         val e = Exception()
         wtf(TAG, e, TEXT)
         //This is ugly.. but I don't see another way.
@@ -489,17 +448,14 @@ class LOGUnitTest {
 
     @Test
     fun testInfoWithExceptionLog() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         val e = Exception()
         i(TAG, e, TEXT)
         //This is ugly.. but I don't see another way.
@@ -517,17 +473,14 @@ class LOGUnitTest {
 
     @Test
     fun testVerboseWithExceptionLog() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         val e = Exception()
         v(TAG, e, TEXT)
         //This is ugly.. but I don't see another way.
@@ -545,17 +498,14 @@ class LOGUnitTest {
 
     @Test
     fun testVerboseLog() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        init(context, mPackageName, appenders)
+        init(context, packageName, appenders)
         v(TAG, TEXT)
         //This is ugly.. but I don't see another way.
         val log = String.format(
@@ -575,17 +525,14 @@ class LOGUnitTest {
 
     @Test
     fun testRemoveAllAppenders() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        init(context, mPackageName)
+        init(context, packageName)
         val ids = addAppenders(context, appenders)
         removeAppenders(context, ids)
         Mockito.verify(appenderA).disableAppender()
@@ -595,17 +542,14 @@ class LOGUnitTest {
 
     @Test
     fun testRemoveSomeAppenders() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        init(context, mPackageName)
+        init(context, packageName)
         val ids = addAppenders(context, appenders)
         val idsList: MutableList<String> =
             ArrayList(ids)
@@ -614,8 +558,7 @@ class LOGUnitTest {
                 idsList.remove(id)
             }
         }
-        val idsToRemove: Set<String> =
-            HashSet(idsList)
+        val idsToRemove: Set<String> = HashSet(idsList)
         removeAppenders(context, idsToRemove)
         Mockito.verify(appenderA, Mockito.times(0)).disableAppender()
         Mockito.verify(appenderB).disableAppender()
@@ -623,7 +566,7 @@ class LOGUnitTest {
     }
 
     private fun mockAppender(loggerId: String): ILogAppender {
-        val appender = Mockito.mock(ILogAppender::class.java)
+        val appender: ILogAppender = mock()
         Mockito.`when`(appender.loggerId).thenReturn(loggerId)
         return appender
     }

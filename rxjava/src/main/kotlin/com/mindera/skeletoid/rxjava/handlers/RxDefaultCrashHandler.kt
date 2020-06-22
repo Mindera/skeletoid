@@ -11,7 +11,7 @@ class RxDefaultCrashHandler(
     debugMode: Boolean = false
 ) : Consumer<Throwable> {
 
-    interface CrashConfigurator{
+    interface CrashConfigurator {
         fun logNonFatalException(t: Throwable)
     }
 

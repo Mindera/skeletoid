@@ -8,8 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger
  */
 object ThreadPoolUtils {
     @JvmField
-    val threadTotal =
-        AtomicInteger(0)
+    val threadTotal = AtomicInteger(0)
 
     /**
      * Get ThreadPool with fixed number of threads

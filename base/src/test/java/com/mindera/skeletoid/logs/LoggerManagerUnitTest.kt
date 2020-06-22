@@ -8,10 +8,14 @@ import com.mindera.skeletoid.logs.appenders.ILogAppender
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils.getObjectHash
 import com.mindera.skeletoid.threads.utils.ThreadUtils
+import com.mindera.skeletoid.utils.extensions.mock
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.MockitoAnnotations
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
@@ -21,31 +25,36 @@ import java.util.HashSet
 @RunWith(PowerMockRunner::class)
 @PrepareForTest(AndroidUtils::class)
 class LoggerManagerUnitTest {
-    private val TAG = "TAG"
-    private val TEXT = "Text"
-    private val mPackageName = "my.package.name"
-
     companion object {
         /**
          * Should be the same as [LoggerManager.LOG_FORMAT_4ARGS]
          */
         private const val LOG_FORMAT_4ARGS = "%s %s %s | %s"
+
+        private const val TAG = "TAG"
+        private const val TEXT = "Text"
+        private const val packageName = "my.package.name"
+    }
+
+    @Mock
+    private lateinit var context: Context
+
+    @Before
+    fun setup() {
+        MockitoAnnotations.initMocks(this)
     }
 
     @Test
     fun testCreateLoggerManagerWithPackageName() {
-        val loggerManager =
-            LoggerManager(mPackageName)
+        val loggerManager = LoggerManager(packageName)
         Assert.assertNotNull(loggerManager)
     }
 
     @Test
     fun testCreateLoggerManagerWithContext() {
-        val context =
-            Mockito.mock(Context::class.java)
         PowerMockito.mockStatic(AndroidUtils::class.java)
         Mockito.`when`(getApplicationPackage(context))
-            .thenReturn(mPackageName)
+            .thenReturn(packageName)
         val loggerManager =
             LoggerManager(context)
         Assert.assertNotNull(loggerManager)
@@ -53,32 +62,23 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testAddAppendersEmpty() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
-        val appendersIds =
-            loggerManager.addAppenders(context, ArrayList())
+        val loggerManager = LoggerManager(packageName)
+        val appendersIds = loggerManager.addAppenders(context, ArrayList())
         Assert.assertNotNull(appendersIds)
         Assert.assertEquals(0, appendersIds.size)
     }
 
     @Test
     fun testAddAppenders() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val loggerManager = LoggerManager(packageName)
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        val appendersIds =
-            loggerManager.addAppenders(context, appenders)
+        val appendersIds = loggerManager.addAppenders(context, appenders)
         Mockito.verify(appenderA, Mockito.times(1)).enableAppender(context)
         Mockito.verify(appenderB, Mockito.times(1)).enableAppender(context)
         Mockito.verify(appenderC, Mockito.times(1)).enableAppender(context)
@@ -91,20 +91,15 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testAddAppendersRepeated() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val loggerManager = LoggerManager(packageName)
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB1 = mockAppender("B")
         val appenderB2 = mockAppender("B")
         appenders.add(appenderA)
         appenders.add(appenderB1)
         appenders.add(appenderB2)
-        val appendersIds =
-            loggerManager.addAppenders(context, appenders)
+        val appendersIds = loggerManager.addAppenders(context, appenders)
         Assert.assertNotNull(appendersIds)
         Assert.assertEquals(2, appendersIds.size)
         Assert.assertTrue(appendersIds.contains("A"))
@@ -113,30 +108,22 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testDisableAppendersEmpty() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
+        val loggerManager = LoggerManager(packageName)
         loggerManager.removeAppenders(context, HashSet())
         Assert.assertNotNull(loggerManager)
     }
 
     @Test
     fun testDisableAppenders() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val loggerManager = LoggerManager(packageName)
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        val appendersIds =
-            loggerManager.addAppenders(context, appenders)
+        val appendersIds = loggerManager.addAppenders(context, appenders)
         loggerManager.removeAppenders(context, appendersIds)
         Mockito.verify(appenderA, Mockito.times(1)).disableAppender()
         Mockito.verify(appenderB, Mockito.times(1)).disableAppender()
@@ -145,14 +132,9 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testRemoveAppender() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
-        val appendersId: MutableList<String> =
-            ArrayList()
+        val loggerManager = LoggerManager(packageName)
+        val appenders: MutableList<ILogAppender> = ArrayList()
+        val appendersId: MutableList<String> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -167,12 +149,8 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testRemoveAllAppenders() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val loggerManager = LoggerManager(packageName)
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -188,12 +166,8 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testDebugLogWithTag() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val loggerManager = LoggerManager(packageName)
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -216,12 +190,8 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testErrorLogWithTag() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val loggerManager = LoggerManager(packageName)
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -244,12 +214,8 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testWarnLogWithTag() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val loggerManager = LoggerManager(packageName)
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -272,12 +238,8 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testFatalLogWithTag() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val loggerManager = LoggerManager(packageName)
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -300,12 +262,8 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testInfoLogWithTag() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val loggerManager = LoggerManager(packageName)
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -328,12 +286,8 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testVerboseLogWithTag() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val loggerManager = LoggerManager(packageName)
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -359,13 +313,9 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testDebugLogWithTagAndThrowable() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
+        val loggerManager = LoggerManager(packageName)
         val throwable = Throwable()
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -391,13 +341,9 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testErrorLogWithTagAndThrowable() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
+        val loggerManager = LoggerManager(packageName)
         val throwable = Throwable()
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -423,13 +369,9 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testWarnLog() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
+        val loggerManager = LoggerManager(packageName)
         val throwable = Throwable()
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -455,13 +397,9 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testFatalLogWithTagAndThrowable() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
+        val loggerManager = LoggerManager(packageName)
         val throwable = Throwable()
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -487,13 +425,9 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testInfoLogWithTagAndThrowable() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
+        val loggerManager = LoggerManager(packageName)
         val throwable = Throwable()
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -519,13 +453,9 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testVerboseLogWithTagAndThrowable() {
-        val context =
-            Mockito.mock(Context::class.java)
-        val loggerManager =
-            LoggerManager(mPackageName)
+        val loggerManager = LoggerManager(packageName)
         val throwable = Throwable()
-        val appenders: MutableList<ILogAppender> =
-            ArrayList()
+        val appenders: MutableList<ILogAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -551,13 +481,9 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testNoLogForEmptyAppendersWithTag() {
-        val context =
-            Mockito.mock(Context::class.java)
         val appenders: List<ILogAppender> = ArrayList()
-        val spyAppenders =
-            Mockito.spy(appenders)
-        val loggerManager =
-            LoggerManager(mPackageName)
+        val spyAppenders = Mockito.spy(appenders)
+        val loggerManager = LoggerManager(packageName)
         loggerManager.addAppenders(context, appenders)
         loggerManager.log(TAG, PRIORITY.VERBOSE, null, TEXT)
         Mockito.verify(spyAppenders, Mockito.times(0))
@@ -566,13 +492,9 @@ class LoggerManagerUnitTest {
 
     @Test
     fun testNoLogForEmptyAppendersWithTagAndThrowable() {
-        val context =
-            Mockito.mock(Context::class.java)
         val appenders: List<ILogAppender> = ArrayList()
-        val spyAppenders =
-            Mockito.spy(appenders)
-        val loggerManager =
-            LoggerManager(mPackageName)
+        val spyAppenders = Mockito.spy(appenders)
+        val loggerManager = LoggerManager(packageName)
         loggerManager.addAppenders(context, appenders)
         loggerManager.log(TAG, PRIORITY.VERBOSE, Throwable(), TEXT)
         Mockito.verify(spyAppenders, Mockito.times(0))
@@ -580,15 +502,14 @@ class LoggerManagerUnitTest {
     }
 
     private fun mockAppender(analyticsId: String): ILogAppender {
-        val appender = Mockito.mock(ILogAppender::class.java)
+        val appender :ILogAppender = mock()
         Mockito.`when`(appender.loggerId).thenReturn(analyticsId)
         return appender
     }
 
     @Test
     fun testSetMethodNameVisible() {
-        val loggerManager =
-            LoggerManager(mPackageName)
+        val loggerManager = LoggerManager(packageName)
         loggerManager.setMethodNameVisible(true)
         Assert.assertTrue(loggerManager.addMethodName)
     }

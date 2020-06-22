@@ -69,39 +69,31 @@ object Connectivity {
         transportTypes: List<Int>,
         networkCapabilities: List<Int>
     ): Boolean {
-        val connectivityManager: ConnectivityManager? = context.getSystemService(
-            Context.CONNECTIVITY_SERVICE
-        ) as? ConnectivityManager
+        val connectivityManager = getConnectivityManager(context) ?: return false
 
-        connectivityManager?.let { conManager ->
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val network = connectivityManager.activeNetwork
+            val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                val network = conManager.activeNetwork
-                val capabilities = conManager
-                    .getNetworkCapabilities(network)
-
-                capabilities?.let {
-                    transportTypes.forEach {
-                        if (!capabilities.hasTransport(it)) {
-                            return false
-                        }
-                    }
-                    networkCapabilities.forEach {
-                        if (!capabilities.hasCapability(it)) {
-                            return false
-                        }
-                    }
-
-                    return true
+            transportTypes.forEach {
+                if (!capabilities.hasTransport(it)) {
+                    return false
                 }
-            } else {
-                val networkInfo = context.getSystemService(
-                    Context.CONNECTIVITY_SERVICE
-                ) as? ConnectivityManager
-                return networkInfo?.activeNetworkInfo != null
             }
+            networkCapabilities.forEach {
+                if (!capabilities.hasCapability(it)) {
+                    return false
+                }
+            }
+
+            return true
         }
 
-        return false
+        return connectivityManager.activeNetworkInfo != null
     }
+
+    private fun getConnectivityManager(context: Context): ConnectivityManager? {
+        return context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+    }
+
 }
