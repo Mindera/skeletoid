@@ -95,5 +95,4 @@ object Connectivity {
     private fun getConnectivityManager(context: Context): ConnectivityManager? {
         return context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
     }
-
 }

@@ -81,7 +81,15 @@ rootProject.afterEvaluate {
     }
 }
 
+
+
 subprojects {
+
+    jacocoTestReport {
+        reports {
+            xml.enabled true
+        }
+    }
 
     sonarqube {
         properties {
@@ -96,7 +104,6 @@ subprojects {
             property "sonar.java.coveragePlugin", "jacoco"
             property "sonar.coverage.jacoco.xmlReportPaths", fileTree(dir: "${rootProject.buildDir}/reports/jacoco/", includes: ["**/createGlobalSkeletoidUnitTestReport.xml"])
             property "sonar.jacoco.itReportPath", fileTree(dir: "${buildDir}/outputs/code-coverage/connected/", includes: ["**/*.ec"])
-            property "sonar.jacoco.reportPaths", fileTree(dir: "${buildDir}/jacoco/", includes: ["**/*.exec"])
             property "sonar.android.lint.report", "${buildDir}/outputs/lint-results.xml"
         }
     }
