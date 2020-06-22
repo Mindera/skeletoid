@@ -174,7 +174,7 @@ class AndroidUtilsUnitTests {
             )
         ).thenThrow(PackageManager.NameNotFoundException())
         Mockito.`when`(context.packageManager).thenReturn(packageManager)
-        Assert.assertEquals("", getApplicationVersionName(context))
+        Assert.assertEquals(null, getApplicationVersionName(context))
     }
 
     @Test

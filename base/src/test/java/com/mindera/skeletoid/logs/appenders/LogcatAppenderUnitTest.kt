@@ -16,18 +16,20 @@ import org.powermock.modules.junit4.PowerMockRunner
 @PrepareForTest(Log::class)
 class LogcatAppenderUnitTest {
 
-    private val mPackageName = "my.package.name"
+    companion object{
+        private val packageName  = "my.package.name"
+    }
 
     @Test
     fun testConstructor() {
-        val logcatAppender = LogcatAppender(mPackageName)
+        val logcatAppender = LogcatAppender(packageName)
 
         assertEquals("LogcatAppender", logcatAppender.loggerId)
     }
 
     @Test
     fun testFormatLog() {
-        val logcatAppender = LogcatAppender(mPackageName)
+        val logcatAppender = LogcatAppender(packageName)
 
         val logs = arrayListOf<String>()
 
@@ -53,7 +55,7 @@ class LogcatAppenderUnitTest {
 
     @Test
     fun testSetMaxLineLength() {
-        val logcatAppender = LogcatAppender(mPackageName)
+        val logcatAppender = LogcatAppender(packageName)
 
         logcatAppender.maxLineLength = 1
         assertEquals(1, logcatAppender.maxLineLength)
@@ -61,7 +63,7 @@ class LogcatAppenderUnitTest {
 
     @Test
     fun testSetMinLogLevel() {
-        val logcatAppender = LogcatAppender(mPackageName)
+        val logcatAppender = LogcatAppender(packageName)
 
         logcatAppender.minLogLevel = LOG.PRIORITY.DEBUG
         assertEquals(LOG.PRIORITY.DEBUG, logcatAppender.minLogLevel)
@@ -69,14 +71,14 @@ class LogcatAppenderUnitTest {
 
     @Test
     fun testDefaultSplitLinesAboveMaxLength() {
-        val logcatAppender = LogcatAppender(mPackageName)
+        val logcatAppender = LogcatAppender(packageName)
 
         assertTrue(logcatAppender.isSplitLinesAboveMaxLength)
     }
 
     @Test
     fun testEnableSplitLinesAboveMaxLength() {
-        val logcatAppender = LogcatAppender(mPackageName)
+        val logcatAppender = LogcatAppender(packageName)
 
         logcatAppender.isSplitLinesAboveMaxLength = true
         assertTrue(logcatAppender.isSplitLinesAboveMaxLength)
@@ -84,7 +86,7 @@ class LogcatAppenderUnitTest {
 
     @Test
     fun testDisableSplitLinesAboveMaxLength() {
-        val logcatAppender = LogcatAppender(mPackageName)
+        val logcatAppender = LogcatAppender(packageName)
 
         logcatAppender.isSplitLinesAboveMaxLength = false
         assertFalse(logcatAppender.isSplitLinesAboveMaxLength)
@@ -92,79 +94,79 @@ class LogcatAppenderUnitTest {
 
     @Test
     fun testLoggingDebug() {
-        val logcatAppender = LogcatAppender(mPackageName)
+        val logcatAppender = LogcatAppender(packageName)
         PowerMockito.mockStatic(Log::class.java)
 
-        logcatAppender.log(LOG.PRIORITY.DEBUG, null, "hello")
+        logcatAppender.log(LOG.PRIORITY.DEBUG, null, "hello friend")
 
         PowerMockito.verifyStatic(Log::class.java, VerificationModeFactory.times(1))
-        Log.d(mPackageName, "hello ", null)
+        Log.d(packageName, "hello friend", null)
     }
 
     @Test
     fun testLoggingWarn() {
-        val logcatAppender = LogcatAppender(mPackageName)
+        val logcatAppender = LogcatAppender(packageName)
         PowerMockito.mockStatic(Log::class.java)
 
-        logcatAppender.log(LOG.PRIORITY.WARN, null, "hello")
+        logcatAppender.log(LOG.PRIORITY.WARN, null, "hello friend")
 
         PowerMockito.verifyStatic(Log::class.java, VerificationModeFactory.times(1))
-        Log.w(mPackageName, "hello ", null)
+        Log.w(packageName, "hello friend", null)
     }
 
     @Test
     fun testLoggingError() {
-        val logcatAppender = LogcatAppender(mPackageName)
+        val logcatAppender = LogcatAppender(packageName)
         PowerMockito.mockStatic(Log::class.java)
 
-        logcatAppender.log(LOG.PRIORITY.ERROR, null, "hello")
+        logcatAppender.log(LOG.PRIORITY.ERROR, null, "hello friend")
 
         PowerMockito.verifyStatic(Log::class.java, VerificationModeFactory.times(1))
-        Log.e(mPackageName, "hello ", null)
+        Log.e(packageName, "hello friend", null)
     }
 
     @Test
     fun testLoggingVerbose() {
-        val logcatAppender = LogcatAppender(mPackageName)
+        val logcatAppender = LogcatAppender(packageName)
         PowerMockito.mockStatic(Log::class.java)
 
-        logcatAppender.log(LOG.PRIORITY.VERBOSE, null, "hello")
+        logcatAppender.log(LOG.PRIORITY.VERBOSE, null, "hello friend")
 
         PowerMockito.verifyStatic(Log::class.java, VerificationModeFactory.times(1))
-        Log.v(mPackageName, "hello ", null)
+        Log.v(packageName, "hello friend", null)
     }
 
     @Test
     fun testLoggingInfo() {
-        val logcatAppender = LogcatAppender(mPackageName)
+        val logcatAppender = LogcatAppender(packageName)
         PowerMockito.mockStatic(Log::class.java)
 
-        logcatAppender.log(LOG.PRIORITY.INFO, null, "hello")
+        logcatAppender.log(LOG.PRIORITY.INFO, null, "hello friend")
 
         PowerMockito.verifyStatic(Log::class.java, VerificationModeFactory.times(1))
-        Log.i(mPackageName, "hello ", null)
+        Log.i(packageName, "hello friend", null)
     }
 
     @Test
     fun testLoggingFatal() {
-        val logcatAppender = LogcatAppender(mPackageName)
+        val logcatAppender = LogcatAppender(packageName)
         PowerMockito.mockStatic(Log::class.java)
 
-        logcatAppender.log(LOG.PRIORITY.FATAL, null, "hello")
+        logcatAppender.log(LOG.PRIORITY.FATAL, null, "hello friend")
 
         PowerMockito.verifyStatic(Log::class.java, VerificationModeFactory.times(1))
-        Log.wtf(mPackageName, "hello ", null)
+        Log.wtf(packageName, "hello friend", null)
     }
 
     @Test
     fun testNotLoggingBelowMinLogLevel() {
-        val logcatAppender = LogcatAppender(mPackageName)
+        val logcatAppender = LogcatAppender(packageName)
         logcatAppender.minLogLevel = LOG.PRIORITY.ERROR
         PowerMockito.mockStatic(Log::class.java)
 
-        logcatAppender.log(LOG.PRIORITY.DEBUG, null, "hello")
+        logcatAppender.log(LOG.PRIORITY.DEBUG, null, "hello friend")
 
         PowerMockito.verifyStatic(Log::class.java, VerificationModeFactory.times(0))
-        Log.d(mPackageName, "hello ", null)
+        Log.d(packageName, "hello friend", null)
     }
 }

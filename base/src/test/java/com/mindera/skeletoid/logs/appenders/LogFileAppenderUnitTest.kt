@@ -118,7 +118,7 @@ class LogFileAppenderUnitTest {
                 "",
                 "Hello",
                 "My friend"
-            ).matches(("\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d: D/" + PACKAGE_NAME + "\\(" + Thread.currentThread().id + "\\): Hello My friend ").toRegex())
+            ).matches(("\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d: D/" + PACKAGE_NAME + "\\(" + Thread.currentThread().id + "\\):  Hello My friend").toRegex())
         )
     }
 
