@@ -27,10 +27,8 @@ object Analytics {
      * This method MUST be called if the Analytics engine is not needed any longer on the app
      */
     fun deinit() {
-        instance?.let {
-            it.removeAllAppenders()
-            instance = null
-        }
+        instance?.removeAllAppenders()
+        instance = null
     }
 
     private fun getInstance(): IAnalyticsManager {

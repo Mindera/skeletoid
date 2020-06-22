@@ -72,23 +72,24 @@ object AndroidUtils {
     @JvmStatic
     fun getApplicationVersionName(context: Context): String? {
         if (appVersionName == null) {
-            var info: PackageInfo? = null
-            try {
-                info = context.packageManager.getPackageInfo(
-                    context.packageName,
-                    PackageManager.GET_META_DATA
-                )
+            val versionName: String? = try {
+                getPackageInfo(context).versionName
             } catch (e: PackageManager.NameNotFoundException) {
                 //This has Log instead of LOG on purpose to avoid infinite loops in error cases of logger startup
-                Log.e(
-                    AndroidUtils::class.java.simpleName,
-                    "getApplicationVersionName",
-                    e
-                )
+                Log.e(AndroidUtils::class.java.simpleName, "getApplicationVersionName", e)
+                null
             }
-            appVersionName = if (info != null) info.versionName else ""
+            appVersionName = versionName
         }
         return appVersionName
+    }
+
+    @JvmStatic
+    private fun getPackageInfo(context: Context, targetPackage: String? = null): PackageInfo {
+        return context.packageManager.getPackageInfo(
+            targetPackage ?: context.packageName,
+            PackageManager.GET_META_DATA
+        )
     }
 
     /**

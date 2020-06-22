@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender
-import com.mindera.skeletoid.logs.LOG.e
+import com.mindera.skeletoid.logs.LOG
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.HashSet
@@ -24,19 +24,14 @@ class AnalyticsManager internal constructor() : IAnalyticsManager {
         context: Context,
         analyticsAppenders: List<IAnalyticsAppender>
     ): Set<String> {
-        val appenderIds: MutableSet<String> =
-            HashSet()
+        val appenderIds: MutableSet<String> = HashSet()
         for (analyticsAppender in analyticsAppenders) {
             analyticsAppender.enableAppender(context)
             val analyticsId = analyticsAppender.analyticsId
             if (this.analyticsAppenders.containsKey(analyticsId)) {
-                val oldAnalyticsAppender =
-                    this.analyticsAppenders.remove(analyticsId)
+                val oldAnalyticsAppender = this.analyticsAppenders.remove(analyticsId)
                 oldAnalyticsAppender!!.disableAppender()
-                e(
-                    LOG_TAG,
-                    "Replacing Analytics Appender with ID: $analyticsId"
-                )
+                LOG.e(LOG_TAG, "Replacing Analytics Appender with ID: $analyticsId")
             }
             appenderIds.add(analyticsId)
             this.analyticsAppenders[analyticsId] = analyticsAppender
@@ -55,8 +50,7 @@ class AnalyticsManager internal constructor() : IAnalyticsManager {
     }
 
     override fun removeAllAppenders() {
-        val appendersKeys: List<String> =
-            ArrayList(analyticsAppenders.keys)
+        val appendersKeys: List<String> = ArrayList(analyticsAppenders.keys)
         for (analyticsId in appendersKeys) {
             val analyticsAppender = analyticsAppenders.remove(analyticsId)
             analyticsAppender?.disableAppender()

@@ -13,12 +13,7 @@ object LogAppenderUtils {
      */
     @JvmStatic
     fun getLogString(vararg logs: String): String {
-        val strBuilder = StringBuilder()
-        for (log in logs) {
-            strBuilder.append(log)
-            strBuilder.append(" ")
-        }
-        return strBuilder.toString()
+        return logs.joinToString(separator = " ")
     }
 
     /**
@@ -29,11 +24,13 @@ object LogAppenderUtils {
      */
     @JvmStatic
     fun getTag(
-        clazz: Class<*>, usePackageName: Boolean, packageName: String?,
+        clazz: Class<*>,
+        usePackageName: Boolean,
+        packageName: String?,
         methodName: Boolean
     ): String {
         val stringBuilder = StringBuilder()
-        if (usePackageName) {
+        if (usePackageName && packageName != null) {
             stringBuilder.append(packageName)
             stringBuilder.append("/")
         }
@@ -53,21 +50,18 @@ object LogAppenderUtils {
     @JvmStatic
     fun getMethodName(clazz: Class<*>): String {
         var index = 0
-        val stackTrace =
-            Thread.currentThread().stackTrace
+        val stackTrace = Thread.currentThread().stackTrace
         for (ste in stackTrace) {
             if (ste.className == clazz.name) {
                 break
             }
             index++
         }
-        val methodName: String
-        methodName = if (stackTrace.size > index) {
+        return if (stackTrace.size > index) {
             stackTrace[index].methodName
         } else {
             "UnknownMethod"
         }
-        return methodName
     }
 
     /**

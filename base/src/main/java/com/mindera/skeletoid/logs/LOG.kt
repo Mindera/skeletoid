@@ -1,7 +1,6 @@
 package com.mindera.skeletoid.logs
 
 import android.content.Context
-import androidx.annotation.VisibleForTesting
 import com.mindera.skeletoid.logs.appenders.ILogAppender
 
 /**
@@ -62,10 +61,8 @@ object LOG {
      */
     @JvmStatic
     fun deinit() {
-        instance?.let {
-            it.removeAllAppenders()
-            instance = null
-        }
+        instance?.removeAllAppenders()
+        instance = null
     }
 
     /**

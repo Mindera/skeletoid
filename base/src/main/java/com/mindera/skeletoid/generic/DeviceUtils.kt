@@ -92,9 +92,7 @@ object DeviceUtils {
      * @return true if emulator
      */
     val isEmulator: Boolean
-        get() = (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith(
-            "generic"
-        )
+        get() = (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")
                 || Build.FINGERPRINT.startsWith("generic")
                 || Build.FINGERPRINT.startsWith("unknown")
                 || Build.HARDWARE.contains("goldfish")

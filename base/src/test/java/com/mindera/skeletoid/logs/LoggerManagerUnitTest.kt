@@ -11,7 +11,6 @@ import com.mindera.skeletoid.threads.utils.ThreadUtils
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
@@ -591,6 +590,6 @@ class LoggerManagerUnitTest {
         val loggerManager =
             LoggerManager(mPackageName)
         loggerManager.setMethodNameVisible(true)
-        Assert.assertTrue(loggerManager.mAddMethodName)
+        Assert.assertTrue(loggerManager.addMethodName)
     }
 }

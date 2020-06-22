@@ -9,8 +9,7 @@ class RxDefaultCrashHandler(
     private val crashHandlerConfigurator: CrashConfigurator,
     packageNames: List<String>,
     debugMode: Boolean = false
-) :
-    Consumer<Throwable> {
+) : Consumer<Throwable> {
 
     interface CrashConfigurator{
         fun logNonFatalException(t: Throwable)
@@ -34,17 +33,15 @@ class RxDefaultCrashHandler(
         }
     }
 
-    override fun accept(t: Throwable?) {
-        //Send info to Crash handler as non fatal exception
-        t?.let {
-            crashHandlerConfigurator.logNonFatalException(t)
-
-            LOG.e(
-                LOG_TAG, t, "RxJava FATAL ERROR - caught to avoid crash"
-            )
-        } ?: LOG.e(
-            LOG_TAG, "RxJava FATAL ERROR - caught to avoid crash | NO EXCEPTION!!!"
-        )
+    override fun accept(throwable: Throwable?) {
+        // Send info to crash handler as non fatal exception
+        when (throwable) {
+            null -> LOG.e(LOG_TAG, "RxJava FATAL ERROR - caught to avoid crash | NO EXCEPTION")
+            else -> {
+                crashHandlerConfigurator.logNonFatalException(throwable)
+                LOG.e(LOG_TAG, throwable, "RxJava FATAL ERROR - caught to avoid crash")
+            }
+        }
     }
 
 }

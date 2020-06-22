@@ -53,34 +53,30 @@ object ShareLogFilesUtils {
      */
     fun sendLogs(
         activity: Activity,
-        intentChooserTitle: String?,
-        subjectTitle: String?,
-        bodyText: String?,
-        emails: Array<String?>?,
-        file: File?
+        intentChooserTitle: String,
+        subjectTitle: String,
+        bodyText: String,
+        emails: Array<String>?,
+        file: File
     ) {
         val intent = Intent(Intent.ACTION_SEND)
         intent.putExtra(Intent.EXTRA_SUBJECT, subjectTitle)
 
         // Add emails to show on to: field
-        if (emails != null && emails.isNotEmpty()) {
+        if (!emails.isNullOrEmpty()) {
             intent.putExtra(Intent.EXTRA_EMAIL, emails)
         }
 
         // Add additional information to the email
         intent.putExtra(Intent.EXTRA_TEXT, bodyText)
-        if (file != null) {
-            val uri = FileProvider.getUriForFile(
-                activity,
-                activity.packageName,
-                file
-            )
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            intent.putExtra(Intent.EXTRA_STREAM, uri)
-            intent.type = activity.contentResolver.getType(uri)
-        } else {
-            intent.type = "text/plain"
-        }
+        val uri = FileProvider.getUriForFile(
+            activity,
+            activity.packageName,
+            file
+        )
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.putExtra(Intent.EXTRA_STREAM, uri)
+        intent.type = activity.contentResolver.getType(uri)
         activity.startActivity(Intent.createChooser(intent, intentChooserTitle))
     }
 
@@ -95,13 +91,12 @@ object ShareLogFilesUtils {
      */
     fun sendLogsEmail(
         activity: Activity,
-        intentChooserTitle: String?,
-        subjectTitle: String?,
-        bodyText: String?,
-        emails: Array<String?>?
+        intentChooserTitle: String,
+        subjectTitle: String,
+        bodyText: String,
+        emails: Array<String>?
     ) {
-        val output =
-            File(getCompressedLogsPath(activity))
+        val output = File(getCompressedLogsPath(activity))
         if (!zipLogFiles(
                 getFileLogPath(
                     activity

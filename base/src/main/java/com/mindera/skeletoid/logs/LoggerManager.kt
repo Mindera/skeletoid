@@ -4,12 +4,10 @@ import android.content.Context
 import androidx.annotation.VisibleForTesting
 import com.mindera.skeletoid.generic.AndroidUtils
 import com.mindera.skeletoid.logs.LOG.PRIORITY
-import com.mindera.skeletoid.logs.LOG.e
 import com.mindera.skeletoid.logs.appenders.ILogAppender
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils
 import com.mindera.skeletoid.threads.utils.ThreadUtils
 import java.util.ArrayList
-import java.util.Arrays
 import java.util.HashMap
 import java.util.HashSet
 
@@ -37,13 +35,12 @@ internal class LoggerManager : ILoggerManager {
      */
     @JvmField
     @VisibleForTesting
-    var mAddMethodName = false
+    var addMethodName = false
 
     /**
      * List of appenders (it can be improved to an ArrayMap if we want to add the support lib as dependency
      */
-    private val mLogAppenders: MutableMap<String, ILogAppender> =
-        HashMap()
+    private val logAppenders: MutableMap<String, ILogAppender> = HashMap()
 
     /**
      * The logger itself
@@ -66,23 +63,17 @@ internal class LoggerManager : ILoggerManager {
         context: Context,
         logAppenders: List<ILogAppender>
     ): Set<String> {
-        val appenderIds: MutableSet<String> =
-            HashSet()
+        val appenderIds: MutableSet<String> = HashSet()
         for (logAppender in logAppenders) {
             val loggerId = logAppender.loggerId
-            if (mLogAppenders.containsKey(loggerId)) {
-                log(
-                    LOG_TAG,
-                    PRIORITY.ERROR,
-                    null,
-                    "Replacing Log Appender with ID: $loggerId"
-                )
-                val oldLogAppender = mLogAppenders.remove(loggerId)
+            if (this.logAppenders.containsKey(loggerId)) {
+                log(LOG_TAG, PRIORITY.ERROR, null, "Replacing Log Appender with ID: $loggerId")
+                val oldLogAppender = this.logAppenders.remove(loggerId)
                 oldLogAppender!!.disableAppender()
             }
             logAppender.enableAppender(context)
             appenderIds.add(loggerId)
-            mLogAppenders[loggerId] = logAppender
+            this.logAppenders[loggerId] = logAppender
         }
         return appenderIds
     }
@@ -94,33 +85,32 @@ internal class LoggerManager : ILoggerManager {
         context: Context,
         loggerIds: Set<String>
     ) {
-        if(mLogAppenders.isNotEmpty()) {
+        if(logAppenders.isNotEmpty()) {
             for (logId in loggerIds) {
-                val logAppender = mLogAppenders.remove(logId)
+                val logAppender = logAppenders.remove(logId)
                 logAppender?.disableAppender()
             }
         }
     }
 
     override fun removeAllAppenders() {
-        if(mLogAppenders.isNotEmpty()) {
-            val appendersKeys: List<String?> =
-                ArrayList(mLogAppenders.keys)
+        if(logAppenders.isNotEmpty()) {
+            val appendersKeys: List<String?> = ArrayList(logAppenders.keys)
             for (logId in appendersKeys) {
-                val analyticsAppender = mLogAppenders.remove(logId)
+                val analyticsAppender = logAppenders.remove(logId)
                 analyticsAppender?.disableAppender()
             }
         }
     }
 
     override fun setUserProperty(key: String, value: String) {
-        for (logAppender in mLogAppenders.values) {
+        for (logAppender in logAppenders.values) {
             logAppender.setUserProperty(key, value)
         }
     }
 
     override fun setMethodNameVisible(visibility: Boolean) {
-        mAddMethodName = visibility
+        addMethodName = visibility
     }
 
     private fun pushLogToAppenders(
@@ -128,7 +118,7 @@ internal class LoggerManager : ILoggerManager {
         t: Throwable?,
         log: String
     ) {
-        for ((_, value) in mLogAppenders) {
+        for ((_, value) in logAppenders) {
             value.log(type, t, log)
         }
     }
@@ -139,7 +129,7 @@ internal class LoggerManager : ILoggerManager {
         t: Throwable?,
         vararg text: String
     ) {
-        if(mLogAppenders.isNotEmpty()) {
+        if(logAppenders.isNotEmpty()) {
             val log = String.format(
                 LOG_FORMAT_4ARGS,
                 tag,

@@ -1,7 +1,5 @@
 package com.mindera.skeletoid.generic
 
-import androidx.annotation.VisibleForTesting
-
 object StringUtils {
     /**
      * Get the nth index of a substring on a string

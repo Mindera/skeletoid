@@ -133,7 +133,6 @@ class LogFileAppender(
                         getFileLogPath(context),
                         logFileSize * megabyteInBytes, numberOfLogFiles, true
                     ).apply {
-                        formatter = SimpleFormatter()
                         formatter = object : Formatter() {
                             override fun format(logRecord: LogRecord): String {
                                 return logRecord.message + "\n"

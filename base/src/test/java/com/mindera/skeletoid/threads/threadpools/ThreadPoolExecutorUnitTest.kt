@@ -18,14 +18,12 @@ class ThreadPoolExecutorUnitTest {
         private const val CORE_POOL_SIZE = 10
         private const val MAX_POOL_SIZE = 15
         private const val KEEP_ALIVE: Long = 5
-        private val TIME_UNIT =
-            TimeUnit.MILLISECONDS
+        private val TIME_UNIT = TimeUnit.MILLISECONDS
     }
 
     private lateinit var threadFactory: NamedThreadFactory
 
-    private var threadPoolExecutor: ThreadPoolExecutor? =
-        null
+    private lateinit var threadPoolExecutor: ThreadPoolExecutor
 
     @Before
     fun setUp() {
@@ -46,19 +44,19 @@ class ThreadPoolExecutorUnitTest {
     fun testConstructor() {
         Assert.assertEquals(
             CORE_POOL_SIZE,
-            threadPoolExecutor!!.corePoolSize
+            threadPoolExecutor.corePoolSize
         )
         Assert.assertEquals(
             MAX_POOL_SIZE,
-            threadPoolExecutor!!.maximumPoolSize
+            threadPoolExecutor.maximumPoolSize
         )
         Assert.assertEquals(
             KEEP_ALIVE,
-            threadPoolExecutor!!.getKeepAliveTime(TIME_UNIT)
+            threadPoolExecutor.getKeepAliveTime(TIME_UNIT)
         )
         Assert.assertEquals(
             threadFactory,
-            threadPoolExecutor!!.threadFactory
+            threadPoolExecutor.threadFactory
         )
     }
 
@@ -66,19 +64,19 @@ class ThreadPoolExecutorUnitTest {
     fun testThreadPoolInitialization() {
         Assert.assertEquals(
             CORE_POOL_SIZE,
-            threadPoolExecutor!!.corePoolSize
+            threadPoolExecutor.corePoolSize
         )
     }
 
     @Test
     fun testShutdownThreadPool() {
-        threadPoolExecutor!!.shutdown()
-        Assert.assertTrue(threadPoolExecutor!!.isShutdown)
+        threadPoolExecutor.shutdown()
+        Assert.assertTrue(threadPoolExecutor.isShutdown)
     }
 
     @Test
     fun testShutdownNowThreadPool() {
-        threadPoolExecutor!!.shutdownNow()
-        Assert.assertTrue(threadPoolExecutor!!.isShutdown)
+        threadPoolExecutor.shutdownNow()
+        Assert.assertTrue(threadPoolExecutor.isShutdown)
     }
 }

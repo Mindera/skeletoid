@@ -2,7 +2,7 @@ package com.mindera.skeletoid.generic
 
 import android.content.Context
 import android.content.res.Resources
-import com.mindera.skeletoid.generic.UIUtils.getStatusBarHeighPixels
+import com.mindera.skeletoid.generic.UIUtils.getStatusBarHeightPixels
 import org.junit.Assert
 import org.junit.Test
 import org.mockito.ArgumentMatchers
@@ -27,7 +27,7 @@ class UIUtilsUnitTests {
                 ArgumentMatchers.any(String::class.java)
             )
         ).thenReturn(invalidResourceId)
-        Assert.assertEquals(0, getStatusBarHeighPixels(context))
+        Assert.assertEquals(0, getStatusBarHeightPixels(context))
     }
 
     @Test
@@ -52,7 +52,7 @@ class UIUtilsUnitTests {
         ).thenReturn(resourceId)
         Assert.assertEquals(
             statusBarHeight,
-            getStatusBarHeighPixels(context)
+            getStatusBarHeightPixels(context)
         )
     }
 }
