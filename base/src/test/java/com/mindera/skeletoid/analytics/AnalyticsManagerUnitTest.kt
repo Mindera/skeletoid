@@ -86,16 +86,14 @@ class AnalyticsManagerUnitTest {
     @Test
     fun testDisableAppenders() {
         val analyticsManager = AnalyticsManager()
-        val appenders: MutableList<IAnalyticsAppender> =
-            ArrayList()
+        val appenders: MutableList<IAnalyticsAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        val appendersIds =
-            analyticsManager.addAppenders(context, appenders)
+        val appendersIds = analyticsManager.addAppenders(context, appenders)
         analyticsManager.removeAppenders(context, appendersIds)
         Mockito.verify(appenderA, Mockito.times(1)).disableAppender()
         Mockito.verify(appenderB, Mockito.times(1)).disableAppender()
@@ -105,8 +103,7 @@ class AnalyticsManagerUnitTest {
     @Test
     fun testDisableAllAppenders() {
         val analyticsManager = AnalyticsManager()
-        val appenders: MutableList<IAnalyticsAppender> =
-            ArrayList()
+        val appenders: MutableList<IAnalyticsAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -123,8 +120,7 @@ class AnalyticsManagerUnitTest {
     @Test
     fun testTrackEvent() {
         val analyticsManager = AnalyticsManager()
-        val appenders: MutableList<IAnalyticsAppender> =
-            ArrayList()
+        val appenders: MutableList<IAnalyticsAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")
@@ -132,8 +128,7 @@ class AnalyticsManagerUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         analyticsManager.addAppenders(context, appenders)
-        val analyticsPayload: MutableMap<String, Any> =
-            HashMap()
+        val analyticsPayload: MutableMap<String, Any> = HashMap()
         analyticsPayload["A"] = "A1"
         analyticsPayload["B"] = "B1"
         analyticsPayload["C"] = "C1"
@@ -149,8 +144,7 @@ class AnalyticsManagerUnitTest {
     @Test
     fun testTrackEventWithBundle() {
         val analyticsManager = AnalyticsManager()
-        val appenders: MutableList<IAnalyticsAppender> =
-            ArrayList()
+        val appenders: MutableList<IAnalyticsAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
         val appenderC = mockAppender("C")

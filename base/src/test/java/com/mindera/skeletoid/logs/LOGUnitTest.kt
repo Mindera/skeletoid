@@ -39,10 +39,7 @@ import java.util.HashSet
 class LOGUnitTest {
 
     companion object {
-        /**
-         * Should be the same as [LoggerManager.LOG_FORMAT_4ARGS]
-         */
-        private const val LOG_FORMAT_4ARGS = "%s %s %s | %s"
+        private const val LOG_FORMAT_4ARGS = LoggerManager.LOG_FORMAT_4ARGS
         private const val TAG = "TAG"
         private const val TEXT = "Text"
         private const val packageName = "my.package.name"
