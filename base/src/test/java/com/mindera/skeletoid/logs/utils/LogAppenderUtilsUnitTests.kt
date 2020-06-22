@@ -9,13 +9,14 @@ import org.junit.Assert
 import org.junit.Test
 
 class LogAppenderUtilsUnitTests {
+
     companion object{
         private const val packageName = "my.package.name"
     }
 
     @Test
     fun testGetLogString() {
-        Assert.assertEquals("A B C ", getLogString("A", "B", "C"))
+        Assert.assertEquals("A B C", getLogString("A", "B", "C"))
     }
 
     @Test
