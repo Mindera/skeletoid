@@ -53,10 +53,10 @@ project.afterEvaluate {
                 "src/${testCoverageBuildType}/java"
         ]
 
-        classDirectories = files([javaFileTree, kotlinFileTree])
-        additionalSourceDirs = files(coverageSourceDirs)
-        sourceDirectories = files(coverageSourceDirs)
-        executionData = files("${project.buildDir}/jacoco/test${testCoverageBuildType.capitalize()}UnitTest.exec")
+        getClassDirectories().from(files([javaFileTree, kotlinFileTree]))
+        getAdditionalSourceDirs().from(files(coverageSourceDirs))
+        getSourceDirectories().from(files(coverageSourceDirs))
+        getExecutionData().from(files("${project.buildDir}/jacoco/test${testCoverageBuildType.capitalize()}UnitTest.exec"))
         reports {
             xml.enabled = false
             html.enabled = true
