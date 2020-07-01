@@ -441,16 +441,6 @@ class AndroidUtilsUnitTests {
         )
     }
 
-    @Test(expected = IllegalArgumentException::class)
-    fun testCheckIfPackageIsInstalledWithoutContext() {
-        Assert.assertFalse(
-            checkIfPackageIsInstalled(
-                null,
-                packageName
-            )
-        )
-    }
-
     @Test
     fun testIsPhoneAvailable() {
         val context =

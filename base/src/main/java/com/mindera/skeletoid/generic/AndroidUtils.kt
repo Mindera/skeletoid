@@ -184,10 +184,9 @@ object AndroidUtils {
      */
     @JvmStatic
     fun checkIfPackageIsInstalled(
-        context: Context?,
-        targetPackage: String?
+        context: Context,
+        targetPackage: String
     ): Boolean {
-        requireNotNull(context) { "Context cannot be null" }
         val pm = context.packageManager
         try {
             pm.getPackageInfo(targetPackage, PackageManager.GET_META_DATA)
