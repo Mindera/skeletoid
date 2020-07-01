@@ -78,19 +78,6 @@ class AndroidUtilsUnitTests {
     }
 
     @Test
-    fun testGetExternalPublicDirectory() {
-        PowerMockito.mockStatic(Environment::class.java)
-        val file = Mockito.mock(File::class.java)
-        Mockito.`when`(file.path).thenReturn("com.mindera.skeletoid")
-        Mockito.`when`(Environment.getExternalStorageDirectory())
-            .thenReturn(file)
-        Assert.assertEquals(
-            "com.mindera.skeletoid/dir",
-            getExternalPublicDirectory("/dir")
-        )
-    }
-
-    @Test
     fun testGetDeviceResolution() {
         val context =
             Mockito.mock(Context::class.java)

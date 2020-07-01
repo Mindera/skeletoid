@@ -1,6 +1,7 @@
 package com.mindera.skeletoid.threads.threadpools
 
 import com.mindera.skeletoid.logs.LOG
+import java.lang.IllegalStateException
 import java.util.Queue
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.ThreadFactory
@@ -62,6 +63,7 @@ open class NamedThreadFactory internal constructor(
     init {
         val s = System.getSecurityManager()
         group = if (s != null) s.threadGroup else Thread.currentThread().threadGroup
+            ?: throw IllegalStateException("No value for thread group")
         namePrefix = threadPoolName
         this.maxFactoryThreads = maxFactoryThreads
         threads = ArrayBlockingQueue(maxFactoryThreads)

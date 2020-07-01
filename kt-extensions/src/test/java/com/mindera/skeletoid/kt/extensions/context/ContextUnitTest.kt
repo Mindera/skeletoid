@@ -44,7 +44,7 @@ class ContextUnitTest {
         val context = mock<Context>()
         val resources = mock<Resources>()
         Whitebox.setInternalState(Build.VERSION::class.java, "SDK_INT", 20)
-        Mockito.`when`(resources.getColor(colourId)).thenReturn(expectedColour)
+        Mockito.`when`(context.getColor(colourId)).thenReturn(expectedColour)
         Mockito.`when`(context.resources).thenReturn(resources)
 
         val actualColour = context.getColorCompat(colourId)

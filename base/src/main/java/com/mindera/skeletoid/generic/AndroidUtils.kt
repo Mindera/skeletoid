@@ -238,6 +238,15 @@ object AndroidUtils {
      */
     @JvmStatic
     fun getExternalPublicDirectory(separatorAndFilename: String): String {
+        /**TODO This is deprecated and needs to be updated.
+        If using Android Q+ you'll need to add to the manifest:
+
+        <application android:requestLegacyExternalStorage="true" ... >
+
+        This attribute is "false" by default on apps targeting
+        Android 10 or higher.
+
+        **/
         return Environment.getExternalStorageDirectory()
             .path + separatorAndFilename
     }

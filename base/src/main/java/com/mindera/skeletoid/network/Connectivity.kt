@@ -6,7 +6,6 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 
-
 /**
  * Class to validate if we are connected to a network and if we have internet access.
  */
@@ -19,6 +18,7 @@ object Connectivity {
      * @param context The context
      * @return true if we are connected, false otherwise.
      */
+    @Suppress("DEPRECATION")
     @SuppressLint("MissingPermission")
     fun isConnected(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -44,6 +44,7 @@ object Connectivity {
      * @param context The context
      * @return true if we are connected, false otherwise.
      */
+    @Suppress("DEPRECATION")
     @JvmStatic
     @SuppressLint("MissingPermission")
     fun isConnectedToWifi(context: Context): Boolean {
@@ -63,6 +64,7 @@ object Connectivity {
         }
     }
 
+    @Suppress("DEPRECATION")
     @SuppressLint("MissingPermission")
     private fun doesActiveNetworkHasTransportTypeAndNetworkCapability(
         context: Context,

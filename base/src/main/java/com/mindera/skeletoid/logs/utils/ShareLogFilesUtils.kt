@@ -95,13 +95,14 @@ object ShareLogFilesUtils {
         intentChooserTitle: String,
         subjectTitle: String,
         bodyText: String,
-        emails: Array<String>?
+        emails: Array<String>?,
+        fileUri: Uri? = null
     ) {
         val output = File(getCompressedLogsPath(activity))
         if (!zipLogFiles(getFileLogPath(activity) + File.separator, output.absolutePath) || !output.exists()) {
             return
         }
-        sendLogs(activity, intentChooserTitle, subjectTitle, bodyText, emails, output)
+        sendLogs(activity, intentChooserTitle, subjectTitle, bodyText, emails, output, fileUri)
     }
 
     /**
