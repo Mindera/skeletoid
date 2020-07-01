@@ -71,10 +71,10 @@ rootProject.afterEvaluate {
         group = "Reporting"
         description = "Generate Jacoco Global coverage report"
 
-        classDirectories = files(fileTrees)
-        additionalSourceDirs = files(coverageSourceDirs)
-        sourceDirectories = files(coverageSourceDirs)
-        executionData = files(executionDataDirs)
+        getClassDirectories().from(files(fileTrees))
+        getAdditionalSourceDirs().from(files(coverageSourceDirs))
+        getSourceDirectories().from(files(coverageSourceDirs))
+        getExecutionData().from(files(executionDataDirs))
 
         reports {
             xml.enabled = true

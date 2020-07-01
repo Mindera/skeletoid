@@ -1,7 +1,7 @@
 apply plugin: "org.sonarqube"
 
 buildscript {
-    ext.gradleVersion = '3.4.1'
+    ext.gradleVersion = '4.0.0'
     ext.kotlinVersion = '1.3.72'
 
     repositories {
@@ -34,8 +34,8 @@ allprojects {
 
 ext {
     // SDK and Tools
-    compileSdkVersion = 28
-    buildToolsVersion = '28.0.3'
+    compileSdkVersion = 29
+    buildToolsVersion = '29.0.2'
     minSdkVersion = 19
     targetSdkVersion = 27
 
