@@ -224,6 +224,7 @@ class AndroidUtilsUnitTests {
         )
     }
 
+    @Suppress("DEPRECATION")
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
     fun testGetApplicationVersionCode() {
@@ -233,7 +234,7 @@ class AndroidUtilsUnitTests {
             Mockito.mock(
                 PackageInfo::class.java
             )
-        packageInfo.longVersionCode = 1
+        packageInfo.versionCode = 1
         val packageManager =
             Mockito.mock(PackageManager::class.java)
         Mockito.`when`(context.packageName).thenReturn("packageName")
@@ -247,6 +248,7 @@ class AndroidUtilsUnitTests {
         Assert.assertEquals(1, getApplicationVersionCode(context))
     }
 
+    @Suppress("DEPRECATION")
     @Test
     @Throws(PackageManager.NameNotFoundException::class)
     fun testCacheApplicationVersionCode() {
@@ -256,7 +258,7 @@ class AndroidUtilsUnitTests {
             Mockito.mock(
                 PackageInfo::class.java
             )
-        packageInfo.longVersionCode = 1
+        packageInfo.versionCode = 1
         val packageManager =
             Mockito.mock(PackageManager::class.java)
         Mockito.`when`(context.packageName).thenReturn("packageName")
