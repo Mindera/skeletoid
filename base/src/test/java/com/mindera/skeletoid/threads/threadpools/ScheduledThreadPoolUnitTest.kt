@@ -1,9 +1,8 @@
 package com.mindera.skeletoid.threads.threadpools
 
 import com.mindera.skeletoid.utils.extensions.mock
-import junit.framework.Assert
+import org.junit.Assert
 import org.junit.Test
-import org.mockito.Mockito
 
 class ScheduledThreadPoolUnitTest {
     @Test

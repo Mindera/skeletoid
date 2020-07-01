@@ -18,7 +18,6 @@ import com.mindera.skeletoid.generic.AndroidUtils.getApplicationVersionCode
 import com.mindera.skeletoid.generic.AndroidUtils.getApplicationVersionName
 import com.mindera.skeletoid.generic.AndroidUtils.getCacheDirPath
 import com.mindera.skeletoid.generic.AndroidUtils.getDeviceResolution
-import com.mindera.skeletoid.generic.AndroidUtils.getExternalPublicDirectory
 import com.mindera.skeletoid.generic.AndroidUtils.getFileDirPath
 import com.mindera.skeletoid.generic.AndroidUtils.isPhoneAvailable
 import org.junit.After
@@ -26,7 +25,6 @@ import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
-import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
 import java.io.File
@@ -235,7 +233,7 @@ class AndroidUtilsUnitTests {
             Mockito.mock(
                 PackageInfo::class.java
             )
-        packageInfo.versionCode = 1
+        packageInfo.longVersionCode = 1
         val packageManager =
             Mockito.mock(PackageManager::class.java)
         Mockito.`when`(context.packageName).thenReturn("packageName")
@@ -258,7 +256,7 @@ class AndroidUtilsUnitTests {
             Mockito.mock(
                 PackageInfo::class.java
             )
-        packageInfo.versionCode = 1
+        packageInfo.longVersionCode = 1
         val packageManager =
             Mockito.mock(PackageManager::class.java)
         Mockito.`when`(context.packageName).thenReturn("packageName")
@@ -270,7 +268,7 @@ class AndroidUtilsUnitTests {
         ).thenReturn(packageInfo)
         Mockito.`when`(context.packageManager).thenReturn(packageManager)
         Assert.assertEquals(1, getApplicationVersionCode(context))
-        packageInfo.versionCode = 2
+        packageInfo.longVersionCode = 2
         Assert.assertEquals(1, getApplicationVersionCode(context))
     }
 

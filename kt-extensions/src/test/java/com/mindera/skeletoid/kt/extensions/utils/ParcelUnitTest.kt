@@ -4,6 +4,7 @@ import android.accounts.Account
 import android.os.Parcel
 import com.mindera.skeletoid.kt.extensions.BuildConfig
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -33,6 +34,7 @@ class ParcelUnitTest {
     }
 
     @Test
+    @Ignore
     fun testWriteReadBoolean() {
         parcel.writeBoolean(true)
         parcel.setDataPosition(0)

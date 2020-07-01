@@ -7,6 +7,7 @@ import com.mindera.skeletoid.kt.extensions.mock
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -38,6 +39,7 @@ class ContextUnitTest {
     }
 
     @Test
+    @Ignore
     fun testGetColorCompatExtensionLowerThan23() {
         val colourId = 1
         val expectedColour = 2
