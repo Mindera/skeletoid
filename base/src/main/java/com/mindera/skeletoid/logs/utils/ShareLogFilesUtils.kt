@@ -3,6 +3,7 @@ package com.mindera.skeletoid.logs.utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.core.content.FileProvider
 import com.mindera.skeletoid.generic.AndroidUtils
 import com.mindera.skeletoid.logs.LOG
@@ -55,7 +56,8 @@ object ShareLogFilesUtils {
         subjectTitle: String,
         bodyText: String,
         emails: Array<String>?,
-        file: File
+        file: File,
+        fileUri: Uri? = null
     ) {
         val intent = Intent(Intent.ACTION_SEND)
         intent.putExtra(Intent.EXTRA_SUBJECT, subjectTitle)
@@ -67,11 +69,12 @@ object ShareLogFilesUtils {
 
         // Add additional information to the email
         intent.putExtra(Intent.EXTRA_TEXT, bodyText)
-        val uri = FileProvider.getUriForFile(
-            activity,
-            activity.packageName,
-            file
-        )
+        val uri = fileUri
+            ?: FileProvider.getUriForFile(
+                activity,
+                activity.packageName,
+                file
+            )
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         intent.putExtra(Intent.EXTRA_STREAM, uri)
         intent.type = activity.contentResolver.getType(uri)
