@@ -93,7 +93,7 @@ subprojects {
             property "sonar.test.inclusions", "**/*test*/**"
             property "sonar.import_unknown_files", true
 
-            property "sonar.java.binaries", "${buildDir}/intermediates/javac/${android.testBuildType}/compile${android.testBuildType.capitalize()}JavaWithJavac/classes,${buildDir}/tmp/kotlin-classes/${android.testBuildType}UnitTest"
+            property "sonar.java.binaries", "${buildDir}/intermediates/javac/${android.testBuildType}/classes,${buildDir}/tmp/kotlin-classes/${android.testBuildType}UnitTest"
             property "sonar.java.source", "${getProjectDir()}/src/main/java"
             property "sonar.java.coveragePlugin", "jacoco"
             property "sonar.coverage.jacoco.xmlReportPaths", fileTree(dir: "${rootProject.buildDir}/reports/jacoco/", includes: ["**/createGlobalSkeletoidUnitTestReport.xml"])
