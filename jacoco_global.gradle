@@ -49,7 +49,7 @@ rootProject.afterEvaluate {
             testTaskNames.add(":${subproject.name}:test${testCoverageBuildType.capitalize()}UnitTest")
 
             def javaFileTree = fileTree(
-                    dir: "${subproject.buildDir}/intermediates/javac/${testCoverageBuildType}/compile${testCoverageBuildType.capitalize()}JavaWithJavac/classes",
+                    dir: "${subproject.buildDir}/intermediates/javac/${testCoverageBuildType}/classes",
                     excludes: fileFilter
             )
             fileTrees.add(javaFileTree)
