@@ -132,11 +132,11 @@ class LogFileAppender(
                     fileHandler = FileHandler(
                         getFileLogPath(context),
                         logFileSize * megabyteInBytes, numberOfLogFiles, true
-                    )
-                    fileHandler!!.formatter = SimpleFormatter()
-                    fileHandler!!.formatter = object : Formatter() {
-                        override fun format(logRecord: LogRecord): String {
-                            return logRecord.message + "\n"
+                    ).apply {
+                        formatter = object : Formatter() {
+                            override fun format(logRecord: LogRecord): String {
+                                return logRecord.message + "\n"
+                            }
                         }
                     }
 
@@ -187,13 +187,21 @@ class LogFileAppender(
             LOG.e(LOG_TAG, "Error on submitToFileLoggingQueue: fileLoggingTP is not available")
         }
 
+        submitLog(type, t, logs)
+    }
+
+    private fun submitLog(
+        type: LOG.PRIORITY,
+        t: Throwable?,
+        logs: Array<out String>
+    ) {
         fileLoggingTP?.run {
             submit {
                 fileHandler?.run {
                     val level = getFileHandlerLevel(type)
 
                     try {
-                        val logText = formatLog(type, t, *logs)
+                        val logText = formatLog(type, *logs)
                         val logRecord = LogRecord(level, logText)
 
                         t?.run {
@@ -214,10 +222,9 @@ class LogFileAppender(
      * Formats the log
      *
      * @param type Type of log
-     * @param t    Throwable (can be null)
      * @param logs Log
      */
-    fun formatLog(type: LOG.PRIORITY, t: Throwable?, vararg logs: String): String {
+    fun formatLog(type: LOG.PRIORITY, vararg logs: String): String {
         val builder = StringBuilder()
         builder.append(dateFormatter.format(Date()))
         builder.append(": ")

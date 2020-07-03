@@ -1,7 +1,9 @@
 package com.mindera.skeletoid.logs.appenders
 
+import android.content.Context
 import android.content.Intent
 import androidx.core.content.FileProvider
+import androidx.test.core.app.ApplicationProvider
 import com.mindera.skeletoid.generic.AndroidUtils
 import com.mindera.skeletoid.logs.LOG
 import org.junit.Ignore
@@ -33,7 +35,7 @@ import kotlin.test.assertTrue
 @Config(manifest = Config.NONE)
 @PowerMockIgnore("org.mockito.*", "org.robolectric.*", "android.*")
 @PrepareForTest(FileProvider::class, Intent::class, AndroidUtils::class)
-public class LogFileAppenderUnitTest {
+class LogFileAppenderUnitTest {
 
     companion object {
         private const val PACKAGE_NAME = "my.package.name"
@@ -42,7 +44,7 @@ public class LogFileAppenderUnitTest {
 
     @Rule
     @JvmField
-    public var rule = PowerMockRule()
+    var rule = PowerMockRule()
 
     @Test(expected = IllegalArgumentException::class)
     fun testConstructorFileNameInvalid() {
@@ -113,10 +115,10 @@ public class LogFileAppenderUnitTest {
         assertTrue(
             appender.formatLog(
                 LOG.PRIORITY.DEBUG,
-                null,
+                "",
                 "Hello",
                 "My friend"
-            ).matches(("\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d: D/" + PACKAGE_NAME + "\\(" + Thread.currentThread().id + "\\): Hello My friend ").toRegex())
+            ).matches(("\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d: D/" + PACKAGE_NAME + "\\(" + Thread.currentThread().id + "\\):  Hello My friend").toRegex())
         )
     }
 
@@ -256,7 +258,7 @@ public class LogFileAppenderUnitTest {
     @Ignore
     fun testLog() {
         val appender = LogFileAppender(PACKAGE_NAME, FILE_NAME)
-        val context = RuntimeEnvironment.application
+        val context = ApplicationProvider.getApplicationContext<Context>()
         val fileHandler = mock(FileHandler::class.java)
 
         appender.enableAppender(context)

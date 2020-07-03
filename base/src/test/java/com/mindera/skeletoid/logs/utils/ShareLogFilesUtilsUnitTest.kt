@@ -10,6 +10,7 @@ import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.doReturn
 import org.mockito.Mockito.mock
 import org.powermock.api.mockito.PowerMockito.mockStatic
 import org.powermock.core.classloader.annotations.PowerMockIgnore
@@ -35,11 +36,6 @@ class ShareLogFilesUtilsUnitTests {
     @JvmField
     public var rule = PowerMockRule()
 
-    @Test(expected = UnsupportedOperationException::class)
-    fun testConstructor() {
-        ShareLogFilesUtils()
-    }
-
     @Test
     fun testGetFileLogPath() {
         val context = mock(Context::class.java)
@@ -53,21 +49,12 @@ class ShareLogFilesUtilsUnitTests {
 
     @Test
     fun testSendLogsSingle() {
-        val activity = Robolectric.buildActivity(TestActivity::class.java!!)
+        val activity = Robolectric.buildActivity(TestActivity::class.java)
             .create()
             .resume()
             .get()
 
         val uri = mock(Uri::class.java)
-
-        mockStatic(FileProvider::class.java)
-        `when`(
-            FileProvider.getUriForFile(
-                eq(activity),
-                any(String::class.java),
-                any(File::class.java)
-            )
-        ).thenReturn(uri)
 
         val shadowActivity = shadowOf(activity)
 
@@ -77,7 +64,8 @@ class ShareLogFilesUtilsUnitTests {
             "subject",
             "bodyText",
             null,
-            File.createTempFile("prefix", "suffix")
+            File.createTempFile("prefix", "suffix"),
+            uri
         )
 
         val intent = shadowActivity.nextStartedActivity
@@ -92,21 +80,12 @@ class ShareLogFilesUtilsUnitTests {
 
     @Test
     fun testSendLogsEmail() {
-        val activity = Robolectric.buildActivity(TestActivity::class.java!!)
+        val activity = Robolectric.buildActivity(TestActivity::class.java)
             .create()
             .resume()
             .get()
 
         val uri = mock(Uri::class.java)
-
-        mockStatic(FileProvider::class.java)
-        `when`(
-            FileProvider.getUriForFile(
-                eq(activity),
-                any(String::class.java),
-                any(File::class.java)
-            )
-        ).thenReturn(uri)
 
         val shadowActivity = shadowOf(activity)
 
@@ -133,7 +112,8 @@ class ShareLogFilesUtilsUnitTests {
             "intentChooserTitle",
             "subject",
             "bodyText",
-            arrayOf("user@user.com")
+            arrayOf("user@user.com"),
+            uri
         )
 
         val intent = shadowActivity.nextStartedActivity

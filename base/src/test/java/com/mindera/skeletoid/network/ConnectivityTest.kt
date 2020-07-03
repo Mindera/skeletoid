@@ -11,11 +11,6 @@ import kotlin.test.assertTrue
 
 class ConnectivityTest {
 
-    @Test(expected = IllegalArgumentException::class)
-    fun testIsNotConnectedWithNullArguments() {
-        Connectivity.isConnected(null)
-    }
-
     @Test
     fun testIsNotConnected() {
         val context = mock<Context>()
@@ -38,11 +33,6 @@ class ConnectivityTest {
         Mockito.`when`(connectivityManager.activeNetworkInfo).thenReturn(activeNetworkInfo)
         Mockito.`when`(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager)
         assertTrue(Connectivity.isConnected(context))
-    }
-
-    @Test(expected = IllegalArgumentException::class)
-    fun testIsNotConnectedToWIFIWithNullArguments() {
-        Connectivity.isConnectedToWifi(null)
     }
 
     @Test

@@ -82,7 +82,7 @@ class AppRatingController {
                 store.alreadyRated = true
             }
             AppRatingDialogResponse.RATE_LATER -> {
-                schedulePromptDialogJob()
+                schedulePromptDialogJob(context)
             }
         }
     }
@@ -90,8 +90,8 @@ class AppRatingController {
     /**
      * Schedules a job to prompt the rating dialog after the promptTimeInterval.
      */
-    fun schedulePromptDialogJob() {
-        promptTimeInterval?.let { AppRatingJobInitializer.schedule(it) }
+    fun schedulePromptDialogJob(context: Context) {
+        promptTimeInterval?.let { AppRatingJobInitializer.schedule(context, it) }
     }
 
     /**

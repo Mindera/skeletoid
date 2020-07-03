@@ -149,7 +149,7 @@ abstract class AbstractDialogFragment : IntermediateDialog() {
      * dialog allowing state loss.
      */
     override fun dismiss() = try {
-        LOG.d("Dismissing dialog ", tag)
+        LOG.d("Dismissing dialog ", tag ?: "UNKNOWN Fragment Tag")
         onDismiss()
         super.dismiss()
     } catch (ex: IllegalStateException) {

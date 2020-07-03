@@ -68,5 +68,4 @@ You are using [Base module](https://github.com/Mindera/skeletoid/blob/master/bas
 
 ## Notes
 
-- We are moving to a full Kotlin world, but you might still find some Java along the road.
 - We move fast and we break things.. but we are friendly. Please drop us an issue/feature request and we will address it asap.

@@ -44,7 +44,7 @@ object AppRatingInitializer {
         callback?.let { this.callback = it }
         controller.setupConditions(countsPerTimeInterval, promptTimeInterval)
         if (shouldSchedulePrompt) {
-            controller.schedulePromptDialogJob()
+            controller.schedulePromptDialogJob(context)
         }
     }
 
