@@ -30,14 +30,14 @@ rootProject.afterEvaluate {
             //Test
             '**/**Test*.*',
             //UI Related items that make no sense to add unit tests to
-            '**/views/**.kt',
-            '**/dialogs/**.kt',
-            '**/animation/**.kt',
-            '**/UnfreezeScreenActivity.kt',
+            '**/views/**.class',
+            '**/dialogs/**.class',
+            '**/animation/**.class',
+            '**/UnfreezeScreenActivity.class',
             //RxJava that also make no sense to test
             '**/Schedulers.kt',
             //No logic utils
-            '**/utils/http/HttpCodes.kt']
+            '**/utils/http/HttpCodes.class']
 
     rootProject.subprojects.collect() { subproject ->
         if (isAndroidProject(subproject)) {
