@@ -35,14 +35,14 @@ project.afterEvaluate {
             //Test
             '**/**Test*.*',
             //UI Related items that make no sense to add unit tests to
-            '**/views/**.class',
-            '**/dialogs/**.class',
-            '**/animation/**.class',
-            '**/UnfreezeScreenActivity.class',
+            '**/views/*.*',
+            '**/dialogs/*.*',
+            '**/animation/*.*',
+            '**/UnfreezeScreenActivity.*',
             //RxJava that also make no sense to test
-            '**/Schedulers.kt',
+            '**/Schedulers.*',
             //No logic utils
-            '**/utils/http/HttpCodes.class'
+            '**/utils/http/HttpCodes.*'
     ]
 
     //'qa' is a default test build type. To change run:
