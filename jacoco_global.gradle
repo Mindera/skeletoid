@@ -29,7 +29,15 @@ rootProject.afterEvaluate {
             '**/*databinding/**/*.*',
             //Test
             '**/**Test*.*',
-            '**/rxjava.schedulers/Schedulers.kt']
+            //UI Related items that make no sense to add unit tests to
+            '**/views/**.kt',
+            '**/dialogs/**.kt',
+            '**/animation/**.kt',
+            '**/UnfreezeScreenActivity.kt',
+            //RxJava that also make no sense to test
+            '**/Schedulers.kt',
+            //No logic utils
+            '**/utils/http/HttpCodes.kt']
 
     rootProject.subprojects.collect() { subproject ->
         if (isAndroidProject(subproject)) {
