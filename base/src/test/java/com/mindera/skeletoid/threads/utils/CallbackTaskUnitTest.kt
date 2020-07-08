@@ -7,8 +7,7 @@ import org.mockito.Mockito
 class CallbackTaskUnitTest {
     @Test
     fun testTaskCompleted() {
-        val runnable =
-            Mockito.mock(Runnable::class.java)
+        val runnable = Mockito.mock(Runnable::class.java)
         val callbackTask = Mockito.mock(ICallbackTask::class.java)
         val task = CallbackTask(runnable, callbackTask)
         task.run()
