@@ -9,9 +9,7 @@ class ThreadUtilsUnitTests {
     fun testThreadName() {
         //TODO This would be better with a regex that validates against [T# .+]
         Assert.assertTrue(
-            currentThreadName.startsWith("[T# ") && currentThreadName.endsWith(
-                "] "
-            )
+            currentThreadName.startsWith("[T# ") && currentThreadName.endsWith("] ")
         )
     }
 }
