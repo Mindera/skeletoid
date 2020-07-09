@@ -101,6 +101,7 @@ subprojects {
             property "sonar.test.inclusions", "**/*test*/**"
             property "sonar.import_unknown_files", true
 
+            //This might not be needed - Read more at https://sonarcloud.io/documentation/analysis/pull-request/
             property "sonar.branch.name", gitBranch() //For Sonarqube to distinguish what branch is being tested
 
             property "sonar.java.binaries", "${buildDir}/intermediates/javac/${android.testBuildType}/classes,${buildDir}/tmp/kotlin-classes/${android.testBuildType}UnitTest"
