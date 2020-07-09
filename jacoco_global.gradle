@@ -16,6 +16,8 @@ rootProject.afterEvaluate {
     def fileTrees = []
     def coverageSourceDirs = []
     def executionDataDirs = []
+
+    //Remember to change in sonarqube build.gradle config
     def fileFilter = [
             //Android stuff
             '**/R.class',
