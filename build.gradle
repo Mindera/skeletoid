@@ -81,7 +81,14 @@ rootProject.afterEvaluate {
     }
 }
 
-
+static def gitBranch() {
+    def branch = ""
+    def proc = "git rev-parse --abbrev-ref HEAD".execute()
+    proc.in.eachLine { line -> branch = line }
+    proc.err.eachLine { line -> println line }
+    proc.waitFor()
+    branch
+}
 
 subprojects {
 
@@ -93,6 +100,8 @@ subprojects {
             property "sonar.tests", "./src/test/"
             property "sonar.test.inclusions", "**/*test*/**"
             property "sonar.import_unknown_files", true
+
+            property "sonar.branch.name", gitBranch() //For Sonarqube to distinguish what branch is being tested
 
             property "sonar.java.binaries", "${buildDir}/intermediates/javac/${android.testBuildType}/classes,${buildDir}/tmp/kotlin-classes/${android.testBuildType}UnitTest"
             property "sonar.java.source", "${getProjectDir()}/src/main/java"
