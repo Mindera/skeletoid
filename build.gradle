@@ -94,6 +94,12 @@ static def gitBranch() {
     branch
 }
 
+sonarqube {
+    properties {
+        property "sonar.projectKey", "mydroidisbetterthanyours"
+    }
+}
+
 subprojects {
 
     sonarqube {
