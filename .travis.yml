@@ -33,7 +33,15 @@ android:
       - 'google-gdk-license-.+'
       - 'intel-android-extra-license.+'
       - '.+'
-    
+
+# https://sonarcloud.io/project/configuration?analysisMode=GitHubTravis&id=mydroidisbetterthanyours
+addons:
+  sonarcloud:
+    organization: "mindera"
+    token:
+      secure: "OsqTN/3imthYi+yN12uRbrUN8wFciSTaBjtU69DQXKo2ydhgHXXBHehJ1xCcqV7X/3kG9/u9VoBYJCV44q2p01G53S7HwtcSCxsKxc50S3Osq7hOMlB+SzKFEE3dZQH1l3glJb4D5VYgUed3e6f4Dv6SDgTa0M/dNJkztuug4B0TtbDeRRFzHMinLwjsVV5QU37ZhAPmjKClckTzAPSAN8xy0D9sVFuha9B3wE3zrKUImyI54WZ6yLeWlqWVCinWxvMXUisIOwDraJIbIQQqPoDAF37xZ7dSkC9G3577q+O5ovz/ZoI4OmP8tSsgK8IE7gyg0PSBEGh4floMznVCrjvGqeSZ7bOl6f34f4mtsBJCQgDeEX4/qMJzmn2TNiD/7HgEc58scFlGIzsz8d1H72tFC6L/GXvxyOoYuTlnPFumqxcX1L63o41Acrys5Mg/v00OHaVFQg3TEhlwur5CdoSm1AHCAmXrGKk/zbAN0rfiXM819Z8txX/rCuXXn+sE/3i40By6kXeet3Sd3y0YG2fHK9kRwsrX9xBADlTcbGwzf92kWb6y7nIQNFI6A2cRC8W0y0EcLuXNCP47kBT5pH2RgboHPoVbLjTMiAC7tfPfwoMyjND6i8BY/X7UAGAuppam0m5wPEmiBSfDXbyGXYPMcmltQGsLYwJViBkHiws="
+
+
 script:
   # Compile the SDK
   - ./gradlew assemble
@@ -41,9 +49,11 @@ script:
   # Run initTests
   - ./gradlew createGlobalSkeletoidUnitTestReport
 
+  - ./gradlew sonarqube
+
 
   # Send coverage report to Sonarcloud:
   # Read more: https://github.com/arturdm/jacoco-android-gradle-plugin
-  - ./gradlew sonarqube -Dsonar.projectKey=$SONARCLOUD_PROJECT_KEY -Dsonar.organization=mindera -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONARCLOUD_PROJECT_LOGIN
+  #- ./gradlew sonarqube -Dsonar.projectKey=$SONARCLOUD_PROJECT_KEY -Dsonar.organization=mindera -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONARCLOUD_PROJECT_LOGIN
 
 

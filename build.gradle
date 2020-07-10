@@ -1,4 +1,4 @@
-apply plugin: "org.sonarqube"
+//apply plugin: "org.sonarqube"
 
 buildscript {
     ext.gradleVersion = '4.0.0'
@@ -18,6 +18,10 @@ buildscript {
 
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8"
     }
+}
+
+plugins {
+    id "org.sonarqube" version "2.8"
 }
 
 allprojects {
@@ -81,17 +85,35 @@ rootProject.afterEvaluate {
     }
 }
 
+static def gitBranch() {
+    def branch = ""
+    def proc = "git rev-parse --abbrev-ref HEAD".execute()
+    proc.in.eachLine { line -> branch = line }
+    proc.err.eachLine { line -> println line }
+    proc.waitFor()
+    branch
+}
 
+sonarqube {
+    properties {
+        property "sonar.projectKey", "mydroidisbetterthanyours"
+    }
+}
 
 subprojects {
 
     sonarqube {
         properties {
+            property "sonar.projectKey", "mydroidisbetterthanyours"
             property "sonar.sources", "src"
-            property "sonar.exclusions", "**/*test*/**,build/**,*.iml,**/*generated*"
+            //Remember to change in jacoco_global and jacoco files also
+            property "sonar.exclusions", "**/*test*/**,build/**,*.iml,**/*generated*, **/views/*.*, **/dialogs/*.*,**/animation/*.*, **/UnfreezeScreenActivity.*, **/Schedulers.*,**/utils/http/HttpCodes.*"
             property "sonar.tests", "./src/test/"
             property "sonar.test.inclusions", "**/*test*/**"
             property "sonar.import_unknown_files", true
+
+            //This might not be needed - Read more at https://sonarcloud.io/documentation/analysis/pull-request/
+            property "sonar.branch.name", gitBranch() //For Sonarqube to distinguish what branch is being tested
 
             property "sonar.java.binaries", "${buildDir}/intermediates/javac/${android.testBuildType}/classes,${buildDir}/tmp/kotlin-classes/${android.testBuildType}UnitTest"
             property "sonar.java.source", "${getProjectDir()}/src/main/java"

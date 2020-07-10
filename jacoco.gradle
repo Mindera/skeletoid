@@ -21,6 +21,7 @@ if (isAndroidProject(project)) {
 project.afterEvaluate {
     def testCoverageBuildType = rootProject.getProperties().get('testBuildType') ?: 'qa'
 
+    //Remember to change in sonarqube build.gradle config
     def fileFilter = [
             //Android stuff
             '**/R.class',
