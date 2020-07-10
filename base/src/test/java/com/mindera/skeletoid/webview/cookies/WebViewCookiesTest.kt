@@ -41,7 +41,7 @@ class WebViewCookiesTest {
     @Test
     fun testClearWebViewCookiesApiEqualOrGreaterThan22() {
         Whitebox.setInternalState(Build.VERSION::class.java, "SDK_INT", 27)
-        val context = RuntimeEnvironment.application.applicationContext
+        val context = ApplicationProvider.getApplicationContext<Context>()
         val cookieManager = mock(CookieManager::class.java)
         mockStatic(CookieManager::class.java)
         `when`(CookieManager.getInstance()).thenReturn(cookieManager)
@@ -52,10 +52,11 @@ class WebViewCookiesTest {
         verify(cookieManager).flush()
     }
 
+    @Suppress("DEPRECATION")
     @Test
     fun testClearWebViewCookiesApiLowerThan22() {
         Whitebox.setInternalState(Build.VERSION::class.java, "SDK_INT", 21)
-        val context = RuntimeEnvironment.application.applicationContext
+        val context = ApplicationProvider.getApplicationContext<Context>()
         val cookieManager = mock(CookieManager::class.java)
         mockStatic(CookieManager::class.java)
         `when`(CookieManager.getInstance()).thenReturn(cookieManager)
