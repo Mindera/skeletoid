@@ -20,6 +20,24 @@ open class NamedThreadFactory internal constructor(
     private val maxFactoryThreads: Int
     val threads: Queue<Thread>
 
+    companion object {
+        private const val LOG_TAG = "NamedThreadFactory"
+    }
+
+    /**
+     * Default constructor
+     *
+     * @param threadPoolName The name of the ThreadPool
+     */
+    init {
+        val s = System.getSecurityManager()
+        group = if (s != null) s.threadGroup else Thread.currentThread().threadGroup
+            ?: throw IllegalStateException("No value for thread group")
+        namePrefix = threadPoolName
+        this.maxFactoryThreads = maxFactoryThreads
+        threads = ArrayBlockingQueue(maxFactoryThreads)
+    }
+
     /**
      * Creates a new named thread
      *
@@ -49,23 +67,5 @@ open class NamedThreadFactory internal constructor(
 
     fun clearThreads() {
         threads.clear()
-    }
-
-    companion object {
-        private const val LOG_TAG = "NamedThreadFactory"
-    }
-
-    /**
-     * Default constructor
-     *
-     * @param threadPoolName The name of the ThreadPool
-     */
-    init {
-        val s = System.getSecurityManager()
-        group = if (s != null) s.threadGroup else Thread.currentThread().threadGroup
-            ?: throw IllegalStateException("No value for thread group")
-        namePrefix = threadPoolName
-        this.maxFactoryThreads = maxFactoryThreads
-        threads = ArrayBlockingQueue(maxFactoryThreads)
     }
 }

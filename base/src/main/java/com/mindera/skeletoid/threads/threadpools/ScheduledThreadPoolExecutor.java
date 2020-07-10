@@ -65,15 +65,13 @@ public class ScheduledThreadPoolExecutor extends java.util.concurrent.ScheduledT
         final NamedThreadFactory factory = (NamedThreadFactory) getThreadFactory();
         if (factory != null) {
             final Queue<Thread> threads = factory.getThreads();
-            if (threads != null) {
-                for (Thread t : threads) {
-                    final String threadName = t.getName();
-                    if (threadName != null && !threadName.startsWith(SHUTDOWN_THREAD)) {
-                        t.setName(SHUTDOWN_THREAD + " " + t.getName());
-                    }
+            for (Thread t : threads) {
+                final String threadName = t.getName();
+                if (!threadName.startsWith(SHUTDOWN_THREAD)) {
+                    t.setName(SHUTDOWN_THREAD + " " + t.getName());
                 }
-                factory.clearThreads();
             }
+            factory.clearThreads();
         }
     }
 }
