@@ -16,10 +16,6 @@ inline fun <reified T> parcelableCreator(
             override fun newArray(size: Int) = arrayOfNulls<T>(size)
         }
 
-fun Parcel.readBoolean() = readInt() != 0
-
-fun Parcel.writeBoolean(value: Boolean) = writeInt(if (value) 1 else 0)
-
 inline fun <reified T : Enum<T>> Parcel.readEnum() =
         readInt().let { if (it >= 0) enumValues<T>()[it] else null }
 

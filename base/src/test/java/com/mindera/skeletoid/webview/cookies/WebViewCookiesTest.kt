@@ -1,22 +1,18 @@
 package com.mindera.skeletoid.webview.cookies
 
-import android.content.Context
 import android.os.Build
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
-import androidx.test.core.app.ApplicationProvider
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
-import org.mockito.internal.util.reflection.FieldSetter
 import org.powermock.api.mockito.PowerMockito.`when`
 import org.powermock.api.mockito.PowerMockito.mockStatic
 import org.powermock.core.classloader.annotations.PowerMockIgnore
 import org.powermock.core.classloader.annotations.PrepareForTest
-import org.powermock.modules.junit4.PowerMockRunner
 import org.powermock.modules.junit4.rule.PowerMockRule
 import org.powermock.reflect.Whitebox
 import org.robolectric.RobolectricTestRunner
@@ -41,11 +37,12 @@ class WebViewCookiesTest {
     @Test
     fun testClearWebViewCookiesApiEqualOrGreaterThan22() {
         Whitebox.setInternalState(Build.VERSION::class.java, "SDK_INT", 27)
-        val context = ApplicationProvider.getApplicationContext<Context>()
+        //Move to new ApplicationProvider.getApplicationContext() throws an error
+        //probably need to use https://stackoverflow.com/questions/32957741/android-illegalstateexception-no-instrumentation-registered-must-run-under-a-re
+        val context = RuntimeEnvironment.application.applicationContext
         val cookieManager = mock(CookieManager::class.java)
         mockStatic(CookieManager::class.java)
         `when`(CookieManager.getInstance()).thenReturn(cookieManager)
-
         WebViewCookies.clearWebViewCookies(context)
 
         verify(cookieManager).removeAllCookies(null)
@@ -56,7 +53,9 @@ class WebViewCookiesTest {
     @Test
     fun testClearWebViewCookiesApiLowerThan22() {
         Whitebox.setInternalState(Build.VERSION::class.java, "SDK_INT", 21)
-        val context = ApplicationProvider.getApplicationContext<Context>()
+        //Move to new ApplicationProvider.getApplicationContext() throws an error
+        //probably need to use https://stackoverflow.com/questions/32957741/android-illegalstateexception-no-instrumentation-registered-must-run-under-a-re
+        val context = RuntimeEnvironment.application.applicationContext
         val cookieManager = mock(CookieManager::class.java)
         mockStatic(CookieManager::class.java)
         `when`(CookieManager.getInstance()).thenReturn(cookieManager)
