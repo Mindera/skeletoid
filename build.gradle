@@ -94,6 +94,7 @@ subprojects {
 
     sonarqube {
         properties {
+            property "sonar.projectKey", "mydroidisbetterthanyours"
             property "sonar.sources", "src"
             //Remember to change in jacoco_global and jacoco files also
             property "sonar.exclusions", "**/*test*/**,build/**,*.iml,**/*generated*, **/views/*.*, **/dialogs/*.*,**/animation/*.*, **/UnfreezeScreenActivity.*, **/Schedulers.*,**/utils/http/HttpCodes.*"
