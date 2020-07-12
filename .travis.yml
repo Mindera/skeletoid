@@ -34,7 +34,11 @@ android:
       - 'intel-android-extra-license.+'
       - '.+'
 
-# https://sonarcloud.io/project/configuration?analysisMode=GitHubTravis&id=mydroidisbetterthanyours
+# Avoid Sonarqube warning: https://stackoverflow.com/questions/59000099/sonarqube-with-shallow-clone-warning-even-with-shallow-disabled-on-jenkins-build
+git:
+  depth: false
+
+# How sonarqube is configured: https://sonarcloud.io/project/configuration?analysisMode=GitHubTravis&id=mydroidisbetterthanyours
 addons:
   sonarcloud:
     organization: "mindera"
@@ -49,11 +53,13 @@ script:
   # Run initTests
   - ./gradlew createGlobalSkeletoidUnitTestReport
 
+  # Run SonarQube Analysis:
+  # TODO We'll need to migrate this to Java 11 soon... https://community.sonarsource.com/t/re-move-to-java-11-java-8-deprecated/25275/13
   - ./gradlew sonarqube
 
+  # Before this configuration we were following
+  # https://medium.com/@azizbekian/setup-jacoco-sonarqube-in-multimodule-multiflavor-kotlin-android-project-d8e7b27aed36
+  # this still might be useful in some cases to look at
 
-  # Send coverage report to Sonarcloud:
-  # Read more: https://github.com/arturdm/jacoco-android-gradle-plugin
-  #- ./gradlew sonarqube -Dsonar.projectKey=$SONARCLOUD_PROJECT_KEY -Dsonar.organization=mindera -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONARCLOUD_PROJECT_LOGIN
 
 
