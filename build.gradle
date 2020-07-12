@@ -115,25 +115,25 @@ sonarqube {
 }
 
 // We should understand if we can remove this below without any side effects.
-subprojects {
-    def testCoverageBuildType = rootProject.getProperties().get('testBuildType') ?: 'qa'
-
-    sonarqube {
-        properties {
-            property "sonar.projectKey", "mydroidisbetterthanyours"
-            property "sonar.sources", "src"
-            //Remember to change in jacoco_global and jacoco files also
-            property "sonar.exclusions", "**/*test*/**,build/**,*.iml,**/*generated*, **/views/*.*, **/dialogs/*.*,**/animation/*.*, **/UnfreezeScreenActivity.*, **/Schedulers.*,**/utils/http/HttpCodes.*"
-            property "sonar.tests", "./src/test/"
-            property "sonar.test.inclusions", "**/*test*/**"
-            property "sonar.import_unknown_files", true
-
-            property "sonar.java.binaries", "${buildDir}/intermediates/javac/${testCoverageBuildType}/classes,${buildDir}/tmp/kotlin-classes/${testCoverageBuildType}"
-            property "sonar.java.source", "${getProjectDir()}/src/main/java"
-            property "sonar.java.coveragePlugin", "jacoco"
-            property "sonar.coverage.jacoco.xmlReportPaths", fileTree(dir: "${rootProject.buildDir}/reports/jacoco/", includes: ["**/createGlobalSkeletoidUnitTestReport.xml"])
-            property "sonar.jacoco.itReportPath", fileTree(dir: "${buildDir}/outputs/code-coverage/connected/", includes: ["**/*.ec"])
-            property "sonar.android.lint.report", "${buildDir}/outputs/lint-results.xml"
-        }
-    }
-}
+//subprojects {
+//    def testCoverageBuildType = rootProject.getProperties().get('testBuildType') ?: 'qa'
+//
+//    sonarqube {
+//        properties {
+//            property "sonar.projectKey", "mydroidisbetterthanyours"
+//            property "sonar.sources", "src"
+//            //Remember to change in jacoco_global and jacoco files also
+//            property "sonar.exclusions", "**/*test*/**,build/**,*.iml,**/*generated*, **/views/*.*, **/dialogs/*.*,**/animation/*.*, **/UnfreezeScreenActivity.*, **/Schedulers.*,**/utils/http/HttpCodes.*"
+//            property "sonar.tests", "./src/test/"
+//            property "sonar.test.inclusions", "**/*test*/**"
+//            property "sonar.import_unknown_files", true
+//
+//            property "sonar.java.binaries", "${buildDir}/intermediates/javac/${testCoverageBuildType}/classes,${buildDir}/tmp/kotlin-classes/${testCoverageBuildType}"
+//            property "sonar.java.source", "${getProjectDir()}/src/main/java"
+//            property "sonar.java.coveragePlugin", "jacoco"
+//            property "sonar.coverage.jacoco.xmlReportPaths", fileTree(dir: "${rootProject.buildDir}/reports/jacoco/", includes: ["**/createGlobalSkeletoidUnitTestReport.xml"])
+//            property "sonar.jacoco.itReportPath", fileTree(dir: "${buildDir}/outputs/code-coverage/connected/", includes: ["**/*.ec"])
+//            property "sonar.android.lint.report", "${buildDir}/outputs/lint-results.xml"
+//        }
+//    }
+//}
