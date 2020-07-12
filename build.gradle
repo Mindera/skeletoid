@@ -106,9 +106,6 @@ sonarqube {
         property "sonar.test.inclusions", "**/*test*/**"
         property "sonar.import_unknown_files", true
 
-        //This might not be needed - Read more at https://sonarcloud.io/documentation/analysis/pull-request/
-        property "sonar.branch.name", gitBranch() //For Sonarqube to distinguish what branch is being tested
-
         property "sonar.java.binaries", "${buildDir}/intermediates/javac/${testCoverageBuildType}/classes,${buildDir}/tmp/kotlin-classes/${testCoverageBuildType}"
         property "sonar.java.source", "${getProjectDir()}/src/main/java"
         property "sonar.java.coveragePlugin", "jacoco"
@@ -130,9 +127,6 @@ subprojects {
             property "sonar.tests", "./src/test/"
             property "sonar.test.inclusions", "**/*test*/**"
             property "sonar.import_unknown_files", true
-
-            //This might not be needed - Read more at https://sonarcloud.io/documentation/analysis/pull-request/
-            property "sonar.branch.name", gitBranch() //For Sonarqube to distinguish what branch is being tested
 
             property "sonar.java.binaries", "${buildDir}/intermediates/javac/${testCoverageBuildType}/classes,${buildDir}/tmp/kotlin-classes/${testCoverageBuildType}"
             property "sonar.java.source", "${getProjectDir()}/src/main/java"
