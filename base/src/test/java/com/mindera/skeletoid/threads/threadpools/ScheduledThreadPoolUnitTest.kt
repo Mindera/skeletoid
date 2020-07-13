@@ -27,7 +27,7 @@ class ScheduledThreadPoolUnitTest {
 
     @Test
     fun testShutdownNowThreadPool() {
-        val namedThreadFactory : NamedThreadFactory = NamedThreadFactory("",1)
+        val namedThreadFactory : NamedThreadFactory = NamedThreadFactory("", 1)
         val scheduledThreadPoolExecutor = ScheduledThreadPoolExecutor(1, namedThreadFactory)
         scheduledThreadPoolExecutor.shutdownNow()
         Assert.assertTrue(scheduledThreadPoolExecutor.isShutdown)
