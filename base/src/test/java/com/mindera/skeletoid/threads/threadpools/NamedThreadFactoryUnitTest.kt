@@ -22,8 +22,7 @@ class NamedThreadFactoryUnitTest {
 
     @Test
     fun testNewThreads() {
-        val runnable =
-            Mockito.mock(Runnable::class.java)
+        val runnable = Mockito.mock(Runnable::class.java)
         val thread = namedThreadFactory.newThread(runnable)
         Assert.assertNotNull(thread)
         Assert.assertEquals(1, namedThreadFactory.threads.size)
