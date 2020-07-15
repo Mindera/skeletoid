@@ -133,15 +133,13 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
         final NamedThreadFactory factory = (NamedThreadFactory) getThreadFactory();
         if (factory != null) {
             final Queue<Thread> threads = factory.getThreads();
-            if (threads != null) {
-                for (Thread t : threads) {
-                    final String threadName = t.getName();
-                    if (threadName != null && !threadName.startsWith(SHUTDOWN_THREAD)) {
-                        t.setName(SHUTDOWN_THREAD + " " + t.getName());
-                    }
+            for (Thread thread : threads) {
+                final String threadName = thread.getName();
+                if (!threadName.startsWith(SHUTDOWN_THREAD)) {
+                    thread.setName(SHUTDOWN_THREAD + " " + thread.getName());
                 }
-                factory.clearThreads();
             }
+            factory.clearThreads();
         }
     }
 
