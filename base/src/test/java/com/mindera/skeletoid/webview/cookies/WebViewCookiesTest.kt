@@ -37,8 +37,9 @@ class WebViewCookiesTest {
     @Test
     fun testClearWebViewCookiesApiEqualOrGreaterThan22() {
         Whitebox.setInternalState(Build.VERSION::class.java, "SDK_INT", 27)
-        //Move to new ApplicationProvider.getApplicationContext() throws an error
-        //probably need to use https://stackoverflow.com/questions/32957741/android-illegalstateexception-no-instrumentation-registered-must-run-under-a-re
+        // RuntimeEnvironment.application is deprecated, we ned to use ApplicationProvider.getApplicationContext()
+        // but for some reason it's throwing an error whenever I try that, we need to go over this again in a future PR
+        // https://stackoverflow.com/questions/32957741/android-illegalstateexception-no-instrumentation-registered-must-run-under-a-re
         val context = RuntimeEnvironment.application.applicationContext
         val cookieManager = mock(CookieManager::class.java)
         mockStatic(CookieManager::class.java)
@@ -53,8 +54,9 @@ class WebViewCookiesTest {
     @Test
     fun testClearWebViewCookiesApiLowerThan22() {
         Whitebox.setInternalState(Build.VERSION::class.java, "SDK_INT", 21)
-        //Move to new ApplicationProvider.getApplicationContext() throws an error
-        //probably need to use https://stackoverflow.com/questions/32957741/android-illegalstateexception-no-instrumentation-registered-must-run-under-a-re
+        // RuntimeEnvironment.application is deprecated, we ned to use ApplicationProvider.getApplicationContext()
+        // but for some reason it's throwing an error whenever I try that, we need to go over this again in a future PR
+        // https://stackoverflow.com/questions/32957741/android-illegalstateexception-no-instrumentation-registered-must-run-under-a-re
         val context = RuntimeEnvironment.application.applicationContext
         val cookieManager = mock(CookieManager::class.java)
         mockStatic(CookieManager::class.java)
