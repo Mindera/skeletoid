@@ -6,7 +6,6 @@ import org.junit.Test
 
 class ScheduledThreadPoolUnitTest {
 
-
     @Test
     fun testThreadPoolInitialization() {
         val namedThreadFactory : NamedThreadFactory = mock()
