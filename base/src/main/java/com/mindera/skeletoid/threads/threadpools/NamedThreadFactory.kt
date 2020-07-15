@@ -10,6 +10,13 @@ import java.util.concurrent.atomic.AtomicInteger
 /**
  * Factory for threads that provides custom naming
  */
+
+/**
+ * Default constructor
+ *
+ * @param threadPoolName The name of the ThreadPool
+ * @param maxFactoryThreads Max number of threads
+ */
 open class NamedThreadFactory internal constructor(
     threadPoolName: String,
     maxFactoryThreads: Int
@@ -24,14 +31,10 @@ open class NamedThreadFactory internal constructor(
         private const val LOG_TAG = "NamedThreadFactory"
     }
 
-    /**
-     * Default constructor
-     *
-     * @param threadPoolName The name of the ThreadPool
-     */
+
     init {
-        val s = System.getSecurityManager()
-        group = if (s != null) s.threadGroup else Thread.currentThread().threadGroup
+        val securityManager = System.getSecurityManager()
+        group = if (securityManager != null) securityManager.threadGroup else Thread.currentThread().threadGroup
             ?: throw IllegalStateException("No value for thread group")
         namePrefix = threadPoolName
         this.maxFactoryThreads = maxFactoryThreads
@@ -41,28 +44,23 @@ open class NamedThreadFactory internal constructor(
     /**
      * Creates a new named thread
      *
-     * @param r Runnable
+     * @param runnable Runnable
      * @return Thread
      */
-    override fun newThread(r: Runnable): Thread {
+    override fun newThread(runnable: Runnable): Thread {
         val threadNumber = threadPoolNumber.incrementAndGet()
         val threadName = "$namePrefix [#$threadNumber/$maxFactoryThreads]"
-        val t = Thread(group, r, threadName, 0)
-        if (t.isDaemon) {
-            t.isDaemon = false
+        val thread = Thread(group, runnable, threadName, 0)
+        if (thread.isDaemon) {
+            thread.isDaemon = false
         }
-        if (t.priority != Thread.NORM_PRIORITY) {
-            t.priority = Thread.NORM_PRIORITY
+        if (thread.priority != Thread.NORM_PRIORITY) {
+            thread.priority = Thread.NORM_PRIORITY
         }
         val threadTotal = ThreadPoolUtils.threadTotal.incrementAndGet()
-        LOG.d(LOG_TAG,
-            "Created one more thread: "
-                    + threadName
-                    + " | Total number of threads (currently): "
-                    + threadTotal
-        )
-        threads.add(t)
-        return t
+        LOG.d(LOG_TAG, "Created one more thread: $threadName | Total number of threads (currently): $threadTotal")
+        threads.add(thread)
+        return thread
     }
 
     fun clearThreads() {
