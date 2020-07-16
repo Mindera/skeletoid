@@ -1,7 +1,6 @@
 package com.mindera.skeletoid.threads.threadpools
 
-import com.mindera.skeletoid.logs.LOG.e
-import com.mindera.skeletoid.logs.LOG.w
+import com.mindera.skeletoid.logs.LOG
 import java.util.concurrent.CancellationException
 import java.util.concurrent.Future
 import java.util.concurrent.ScheduledThreadPoolExecutor
@@ -19,32 +18,24 @@ class ScheduledThreadPoolExecutor(
     }
 
     override fun afterExecute(r: Runnable, t: Throwable) {
-        var t: Throwable? = t
-        super.afterExecute(r, t)
-        if (t == null && r is Future<*>) {
+        var throwable: Throwable? = t
+        super.afterExecute(r, throwable)
+        if (throwable == null && r is Future<*>) {
             try {
                 val future = r as Future<*>
                 if (future.isDone) future.get()
             } catch (ce: CancellationException) {
-                w(
-                    LOG_TAG,
-                    "Task was cancelled: $r"
-                )
+                LOG.w(LOG_TAG, "Task was cancelled: $r")
             } catch (ie: InterruptedException) {
-                w(
-                    LOG_TAG,
-                    "Task was interrupted: $r"
-                )
-                Thread.currentThread().interrupt() // ignore/reset
+                LOG.w(LOG_TAG, "Task was interrupted: $r")
+                Thread.currentThread().interrupt()
             } catch (e: Exception) {
-                t = e.cause
+                throwable = e.cause
             }
         }
-        if (t != null) e(
-            LOG_TAG,
-            t,
-            "Uncaught exception on ThreadPool"
-        )
+        if (throwable != null){
+            LOG.e(LOG_TAG, throwable, "Uncaught exception on ThreadPool")
+        }
     }
 
     override fun shutdown() {
