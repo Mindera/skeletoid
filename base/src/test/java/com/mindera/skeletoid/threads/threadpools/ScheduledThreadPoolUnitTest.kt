@@ -3,8 +3,7 @@ package com.mindera.skeletoid.threads.threadpools
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import java.util.concurrent.Future
-import java.util.concurrent.RunnableScheduledFuture
+
 
 class ScheduledThreadPoolUnitTest {
 
@@ -32,6 +31,24 @@ class ScheduledThreadPoolUnitTest {
 
     @Test
     fun testShutdownNowThreadPool() {
+        threadPoolExecutor.shutdownNow()
+        Assert.assertTrue(threadPoolExecutor.isShutdown)
+    }
+
+    @Test
+    fun testShutdownThreadPoolNullThreadFactory() {
+        val threadFactoryAccess = threadPoolExecutor.javaClass.superclass?.superclass?.getDeclaredField("threadFactory")
+        threadFactoryAccess?.setAccessible(true)
+        threadFactoryAccess?.set(threadPoolExecutor, null)
+        threadPoolExecutor.shutdown()
+        Assert.assertTrue(threadPoolExecutor.isShutdown)
+    }
+
+    @Test
+    fun testShutdownNowThreadPoolNullThreadFactory() {
+        val threadFactoryAccess = threadPoolExecutor.javaClass.superclass?.superclass?.getDeclaredField("threadFactory")
+        threadFactoryAccess?.setAccessible(true)
+        threadFactoryAccess?.set(threadPoolExecutor, null)
         threadPoolExecutor.shutdownNow()
         Assert.assertTrue(threadPoolExecutor.isShutdown)
     }
