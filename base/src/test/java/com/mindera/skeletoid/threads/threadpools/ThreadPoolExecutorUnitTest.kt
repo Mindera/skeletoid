@@ -27,17 +27,9 @@ class ThreadPoolExecutorUnitTest {
 
     @Before
     fun setUp() {
-        threadFactory = Mockito.mock(
-            NamedThreadFactory::class.java
-        )
+        threadFactory = NamedThreadFactory("", 1)
 
-        threadPoolExecutor = ThreadPoolExecutor(
-            CORE_POOL_SIZE,
-            MAX_POOL_SIZE,
-            KEEP_ALIVE,
-            TIME_UNIT,
-            threadFactory
-        )
+        threadPoolExecutor = ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, KEEP_ALIVE, TIME_UNIT, threadFactory)
     }
 
     @Test
