@@ -14,19 +14,19 @@ object ThreadPoolUtils {
      * Get ThreadPool with fixed number of threads
      *
      * @param threadPoolName The name of the thread pool
-     * @param MAX_THREAD     Max number of threads
+     * @param maxThreads     Max number of threads
      * @return Thread Pool
      */
     @JvmStatic
     fun getFixedThreadPool(
-        threadPoolName: String, MAX_THREAD: Int
+        threadPoolName: String, maxThreads: Int
     ): java.util.concurrent.ThreadPoolExecutor {
         return ThreadPoolExecutor(
-            MAX_THREAD,
-            MAX_THREAD,
+            maxThreads,
+            maxThreads,
             0L,
             TimeUnit.MILLISECONDS,
-            NamedThreadFactory(threadPoolName, MAX_THREAD)
+            NamedThreadFactory(threadPoolName, maxThreads)
         )
     }
 
@@ -34,17 +34,17 @@ object ThreadPoolUtils {
      * Get ScheduledThreadPool with fixed number of threads
      *
      * @param threadPoolName The name of the thread pool
-     * @param MAX_THREAD     Max number of threads
+     * @param maxThreads     Max number of threads
      * @return Thread Pool
      */
     @JvmStatic
     fun getScheduledThreadPool(
         threadPoolName: String,
-        MAX_THREAD: Int
+        maxThreads: Int
     ): ScheduledThreadPoolExecutor {
         return ScheduledThreadPoolExecutor(
-            MAX_THREAD,
-            NamedThreadFactory(threadPoolName, MAX_THREAD)
+            maxThreads,
+            NamedThreadFactory(threadPoolName, maxThreads)
         )
     }
 

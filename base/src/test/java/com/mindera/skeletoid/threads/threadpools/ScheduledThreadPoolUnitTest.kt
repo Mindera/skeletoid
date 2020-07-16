@@ -1,31 +1,91 @@
 package com.mindera.skeletoid.threads.threadpools
 
-import com.mindera.skeletoid.utils.extensions.mock
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 
+
 class ScheduledThreadPoolUnitTest {
+
+    private lateinit var threadFactory: NamedThreadFactory
+
+    private lateinit var threadPoolExecutor: ScheduledThreadPoolExecutor
+
+
+    @Before
+    fun setUp() {
+        threadFactory = NamedThreadFactory("", 1)
+        threadPoolExecutor = ScheduledThreadPoolExecutor(1, threadFactory)
+    }
+
     @Test
     fun testThreadPoolInitialization() {
-        val namedThreadFactory : NamedThreadFactory = mock()
-        val scheduledThreadPoolExecutor =
-            ScheduledThreadPoolExecutor(1, namedThreadFactory)
-        Assert.assertEquals(1, scheduledThreadPoolExecutor.corePoolSize)
+        Assert.assertEquals(1, threadPoolExecutor.corePoolSize)
     }
 
     @Test
     fun testShutdownThreadPool() {
-        val namedThreadFactory : NamedThreadFactory = mock()
-        val scheduledThreadPoolExecutor = ScheduledThreadPoolExecutor(1, namedThreadFactory)
-        scheduledThreadPoolExecutor.shutdown()
-        Assert.assertTrue(scheduledThreadPoolExecutor.isShutdown)
+        threadPoolExecutor.shutdown()
+        Assert.assertTrue(threadPoolExecutor.isShutdown)
     }
 
     @Test
     fun testShutdownNowThreadPool() {
-        val namedThreadFactory : NamedThreadFactory = mock()
-        val scheduledThreadPoolExecutor = ScheduledThreadPoolExecutor(1, namedThreadFactory)
-        scheduledThreadPoolExecutor.shutdownNow()
-        Assert.assertTrue(scheduledThreadPoolExecutor.isShutdown)
+        threadPoolExecutor.shutdownNow()
+        Assert.assertTrue(threadPoolExecutor.isShutdown)
     }
+
+    @Test
+    fun testShutdownThreadPoolNullThreadFactory() {
+        val threadFactoryAccess = threadPoolExecutor.javaClass.superclass?.superclass?.getDeclaredField("threadFactory")
+        threadFactoryAccess?.setAccessible(true)
+        threadFactoryAccess?.set(threadPoolExecutor, null)
+        threadPoolExecutor.shutdown()
+        Assert.assertTrue(threadPoolExecutor.isShutdown)
+    }
+
+    @Test
+    fun testShutdownNowThreadPoolNullThreadFactory() {
+        val threadFactoryAccess = threadPoolExecutor.javaClass.superclass?.superclass?.getDeclaredField("threadFactory")
+        threadFactoryAccess?.setAccessible(true)
+        threadFactoryAccess?.set(threadPoolExecutor, null)
+        threadPoolExecutor.shutdownNow()
+        Assert.assertTrue(threadPoolExecutor.isShutdown)
+    }
+
+    @Test
+    fun testShutdownThreadPoolNameTest() {
+        val threadFactory = NamedThreadFactory("SHUTDOWN", 1)
+        val threadPoolExecutor = ScheduledThreadPoolExecutor(1, threadFactory)
+        threadPoolExecutor.shutdown()
+        Assert.assertTrue(threadPoolExecutor.isShutdown)
+    }
+
+    @Test
+    fun testShutdownNowThreadPoolNameTest() {
+        val threadFactory = NamedThreadFactory("SHUTDOWN", 1)
+        val threadPoolExecutor = ScheduledThreadPoolExecutor(1, threadFactory)
+        threadPoolExecutor.shutdownNow()
+        Assert.assertTrue(threadPoolExecutor.isShutdown)
+    }
+
+    @Test
+    fun afterExecuteNullArgs() {
+        threadPoolExecutor.shutdownNow()
+        val method = threadPoolExecutor.javaClass.getDeclaredMethod("afterExecute", Runnable::class.java, Throwable::class.java)
+        method.isAccessible = true
+        method.invoke(threadPoolExecutor, null, null)
+        Assert.assertTrue(threadPoolExecutor.isShutdown)
+    }
+
+    @Test
+    fun afterExecuteWithFuture() {
+        val future = threadPoolExecutor.submit(Runnable {  })
+        threadPoolExecutor.shutdownNow()
+        val method = threadPoolExecutor.javaClass.getDeclaredMethod("afterExecute", Runnable::class.java, Throwable::class.java)
+        method.isAccessible = true
+        method.invoke(threadPoolExecutor, future, null)
+        Assert.assertTrue(threadPoolExecutor.isShutdown)
+    }
+
 }
