@@ -6,7 +6,6 @@ import com.mindera.skeletoid.logs.LOG;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.Future;
@@ -113,34 +112,20 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
 
     @Override
     public void shutdown() {
-        changeThreadsNameAfterShutdown();
+        final NamedThreadFactory factory = (NamedThreadFactory) getThreadFactory();
+        if(factory != null){
+            factory.changeThreadsNameAfterShutdown();
+        }
         super.shutdown();
     }
 
     @Override
     public List<Runnable> shutdownNow() {
-        changeThreadsNameAfterShutdown();
-        return super.shutdownNow();
-    }
-
-    /**
-     * Mark threads name after shutdown to provide accurate logs
-     */
-    private void changeThreadsNameAfterShutdown() {
-        final String SHUTDOWN_THREAD = "SHUTDOWN";
-
-
         final NamedThreadFactory factory = (NamedThreadFactory) getThreadFactory();
-        if (factory != null) {
-            final Queue<Thread> threads = factory.getThreads();
-            for (Thread thread : threads) {
-                final String threadName = thread.getName();
-                if (!threadName.startsWith(SHUTDOWN_THREAD)) {
-                    thread.setName(SHUTDOWN_THREAD + " " + thread.getName());
-                }
-            }
-            factory.clearThreads();
+        if(factory != null){
+            factory.changeThreadsNameAfterShutdown();
         }
+        return super.shutdownNow();
     }
 
     /**

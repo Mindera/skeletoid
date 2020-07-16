@@ -1,7 +1,6 @@
 package com.mindera.skeletoid.threads.threadpools
 
 import com.mindera.skeletoid.logs.LOG
-import java.lang.IllegalStateException
 import java.util.Queue
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.ThreadFactory
@@ -65,5 +64,19 @@ open class NamedThreadFactory internal constructor(
 
     fun clearThreads() {
         threads.clear()
+    }
+
+    /**
+     * Mark threads name after shutdown to provide accurate logs
+     */
+    fun changeThreadsNameAfterShutdown() {
+        val shutdownThreadName = "SHUTDOWN"
+        for (thread in threads) {
+            val threadName = thread.name
+            if (!threadName.startsWith(shutdownThreadName)) {
+                thread.name = shutdownThreadName + " " + thread.name
+            }
+        }
+        clearThreads()
     }
 }
