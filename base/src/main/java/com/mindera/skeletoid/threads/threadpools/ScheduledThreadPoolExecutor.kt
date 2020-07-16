@@ -1,5 +1,6 @@
 package com.mindera.skeletoid.threads.threadpools
 
+import androidx.annotation.VisibleForTesting
 import com.mindera.skeletoid.logs.LOG
 import java.util.concurrent.CancellationException
 import java.util.concurrent.Future
@@ -17,24 +18,26 @@ class ScheduledThreadPoolExecutor(
         private const val LOG_TAG = "ScheduledThreadPoolExecutor"
     }
 
-    override fun afterExecute(r: Runnable, t: Throwable) {
-        var throwable: Throwable? = t
-        super.afterExecute(r, throwable)
-        if (throwable == null && r is Future<*>) {
+    @VisibleForTesting
+    override fun afterExecute(runnable: Runnable?, throwable: Throwable?) {
+        super.afterExecute(runnable, throwable)
+
+        var localThrowable: Throwable? = throwable
+        if (localThrowable == null && runnable is Future<*>) {
             try {
-                val future = r as Future<*>
+                val future = runnable as Future<*>
                 if (future.isDone) future.get()
             } catch (ce: CancellationException) {
-                LOG.w(LOG_TAG, "Task was cancelled: $r")
+                LOG.w(LOG_TAG, "Task was cancelled: $runnable")
             } catch (ie: InterruptedException) {
-                LOG.w(LOG_TAG, "Task was interrupted: $r")
+                LOG.w(LOG_TAG, "Task was interrupted: $runnable")
                 Thread.currentThread().interrupt()
             } catch (e: Exception) {
-                throwable = e.cause
+                localThrowable = e.cause
             }
         }
-        if (throwable != null){
-            LOG.e(LOG_TAG, throwable, "Uncaught exception on ThreadPool")
+        if (localThrowable != null){
+            LOG.e(LOG_TAG, localThrowable, "Uncaught exception on ThreadPool")
         }
     }
 

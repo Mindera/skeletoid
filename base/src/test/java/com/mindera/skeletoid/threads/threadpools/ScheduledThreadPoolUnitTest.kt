@@ -3,6 +3,8 @@ package com.mindera.skeletoid.threads.threadpools
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import java.util.concurrent.Future
+import java.util.concurrent.RunnableScheduledFuture
 
 class ScheduledThreadPoolUnitTest {
 
@@ -33,4 +35,40 @@ class ScheduledThreadPoolUnitTest {
         threadPoolExecutor.shutdownNow()
         Assert.assertTrue(threadPoolExecutor.isShutdown)
     }
+
+    @Test
+    fun testShutdownThreadPoolNameTest() {
+        val threadFactory = NamedThreadFactory("SHUTDOWN", 1)
+        val threadPoolExecutor = ScheduledThreadPoolExecutor(1, threadFactory)
+        threadPoolExecutor.shutdown()
+        Assert.assertTrue(threadPoolExecutor.isShutdown)
+    }
+
+    @Test
+    fun testShutdownNowThreadPoolNameTest() {
+        val threadFactory = NamedThreadFactory("SHUTDOWN", 1)
+        val threadPoolExecutor = ScheduledThreadPoolExecutor(1, threadFactory)
+        threadPoolExecutor.shutdownNow()
+        Assert.assertTrue(threadPoolExecutor.isShutdown)
+    }
+
+    @Test
+    fun afterExecuteNullArgs() {
+        threadPoolExecutor.shutdownNow()
+        val method = threadPoolExecutor.javaClass.getDeclaredMethod("afterExecute", Runnable::class.java, Throwable::class.java)
+        method.isAccessible = true
+        method.invoke(threadPoolExecutor, null, null)
+        Assert.assertTrue(threadPoolExecutor.isShutdown)
+    }
+
+    @Test
+    fun afterExecuteWithFuture() {
+        val future = threadPoolExecutor.submit(Runnable {  })
+        threadPoolExecutor.shutdownNow()
+        val method = threadPoolExecutor.javaClass.getDeclaredMethod("afterExecute", Runnable::class.java, Throwable::class.java)
+        method.isAccessible = true
+        method.invoke(threadPoolExecutor, future, null)
+        Assert.assertTrue(threadPoolExecutor.isShutdown)
+    }
+
 }

@@ -33,8 +33,11 @@ open class NamedThreadFactory internal constructor(
 
     init {
         val securityManager = System.getSecurityManager()
-        group = if (securityManager != null) securityManager.threadGroup else Thread.currentThread().threadGroup
-            ?: throw IllegalStateException("No value for thread group")
+        group = if (securityManager != null) {
+            securityManager.threadGroup
+        } else {
+            Thread.currentThread().threadGroup ?: throw IllegalStateException("No value for thread group")
+        }
         namePrefix = threadPoolName
         this.maxFactoryThreads = maxFactoryThreads
         threads = ArrayBlockingQueue(maxFactoryThreads)
@@ -50,12 +53,12 @@ open class NamedThreadFactory internal constructor(
         val threadNumber = threadPoolNumber.incrementAndGet()
         val threadName = "$namePrefix [#$threadNumber/$maxFactoryThreads]"
         val thread = Thread(group, runnable, threadName, 0)
-        if (thread.isDaemon) {
-            thread.isDaemon = false
-        }
-        if (thread.priority != Thread.NORM_PRIORITY) {
-            thread.priority = Thread.NORM_PRIORITY
-        }
+
+        //Make sure thread is not daemon
+        thread.isDaemon = false
+        //Make sure thread has normal priority
+        thread.priority = Thread.NORM_PRIORITY
+
         val threadTotal = ThreadPoolUtils.threadTotal.incrementAndGet()
         LOG.d(LOG_TAG, "Created one more thread: $threadName | Total number of threads (currently): $threadTotal")
         threads.add(thread)
