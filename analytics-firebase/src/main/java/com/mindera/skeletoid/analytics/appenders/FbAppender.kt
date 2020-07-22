@@ -70,9 +70,7 @@ class FbAppender : IAnalyticsAppender {
         firebaseAnalytics?.setUserProperty(name, value)
     }
 
-    override fun getAnalyticsId(): String {
-        return "FirebaseAnalytics"
-    }
+    override val analyticsId: String  = "FirebaseAnalytics"
 
     private fun mapToBundle(map: Map<String, Any>): Bundle {
         return Bundle().apply {

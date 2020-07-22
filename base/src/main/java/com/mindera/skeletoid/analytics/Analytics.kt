@@ -127,7 +127,7 @@ object Analytics {
      * @param name  Property name
      * @param value Property value
      */
-    fun setUserProperty(name: String, value: String) {
+    fun setUserProperty(name: String, value: String?) {
         instance?.setUserProperty(name, value)
     }
 

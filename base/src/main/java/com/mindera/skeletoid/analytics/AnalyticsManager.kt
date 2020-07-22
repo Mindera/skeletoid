@@ -91,7 +91,7 @@ class AnalyticsManager internal constructor() : IAnalyticsManager {
         }
     }
 
-    override fun setUserProperty(name: String, value: String) {
+    override fun setUserProperty(name: String, value: String?) {
         for (appender in analyticsAppenders.values) {
             appender.setUserProperty(name, value)
         }

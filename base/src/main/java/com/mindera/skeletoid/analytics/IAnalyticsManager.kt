@@ -82,5 +82,5 @@ interface IAnalyticsManager {
      * @param name  Property name
      * @param value Property value
      */
-    fun setUserProperty(name: String, value: String)
+    fun setUserProperty(name: String, value: String?)
 }
