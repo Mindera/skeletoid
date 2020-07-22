@@ -107,7 +107,7 @@ object Analytics {
     fun trackPageHit(
         activity: Activity,
         screenName: String,
-        screenClassOverride: String
+        screenClassOverride: String? = null
     ) {
         instance?.trackPageHit(activity, screenName, screenClassOverride)
     }

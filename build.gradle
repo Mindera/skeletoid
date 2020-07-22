@@ -52,8 +52,8 @@ ext {
     workManagerVersion = '2.3.4'
 
     //Firebase
-    firebaseAnalyticsVersion = '17.4.2'
-    firebasePerfVersion = '19.0.7'
+    firebaseAnalyticsVersion = '17.4.4'
+    firebasePerfVersion = '19.0.8'
 
     //Play Services
     playServicesAnalytics = '17.0.0'

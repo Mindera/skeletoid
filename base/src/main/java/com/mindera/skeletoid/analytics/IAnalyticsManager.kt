@@ -66,7 +66,7 @@ interface IAnalyticsManager {
     fun trackPageHit(
         activity: Activity,
         screenName: String,
-        screenClassOverride: String
+        screenClassOverride: String? = null
     )
 
     /**

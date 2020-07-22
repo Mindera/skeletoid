@@ -78,7 +78,7 @@ class AnalyticsManager internal constructor() : IAnalyticsManager {
     override fun trackPageHit(
         activity: Activity,
         screenName: String,
-        screenClassOverride: String
+        screenClassOverride: String?
     ) {
         for (appender in analyticsAppenders.values) {
             appender.trackPageHit(activity, screenName, screenClassOverride)
