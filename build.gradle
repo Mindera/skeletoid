@@ -44,9 +44,9 @@ ext {
     targetSdkVersion = 27
 
     //Androidx
-    androidxFragmentVersion = '1.2.4'
+    androidxFragmentVersion = '1.2.5'
     loaderVersion = '1.1.0'
-    vectorDrawableVersion = '1.0.0'
+    vectorDrawableVersion = '1.1.0'
     androidLegacyVersion = '1.0.0'
     appcompatVersion = '1.1.0'
     workManagerVersion = '2.3.4'
