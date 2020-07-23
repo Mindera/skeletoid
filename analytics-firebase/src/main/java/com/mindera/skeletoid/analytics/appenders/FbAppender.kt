@@ -25,31 +25,31 @@ class FbAppender : IAnalyticsAppender {
         firebaseAnalytics = null
     }
 
-    override fun trackEvent(eventName: String, map: Map<String, Any>) {
+    override fun trackEvent(eventName: String, analyticsPayload: Map<String, Any>) {
         if (firebaseAnalytics == null) {
             LOG.e(LOG_TAG, "trackEvent failed: firebaseAnalytics is null")
             return
         }
 
-        firebaseAnalytics?.logEvent(eventName, mapToBundle(map))
+        firebaseAnalytics?.logEvent(eventName, mapToBundle(analyticsPayload))
     }
 
-    override fun trackEvent(eventName: String, bundle: Bundle) {
+    override fun trackEvent(eventName: String, analyticsPayload: Bundle) {
         if (firebaseAnalytics == null) {
             LOG.e(LOG_TAG, "trackEvent failed: firebaseAnalytics is null")
             return
         }
 
-        firebaseAnalytics?.logEvent(eventName, bundle)
+        firebaseAnalytics?.logEvent(eventName, analyticsPayload)
     }
 
-    override fun trackPageHit(activity: Activity, screenName: String, screenClassOverload: String?) {
+    override fun trackPageHit(activity: Activity, screenName: String, screenClassOverride: String?) {
         if (firebaseAnalytics == null) {
             LOG.e(LOG_TAG, "trackPageHit failed: firebaseAnalytics is null")
             return
         }
 
-        firebaseAnalytics?.setCurrentScreen(activity, screenName, screenClassOverload)
+        firebaseAnalytics?.setCurrentScreen(activity, screenName, screenClassOverride)
     }
 
     override fun setUserId(userId: String) {
