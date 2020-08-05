@@ -66,7 +66,7 @@ interface IAnalyticsManager {
     fun trackPageHit(
         activity: Activity,
         screenName: String,
-        screenClassOverride: String
+        screenClassOverride: String? = null
     )
 
     /**
@@ -82,5 +82,5 @@ interface IAnalyticsManager {
      * @param name  Property name
      * @param value Property value
      */
-    fun setUserProperty(name: String, value: String)
+    fun setUserProperty(name: String, value: String?)
 }

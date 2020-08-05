@@ -39,21 +39,21 @@ allprojects {
 ext {
     // SDK and Tools
     compileSdkVersion = 29
-    buildToolsVersion = '29.0.2'
+    buildToolsVersion = '29.0.3'
     minSdkVersion = 19
     targetSdkVersion = 27
 
     //Androidx
-    androidxFragmentVersion = '1.2.4'
+    androidxFragmentVersion = '1.2.5'
     loaderVersion = '1.1.0'
-    vectorDrawableVersion = '1.0.0'
+    vectorDrawableVersion = '1.1.0'
     androidLegacyVersion = '1.0.0'
     appcompatVersion = '1.1.0'
     workManagerVersion = '2.3.4'
 
     //Firebase
-    firebaseAnalyticsVersion = '17.4.2'
-    firebasePerfVersion = '19.0.7'
+    firebaseAnalyticsVersion = '17.4.4'
+    firebasePerfVersion = '19.0.8'
 
     //Play Services
     playServicesAnalytics = '17.0.0'
@@ -61,7 +61,7 @@ ext {
     //Rx
     rxJavaVersion = '2.2.9'
     rxAndroidVersion = '2.1.1'
-    rxBindingsVersion = '3.0.0-alpha2'
+    rxBindingsVersion = '3.1.0'
     rxJavaDebug = '1.4.0'
 
     // Tests & Quality

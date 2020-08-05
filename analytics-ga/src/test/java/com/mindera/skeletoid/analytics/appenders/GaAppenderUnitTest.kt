@@ -18,7 +18,7 @@ import org.mockito.Mockito.verifyNoMoreInteractions
 
 class GaAppenderUnitTest {
 
-    private lateinit var appender: GaAppender
+    private lateinit var appender: IAnalyticsAppender
     private lateinit var tracker: Tracker
 
     @Before
@@ -31,15 +31,15 @@ class GaAppenderUnitTest {
     fun testDisableNotEnabledAppender() {
         appender.disableAppender()
 
-        assertNull(appender.tracker)
+        assertNull((appender as GaAppender).tracker)
     }
 
     @Test
     fun testDisableAppender() {
-        appender.tracker = tracker
+        (appender as GaAppender).tracker = tracker
         appender.disableAppender()
 
-        assertNull(appender.tracker)
+        assertNull((appender as GaAppender).tracker)
     }
 
     @Test
@@ -63,11 +63,11 @@ class GaAppenderUnitTest {
             put("&pa", "product_action")
             put("&pr1nm", "product_name")
         }
-        appender.tracker = tracker
+        (appender as GaAppender).tracker = tracker
 
         appender.trackEvent(screenName, payloadMap)
 
-        assertNotNull(appender.tracker)
+        assertNotNull((appender as GaAppender).tracker)
         verify(tracker)?.setScreenName(screenName)
         verify(tracker)?.send(expectedPayload)
     }
@@ -83,7 +83,7 @@ class GaAppenderUnitTest {
             put(GaAppender.PRODUCT_ACTION, ProductAction("product_action"))
             put(GaAppender.VALUE, 2500L)
         }
-        appender.tracker = tracker
+        (appender as GaAppender).tracker = tracker
 
         appender.disableAppender()
         appender.trackEvent(screenName, payloadMap)
@@ -112,11 +112,11 @@ class GaAppenderUnitTest {
             put("&pa", "product_action")
             put("&pr1nm", "product_name")
         }
-        appender.tracker = tracker
+        (appender as GaAppender).tracker = tracker
 
         appender.trackEvent(eventName, payload)
 
-        assertNotNull(appender.tracker)
+        assertNotNull((appender as GaAppender).tracker)
         verify(tracker)?.setReferrer(eventName)
         verify(tracker)?.send(expectedPayload)
     }
@@ -134,7 +134,7 @@ class GaAppenderUnitTest {
         `when`(payload.get(GaAppender.PRODUCT)).thenReturn(Product())
         `when`(payload.get(GaAppender.PRODUCT_ACTION)).thenReturn(ProductAction("product_action"))
         `when`(payload.get(GaAppender.VALUE)).thenReturn(2500L)
-        appender.tracker = tracker
+        (appender as GaAppender).tracker = tracker
 
         appender.disableAppender()
         appender.trackEvent(eventName, payload)
@@ -150,7 +150,7 @@ class GaAppenderUnitTest {
         val expectedPayload = HashMap<String, String>().apply {
             put("&t", "screenview")
         }
-        appender.tracker = tracker
+        (appender as GaAppender).tracker = tracker
 
         appender.trackPageHit(activity, screenName, screenClassOverride)
 
@@ -164,7 +164,7 @@ class GaAppenderUnitTest {
         val screenName = "screenName"
         val screenClassOverride = "com.mindera.skeletoid.ScreenName"
 
-        appender.tracker = tracker
+        (appender as GaAppender).tracker = tracker
 
         appender.disableAppender()
         appender.trackPageHit(activity, screenName, screenClassOverride)
@@ -180,7 +180,7 @@ class GaAppenderUnitTest {
     @Test
     fun testSetUserId() {
         val userId = "userId"
-        appender.tracker = tracker
+        (appender as GaAppender).tracker = tracker
 
         appender.setUserId(userId)
 
@@ -190,7 +190,7 @@ class GaAppenderUnitTest {
     @Test
     fun testSetUserIdDisabledAppender() {
         val userId = "userId"
-        appender.tracker = tracker
+        (appender as GaAppender).tracker = tracker
 
         appender.disableAppender()
         appender.setUserId(userId)

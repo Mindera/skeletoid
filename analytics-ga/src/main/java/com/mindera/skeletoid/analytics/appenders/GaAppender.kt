@@ -40,14 +40,14 @@ class GaAppender(private val configurationFileId: Int) : IAnalyticsAppender {
         tracker = null
     }
 
-    override fun trackEvent(screenName: String, analyticsPayload: Map<String, Any>) {
+    override fun trackEvent(eventName: String, analyticsPayload: Map<String, Any>) {
         if (tracker == null) {
             LOG.e(LOG_TAG, "trackEvent failed: tracker is null")
             return
         }
 
         tracker?.run {
-            setScreenName(screenName)
+            setScreenName(eventName)
             send(parsePayload(analyticsPayload))
         }
     }
@@ -64,13 +64,14 @@ class GaAppender(private val configurationFileId: Int) : IAnalyticsAppender {
         }
     }
 
-    override fun trackPageHit(activity: Activity, screenName: String, screenClassOverride: String) {
+    override fun trackPageHit(activity: Activity, screenName: String, screenClassOverride: String?) {
         if (tracker == null) {
             LOG.e(LOG_TAG, "trackPageHit failed: tracker is null")
             return
         }
 
         tracker?.run {
+            //Should we do something with screenClassOverride?
             setScreenName(screenName)
             send(HitBuilders.ScreenViewBuilder().build())
         }
@@ -136,15 +137,13 @@ class GaAppender(private val configurationFileId: Int) : IAnalyticsAppender {
         return eventBuilder.build()
     }
 
-    override fun getAnalyticsId(): String {
-        return "GoogleAnalytics"
-    }
+    override val analyticsId: String = "GoogleAnalytics"
 
     override fun setUserId(userId: String) {
         tracker?.setClientId(userId)
     }
 
-    override fun setUserProperty(name: String, value: String) {
+    override fun setUserProperty(name: String, value: String?) {
         //TODO How can this be added?
     }
 }
