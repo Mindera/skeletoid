@@ -28,7 +28,7 @@ class AnalyticsManagerUnitTest {
 
     @Test
     fun testAddAppendersEmpty() {
-        val analyticsManager = AnalyticsManager()
+        val analyticsManager: IAnalyticsManager = AnalyticsManager()
         val appendersIds =
             analyticsManager.addAppenders(context, ArrayList())
         Assert.assertNotNull(appendersIds)
@@ -37,7 +37,7 @@ class AnalyticsManagerUnitTest {
 
     @Test
     fun testAddAppenders() {
-        val analyticsManager = AnalyticsManager()
+        val analyticsManager: IAnalyticsManager = AnalyticsManager()
         val appenders: MutableList<IAnalyticsAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
@@ -58,7 +58,7 @@ class AnalyticsManagerUnitTest {
 
     @Test
     fun testAddAppendersRepeated() {
-        val analyticsManager = AnalyticsManager()
+        val analyticsManager: IAnalyticsManager = AnalyticsManager()
         val appenders: MutableList<IAnalyticsAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB1 = mockAppender("B")
@@ -85,7 +85,7 @@ class AnalyticsManagerUnitTest {
 
     @Test
     fun testDisableAppenders() {
-        val analyticsManager = AnalyticsManager()
+        val analyticsManager: IAnalyticsManager = AnalyticsManager()
         val appenders: MutableList<IAnalyticsAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
@@ -102,7 +102,7 @@ class AnalyticsManagerUnitTest {
 
     @Test
     fun testDisableAllAppenders() {
-        val analyticsManager = AnalyticsManager()
+        val analyticsManager: IAnalyticsManager = AnalyticsManager()
         val appenders: MutableList<IAnalyticsAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
@@ -119,7 +119,7 @@ class AnalyticsManagerUnitTest {
 
     @Test
     fun testTrackEvent() {
-        val analyticsManager = AnalyticsManager()
+        val analyticsManager: IAnalyticsManager = AnalyticsManager()
         val appenders: MutableList<IAnalyticsAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
@@ -143,7 +143,7 @@ class AnalyticsManagerUnitTest {
 
     @Test
     fun testTrackEventWithBundle() {
-        val analyticsManager = AnalyticsManager()
+        val analyticsManager: IAnalyticsManager = AnalyticsManager()
         val appenders: MutableList<IAnalyticsAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
@@ -168,7 +168,7 @@ class AnalyticsManagerUnitTest {
     @Test
     fun testTrackPageHit() {
         val activity = Mockito.mock(Activity::class.java)
-        val analyticsManager = AnalyticsManager()
+        val analyticsManager: IAnalyticsManager = AnalyticsManager()
         val appenders: MutableList<IAnalyticsAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
@@ -188,7 +188,7 @@ class AnalyticsManagerUnitTest {
 
     @Test
     fun testSetUserID() {
-        val analyticsManager = AnalyticsManager()
+        val analyticsManager: IAnalyticsManager = AnalyticsManager()
         val appenders: MutableList<IAnalyticsAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
@@ -205,7 +205,7 @@ class AnalyticsManagerUnitTest {
 
     @Test
     fun testSetUserProperty() {
-        val analyticsManager = AnalyticsManager()
+        val analyticsManager: IAnalyticsManager = AnalyticsManager()
         val appenders: MutableList<IAnalyticsAppender> = ArrayList()
         val appenderA = mockAppender("A")
         val appenderB = mockAppender("B")
