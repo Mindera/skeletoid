@@ -31,7 +31,7 @@ import org.robolectric.annotation.Config
 @PrepareForTest(FirebaseAnalytics::class)
 class FbAppenderUnitTest {
 
-    private lateinit var appender: FbAppender
+    private lateinit var appender: IAnalyticsAppender
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var bundleArgumentCaptor: ArgumentCaptor<Bundle>
 
@@ -49,7 +49,7 @@ class FbAppenderUnitTest {
         PowerMockito.mockStatic(FirebaseAnalytics::class.java)
         Mockito.`when`(FirebaseAnalytics.getInstance(context)).thenReturn(firebaseAnalytics)
 
-        appender.firebaseAnalytics = firebaseAnalytics
+        (appender as FbAppender).firebaseAnalytics = firebaseAnalytics
 
         bundleArgumentCaptor = ArgumentCaptor.forClass(Bundle::class.java)
     }
@@ -66,7 +66,7 @@ class FbAppenderUnitTest {
     fun testDisableAppender() {
         appender.disableAppender()
 
-        assertNull(appender.firebaseAnalytics)
+        assertNull((appender as FbAppender).firebaseAnalytics)
     }
 
     @Test
@@ -86,7 +86,7 @@ class FbAppenderUnitTest {
 
         appender.trackEvent(screenName, payloadMap)
 
-        assertNotNull(appender.firebaseAnalytics)
+        assertNotNull((appender as FbAppender).firebaseAnalytics)
 
         verify(firebaseAnalytics)?.logEvent(eq(screenName), bundleArgumentCaptor.capture())
         assertEquals(payload.toString(), bundleArgumentCaptor.value.toString())
@@ -118,7 +118,7 @@ class FbAppenderUnitTest {
 
         appender.trackEvent(eventName, payload)
 
-        assertNotNull(appender.firebaseAnalytics)
+        assertNotNull((appender as FbAppender).firebaseAnalytics)
         verify(firebaseAnalytics)?.logEvent(eq(eventName), bundleArgumentCaptor.capture())
         assertEquals(payload.toString(), bundleArgumentCaptor.value.toString())
     }
