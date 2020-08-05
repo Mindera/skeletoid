@@ -4,6 +4,7 @@ apply from: "../jacoco.gradle"
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
 
     testBuildType "qa"
 
