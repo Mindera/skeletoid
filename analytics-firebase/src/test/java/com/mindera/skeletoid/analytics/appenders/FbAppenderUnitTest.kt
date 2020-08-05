@@ -142,6 +142,16 @@ class FbAppenderUnitTest {
     fun testTrackPageHit() {
         val activity = Activity()
         val screenName = "screenName"
+
+        appender.trackPageHit(activity, screenName, null)
+
+        verify(firebaseAnalytics).setCurrentScreen(activity, screenName, null)
+    }
+
+    @Test
+    fun testTrackPageHitWithOverride() {
+        val activity = Activity()
+        val screenName = "screenName"
         val screenClassOverride = "com.mindera.skeletoid.ScreenName"
 
         appender.trackPageHit(activity, screenName, screenClassOverride)
