@@ -31,6 +31,8 @@ rootProject.afterEvaluate {
             '**/*databinding/**/*.*',
             //Test
             '**/**Test*.*',
+            //Interfaces
+            '**/interfaces/*.*',
             //UI Related items that make no sense to add unit tests to
             '**/views/*.*',
             '**/dialogs/*.*',

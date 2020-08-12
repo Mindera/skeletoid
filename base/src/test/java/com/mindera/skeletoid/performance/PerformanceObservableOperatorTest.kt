@@ -1,5 +1,6 @@
 package com.mindera.skeletoid.performance
 
+import com.mindera.skeletoid.performance.interfaces.IPerformanceTracker
 import com.mindera.skeletoid.performance.rxoperators.PerformanceObservableOperator
 import com.mindera.skeletoid.rx.BaseRxTest
 import com.mindera.skeletoid.utils.extensions.mock
@@ -15,7 +16,7 @@ import java.util.concurrent.TimeUnit
 class PerformanceObservableOperatorTest : BaseRxTest() {
 
     private lateinit var observableOperator: PerformanceObservableOperator<String>
-    private val performanceTracker = mock<PerformanceTracker>()
+    private val performanceTracker = mock<IPerformanceTracker>()
 
     override fun setUp() {
         super.setUp()

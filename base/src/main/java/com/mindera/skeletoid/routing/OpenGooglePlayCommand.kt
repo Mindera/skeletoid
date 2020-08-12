@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.mindera.skeletoid.R
+import com.mindera.skeletoid.routing.interfaces.IRouteCommand
 
 class OpenGooglePlayCommand(
     private val context: Context,

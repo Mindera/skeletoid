@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.mindera.skeletoid.BuildConfig
+import com.mindera.skeletoid.analytics.appenders.interfaces.IAnalyticsAppender
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull

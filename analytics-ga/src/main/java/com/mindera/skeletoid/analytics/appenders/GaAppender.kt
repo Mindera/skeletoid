@@ -10,9 +10,11 @@ import com.google.android.gms.analytics.Tracker
 import com.google.android.gms.analytics.ecommerce.Product
 import com.google.android.gms.analytics.ecommerce.ProductAction
 import com.google.android.gms.common.util.VisibleForTesting
+import com.mindera.skeletoid.analytics.appenders.interfaces.IAnalyticsAppender
 import com.mindera.skeletoid.logs.LOG
 
-class GaAppender(private val configurationFileId: Int) : IAnalyticsAppender {
+class GaAppender(private val configurationFileId: Int) :
+    IAnalyticsAppender {
 
     companion object {
         val CATEGORY = "CATEGORY"

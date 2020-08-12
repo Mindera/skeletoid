@@ -6,9 +6,11 @@ import android.os.Bundle
 import androidx.annotation.VisibleForTesting
 
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.mindera.skeletoid.analytics.appenders.interfaces.IAnalyticsAppender
 import com.mindera.skeletoid.logs.LOG
 
-class FbAppender : IAnalyticsAppender {
+class FbAppender :
+    IAnalyticsAppender {
 
     companion object {
         private const val LOG_TAG = "FbAppender"

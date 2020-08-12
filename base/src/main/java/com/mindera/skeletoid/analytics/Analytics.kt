@@ -3,7 +3,8 @@ package com.mindera.skeletoid.analytics
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import com.mindera.skeletoid.analytics.appenders.IAnalyticsAppender
+import com.mindera.skeletoid.analytics.appenders.interfaces.IAnalyticsAppender
+import com.mindera.skeletoid.analytics.interfaces.IAnalyticsManager
 
 object Analytics {
 

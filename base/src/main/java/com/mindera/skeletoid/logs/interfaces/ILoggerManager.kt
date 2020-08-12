@@ -1,4 +1,4 @@
-package com.mindera.skeletoid.logs
+package com.mindera.skeletoid.logs.interfaces
 
 import android.content.Context
 import com.mindera.skeletoid.logs.LOG.PRIORITY
