@@ -2,7 +2,7 @@ package com.mindera.skeletoid.logs.interfaces
 
 import android.content.Context
 import com.mindera.skeletoid.logs.LOG.PRIORITY
-import com.mindera.skeletoid.logs.appenders.ILogAppender
+import com.mindera.skeletoid.logs.appenders.interfaces.ILogAppender
 
 /**
  * LOG interface

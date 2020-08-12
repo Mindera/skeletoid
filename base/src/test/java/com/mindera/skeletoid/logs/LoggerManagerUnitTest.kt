@@ -4,7 +4,7 @@ import android.content.Context
 import com.mindera.skeletoid.generic.AndroidUtils
 import com.mindera.skeletoid.generic.AndroidUtils.getApplicationPackage
 import com.mindera.skeletoid.logs.LOG.PRIORITY
-import com.mindera.skeletoid.logs.appenders.ILogAppender
+import com.mindera.skeletoid.logs.appenders.interfaces.ILogAppender
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils.getObjectHash
 import com.mindera.skeletoid.threads.utils.ThreadUtils
@@ -495,7 +495,7 @@ class LoggerManagerUnitTest {
     }
 
     private fun mockAppender(analyticsId: String): ILogAppender {
-        val appender :ILogAppender = mock()
+        val appender : ILogAppender = mock()
         Mockito.`when`(appender.loggerId).thenReturn(analyticsId)
         return appender
     }

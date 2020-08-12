@@ -1,4 +1,4 @@
-package com.mindera.skeletoid.logs.appenders
+package com.mindera.skeletoid.logs.appenders.interfaces
 
 import android.content.Context
 

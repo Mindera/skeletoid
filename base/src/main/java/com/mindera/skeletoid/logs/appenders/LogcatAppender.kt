@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 
 import com.mindera.skeletoid.logs.LOG
+import com.mindera.skeletoid.logs.appenders.interfaces.ILogAppender
 
 import java.util.ArrayList
 
@@ -12,7 +13,8 @@ import com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString
 /**
  * Log appender for Logcat
  */
-class LogcatAppender(private val TAG: String) : ILogAppender {
+class LogcatAppender(private val TAG: String) :
+    ILogAppender {
 
     companion object {
         private const val LOG_ID = "LogcatAppender"

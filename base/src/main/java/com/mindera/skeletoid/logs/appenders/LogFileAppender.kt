@@ -5,6 +5,7 @@ import androidx.annotation.VisibleForTesting
 import android.util.Log
 import com.mindera.skeletoid.generic.AndroidUtils
 import com.mindera.skeletoid.logs.LOG
+import com.mindera.skeletoid.logs.appenders.interfaces.ILogAppender
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString
 import com.mindera.skeletoid.threads.threadpools.ThreadPoolUtils
 import java.io.File
@@ -17,7 +18,6 @@ import java.util.logging.FileHandler
 import java.util.logging.Formatter
 import java.util.logging.Level
 import java.util.logging.LogRecord
-import java.util.logging.SimpleFormatter
 
 /**
  * Log appender for file
