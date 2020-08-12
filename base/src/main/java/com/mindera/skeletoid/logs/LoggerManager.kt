@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.annotation.VisibleForTesting
 import com.mindera.skeletoid.generic.AndroidUtils
 import com.mindera.skeletoid.logs.LOG.PRIORITY
-import com.mindera.skeletoid.logs.appenders.ILogAppender
+import com.mindera.skeletoid.logs.appenders.interfaces.ILogAppender
 import com.mindera.skeletoid.logs.interfaces.ILoggerManager
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils
 import com.mindera.skeletoid.threads.utils.ThreadUtils
