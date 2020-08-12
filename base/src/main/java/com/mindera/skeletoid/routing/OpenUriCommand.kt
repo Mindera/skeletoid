@@ -3,8 +3,10 @@ package com.mindera.skeletoid.routing
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import com.mindera.skeletoid.routing.interfaces.IRouteCommand
 
-class OpenUriCommand(private val context: Context, private val deepLink: String) : IRouteCommand {
+class OpenUriCommand(private val context: Context, private val deepLink: String) :
+    IRouteCommand {
 
     companion object {
         const val IS_INTERNAL_APP_NAVIGATION_EXTRA = "IS_INTERNAL_APP_NAVIGATION_EXTRA"

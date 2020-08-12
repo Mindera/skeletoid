@@ -1,6 +1,6 @@
 package com.mindera.skeletoid.performance.rxoperators
 
-import com.mindera.skeletoid.performance.PerformanceTracker
+import com.mindera.skeletoid.performance.interfaces.IPerformanceTracker
 import io.reactivex.SingleObserver
 import io.reactivex.SingleOperator
 import io.reactivex.disposables.Disposable
@@ -12,7 +12,7 @@ import io.reactivex.disposables.Disposable
  *
  * @return SingleOperator that tracks time between SingleObserver's subscription and completion
  */
-open class PerformanceSingleOperator<T>(private val performanceTracker: PerformanceTracker) :
+open class PerformanceSingleOperator<T>(private val performanceTracker: IPerformanceTracker) :
     SingleOperator<T, T> {
 
     @Throws(Exception::class)

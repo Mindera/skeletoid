@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import com.mindera.skeletoid.R
 import com.mindera.skeletoid.logs.LOG
+import com.mindera.skeletoid.routing.interfaces.IRouteCommand
 
 class OpenEmailCommand(
     private val context: Context,

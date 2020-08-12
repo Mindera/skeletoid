@@ -1,4 +1,4 @@
-package com.mindera.skeletoid.analytics
+package com.mindera.skeletoid.analytics.interfaces
 
 import android.app.Activity
 import android.content.Context

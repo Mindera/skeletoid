@@ -3,7 +3,7 @@ package com.mindera.skeletoid.routing.unfreeze
 import android.content.Context
 import android.content.Intent
 import com.mindera.skeletoid.activities.unfreeze.activities.UnfreezeScreenActivity
-import com.mindera.skeletoid.routing.IRouteCommand
+import com.mindera.skeletoid.routing.interfaces.IRouteCommand
 
 class OpenUnfreezeScreenCommand(private val context: Context) :
     IRouteCommand {

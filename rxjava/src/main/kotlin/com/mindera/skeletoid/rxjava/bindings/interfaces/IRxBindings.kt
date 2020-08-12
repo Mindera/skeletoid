@@ -1,6 +1,6 @@
-package com.mindera.skeletoid.rxjava.bindings
+package com.mindera.skeletoid.rxjava.bindings.interfaces
 
-interface RxBindings {
+interface IRxBindings {
 
     fun setupRxBindings()
 
