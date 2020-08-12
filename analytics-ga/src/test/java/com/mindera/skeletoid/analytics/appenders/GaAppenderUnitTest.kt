@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.google.android.gms.analytics.Tracker
 import com.google.android.gms.analytics.ecommerce.Product
 import com.google.android.gms.analytics.ecommerce.ProductAction
+import com.mindera.skeletoid.analytics.appenders.interfaces.IAnalyticsAppender
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull

@@ -1,4 +1,4 @@
-package com.mindera.skeletoid.analytics.appenders
+package com.mindera.skeletoid.analytics.appenders.interfaces
 
 import android.app.Activity
 import android.content.Context
