@@ -3,6 +3,7 @@ package com.mindera.skeletoid.analytics
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import com.mindera.skeletoid.analytics.appenders.interfaces.IAnalyticsAppender
 import com.mindera.skeletoid.analytics.interfaces.IAnalyticsManager
 import com.mindera.skeletoid.logs.LOG.init
 import com.mindera.skeletoid.utils.extensions.mock
