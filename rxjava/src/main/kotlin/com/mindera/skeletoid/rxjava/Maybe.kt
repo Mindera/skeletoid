@@ -19,10 +19,10 @@ fun <T : Any> Maybe<T>.observeOnComputation(): Maybe<T>
 
 
 fun <T : Any> Maybe<T>.subscribeOnMain(): Maybe<T>
-        = subscribeOn(AndroidSchedulers.mainThread())
+        = subscribeOn(Schedulers.main())
 
 fun <T : Any> Maybe<T>.observeOnMain(): Maybe<T>
-        = observeOn(AndroidSchedulers.mainThread())
+        = observeOn(Schedulers.main())
 
 fun <T : Any> Maybe<T>.filterOrElse(condition: Boolean, action: () -> Unit): Maybe<T> =
     doOnSubscribe {

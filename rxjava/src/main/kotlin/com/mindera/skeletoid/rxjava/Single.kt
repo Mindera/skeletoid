@@ -18,9 +18,9 @@ fun <T : Any> Single<T>.subscribeOnComputation(): Single<T> = subscribeOn(Schedu
 fun <T : Any> Single<T>.observeOnComputation(): Single<T> = observeOn(Schedulers.computation())
 
 
-fun <T : Any> Single<T>.subscribeOnMain(): Single<T> = subscribeOn(AndroidSchedulers.mainThread())
+fun <T : Any> Single<T>.subscribeOnMain(): Single<T> = subscribeOn(Schedulers.main())
 
-fun <T : Any> Single<T>.observeOnMain(): Single<T> = observeOn(AndroidSchedulers.mainThread())
+fun <T : Any> Single<T>.observeOnMain(): Single<T> = observeOn(Schedulers.main())
 
 
 fun <T : Any> Single<T>.allowMultipleSubscribers(): Observable<T> =

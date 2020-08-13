@@ -17,9 +17,9 @@ fun Completable.subscribeOnComputation(): Completable = subscribeOn(Schedulers.c
 fun Completable.observeOnComputation(): Completable = observeOn(Schedulers.computation())
 
 
-fun Completable.subscribeOnMain(): Completable = subscribeOn(AndroidSchedulers.mainThread())
+fun Completable.subscribeOnMain(): Completable = subscribeOn(Schedulers.main())
 
-fun Completable.observeOnMain(): Completable = observeOn(AndroidSchedulers.mainThread())
+fun Completable.observeOnMain(): Completable = observeOn(Schedulers.main())
 
 fun Completable.delayAtLeast(timeToWait: Long = 1000,
                              timeUnit: TimeUnit = TimeUnit.MILLISECONDS

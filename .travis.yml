@@ -1,5 +1,6 @@
 language: android
 dist: trusty
+jdk: oraclejdk11
 
 
 before_cache:

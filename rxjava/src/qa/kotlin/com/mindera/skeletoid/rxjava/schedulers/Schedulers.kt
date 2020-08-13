@@ -10,4 +10,5 @@ object Schedulers {
     fun computation(): Scheduler = io.reactivex.schedulers.Schedulers.trampoline()
     fun io(): Scheduler = io.reactivex.schedulers.Schedulers.trampoline()
     fun single(): Scheduler = io.reactivex.schedulers.Schedulers.trampoline()
+    fun main(): Scheduler = io.reactivex.schedulers.Schedulers.trampoline()
 }

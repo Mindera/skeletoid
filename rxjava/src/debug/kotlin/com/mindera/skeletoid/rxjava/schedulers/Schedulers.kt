@@ -23,4 +23,6 @@ object Schedulers {
     fun io(): Scheduler = io.reactivex.schedulers.Schedulers.from(ioThreadPool)
 
     fun single(): Scheduler = Schedulers.single()
+
+    fun main(): Scheduler = io.reactivex.android.schedulers.AndroidSchedulers.mainThread()
 }

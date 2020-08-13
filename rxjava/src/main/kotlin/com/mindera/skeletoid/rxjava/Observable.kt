@@ -23,10 +23,10 @@ fun <T : Any> Observable<T>.observeOnComputation(): Observable<T> =
 
 
 fun <T : Any> Observable<T>.subscribeOnMain(): Observable<T> =
-    subscribeOn(AndroidSchedulers.mainThread())
+    subscribeOn(Schedulers.main())
 
 fun <T : Any> Observable<T>.observeOnMain(): Observable<T> =
-    observeOn(AndroidSchedulers.mainThread())
+    observeOn(Schedulers.main())
 
 
 //Use this to maintain a list of shared Observables (use together with allowMultipleSubscribers)
