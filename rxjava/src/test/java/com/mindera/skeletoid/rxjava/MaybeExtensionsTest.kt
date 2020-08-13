@@ -13,56 +13,48 @@ import kotlin.test.assertTrue
 
 class MaybeExtensionsTest {
 
+    // ATTENTION !!!!
+    // This is hitting main in all threadpools since we are defaulting to TRAMPOLINE on QA builds.
+    // It would be great to not do it, but that would break Apps using QA build to UI Tests
+
     @Test
     fun testMaybeSubscribeOnIO() {
-        val testScheduler = TestScheduler()
-        RxJavaPlugins.setIoSchedulerHandler { testScheduler }
-
         var thread: String? = null
         Maybe.fromCallable { thread = Thread.currentThread().name }
             .subscribeOnIO()
-            .test()
+            .blockingGet()
 
         assertEquals(thread, "main")
     }
 
     @Test
     fun testMaybeObserveOnIO() {
-        val testScheduler = TestScheduler()
-        RxJavaPlugins.setIoSchedulerHandler { testScheduler }
-
         var thread: String? = null
         Maybe.fromCallable { }
             .observeOnIO()
             .doOnComplete { thread = Thread.currentThread().name }
-            .test()
+            .blockingGet()
 
         assertEquals(thread, "main")
     }
 
     @Test
     fun testMaybeSubscribeOnComputation() {
-        val testScheduler = TestScheduler()
-        RxJavaPlugins.setComputationSchedulerHandler { testScheduler }
-
-        var thread: String? = null
+       var thread: String? = null
         Maybe.fromCallable { thread = Thread.currentThread().name }
             .subscribeOnComputation()
-            .test()
+            .blockingGet()
 
         assertEquals(thread, "main")
     }
 
     @Test
     fun testMaybeObserveOnComputation() {
-        val testScheduler = TestScheduler()
-        RxJavaPlugins.setComputationSchedulerHandler { testScheduler }
-
         var thread: String? = null
         Maybe.fromCallable { }
             .observeOnComputation()
             .doOnComplete { thread = Thread.currentThread().name }
-            .test()
+            .blockingGet()
 
         assertEquals(thread, "main")
     }
@@ -72,7 +64,7 @@ class MaybeExtensionsTest {
         var thread: String? = null
         Maybe.fromCallable { thread = Thread.currentThread().name }
             .subscribeOnMain()
-            .test()
+            .blockingGet()
 
         assertEquals(thread, "main")
     }
@@ -83,7 +75,7 @@ class MaybeExtensionsTest {
         Maybe.fromCallable { }
             .observeOnMain()
             .doOnComplete { thread = Thread.currentThread().name }
-            .test()
+            .blockingGet()
 
         assertEquals(thread, "main")
     }

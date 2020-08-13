@@ -13,56 +13,48 @@ import kotlin.test.assertTrue
 
 class CompletableExtensionsTest {
 
+    // ATTENTION !!!!
+    // This is hitting main in all threadpools since we are defaulting to TRAMPOLINE on QA builds.
+    // It would be great to not do it, but that would break Apps using QA build to UI Tests
+
     @Test
     fun testCompletableSubscribeOnIO() {
-        val testScheduler = TestScheduler()
-        RxJavaPlugins.setIoSchedulerHandler { testScheduler }
-
         var thread: String? = null
         Completable.fromAction { thread = Thread.currentThread().name }
             .subscribeOnIO()
-            .test()
+            .blockingGet()
 
         assertEquals(thread, "main")
     }
 
     @Test
     fun testCompletableObserveOnIO() {
-        val testScheduler = TestScheduler()
-        RxJavaPlugins.setIoSchedulerHandler { testScheduler }
-
         var thread: String? = null
         Completable.fromAction { }
             .observeOnIO()
             .doOnComplete { thread = Thread.currentThread().name }
-            .test()
+            .blockingGet()
 
         assertEquals(thread, "main")
     }
 
     @Test
     fun testCompletableSubscribeOnComputation() {
-        val testScheduler = TestScheduler()
-        RxJavaPlugins.setComputationSchedulerHandler { testScheduler }
-
         var thread: String? = null
         Completable.fromAction { thread = Thread.currentThread().name }
             .subscribeOnComputation()
-            .test()
+            .blockingGet()
 
         assertEquals(thread, "main")
     }
 
     @Test
     fun testCompletableObserveOnComputation() {
-        val testScheduler = TestScheduler()
-        RxJavaPlugins.setComputationSchedulerHandler { testScheduler }
-
         var thread: String? = null
         Completable.fromAction { }
             .observeOnComputation()
             .doOnComplete { thread = Thread.currentThread().name }
-            .test()
+            .blockingGet()
 
         assertEquals(thread, "main")
     }
@@ -72,7 +64,7 @@ class CompletableExtensionsTest {
         var thread: String? = null
         Completable.fromAction { thread = Thread.currentThread().name }
             .subscribeOnMain()
-            .test()
+            .blockingGet()
 
         assertEquals(thread, "main")
     }
@@ -83,7 +75,7 @@ class CompletableExtensionsTest {
         Completable.fromAction { }
             .observeOnMain()
             .doOnComplete { thread = Thread.currentThread().name }
-            .test()
+            .blockingGet()
 
         assertEquals(thread, "main")
     }

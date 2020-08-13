@@ -12,60 +12,52 @@ import kotlin.test.assertTrue
 
 class ObservableExtensionsTest {
 
+    // ATTENTION !!!!
+    // This is hitting main in all threadpools since we are defaulting to TRAMPOLINE on QA builds.
+    // It would be great to not do it, but that would break Apps using QA build to UI Tests
+
     @Test
     fun testObservableSubscribeOnIO() {
-        val testScheduler = TestScheduler()
-        RxJavaPlugins.setIoSchedulerHandler { testScheduler }
-
         var thread: String? = null
         Observable.fromCallable { thread = Thread.currentThread().name }
             .subscribeOnIO()
             .single(Unit)
-            .test()
+            .blockingGet()
 
         assertEquals(thread, "main") // To be fixed: read above
     }
 
     @Test
     fun testObservableObserveOnIO() {
-        val testScheduler = TestScheduler()
-        RxJavaPlugins.setIoSchedulerHandler { testScheduler }
-
         var thread: String? = null
         Observable.fromCallable { }
             .observeOnIO()
             .single(Unit)
             .doOnSuccess { thread = Thread.currentThread().name }
-            .test()
+            .blockingGet()
 
         assertEquals(thread, "main")  // To be fixed: read above
     }
 
     @Test
     fun testObservableSubscribeOnComputation() {
-        val testScheduler = TestScheduler()
-        RxJavaPlugins.setComputationSchedulerHandler { testScheduler }
-
-        var thread: String? = null
+       var thread: String? = null
         Observable.fromCallable { thread = Thread.currentThread().name }
             .subscribeOnComputation()
             .single(Unit)
-            .test()
+            .blockingGet()
 
         assertEquals(thread, "main") // To be fixed: read above
     }
 
     @Test
     fun testObservableObserveOnComputation() {
-        val testScheduler = TestScheduler()
-        RxJavaPlugins.setComputationSchedulerHandler { testScheduler }
-
         var thread: String? = null
         Observable.fromCallable {  }
             .observeOnComputation()
             .single(Unit)
             .doOnSuccess { thread = Thread.currentThread().name }
-            .test()
+            .blockingGet()
 
         assertEquals(thread, "main") // To be fixed: read above
     }
