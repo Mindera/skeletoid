@@ -3,6 +3,8 @@ package com.mindera.skeletoid.rxjava
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.plugins.RxJavaPlugins
+import io.reactivex.schedulers.TestScheduler
 import org.hamcrest.Matchers.instanceOf
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -11,50 +13,58 @@ import kotlin.test.assertTrue
 
 class CompletableExtensionsTest {
 
-    // ATTENTION !!!!
-    // This is hitting main in all threadpools since we are defaulting to TRAMPOLINE on QA builds.
-    // It would be great to not do it, but that would break Apps using QA build to UI Tests
-
     @Test
     fun testCompletableSubscribeOnIO() {
+        val testScheduler = TestScheduler()
+        RxJavaPlugins.setIoSchedulerHandler { testScheduler }
+
         var thread: String? = null
         Completable.fromAction { thread = Thread.currentThread().name }
             .subscribeOnIO()
-            .blockingGet()
+            .test()
 
-        assertEquals(thread, "main") // To be fixed: read above
+        assertEquals(thread, "main")
     }
 
     @Test
     fun testCompletableObserveOnIO() {
+        val testScheduler = TestScheduler()
+        RxJavaPlugins.setIoSchedulerHandler { testScheduler }
+
         var thread: String? = null
         Completable.fromAction { }
             .observeOnIO()
             .doOnComplete { thread = Thread.currentThread().name }
-            .blockingGet()
+            .test()
 
-        assertEquals(thread, "main")  // To be fixed: read above
+        assertEquals(thread, "main")
     }
 
     @Test
     fun testCompletableSubscribeOnComputation() {
+        val testScheduler = TestScheduler()
+        RxJavaPlugins.setComputationSchedulerHandler { testScheduler }
+
         var thread: String? = null
         Completable.fromAction { thread = Thread.currentThread().name }
             .subscribeOnComputation()
-            .blockingGet()
+            .test()
 
-        assertEquals(thread, "main") // To be fixed: read above
+        assertEquals(thread, "main")
     }
 
     @Test
     fun testCompletableObserveOnComputation() {
+        val testScheduler = TestScheduler()
+        RxJavaPlugins.setComputationSchedulerHandler { testScheduler }
+
         var thread: String? = null
         Completable.fromAction { }
             .observeOnComputation()
             .doOnComplete { thread = Thread.currentThread().name }
-            .blockingGet()
+            .test()
 
-        assertEquals(thread, "main") // To be fixed: read above
+        assertEquals(thread, "main")
     }
 
     @Test
@@ -62,7 +72,7 @@ class CompletableExtensionsTest {
         var thread: String? = null
         Completable.fromAction { thread = Thread.currentThread().name }
             .subscribeOnMain()
-            .blockingGet()
+            .test()
 
         assertEquals(thread, "main")
     }
@@ -73,7 +83,7 @@ class CompletableExtensionsTest {
         Completable.fromAction { }
             .observeOnMain()
             .doOnComplete { thread = Thread.currentThread().name }
-            .blockingGet()
+            .test()
 
         assertEquals(thread, "main")
     }
@@ -84,7 +94,7 @@ class CompletableExtensionsTest {
         val time = System.currentTimeMillis()
         Completable.fromAction { }
             .delayAtLeast(timeToWait)
-            .blockingGet()
+            .blockingGet() // A bit of 🔨 but..
 
         assertTrue (System.currentTimeMillis() - time >= timeToWait)
     }
