@@ -24,7 +24,9 @@ class ObservableExtensionsTest {
             .single(Unit)
             .blockingGet()
 
-        assertEquals(thread, "main") // To be fixed: read above
+        println("$thread - ${Thread.currentThread().name}")
+
+        assertEquals(thread, Thread.currentThread().name) // To be fixed: read above
     }
 
     @Test
@@ -36,7 +38,7 @@ class ObservableExtensionsTest {
             .doOnSuccess { thread = Thread.currentThread().name }
             .blockingGet()
 
-        assertEquals(thread, "main")  // To be fixed: read above
+        assertEquals(thread, Thread.currentThread().name)  // To be fixed: read above
     }
 
     @Test
@@ -47,7 +49,7 @@ class ObservableExtensionsTest {
             .single(Unit)
             .blockingGet()
 
-        assertEquals(thread, "main") // To be fixed: read above
+        assertEquals(thread, Thread.currentThread().name) // To be fixed: read above
     }
 
     @Test
@@ -59,7 +61,7 @@ class ObservableExtensionsTest {
             .doOnSuccess { thread = Thread.currentThread().name }
             .blockingGet()
 
-        assertEquals(thread, "main") // To be fixed: read above
+        assertEquals(thread, Thread.currentThread().name) // To be fixed: read above
     }
 
     @Test
@@ -70,7 +72,7 @@ class ObservableExtensionsTest {
             .single(Unit)
             .blockingGet()
 
-        assertEquals(thread, "main")
+        assertEquals(thread, Thread.currentThread().name)
     }
 
     @Test
@@ -82,7 +84,7 @@ class ObservableExtensionsTest {
             .doOnSuccess { thread = Thread.currentThread().name }
             .blockingGet()
 
-        assertEquals(thread, "main")
+        assertEquals(thread, Thread.currentThread().name)
     }
 
     @Test
