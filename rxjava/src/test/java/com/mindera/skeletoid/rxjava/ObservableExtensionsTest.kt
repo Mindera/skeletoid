@@ -1,6 +1,7 @@
 package com.mindera.skeletoid.rxjava
 
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.functions.Predicate
 import io.reactivex.subjects.PublishSubject
 import org.junit.Test
@@ -8,6 +9,79 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class ObservableExtensionsTest {
+
+    // ATTENTION !!!!
+    // This is hitting main in all threadpools since we are defaulting to TRAMPOLINE on QA builds.
+    // It would be great to not do it, but that would break Apps using QA build to UI Tests
+
+    @Test
+    fun testObservableSubscribeOnIO() {
+        var thread: String? = null
+        Observable.fromCallable { thread = Thread.currentThread().name }
+            .subscribeOnIO()
+            .single(Unit)
+            .blockingGet()
+
+        assertEquals(thread, "main") // To be fixed: read above
+    }
+
+    @Test
+    fun testObservableObserveOnIO() {
+        var thread: String? = null
+        Observable.fromCallable { }
+            .observeOnIO()
+            .single(Unit)
+            .doOnSuccess { thread = Thread.currentThread().name }
+            .blockingGet()
+
+        assertEquals(thread, "main")  // To be fixed: read above
+    }
+
+    @Test
+    fun testObservableSubscribeOnComputation() {
+        var thread: String? = null
+        Observable.fromCallable { thread = Thread.currentThread().name }
+            .subscribeOnComputation()
+            .single(Unit)
+            .blockingGet()
+
+        assertEquals(thread, "main") // To be fixed: read above
+    }
+
+    @Test
+    fun testObservableObserveOnComputation() {
+        var thread: String? = null
+        Observable.fromCallable {  }
+            .observeOnComputation()
+            .single(Unit)
+            .doOnSuccess { thread = Thread.currentThread().name }
+            .blockingGet()
+
+        assertEquals(thread, "main") // To be fixed: read above
+    }
+
+    @Test
+    fun testObservableSubscribeOnMain() {
+        var thread: String? = null
+        Observable.fromCallable { thread = Thread.currentThread().name }
+            .subscribeOnMain()
+            .single(Unit)
+            .blockingGet()
+
+        assertEquals(thread, "main")
+    }
+
+    @Test
+    fun testObservableObserveOnMain() {
+        var thread: String? = null
+        Observable.fromCallable { }
+            .observeOnMain()
+            .single(Unit)
+            .doOnSuccess { thread = Thread.currentThread().name }
+            .blockingGet()
+
+        assertEquals(thread, "main")
+    }
 
     @Test
     fun testFilterOrElseWithPredicate() {
@@ -130,4 +204,12 @@ class ObservableExtensionsTest {
 
         assertEquals(emptyList<Int>(), list)
     }
+
+    //How to test this ?
+//    @Test
+//    fun testCreateUniqueConcurrentRequestCache() {
+//        Observable.fromCallable {  }
+//            .createUniqueConcurrentRequestCache()
+//    }
+
 }
