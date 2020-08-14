@@ -42,7 +42,6 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$rootProject.kotlinVersion"
     implementation "androidx.fragment:fragment:$rootProject.androidxFragmentVersion"
-
     //WorkManager
     implementation("androidx.work:work-runtime-ktx:$rootProject.workManagerVersion")
 
