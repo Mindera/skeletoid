@@ -52,7 +52,7 @@ script:
   - ./gradlew assemble
 
   # Run initTests
-  - ./gradlew createGlobalSkeletoidUnitTestReport --debug
+  - ./gradlew createGlobalSkeletoidUnitTestReport
 
   # Run SonarQube Analysis:
   # TODO We'll need to migrate this to Java 11 soon... https://community.sonarsource.com/t/re-move-to-java-11-java-8-deprecated/25275/13
