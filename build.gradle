@@ -36,6 +36,13 @@ allprojects {
     }
 }
 
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full" // to see the exceptions of failed tests in Travis-CI console.
+    }
+}
+
 ext {
     // SDK and Tools
     compileSdkVersion = 29
