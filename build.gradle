@@ -92,7 +92,7 @@ sonarqube {
         property "sonar.projectKey", "mydroidisbetterthanyours"
         property "sonar.sources", "src"
         //Remember to change in jacoco_global and jacoco files also
-        property "sonar.exclusions", "**/*test*/**,build/**,*.iml,**/*generated*, **/views/*.*, **/dialogs/*.*,**/animation/*.*, **/UnfreezeScreenActivity.*, **/Schedulers.*,**/utils/http/HttpCodes.*"
+        property "sonar.exclusions", "**/*test*/**, build/**, *.iml, **/*generated*, **/views/*.*, **/interfaces/*.*, **/dialogs/*.*, **/animation/*.*, **/UnfreezeScreenActivity.*, **/Schedulers.*, **/utils/http/HttpCodes.*"
         property "sonar.tests", "./src/test/"
         property "sonar.test.inclusions", "**/*test*/**"
         property "sonar.import_unknown_files", true

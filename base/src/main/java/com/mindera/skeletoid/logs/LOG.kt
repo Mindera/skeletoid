@@ -1,7 +1,8 @@
 package com.mindera.skeletoid.logs
 
 import android.content.Context
-import com.mindera.skeletoid.logs.appenders.ILogAppender
+import com.mindera.skeletoid.logs.appenders.interfaces.ILogAppender
+import com.mindera.skeletoid.logs.interfaces.ILoggerManager
 
 /**
  * LOG static class. It is used to abstract the LOG and have multiple possible implementations

@@ -4,7 +4,8 @@ import android.content.Context
 import androidx.annotation.VisibleForTesting
 import com.mindera.skeletoid.generic.AndroidUtils
 import com.mindera.skeletoid.logs.LOG.PRIORITY
-import com.mindera.skeletoid.logs.appenders.ILogAppender
+import com.mindera.skeletoid.logs.appenders.interfaces.ILogAppender
+import com.mindera.skeletoid.logs.interfaces.ILoggerManager
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils
 import com.mindera.skeletoid.threads.utils.ThreadUtils
 import java.util.ArrayList
@@ -14,7 +15,8 @@ import java.util.HashSet
 /**
  * LOG main class. It contains all the logic and feeds the appenders
  */
-internal class LoggerManager : ILoggerManager {
+internal class LoggerManager :
+    ILoggerManager {
 
     companion object {
         private const val LOG_TAG = "LoggerManager"
