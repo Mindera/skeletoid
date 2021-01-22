@@ -15,8 +15,7 @@ import java.util.HashSet
 /**
  * LOG main class. It contains all the logic and feeds the appenders
  */
-internal class LoggerManager :
-    ILoggerManager {
+internal class LoggerManager : ILoggerManager {
 
     companion object {
         private const val LOG_TAG = "LoggerManager"
@@ -30,7 +29,7 @@ internal class LoggerManager :
     /**
      * Application TAG for logs
      */
-    private val PACKAGE_NAME: String
+    private val packageName: String
 
     /**
      * Define if the method name invoking the log should be printed or not (via exception stack)
@@ -48,14 +47,14 @@ internal class LoggerManager :
      * The logger itself
      */
     constructor(context: Context) {
-        PACKAGE_NAME = AndroidUtils.getApplicationPackage(context)
+        packageName = AndroidUtils.getApplicationPackage(context)
     }
 
     /**
-     * This is to be used on ONLY ON UNIT TESTS.
+     * A second constructor that receives a package name
      */
     constructor(packageName: String) {
-        PACKAGE_NAME = packageName
+        this.packageName = packageName
     }
 
     /**

@@ -4,17 +4,14 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-
 class ScheduledThreadPoolUnitTest {
 
     private lateinit var threadFactory: NamedThreadFactory
-
     private lateinit var threadPoolExecutor: ScheduledThreadPoolExecutor
-
 
     @Before
     fun setUp() {
-        threadFactory = NamedThreadFactory("", 1)
+        threadFactory = NamedThreadFactory(threadPoolName = "", maxFactoryThreads = 1)
         threadPoolExecutor = ScheduledThreadPoolExecutor(1, threadFactory)
     }
 
@@ -38,7 +35,7 @@ class ScheduledThreadPoolUnitTest {
     @Test
     fun testShutdownThreadPoolNullThreadFactory() {
         val threadFactoryAccess = threadPoolExecutor.javaClass.superclass?.superclass?.getDeclaredField("threadFactory")
-        threadFactoryAccess?.setAccessible(true)
+        threadFactoryAccess?.isAccessible = true
         threadFactoryAccess?.set(threadPoolExecutor, null)
         threadPoolExecutor.shutdown()
         Assert.assertTrue(threadPoolExecutor.isShutdown)
@@ -47,7 +44,7 @@ class ScheduledThreadPoolUnitTest {
     @Test
     fun testShutdownNowThreadPoolNullThreadFactory() {
         val threadFactoryAccess = threadPoolExecutor.javaClass.superclass?.superclass?.getDeclaredField("threadFactory")
-        threadFactoryAccess?.setAccessible(true)
+        threadFactoryAccess?.isAccessible = true
         threadFactoryAccess?.set(threadPoolExecutor, null)
         threadPoolExecutor.shutdownNow()
         Assert.assertTrue(threadPoolExecutor.isShutdown)
@@ -55,7 +52,7 @@ class ScheduledThreadPoolUnitTest {
 
     @Test
     fun testShutdownThreadPoolNameTest() {
-        val threadFactory = NamedThreadFactory("SHUTDOWN", 1)
+        val threadFactory = NamedThreadFactory(threadPoolName = "SHUTDOWN", maxFactoryThreads = 1)
         val threadPoolExecutor = ScheduledThreadPoolExecutor(1, threadFactory)
         threadPoolExecutor.shutdown()
         Assert.assertTrue(threadPoolExecutor.isShutdown)
@@ -63,7 +60,7 @@ class ScheduledThreadPoolUnitTest {
 
     @Test
     fun testShutdownNowThreadPoolNameTest() {
-        val threadFactory = NamedThreadFactory("SHUTDOWN", 1)
+        val threadFactory = NamedThreadFactory(threadPoolName = "SHUTDOWN", maxFactoryThreads = 1)
         val threadPoolExecutor = ScheduledThreadPoolExecutor(1, threadFactory)
         threadPoolExecutor.shutdownNow()
         Assert.assertTrue(threadPoolExecutor.isShutdown)
@@ -80,7 +77,7 @@ class ScheduledThreadPoolUnitTest {
 
     @Test
     fun afterExecuteWithFuture() {
-        val future = threadPoolExecutor.submit(Runnable {  })
+        val future = threadPoolExecutor.submit { }
         threadPoolExecutor.shutdownNow()
         val method = threadPoolExecutor.javaClass.getDeclaredMethod("afterExecute", Runnable::class.java, Throwable::class.java)
         method.isAccessible = true

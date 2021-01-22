@@ -1,6 +1,5 @@
 package com.mindera.skeletoid.threads.threadpools
 
-import androidx.annotation.VisibleForTesting
 import com.mindera.skeletoid.logs.LOG
 import java.util.concurrent.CancellationException
 import java.util.concurrent.Future
@@ -18,7 +17,6 @@ class ScheduledThreadPoolExecutor(
         private const val LOG_TAG = "ScheduledThreadPoolExecutor"
     }
 
-    @VisibleForTesting
     override fun afterExecute(runnable: Runnable?, throwable: Throwable?) {
         super.afterExecute(runnable, throwable)
 
@@ -52,5 +50,4 @@ class ScheduledThreadPoolExecutor(
         factory?.changeThreadsNameAfterShutdown()
         return super.shutdownNow()
     }
-
 }

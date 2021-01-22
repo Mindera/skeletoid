@@ -3,7 +3,6 @@ package com.mindera.skeletoid.analytics.appenders
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-
 import com.google.android.gms.analytics.GoogleAnalytics
 import com.google.android.gms.analytics.HitBuilders
 import com.google.android.gms.analytics.Tracker
@@ -13,17 +12,16 @@ import com.google.android.gms.common.util.VisibleForTesting
 import com.mindera.skeletoid.analytics.appenders.interfaces.IAnalyticsAppender
 import com.mindera.skeletoid.logs.LOG
 
-class GaAppender(private val configurationFileId: Int) :
-    IAnalyticsAppender {
+class GaAppender(private val configurationFileId: Int) : IAnalyticsAppender {
 
     companion object {
-        val CATEGORY = "CATEGORY"
-        val ACTION = "ACTION"
-        val LABEL = "LABEL"
-        val VALUE = "VALUE"
-        val PRODUCT = "PRODUCT"
-        val PRODUCT_ACTION = "PRODUCT_ACTION"
         private const val LOG_TAG = "GAAppender"
+        const val CATEGORY = "CATEGORY"
+        const val ACTION = "ACTION"
+        const val LABEL = "LABEL"
+        const val VALUE = "VALUE"
+        const val PRODUCT = "PRODUCT"
+        const val PRODUCT_ACTION = "PRODUCT_ACTION"
     }
 
     @VisibleForTesting
@@ -73,7 +71,7 @@ class GaAppender(private val configurationFileId: Int) :
         }
 
         tracker?.run {
-            //Should we do something with screenClassOverride?
+            // Should we do something with screenClassOverride?
             setScreenName(screenName)
             send(HitBuilders.ScreenViewBuilder().build())
         }

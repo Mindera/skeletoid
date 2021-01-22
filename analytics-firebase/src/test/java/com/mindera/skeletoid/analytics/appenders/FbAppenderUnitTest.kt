@@ -18,7 +18,6 @@ import org.mockito.Mockito.eq
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
 import org.powermock.api.mockito.PowerMockito
-import org.powermock.api.mockito.PowerMockito.mock
 import org.powermock.core.classloader.annotations.PowerMockIgnore
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.rule.PowerMockRule
@@ -37,14 +36,14 @@ class FbAppenderUnitTest {
 
     @Rule
     @JvmField
-    public var rule = PowerMockRule()
+    var rule = PowerMockRule()
 
     @Before
     fun setUp() {
         appender = FbAppender()
 
         val context = PowerMockito.mock<Context>(Context::class.java)
-        firebaseAnalytics = mock(FirebaseAnalytics::class.java)
+        firebaseAnalytics = PowerMockito.mock(FirebaseAnalytics::class.java)
 
         PowerMockito.mockStatic(FirebaseAnalytics::class.java)
         Mockito.`when`(FirebaseAnalytics.getInstance(context)).thenReturn(firebaseAnalytics)

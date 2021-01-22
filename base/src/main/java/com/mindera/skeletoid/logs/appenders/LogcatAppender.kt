@@ -2,19 +2,16 @@ package com.mindera.skeletoid.logs.appenders
 
 import android.content.Context
 import android.util.Log
-
 import com.mindera.skeletoid.logs.LOG
 import com.mindera.skeletoid.logs.appenders.interfaces.ILogAppender
-
-import java.util.ArrayList
-
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString
+import java.util.ArrayList
+import kotlin.math.ceil
 
 /**
  * Log appender for Logcat
  */
-class LogcatAppender(private val TAG: String) :
-    ILogAppender {
+class LogcatAppender(private val TAG: String) : ILogAppender {
 
     companion object {
         private const val LOG_ID = "LogcatAppender"
@@ -37,22 +34,20 @@ class LogcatAppender(private val TAG: String) :
     override var minLogLevel: LOG.PRIORITY = LOG.PRIORITY.VERBOSE
 
     override fun enableAppender(context: Context) {
-        //Nothing needed here
+        // Nothing needed here
     }
 
     override fun disableAppender() {
-        //Nothing needed here
+        // Nothing needed here
     }
 
     override fun log(type: LOG.PRIORITY, t: Throwable?, vararg logs: String) {
-        if (type.ordinal < minLogLevel.ordinal) {
-            return
-        }
+        if (type.ordinal < minLogLevel.ordinal) return
+
         val logString = getLogString(*logs)
         val formattedLogs = formatLog(logString)
 
         for (logText in formattedLogs) {
-
             when (type) {
                 LOG.PRIORITY.VERBOSE -> Log.v(TAG, logText, t)
                 LOG.PRIORITY.WARN -> Log.w(TAG, logText, t)
@@ -72,38 +67,25 @@ class LogcatAppender(private val TAG: String) :
      */
     fun formatLog(text: String?): List<String> {
         val result = ArrayList<String>()
+        if (text == null || text.isEmpty()) return result
 
-        if (text == null || text.isEmpty()) {
+        if (text.length <= maxLineLength) {
+            result.add(text)
             return result
         }
 
-        if (text.length > maxLineLength) {
-            if (isSplitLinesAboveMaxLength) {
-
-                val chunkCount = Math.ceil((1f * text.length / maxLineLength).toDouble()).toInt()
-                for (i in 1..chunkCount) {
-                    val max = maxLineLength * i
-                    if (max < text.length) {
-                        result.add(
-                            "[Chunk $i of $chunkCount] " + text.substring(
-                                maxLineLength * (i - 1),
-                                max
-                            )
-                        )
-                    } else {
-                        result.add(
-                            "[Chunk $i of $chunkCount] " + text.substring(
-                                maxLineLength * (i - 1)
-                            )
-                        )
-
-                    }
+        if (isSplitLinesAboveMaxLength) {
+            val chunkCount = ceil((1f * text.length / maxLineLength).toDouble()).toInt()
+            for (i in 1..chunkCount) {
+                val max = maxLineLength * i
+                if (max < text.length) {
+                    result.add("[Chunk $i of $chunkCount] " + text.substring(maxLineLength * (i - 1), max))
+                } else {
+                    result.add("[Chunk $i of $chunkCount] " + text.substring(maxLineLength * (i - 1)))
                 }
             }
-
-        } else {
-            result.add(text)
         }
+
         return result
     }
 }

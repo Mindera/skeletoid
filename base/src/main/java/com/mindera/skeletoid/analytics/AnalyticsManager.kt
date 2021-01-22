@@ -10,8 +10,7 @@ import java.util.ArrayList
 import java.util.HashMap
 import java.util.HashSet
 
-class AnalyticsManager internal constructor() :
-    IAnalyticsManager {
+class AnalyticsManager internal constructor() : IAnalyticsManager {
 
     companion object {
         private const val LOG_TAG = "AnalyticsManager"
