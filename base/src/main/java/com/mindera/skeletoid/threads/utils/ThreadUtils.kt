@@ -1,7 +1,5 @@
 package com.mindera.skeletoid.threads.utils
 
-import androidx.annotation.VisibleForTesting
-
 object ThreadUtils {
 
     /**

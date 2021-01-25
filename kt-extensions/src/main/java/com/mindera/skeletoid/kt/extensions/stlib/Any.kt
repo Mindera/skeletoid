@@ -1,5 +1,3 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
 package com.mindera.skeletoid.kt.extensions.stlib
 
 fun Any?.isTrueAndNotNull(): Boolean {

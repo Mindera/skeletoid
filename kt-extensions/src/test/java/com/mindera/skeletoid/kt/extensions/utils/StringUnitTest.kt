@@ -1,12 +1,13 @@
 package com.mindera.skeletoid.kt.extensions.utils
 
-import com.mindera.skeletoid.kt.extensions.BuildConfig
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @RunWith(RobolectricTestRunner::class)
@@ -135,11 +136,10 @@ class StringUnitTest {
     fun testRemoveCharactersNullString() {
         val characterToRemove = "h"
         val string: String? = null
-        val expectedString = null
 
         val actualString = string.removeCharacters(characterToRemove)
 
-        assertEquals(expectedString, actualString)
+        assertNull(actualString)
     }
 
     @Test
@@ -241,13 +241,30 @@ class StringUnitTest {
 
     @Test
     fun testNullIfEmptyEmpty() {
-        val text: String = ""
-        assertEquals(null, text.nullIfEmpty())
+        assertNull("".nullIfEmpty())
     }
 
     @Test
     fun testNullIfEmpty() {
-        val text: String = "text"
+        val text = "text"
         assertEquals("text", text.nullIfEmpty())
+    }
+
+    @Test
+    fun `test nullIfBlank with empty string expect null`() {
+        assertNull("".nullIfBlank())
+    }
+
+    @Test
+    fun `test nullIfBlank with whitespace characters expect null`() {
+        assertNull("   ".nullIfBlank())
+    }
+
+    @Test
+    fun `test nullIfBlank with non empty string expect same string`() {
+        val text = "text"
+        val observed = text.nullIfBlank()
+        assertNotNull(observed)
+        assertEquals(text, observed)
     }
 }
