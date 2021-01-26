@@ -161,7 +161,7 @@ sonarqube {
     }
 }
 
-tasks.sonarqube.dependsOn ":app:createGlobalUnitTestReport" group "Reporting"
+tasks.sonarqube.dependsOn ":base:createGlobalUnitTestReport" group "Reporting"
 
 task createUnitTestReport(type: JacocoReport, dependsOn: [':base:testQaUnitTest']) {
     group = "Reporting"
