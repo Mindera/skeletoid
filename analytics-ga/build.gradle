@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply from: "../jacoco.gradle"
+apply plugin: 'jacoco'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -32,10 +32,27 @@ android {
 
 dependencies {
 
-    //Depends on Base Skeletoid
+    // depends on base module
     api project(path: ':base')
-
     testImplementation project(path: ':base', configuration: 'childTestDependencies')
+    implementation ("co.google.android.gms:play-services-analytics:$playServicesAnalytics")
+}
 
-    implementation ("com.google.android.gms:play-services-analytics:$playServicesAnalytics")
+task createUnitTestReport(type: JacocoReport, dependsOn: [':analytics-ga:testQaUnitTest']) {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports after running tests."
+
+    reports {
+        html.enabled = true
+        xml.enabled = true
+    }
+
+    def fileFilter = []
+
+    def mainSrc = "$projectDir/src/main/java"
+    def qaTree = fileTree(dir: "$buildDir/tmp/kotlin-classes/qa", excludes: fileFilter)
+
+    getSourceDirectories().from(files([mainSrc]))
+    getClassDirectories().from(files([qaTree]))
+    getExecutionData().from(files("$buildDir/jacoco/testQaUnitTest.exec"))
 }
