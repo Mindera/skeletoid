@@ -7,12 +7,8 @@ import androidx.core.content.FileProvider
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.`when`
-import org.mockito.Mockito.doReturn
 import org.mockito.Mockito.mock
-import org.powermock.api.mockito.PowerMockito.mockStatic
 import org.powermock.core.classloader.annotations.PowerMockIgnore
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.rule.PowerMockRule
@@ -34,7 +30,7 @@ class ShareLogFilesUtilsUnitTests {
 
     @Rule
     @JvmField
-    public var rule = PowerMockRule()
+    var rule = PowerMockRule()
 
     @Test
     fun testGetFileLogPath() {
@@ -71,9 +67,9 @@ class ShareLogFilesUtilsUnitTests {
         val intent = shadowActivity.nextStartedActivity
         assertEquals(Intent.ACTION_CHOOSER, intent.action)
         assertEquals("intentChooserTitle", intent.getStringExtra(Intent.EXTRA_TITLE))
-        val extraIntent = intent.getParcelableExtra<Intent>(Intent.EXTRA_INTENT)
+        val extraIntent = intent.getParcelableExtra<Intent>(Intent.EXTRA_INTENT)!!
         assertEquals(Intent.ACTION_SEND, extraIntent.action)
-        assertEquals(uri, extraIntent?.extras?.get(Intent.EXTRA_STREAM))
+        assertEquals(uri, extraIntent.extras!!.get(Intent.EXTRA_STREAM))
         assertEquals("subject", extraIntent.getStringExtra(Intent.EXTRA_SUBJECT))
         assertEquals("bodyText", extraIntent.getStringExtra(Intent.EXTRA_TEXT))
     }
@@ -119,11 +115,12 @@ class ShareLogFilesUtilsUnitTests {
         val intent = shadowActivity.nextStartedActivity
         assertEquals(Intent.ACTION_CHOOSER, intent.action)
         assertEquals("intentChooserTitle", intent.getStringExtra(Intent.EXTRA_TITLE))
-        val extraIntent = intent.getParcelableExtra<Intent>(Intent.EXTRA_INTENT)
+        val extraIntent = intent.getParcelableExtra<Intent>(Intent.EXTRA_INTENT)!!
+        val emailList: List<String> = extraIntent.getStringArrayExtra(Intent.EXTRA_EMAIL)!!.toList()
         assertEquals(Intent.ACTION_SEND, extraIntent.action)
-        assertEquals(1, extraIntent.getStringArrayExtra(Intent.EXTRA_EMAIL).size)
-        assertEquals("user@user.com", extraIntent.getStringArrayExtra(Intent.EXTRA_EMAIL)[0])
-        assertEquals(uri, extraIntent?.extras?.get(Intent.EXTRA_STREAM))
+        assertEquals(1, emailList.size)
+        assertEquals("user@user.com", emailList[0])
+        assertEquals(uri, extraIntent.extras?.get(Intent.EXTRA_STREAM))
         assertEquals("subject", extraIntent.getStringExtra(Intent.EXTRA_SUBJECT))
         assertEquals("bodyText", extraIntent.getStringExtra(Intent.EXTRA_TEXT))
     }
