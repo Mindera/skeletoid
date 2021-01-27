@@ -35,7 +35,7 @@ dependencies {
     // depends on base module
     api project(path: ':base')
     testImplementation project(path: ':base', configuration: 'childTestDependencies')
-    implementation ("co.google.android.gms:play-services-analytics:$playServicesAnalytics")
+    implementation ("com.google.android.gms:play-services-analytics:$playServicesAnalytics")
 }
 
 task createUnitTestReport(type: JacocoReport, dependsOn: [':analytics-ga:testQaUnitTest']) {
