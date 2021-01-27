@@ -2,6 +2,7 @@ package com.mindera.skeletoid.analytics.appenders
 
 import android.app.Activity
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.mindera.skeletoid.analytics.appenders.interfaces.IAnalyticsAppender
@@ -26,7 +27,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE)
+@Config(sdk = [Build.VERSION_CODES.O_MR1])
 @PowerMockIgnore("org.mockito.*", "org.robolectric.*", "android.*")
 @PrepareForTest(FirebaseAnalytics::class)
 class FbAppenderUnitTest {

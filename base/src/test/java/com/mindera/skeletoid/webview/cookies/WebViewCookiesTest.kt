@@ -21,7 +21,7 @@ import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE)
+@Config(sdk = [Build.VERSION_CODES.O_MR1])
 @PowerMockIgnore("org.mockito.*", "org.robolectric.*", "android.*")
 @PrepareForTest(CookieManager::class, Build.VERSION::class)
 class WebViewCookiesTest {
@@ -36,7 +36,6 @@ class WebViewCookiesTest {
     }
 
     @Test
-    @Ignore
     fun testClearWebViewCookiesApiEqualOrGreaterThan22() {
         Whitebox.setInternalState(Build.VERSION::class.java, "SDK_INT", 27)
         // RuntimeEnvironment.application is deprecated, we need to use ApplicationProvider.getApplicationContext()

@@ -1,12 +1,9 @@
 package com.mindera.skeletoid.rxjava
 
 import io.reactivex.Maybe
-import io.reactivex.Observable
-import io.reactivex.functions.Predicate
 import io.reactivex.subjects.PublishSubject
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class MaybeExtensionsTest {
 
