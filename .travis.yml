@@ -34,6 +34,9 @@ android:
       - 'intel-android-extra-license.+'
       - '.+'
 
+before_install:
+  - yes | sdkmanager --licenses
+
 # Avoid Sonarqube warning: https://stackoverflow.com/questions/59000099/sonarqube-with-shallow-clone-warning-even-with-shallow-disabled-on-jenkins-build
 git:
   depth: false
@@ -48,7 +51,6 @@ addons:
 
 script:
   # Compile the SDK
-  - yes | sudo sdkmanager --licenses
   - ./gradlew assemble
 
   # Run SonarQube Analysis:
