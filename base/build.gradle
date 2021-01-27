@@ -96,6 +96,7 @@ def baseExclusions = [
     "**/generic/HtmlUtils*.*",
     "**/gesture/**",
     "**/logs/interfaces/**",
+    "**/logs/**/interfaces/**",
     "**/performance/interfaces/**",
     "**/routing/interfaces/**",
     "**/utils/http/**",
@@ -154,7 +155,6 @@ sonarqube {
         property "sonar.java.coveragePlugin", "jacoco"
         property "sonar.exclusions", "**/*.java"
         property "sonar.coverage.exclusions", (baseExclusions + appRatingExclusions + ktExtensionsExclusions + performanceFbExclusions + rxBindingsExclusions + rxJavaExclusions).join(",")
-        property "sonar.import_unknown_files", true
         property "sonar.tags", "android"
         property "sonar.scm.disabled", true
         property "sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/createGlobalUnitTestReport/createGlobalUnitTestReport.xml"
