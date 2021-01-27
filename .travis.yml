@@ -49,6 +49,7 @@ addons:
 
 script:
   # Compile the SDK
+  - yes | ~/Android/Sdk/tools/bin/sdkmanager --licenses
   - ./gradlew assemble
 
   # Run SonarQube Analysis:
