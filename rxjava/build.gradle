@@ -71,7 +71,7 @@ task createUnitTestReport(type: JacocoReport, dependsOn: [':rxjava:testQaUnitTes
         "**/OnErrorDoAction*.*"
     ]
 
-    def mainSrc = "$projectDir/src/main/java"
+    def mainSrc = "$projectDir/src/main/kotlin"
     def qaTree = fileTree(dir: "$buildDir/tmp/kotlin-classes/qa", excludes: fileFilter)
 
     getSourceDirectories().from(files([mainSrc]))

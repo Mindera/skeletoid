@@ -150,7 +150,7 @@ sonarqube {
         property "sonar.sourceEncoding", "UTF-8"
         property "sonar.projectKey", "mydroidisbetterthanyours"
         property "sonar.projectBaseDir", "${project.parent.projectDir}"
-        property "sonar.sources", "base/src/main/java, analytics-firebase/src/main/java, analytics-ga/src/main/java, apprating/src/main/java, kt-extensions/src/main/java, performance-firebase/src/main/java, rxbindings/src/main/java, rxjava/src/main/java"
+        property "sonar.sources", "base/src/main/java, analytics-firebase/src/main/java, analytics-ga/src/main/java, apprating/src/main/java, kt-extensions/src/main/java, performance-firebase/src/main/java, rxbindings/src/main/java, rxjava/src/main/kotlin"
         property "sonar.java.coveragePlugin", "jacoco"
         property "sonar.exclusions", "**/*.java"
         property "sonar.coverage.exclusions", (baseExclusions + appRatingExclusions + ktExtensionsExclusions + performanceFbExclusions + rxBindingsExclusions + rxJavaExclusions).join(",")
@@ -209,7 +209,7 @@ task createGlobalUnitTestReport(
         "${project.parent.projectDir}/kt-extensions/src/main/java",
         "${project.parent.projectDir}/performance-firebase/src/main/java",
         "${project.parent.projectDir}/rxbindings/src/main/java",
-        "${project.parent.projectDir}/rxjava/src/main/java"
+        "${project.parent.projectDir}/rxjava/src/main/kotlin"
     ]
 
     def kotlinClassDirectories = [
