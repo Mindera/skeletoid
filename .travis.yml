@@ -1,6 +1,5 @@
 language: android
-dist: trusty
-jdk: oraclejdk11
+dist: xenial
 
 
 before_cache:
