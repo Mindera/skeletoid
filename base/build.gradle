@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'org.sonarqube'
+apply plugin: 'jacoco'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -57,7 +59,7 @@ dependencies {
 
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
-    api "androidx.annotation:annotation:$appcompatVersion"
+    api "androidx.annotation:annotation:$annotationVersion"
 
     implementation("androidx.loader:loader:$loaderVersion")
 
@@ -85,5 +87,154 @@ dependencies {
     testImplementation("org.robolectric:robolectric:$robolectricVersion")
 }
 
-apply from: "../jacoco.gradle"
-apply from: "../jacoco_global.gradle"
+def baseExclusions = [
+    "**/analytics/interfaces/**",
+    "**/analytics/**/interfaces/**",
+    "**/animation/**",
+    "**/dialogs/**",
+    "**/fonts/**",
+    "**/generic/HtmlUtils*.*",
+    "**/gesture/**",
+    "**/logs/interfaces/**",
+    "**/logs/**/interfaces/**",
+    "**/performance/interfaces/**",
+    "**/routing/interfaces/**",
+    "**/utils/http/**",
+    "**/utils/proxy/**",
+    "**/utils/BitmapUtils*.*",
+    "**/widgets/**"
+]
+
+def emptyExclusions = []
+
+def appRatingExclusions = [
+    "**/callbacks/**",
+    "**/dialogs/**",
+    "**/job/**",
+    "**/store/**",
+    "**/AppRatingInitialiser*.*"
+]
+
+def ktExtensionsExclusions = [
+    "**/activities/**",
+    "**/stlib/**",
+    "**/utils/AssetFileProvider*.*",
+    "**/utils/Calendar*.*",
+    "**/utils/Collection*.*",
+    "**/utils/CurrencyFormatter*.*",
+    "**/utils/List*.*",
+    "**/views/**"
+]
+
+def performanceFbExclusions = ["**/rxoperators/**"]
+
+def rxBindingsExclusions = [
+    "**/searchview/support/**",
+    "**/searchview/SearchViewFocusChangeObservable*.*",
+    "**/EditText*.*",
+    "**/View*.*"
+]
+
+def rxJavaExclusions = [
+    "**/bindings/**",
+    "**/handlers/**",
+    "**/operators*.*",
+    "**/Any*.*",
+    "**/Breadcrumbs*.*",
+    "**/Completable*.*",
+    "**/DebounceBuffer*.*",
+    "**/OnErrorDoAction*.*"
+]
+
+sonarqube {
+    properties {
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.projectKey", "mydroidisbetterthanyours"
+        property "sonar.projectBaseDir", "${project.parent.projectDir}"
+        property "sonar.sources", "base/src/main/java, analytics-firebase/src/main/java, analytics-ga/src/main/java, apprating/src/main/java, kt-extensions/src/main/java, performance-firebase/src/main/java, rxbindings/src/main/java, rxjava/src/main/kotlin"
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.exclusions", "**/*.java"
+        property "sonar.coverage.exclusions", (baseExclusions + appRatingExclusions + ktExtensionsExclusions + performanceFbExclusions + rxBindingsExclusions + rxJavaExclusions).join(",")
+        property "sonar.tags", "android"
+        property "sonar.scm.disabled", true
+        property "sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/createGlobalUnitTestReport/createGlobalUnitTestReport.xml"
+    }
+}
+
+tasks.sonarqube.dependsOn ":base:createGlobalUnitTestReport" group "Reporting"
+
+task createUnitTestReport(type: JacocoReport, dependsOn: [':base:testQaUnitTest']) {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports after running tests."
+
+    reports {
+        html.enabled = true
+        xml.enabled = true
+    }
+
+    def mainSrc = "$projectDir/src/main/java"
+    def qaTree = fileTree(dir: "$buildDir/tmp/kotlin-classes/qa", excludes: baseExclusions)
+
+    getSourceDirectories().setFrom(files([mainSrc]))
+    getClassDirectories().from(files([qaTree]))
+    getExecutionData().from(files("$buildDir/jacoco/testQaUnitTest.exec"))
+}
+
+task createGlobalUnitTestReport(
+    type: JacocoReport,
+    dependsOn: [
+        ':base:createUnitTestReport',
+        ':analytics-firebase:createUnitTestReport',
+        ':analytics-ga:createUnitTestReport',
+        ':apprating:createUnitTestReport',
+        ':kt-extensions:createUnitTestReport',
+        ':performance-firebase:createUnitTestReport',
+        ':rxbindings:createUnitTestReport',
+        ':rxjava:createUnitTestReport'
+    ]
+) {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports after running tests."
+
+    reports {
+        html.enabled = true
+        xml.enabled = true
+    }
+
+    def sourceDirs = [
+        "$projectDir/src/main/java",
+        "${project.parent.projectDir}/analytics-firebase/src/main/java",
+        "${project.parent.projectDir}/analytics-ga/src/main/java",
+        "${project.parent.projectDir}/apprating/src/main/java",
+        "${project.parent.projectDir}/kt-extensions/src/main/java",
+        "${project.parent.projectDir}/performance-firebase/src/main/java",
+        "${project.parent.projectDir}/rxbindings/src/main/java",
+        "${project.parent.projectDir}/rxjava/src/main/kotlin"
+    ]
+
+    def kotlinClassDirectories = [
+        fileTree(dir: "$buildDir/tmp/kotlin-classes/qa", excludes: baseExclusions),
+        fileTree(dir: "${project.parent.projectDir}/analytics-firebase/build/tmp/kotlin-classes/qa", excludes: emptyExclusions),
+        fileTree(dir: "${project.parent.projectDir}/analytics-ga/build/tmp/kotlin-classes/qa", excludes: emptyExclusions),
+        fileTree(dir: "${project.parent.projectDir}/apprating/build/tmp/kotlin-classes/qa", excludes: appRatingExclusions),
+        fileTree(dir: "${project.parent.projectDir}/kt-extensions/build/tmp/kotlin-classes/qa", excludes: ktExtensionsExclusions),
+        fileTree(dir: "${project.parent.projectDir}/performance-firebase/build/tmp/kotlin-classes/qa", excludes: performanceFbExclusions),
+        fileTree(dir: "${project.parent.projectDir}/rxbindings/build/tmp/kotlin-classes/qa", excludes: rxBindingsExclusions),
+        fileTree(dir: "${project.parent.projectDir}/rxjava/build/tmp/kotlin-classes/qa", excludes: rxJavaExclusions)
+    ]
+
+    def executionDataFiles = [
+        "$buildDir/jacoco/testQaUnitTest.exec",
+        "${project.parent.projectDir}/analytics-firebase/build/jacoco/testQaUnitTest.exec",
+        "${project.parent.projectDir}/analytics-ga/build/jacoco/testQaUnitTest.exec",
+        "${project.parent.projectDir}/apprating/build/jacoco/testQaUnitTest.exec",
+        "${project.parent.projectDir}/kt-extensions/build/jacoco/testQaUnitTest.exec",
+        "${project.parent.projectDir}/performance-firebase/build/jacoco/testQaUnitTest.exec",
+        "${project.parent.projectDir}/rxbindings/build/jacoco/testQaUnitTest.exec",
+        "${project.parent.projectDir}/rxjava/build/jacoco/testQaUnitTest.exec"
+    ]
+
+    getSourceDirectories().from(files(sourceDirs))
+    getClassDirectories().from(files(kotlinClassDirectories))
+    getExecutionData().from(files(executionDataFiles))
+}

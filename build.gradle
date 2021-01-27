@@ -1,8 +1,6 @@
-//apply plugin: "org.sonarqube"
-
 buildscript {
     ext.gradleVersion = '4.0.0'
-    ext.kotlinVersion = '1.3.72'
+    ext.kotlinVersion = '1.4.21'
 
     repositories {
         google()
@@ -13,15 +11,10 @@ buildscript {
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$gradleVersion"
-
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.0"
+        classpath "org.jacoco:org.jacoco.core:0.8.6"
     }
-}
-
-plugins {
-    id "org.sonarqube" version "2.8"
 }
 
 allprojects {
@@ -32,7 +25,6 @@ allprojects {
         maven { url "http://dl.bintray.com/typesafe/maven-releases" }
         maven { url "https://maven.google.com" }
         maven { url "https://jitpack.io" }
-        apply from: "$rootProject.projectDir/jacoco_global.gradle"
     }
 }
 
@@ -48,8 +40,10 @@ ext {
     loaderVersion = '1.1.0'
     vectorDrawableVersion = '1.1.0'
     androidLegacyVersion = '1.0.0'
-    appcompatVersion = '1.1.0'
+    appcompatVersion = '1.2.0'
     workManagerVersion = '2.3.4'
+    workManagerVersion = '2.3.4'
+    annotationVersion = '1.1.0'
 
     //Firebase
     firebaseAnalyticsVersion = '17.4.4'
@@ -59,48 +53,21 @@ ext {
     playServicesAnalytics = '17.0.0'
 
     //Rx
-    rxJavaVersion = '2.2.9'
+    rxJavaVersion = '2.2.19'
     rxAndroidVersion = '2.1.1'
     rxBindingsVersion = '3.1.0'
     rxJavaDebug = '1.4.0'
 
     // Tests & Quality
-    junitVersion = '4.13'
-    mockitoVersion = '2.27.0'
+    junitVersion = '4.13.1'
+    mockitoVersion = '3.5.13'
     powermockVersion = '2.0.2'
-    robolectricVersion = '4.3'
-    testRunnerVersion = '1.1.1'
-    espressoVersion = '3.1.1'
-    androidCoreTest = '1.2.0'
+    robolectricVersion = '4.4'
+    testRunnerVersion = '1.3.0'
+    espressoVersion = '3.3.0'
+    androidCoreTest = '1.3.0'
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-rootProject.afterEvaluate {
-    tasks['sonarqube'].with {
-        dependsOn.clear()
-        dependsOn 'createGlobalSkeletoidUnitTestReport'
-    }
-}
-
-sonarqube {
-    def testCoverageBuildType = rootProject.getProperties().get('testBuildType') ?: 'qa'
-
-    properties {
-        property "sonar.projectKey", "mydroidisbetterthanyours"
-        property "sonar.sources", "src"
-        //Remember to change in jacoco_global and jacoco files also
-        property "sonar.exclusions", "**/*test*/**, build/**, *.iml, **/*generated*, **/views/*.*, **/interfaces/*.*, **/dialogs/*.*, **/animation/*.*, **/UnfreezeScreenActivity.*, **/Schedulers.*, **/utils/http/HttpCodes.*"
-        property "sonar.tests", "./src/test/"
-        property "sonar.test.inclusions", "**/*test*/**"
-        property "sonar.import_unknown_files", true
-
-        property "sonar.java.binaries", "${buildDir}/intermediates/javac/${testCoverageBuildType}/classes,${buildDir}/tmp/kotlin-classes/${testCoverageBuildType}"
-        property "sonar.java.source", "${getProjectDir()}/src/main/java"
-        property "sonar.java.coveragePlugin", "jacoco"
-        property "sonar.coverage.jacoco.xmlReportPaths", fileTree(dir: "${rootProject.buildDir}/reports/jacoco/", includes: ["**/createGlobalSkeletoidUnitTestReport.xml"])
-        property "sonar.jacoco.itReportPath", fileTree(dir: "${buildDir}/outputs/code-coverage/connected/", includes: ["**/*.ec"])
-    }
 }

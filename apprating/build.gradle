@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply from: "../jacoco.gradle"
+apply plugin: 'jacoco'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -55,4 +55,29 @@ dependencies {
     testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powermockVersion"
     testImplementation "org.powermock:powermock-classloading-xstream:$rootProject.powermockVersion"
     testImplementation("org.robolectric:robolectric:$rootProject.robolectricVersion")
+}
+
+task createUnitTestReport(type: JacocoReport, dependsOn: [':apprating:testQaUnitTest']) {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports after running tests."
+
+    reports {
+        html.enabled = true
+        xml.enabled = true
+    }
+
+    def fileFilter = [
+        "**/callbacks/**",
+        "**/dialogs/**",
+        "**/job/**",
+        "**/store/**",
+        "**/AppRatingInitialiser*.*"
+    ]
+
+    def mainSrc = "$projectDir/src/main/java"
+    def qaTree = fileTree(dir: "$buildDir/tmp/kotlin-classes/qa", excludes: fileFilter)
+
+    getSourceDirectories().from(files([mainSrc]))
+    getClassDirectories().from(files([qaTree]))
+    getExecutionData().from(files("$buildDir/jacoco/testQaUnitTest.exec"))
 }

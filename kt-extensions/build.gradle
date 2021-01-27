@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply from: "../jacoco.gradle"
+apply plugin: "jacoco"
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -44,11 +44,8 @@ android {
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-
     implementation ("androidx.vectordrawable:vectordrawable-animated:$vectorDrawableVersion")
-
     implementation ("androidx.legacy:legacy-support-core-utils:$androidLegacyVersion")
-
     implementation ("androidx.appcompat:appcompat:$appcompatVersion")
 
     testImplementation "junit:junit:$junitVersion"
@@ -59,4 +56,32 @@ dependencies {
     testImplementation ("org.powermock:powermock-api-mockito2:$powermockVersion")
     testImplementation "org.powermock:powermock-classloading-xstream:$powermockVersion"
     testImplementation ("org.robolectric:robolectric:$robolectricVersion")
+}
+
+task createUnitTestReport(type: JacocoReport, dependsOn: [':kt-extensions:testQaUnitTest']) {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports after running tests."
+
+    reports {
+        html.enabled = true
+        xml.enabled = true
+    }
+
+    def fileFilter = [
+        "**/activities/**",
+        "**/stlib/**",
+        "**/utils/AssetFileProvider*.*",
+        "**/utils/Calendar*.*",
+        "**/utils/Collection*.*",
+        "**/utils/CurrencyFormatter*.*",
+        "**/utils/List*.*",
+        "**/views/**"
+    ]
+
+    def mainSrc = "$projectDir/src/main/java"
+    def qaTree = fileTree(dir: "$buildDir/tmp/kotlin-classes/qa", excludes: fileFilter)
+
+    getSourceDirectories().from(files([mainSrc]))
+    getClassDirectories().from(files([qaTree]))
+    getExecutionData().from(files("$buildDir/jacoco/testQaUnitTest.exec"))
 }
