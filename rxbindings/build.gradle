@@ -49,6 +49,7 @@ android {
 }
 
 dependencies {
+
     api project(path: ':rxjava')
 
     implementation "com.jakewharton.rxbinding3:rxbinding:$rxBindingsVersion"

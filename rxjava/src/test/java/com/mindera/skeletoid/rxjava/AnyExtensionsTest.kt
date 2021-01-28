@@ -2,7 +2,7 @@ package com.mindera.skeletoid.rxjava
 
 import io.reactivex.Observable
 import io.reactivex.Single
-import org.hamcrest.Matchers.instanceOf
+import org.hamcrest.core.IsInstanceOf.instanceOf
 import org.junit.Assert.assertThat
 import org.junit.Test
 

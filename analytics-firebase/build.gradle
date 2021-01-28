@@ -41,9 +41,8 @@ dependencies {
 
     annotationProcessor 'com.google.auto.value:auto-value:1.5.2'
 
-    //Depends on Base Skeletoid
+    // depends on base module
     api project(path: ':base')
     api ("com.google.firebase:firebase-analytics-ktx:$firebaseAnalyticsVersion")
-
     testImplementation project(path: ':base', configuration: 'childTestDependencies')
 }

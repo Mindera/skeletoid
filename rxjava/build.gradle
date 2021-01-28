@@ -40,7 +40,8 @@ android {
 }
 
 dependencies {
-    //Depends on Base Skeletoid
+
+    // depends on base module
     api project(path: ':base')
     implementation "com.akaita.java:rxjava2-debug:$rxJavaDebug"
 

@@ -2,81 +2,10 @@ package com.mindera.skeletoid.rxjava
 
 import io.reactivex.Maybe
 import io.reactivex.subjects.PublishSubject
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import kotlin.test.assertEquals
 
 class MaybeExtensionsTest {
-
-    // ATTENTION !!!!
-    // This is hitting main in all threadpools since we are defaulting to TRAMPOLINE on QA builds.
-    // It would be great to not do it, but that would break Apps using QA build to UI Tests
-
-    private fun threadName(): String = Thread.currentThread().name
-
-    private fun assertMainThread() {
-        assertEquals( "main", threadName())
-    }
-
-    @Test
-    fun testMaybeSubscribeOnIO() {
-        Maybe.fromCallable { threadName() }
-            .subscribeOnIO()
-            .test()
-            .assertValueAt(0) { it == "main" }
-            .assertNoErrors()
-            .assertComplete()
-    }
-
-    @Test
-    fun testMaybeObserveOnIO() {
-        Maybe.fromCallable { }
-            .observeOnIO()
-            .doOnComplete { assertMainThread() }
-            .test()
-            .assertNoErrors()
-            .assertComplete()
-    }
-
-    @Test
-    fun testMaybeSubscribeOnComputation() {
-        Maybe.fromCallable { threadName() }
-            .subscribeOnComputation()
-            .test()
-            .assertValueAt(0) { it == "main" }
-            .assertNoErrors()
-            .assertComplete()
-
-    }
-
-    @Test
-    fun testMaybeObserveOnComputation() {
-        Maybe.fromCallable { }
-            .observeOnComputation()
-            .doOnComplete { assertMainThread() }
-            .test()
-            .assertNoErrors()
-            .assertComplete()
-    }
-
-    @Test
-    fun testMaybeSubscribeOnMain() {
-        Maybe.fromCallable { threadName() }
-            .subscribeOnMain()
-            .test()
-            .assertValueAt(0) { it == "main" }
-            .assertNoErrors()
-            .assertComplete()
-    }
-
-    @Test
-    fun testMaybeObserveOnMain() {
-        Maybe.fromCallable { }
-            .observeOnMain()
-            .doOnComplete { assertMainThread() }
-            .test()
-            .assertNoErrors()
-            .assertComplete()
-    }
 
     @Test
     fun testFilterOrElseWithConditionFalse() {
