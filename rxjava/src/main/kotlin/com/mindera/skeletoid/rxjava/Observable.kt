@@ -1,10 +1,7 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
 package com.mindera.skeletoid.rxjava
 
 import com.mindera.skeletoid.rxjava.schedulers.Schedulers
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Predicate
 import java.util.concurrent.ConcurrentHashMap
@@ -14,22 +11,15 @@ fun <T : Any> Observable<T>.subscribeOnIO(): Observable<T> = subscribeOn(Schedul
 
 fun <T : Any> Observable<T>.observeOnIO(): Observable<T> = observeOn(Schedulers.io())
 
+fun <T : Any> Observable<T>.subscribeOnComputation(): Observable<T> = subscribeOn(Schedulers.computation())
 
-fun <T : Any> Observable<T>.subscribeOnComputation(): Observable<T> =
-    subscribeOn(Schedulers.computation())
+fun <T : Any> Observable<T>.observeOnComputation(): Observable<T> = observeOn(Schedulers.computation())
 
-fun <T : Any> Observable<T>.observeOnComputation(): Observable<T> =
-    observeOn(Schedulers.computation())
+fun <T : Any> Observable<T>.subscribeOnMain(): Observable<T> = subscribeOn(Schedulers.main())
 
+fun <T : Any> Observable<T>.observeOnMain(): Observable<T> = observeOn(Schedulers.main())
 
-fun <T : Any> Observable<T>.subscribeOnMain(): Observable<T> =
-    subscribeOn(Schedulers.main())
-
-fun <T : Any> Observable<T>.observeOnMain(): Observable<T> =
-    observeOn(Schedulers.main())
-
-
-//Use this to maintain a list of shared Observables (use together with allowMultipleSubscribers)
+// Use this to maintain a list of shared Observables (use together with allowMultipleSubscribers)
 @Suppress("UNCHECKED_CAST")
 fun <T : Any> Observable<T>.createUniqueConcurrentRequestCache(
     requestMap: ConcurrentHashMap<String, Observable<*>>,
@@ -78,30 +68,36 @@ fun <T : Any> Observable<T>.delayAtLeast(
     .map { it.something ?: throw it.throwable ?: Exception() }
 }
 
-fun <T : Any> Observable<T>.allowMultipleSubscribers(): Observable<T> =
-    share()
-        .replay(1)
-        .autoConnect(1)
+fun <T : Any> Observable<T>.allowMultipleSubscribers(): Observable<T> {
+    return share().replay(1).autoConnect(1)
+}
 
-fun <T : Any> Observable<T>.skipWhileAndDo(predicate: Predicate<T>, action: (value: T) -> Unit): Observable<T> =
-    doOnNext {
-        if (predicate.test(it)) {
-            action(it)
-        }
-    }
-    .skipWhile(predicate)
+fun <T : Any> Observable<T>.skipWhileAndDo(predicate: Predicate<T>, action: (value: T) -> Unit): Observable<T> {
+    return doOnNext { if (predicate.test(it)) action(it) }
+        .skipWhile(predicate)
+}
 
-fun <T : Any> Observable<T>.filterOrElse(predicate: Predicate<T>, action: (value: T) -> Unit): Observable<T> =
-    doOnNext {
-        if (!predicate.test(it)) {
-            action(it)
-        }
-    }
-    .filter(predicate)
+fun <T : Any> Observable<T>.skipWhileAndDo(condition: Boolean, action: (value: T) -> Unit): Observable<T> {
+    return doOnNext { if (condition) action(it) }
+        .skipWhile { condition }
+}
 
-var CLICK_SHORT_THROTTLE = 1000L
-var CLICK_LONG_THROTTLE = 2000L
+fun <T : Any> Observable<T>.filterOrElse(predicate: Predicate<T>, action: (value: T) -> Unit): Observable<T> {
+    return doOnNext { if (!predicate.test(it)) action(it) }
+        .filter(predicate)
+}
 
-fun <T> Observable<T>.throttle(throttleTime: Long = CLICK_LONG_THROTTLE): Observable<T> = throttleFirst(throttleTime, TimeUnit.MILLISECONDS)
+fun <T : Any> Observable<T>.filterOrElse(condition: Boolean, action: (value: T) -> Unit): Observable<T> {
+    return doOnNext { if (!condition) action(it) }
+        .filter { condition }
+}
 
-fun <T> Observable<T>.throttleUnit(throttleTime: Long = CLICK_LONG_THROTTLE): Observable<Unit> = throttle(throttleTime).map { Unit }
+const val CLICK_LONG_THROTTLE = 2000L
+
+fun <T> Observable<T>.throttle(throttleTime: Long = CLICK_LONG_THROTTLE): Observable<T> {
+    return throttleFirst(throttleTime, TimeUnit.MILLISECONDS)
+}
+
+fun <T> Observable<in T>.throttleUnit(throttleTime: Long = CLICK_LONG_THROTTLE): Observable<Unit> {
+    return throttle(throttleTime).map {}
+}

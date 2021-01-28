@@ -1,12 +1,6 @@
 package com.mindera.skeletoid.rxjava
 
 import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.plugins.RxJavaPlugins
-import io.reactivex.schedulers.TestScheduler
-import org.hamcrest.Matchers.instanceOf
-import org.junit.Assert.assertThat
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -17,76 +11,80 @@ class CompletableExtensionsTest {
     // This is hitting main in all threadpools since we are defaulting to TRAMPOLINE on QA builds.
     // It would be great to not do it, but that would break Apps using QA build to UI Tests
 
+    private fun threadName(): String = Thread.currentThread().name
+
+    private fun assertMainThread() {
+        assertEquals("main", threadName())
+    }
+
     @Test
     fun testCompletableSubscribeOnIO() {
-        var thread: String? = null
-        Completable.fromAction { thread = Thread.currentThread().name }
+        Completable.fromCallable { assertMainThread() }
             .subscribeOnIO()
-            .blockingGet()
-
-        assertEquals(thread, "main")
+            .test()
+            .assertNoErrors()
+            .assertComplete()
     }
 
     @Test
     fun testCompletableObserveOnIO() {
-        var thread: String? = null
         Completable.fromAction { }
             .observeOnIO()
-            .doOnComplete { thread = Thread.currentThread().name }
-            .blockingGet()
-
-        assertEquals(thread, "main")
+            .doOnComplete { assertMainThread() }
+            .test()
+            .assertNoErrors()
+            .assertComplete()
     }
 
     @Test
     fun testCompletableSubscribeOnComputation() {
-        var thread: String? = null
-        Completable.fromAction { thread = Thread.currentThread().name }
+        Completable.fromCallable { assertMainThread() }
             .subscribeOnComputation()
-            .blockingGet()
-
-        assertEquals(thread, "main")
+            .test()
+            .assertNoErrors()
+            .assertComplete()
     }
 
     @Test
     fun testCompletableObserveOnComputation() {
-        var thread: String? = null
         Completable.fromAction { }
             .observeOnComputation()
-            .doOnComplete { thread = Thread.currentThread().name }
-            .blockingGet()
-
-        assertEquals(thread, "main")
+            .doOnComplete { assertMainThread() }
+            .test()
+            .assertNoErrors()
+            .assertComplete()
     }
 
     @Test
     fun testCompletableSubscribeOnMain() {
-        var thread: String? = null
-        Completable.fromAction { thread = Thread.currentThread().name }
+        Completable.fromCallable { assertMainThread() }
             .subscribeOnMain()
-            .blockingGet()
-
-        assertEquals(thread, "main")
+            .test()
+            .assertNoErrors()
+            .assertComplete()
     }
 
     @Test
     fun testCompletableObserveOnMain() {
-        var thread: String? = null
         Completable.fromAction { }
             .observeOnMain()
-            .doOnComplete { thread = Thread.currentThread().name }
-            .blockingGet()
-
-        assertEquals(thread, "main")
+            .doOnComplete { assertMainThread() }
+            .test()
+            .assertNoErrors()
+            .assertComplete()
     }
 
     @Test
     fun testCompletableDelayAtLeast() {
         val timeToWait = 2000L
         val time = System.currentTimeMillis()
+
         Completable.fromAction { }
             .delayAtLeast(timeToWait)
-            .blockingGet() // A bit of 🔨 but..
+            .test()
+            .await()
+            .assertNoErrors()
+            .assertComplete()
 
         assertTrue (System.currentTimeMillis() - time >= timeToWait)
     }

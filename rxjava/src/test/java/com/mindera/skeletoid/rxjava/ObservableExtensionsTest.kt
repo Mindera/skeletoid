@@ -1,14 +1,10 @@
 package com.mindera.skeletoid.rxjava
 
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.functions.Predicate
-import io.reactivex.plugins.RxJavaPlugins
-import io.reactivex.schedulers.TestScheduler
 import io.reactivex.subjects.PublishSubject
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class ObservableExtensionsTest {
 
@@ -16,90 +12,83 @@ class ObservableExtensionsTest {
     // This is hitting main in all threadpools since we are defaulting to TRAMPOLINE on QA builds.
     // It would be great to not do it, but that would break Apps using QA build to UI Tests
 
+    private fun threadName(): String = Thread.currentThread().name
+
+    private fun assertMainThread() {
+        assertEquals("main", threadName())
+    }
+
     @Test
     fun testObservableSubscribeOnIO() {
-        var thread: String? = null
-        Observable.fromCallable { thread = Thread.currentThread().name }
+        Observable.fromCallable { threadName() }
             .subscribeOnIO()
-            .single(Unit)
-            .blockingGet()
-
-        println("$thread - ${Thread.currentThread().name}")
-
-        assertEquals(thread, Thread.currentThread().name) // To be fixed: read above
+            .test()
+            .assertValueAt(0) { it == "main" }
+            .assertNoErrors()
+            .assertComplete()
     }
 
     @Test
     fun testObservableObserveOnIO() {
-        var thread: String? = null
         Observable.fromCallable { }
             .observeOnIO()
-            .single(Unit)
-            .doOnSuccess { thread = Thread.currentThread().name }
-            .blockingGet()
-
-        assertEquals(thread, Thread.currentThread().name)  // To be fixed: read above
+            .doOnNext { assertMainThread() }
+            .test()
+            .assertNoErrors()
+            .assertComplete()
     }
 
     @Test
     fun testObservableSubscribeOnComputation() {
-       var thread: String? = null
-        Observable.fromCallable { thread = Thread.currentThread().name }
+        Observable.fromCallable { threadName() }
             .subscribeOnComputation()
-            .single(Unit)
-            .blockingGet()
-
-        assertEquals(thread, Thread.currentThread().name) // To be fixed: read above
+            .test()
+            .assertValueAt(0) { it == "main" }
+            .assertNoErrors()
+            .assertComplete()
     }
 
     @Test
     fun testObservableObserveOnComputation() {
-        var thread: String? = null
-        Observable.fromCallable {  }
+        Observable.fromCallable { }
             .observeOnComputation()
-            .single(Unit)
-            .doOnSuccess { thread = Thread.currentThread().name }
-            .blockingGet()
-
-        assertEquals(thread, Thread.currentThread().name) // To be fixed: read above
+            .doOnNext { assertMainThread() }
+            .test()
+            .assertNoErrors()
+            .assertComplete()
     }
 
     @Test
     fun testObservableSubscribeOnMain() {
-        var thread: String? = null
-        Observable.fromCallable { thread = Thread.currentThread().name }
+        Observable.fromCallable { threadName() }
             .subscribeOnMain()
-            .single(Unit)
-            .blockingGet()
-
-        assertEquals(thread, Thread.currentThread().name)
+            .test()
+            .assertValueAt(0) { it == "main" }
+            .assertNoErrors()
+            .assertComplete()
     }
 
     @Test
     fun testObservableObserveOnMain() {
-        var thread: String? = null
         Observable.fromCallable { }
             .observeOnMain()
-            .single(Unit)
-            .doOnSuccess { thread = Thread.currentThread().name }
-            .blockingGet()
-
-        assertEquals(thread, Thread.currentThread().name)
+            .doOnNext { assertMainThread() }
+            .test()
+            .assertNoErrors()
+            .assertComplete()
     }
 
     @Test
     fun testFilterOrElseWithPredicate() {
         val list = mutableListOf<Int>()
-
         val subject = PublishSubject.create<Int>()
+
         subject
             .doOnNext { list.add(it) }
             .test()
 
         Observable.just(1, 2, 3, 4, 5, 6)
-            .filterOrElse(Predicate { it % 2 == 0 }, {
-                subject.onNext(it)
-            })
+            .filterOrElse(Predicate { it % 2 == 0 }) { subject.onNext(it) }
             .test()
             .assertNoErrors()
             .assertComplete()
@@ -113,14 +102,13 @@ class ObservableExtensionsTest {
     fun testFilterOrElseWithConditionFalse() {
         val list = mutableListOf<Int>()
         val subject = PublishSubject.create<Int>()
+
         subject
             .doOnNext { list.add(it) }
             .test()
 
         Observable.just(1, 2, 3, 4, 5, 6)
-            .filterOrElse(Predicate { false }, {
-                subject.onNext(it)
-            })
+            .filterOrElse(false) { subject.onNext(it) }
             .test()
             .assertNoErrors()
             .assertComplete()
@@ -133,14 +121,13 @@ class ObservableExtensionsTest {
     fun testFilterOrElseWithConditionTrue() {
         val list = mutableListOf<Int>()
         val subject = PublishSubject.create<Int>()
+
         subject
             .doOnNext { list.add(it) }
             .test()
 
         Observable.just(1, 2, 3, 4, 5, 6)
-            .filterOrElse(Predicate { true }, {
-                subject.onNext(it)
-            })
+            .filterOrElse(true) { subject.onNext(it) }
             .test()
             .assertNoErrors()
             .assertComplete()
@@ -153,14 +140,13 @@ class ObservableExtensionsTest {
     fun testSkipWhileAndDoWithPredicate() {
         val list = mutableListOf<Int>()
         val subject = PublishSubject.create<Int>()
+
         subject
             .doOnNext { list.add(it) }
             .test()
 
         Observable.just(1, 2, 3, 4, 5, 6)
-            .skipWhileAndDo(Predicate { it < 4 }, {
-                subject.onNext(it)
-            })
+            .skipWhileAndDo(Predicate { it < 4 }) { subject.onNext(it) }
             .test()
             .assertNoErrors()
             .assertComplete()
@@ -173,14 +159,13 @@ class ObservableExtensionsTest {
     fun testSkipWhileAndDoWithConditionTrue() {
         val list = mutableListOf<Int>()
         val subject = PublishSubject.create<Int>()
+
         subject
             .doOnNext { list.add(it) }
             .test()
 
         Observable.just(1, 2, 3, 4, 5, 6)
-            .skipWhileAndDo(Predicate { true }, {
-                subject.onNext(it)
-            })
+            .skipWhileAndDo(true) { subject.onNext(it) }
             .test()
             .assertNoErrors()
             .assertComplete()
@@ -193,14 +178,13 @@ class ObservableExtensionsTest {
     fun testSkipWhileAndDoWithConditionFalse() {
         val list = mutableListOf<Int>()
         val subject = PublishSubject.create<Int>()
+
         subject
             .doOnNext { list.add(it) }
             .test()
 
         Observable.just(1, 2, 3, 4, 5, 6)
-            .skipWhileAndDo(Predicate { false }, {
-                subject.onNext(it)
-            })
+            .skipWhileAndDo(false) { subject.onNext(it) }
             .test()
             .assertNoErrors()
             .assertComplete()
@@ -208,12 +192,4 @@ class ObservableExtensionsTest {
 
         assertEquals(emptyList<Int>(), list)
     }
-
-    //How to test this ?
-//    @Test
-//    fun testCreateUniqueConcurrentRequestCache() {
-//        Observable.fromCallable {  }
-//            .createUniqueConcurrentRequestCache()
-//    }
-
 }
