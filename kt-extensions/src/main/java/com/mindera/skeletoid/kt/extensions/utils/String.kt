@@ -5,7 +5,7 @@ fun String.removeSpaces() = this.replace(" ", "")
 fun String.digits() = this.map(Character::getNumericValue)
 
 fun String?.removeCharacters(charactersToRemove: String): String? {
-    return this?.replace(Regex("[$charactersToRemove]"), "") ?: this
+    return this?.replace("[$charactersToRemove]".toRegex(), "") ?: this
 }
 
 fun String.matchesEntireRegex(regex: Regex): Boolean {

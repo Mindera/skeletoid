@@ -117,7 +117,7 @@ object LOG {
     ): ILoggerManager {
 
         instance ?: synchronized(LOG.javaClass) {
-            instance = packageName?.let { LoggerManager(it) } ?: LoggerManager(context)
+            instance = if (packageName != null) LoggerManager(packageName) else LoggerManager(context)
         }
         return instance!!
     }

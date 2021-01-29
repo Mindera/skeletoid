@@ -16,6 +16,7 @@ import java.util.HashMap
 import java.util.HashSet
 
 class AnalyticsManagerUnitTest {
+
     companion object {
         private const val packageName = "my.package.name"
     }
@@ -30,8 +31,7 @@ class AnalyticsManagerUnitTest {
     @Test
     fun testAddAppendersEmpty() {
         val analyticsManager: IAnalyticsManager = AnalyticsManager()
-        val appendersIds =
-            analyticsManager.addAppenders(context, ArrayList())
+        val appendersIds = analyticsManager.addAppenders(context, ArrayList())
         Assert.assertNotNull(appendersIds)
         Assert.assertEquals(0, appendersIds.size)
     }
@@ -135,11 +135,11 @@ class AnalyticsManagerUnitTest {
         analyticsPayload["C"] = "C1"
         analyticsManager.trackEvent("test", analyticsPayload)
         Mockito.verify(appenderA, Mockito.times(1))
-            .trackEvent("test", analyticsPayload)
+            .trackEvent(eventName = "test", analyticsPayload = analyticsPayload)
         Mockito.verify(appenderB, Mockito.times(1))
-            .trackEvent("test", analyticsPayload)
+            .trackEvent(eventName = "test", analyticsPayload = analyticsPayload)
         Mockito.verify(appenderC, Mockito.times(1))
-            .trackEvent("test", analyticsPayload)
+            .trackEvent(eventName = "test", analyticsPayload = analyticsPayload)
     }
 
     @Test
@@ -159,11 +159,11 @@ class AnalyticsManagerUnitTest {
         analyticsPayload.putString("C", "C1")
         analyticsManager.trackEvent("test", analyticsPayload)
         Mockito.verify(appenderA, Mockito.times(1))
-            .trackEvent("test", analyticsPayload)
+            .trackEvent(eventName = "test", analyticsPayload = analyticsPayload)
         Mockito.verify(appenderB, Mockito.times(1))
-            .trackEvent("test", analyticsPayload)
+            .trackEvent(eventName = "test", analyticsPayload = analyticsPayload)
         Mockito.verify(appenderC, Mockito.times(1))
-            .trackEvent("test", analyticsPayload)
+            .trackEvent(eventName = "test", analyticsPayload = analyticsPayload)
     }
 
     @Test
@@ -178,13 +178,13 @@ class AnalyticsManagerUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         analyticsManager.addAppenders(context, appenders)
-        analyticsManager.trackPageHit(activity, "test", "screen class")
+        analyticsManager.trackPageHit(activity = activity, screenName = "test", screenClassOverride = "screen class")
         Mockito.verify(appenderA, Mockito.times(1))
-            .trackPageHit(activity, "test", "screen class")
+            .trackPageHit(activity = activity, screenName = "test", screenClassOverride = "screen class")
         Mockito.verify(appenderB, Mockito.times(1))
-            .trackPageHit(activity, "test", "screen class")
+            .trackPageHit(activity = activity, screenName = "test", screenClassOverride = "screen class")
         Mockito.verify(appenderC, Mockito.times(1))
-            .trackPageHit(activity, "test", "screen class")
+            .trackPageHit(activity = activity, screenName = "test", screenClassOverride = "screen class")
     }
 
     @Test
@@ -218,11 +218,11 @@ class AnalyticsManagerUnitTest {
         analyticsManager.setUserProperty("name", "banana")
         analyticsManager.setUserProperty("age", "30")
         Mockito.verify(appenderA, Mockito.times(1))
-            .setUserProperty("name", "banana")
+            .setUserProperty(name = "name", value = "banana")
         Mockito.verify(appenderB, Mockito.times(1))
-            .setUserProperty("name", "banana")
+            .setUserProperty(name = "name", value = "banana")
         Mockito.verify(appenderC, Mockito.times(1))
-            .setUserProperty("name", "banana")
+            .setUserProperty(name = "name", value = "banana")
         Mockito.verify(appenderA, Mockito.times(1)).setUserProperty("age", "30")
         Mockito.verify(appenderB, Mockito.times(1)).setUserProperty("age", "30")
         Mockito.verify(appenderC, Mockito.times(1)).setUserProperty("age", "30")

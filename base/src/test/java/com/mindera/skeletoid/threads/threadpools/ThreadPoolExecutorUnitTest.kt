@@ -5,7 +5,6 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
 import java.util.concurrent.TimeUnit
@@ -22,42 +21,25 @@ class ThreadPoolExecutorUnitTest {
     }
 
     private lateinit var threadFactory: NamedThreadFactory
-
     private lateinit var threadPoolExecutor: ThreadPoolExecutor
 
     @Before
     fun setUp() {
-        threadFactory = NamedThreadFactory("", 1)
-
+        threadFactory = NamedThreadFactory(threadPoolName = "", maxFactoryThreads = 1)
         threadPoolExecutor = ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, KEEP_ALIVE, TIME_UNIT, threadFactory)
     }
 
     @Test
     fun testConstructor() {
-        Assert.assertEquals(
-            CORE_POOL_SIZE,
-            threadPoolExecutor.corePoolSize
-        )
-        Assert.assertEquals(
-            MAX_POOL_SIZE,
-            threadPoolExecutor.maximumPoolSize
-        )
-        Assert.assertEquals(
-            KEEP_ALIVE,
-            threadPoolExecutor.getKeepAliveTime(TIME_UNIT)
-        )
-        Assert.assertEquals(
-            threadFactory,
-            threadPoolExecutor.threadFactory
-        )
+        Assert.assertEquals(CORE_POOL_SIZE, threadPoolExecutor.corePoolSize)
+        Assert.assertEquals(MAX_POOL_SIZE, threadPoolExecutor.maximumPoolSize)
+        Assert.assertEquals(KEEP_ALIVE, threadPoolExecutor.getKeepAliveTime(TIME_UNIT))
+        Assert.assertEquals(threadFactory, threadPoolExecutor.threadFactory)
     }
 
     @Test
     fun testThreadPoolInitialization() {
-        Assert.assertEquals(
-            CORE_POOL_SIZE,
-            threadPoolExecutor.corePoolSize
-        )
+        Assert.assertEquals(CORE_POOL_SIZE, threadPoolExecutor.corePoolSize)
     }
 
     @Test
