@@ -57,7 +57,7 @@ dependencies {
 
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
-    api "androidx.annotation:annotation:$appcompatVersion"
+    api "androidx.annotation:annotation:$annotationVersion"
 
     implementation("androidx.loader:loader:$loaderVersion")
 

@@ -32,10 +32,8 @@ android {
 
 dependencies {
 
-    //Depends on Base Skeletoid
+    // depends on base module
     api project(path: ':base')
-
     testImplementation project(path: ':base', configuration: 'childTestDependencies')
-
     implementation ("com.google.android.gms:play-services-analytics:$playServicesAnalytics")
 }

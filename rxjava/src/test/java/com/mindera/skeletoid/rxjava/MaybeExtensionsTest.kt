@@ -1,12 +1,9 @@
 package com.mindera.skeletoid.rxjava
 
 import io.reactivex.Maybe
-import io.reactivex.Observable
-import io.reactivex.functions.Predicate
 import io.reactivex.subjects.PublishSubject
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class MaybeExtensionsTest {
 
@@ -14,14 +11,13 @@ class MaybeExtensionsTest {
     fun testFilterOrElseWithConditionFalse() {
         val list = mutableListOf<Int>()
         val subject = PublishSubject.create<Int>()
+
         subject
             .doOnNext { list.add(it) }
             .test()
 
         Maybe.just(1)
-            .filterOrElse(false) {
-                subject.onNext(1)
-            }
+            .filterOrElse(list.isNotEmpty()) { subject.onNext(1) }
             .test()
             .assertNoErrors()
             .assertComplete()
@@ -34,14 +30,13 @@ class MaybeExtensionsTest {
     fun testFilterOrElseWithConditionTrue() {
         val list = mutableListOf<Int>()
         val subject = PublishSubject.create<Int>()
+
         subject
             .doOnNext { list.add(it) }
             .test()
 
         Maybe.just(1)
-            .filterOrElse(true) {
-                subject.onNext(1)
-            }
+            .filterOrElse(list.isEmpty()) { subject.onNext(1) }
             .test()
             .assertNoErrors()
             .assertComplete()

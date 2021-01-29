@@ -3,6 +3,7 @@ package com.mindera.skeletoid.logs.utils
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import androidx.core.content.FileProvider
 import org.junit.Rule
 import org.junit.Test
@@ -23,7 +24,7 @@ import java.io.IOException
 import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE)
+@Config(sdk = [Build.VERSION_CODES.O_MR1])
 @PowerMockIgnore("org.mockito.*", "org.robolectric.*", "android.*")
 @PrepareForTest(FileProvider::class)
 class ShareLogFilesUtilsUnitTests {
@@ -116,10 +117,10 @@ class ShareLogFilesUtilsUnitTests {
         assertEquals(Intent.ACTION_CHOOSER, intent.action)
         assertEquals("intentChooserTitle", intent.getStringExtra(Intent.EXTRA_TITLE))
         val extraIntent = intent.getParcelableExtra<Intent>(Intent.EXTRA_INTENT)!!
-        val array: List<String> = extraIntent.getStringArrayExtra(Intent.EXTRA_EMAIL)!!.toList()
+        val emailList: List<String> = extraIntent.getStringArrayExtra(Intent.EXTRA_EMAIL)!!.toList()
         assertEquals(Intent.ACTION_SEND, extraIntent.action)
-        assertEquals(1, array.size)
-        assertEquals("user@user.com", array[0])
+        assertEquals(1, emailList.size)
+        assertEquals("user@user.com", emailList[0])
         assertEquals(uri, extraIntent.extras?.get(Intent.EXTRA_STREAM))
         assertEquals("subject", extraIntent.getStringExtra(Intent.EXTRA_SUBJECT))
         assertEquals("bodyText", extraIntent.getStringExtra(Intent.EXTRA_TEXT))
