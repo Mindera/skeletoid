@@ -43,16 +43,10 @@ internal class LoggerManager : ILoggerManager {
      */
     private val logAppenders: MutableMap<String, ILogAppender> = HashMap()
 
-    /**
-     * The logger itself
-     */
     constructor(context: Context) {
         packageName = AndroidUtils.getApplicationPackage(context)
     }
 
-    /**
-     * A second constructor that receives a package name
-     */
     constructor(packageName: String) {
         this.packageName = packageName
     }

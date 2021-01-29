@@ -19,6 +19,8 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
 
     private static final String LOG_TAG = "ThreadPoolExecutor";
 
+    private static final int PRIORITY_QUEUE_INITIAL_CAPACITY = 11;
+
     /**
      * Runnable priority types (these are just helpers, another int value can be sent)
      */
@@ -48,7 +50,7 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
             maxPoolSize,
             keepAlive,
             timeUnit,
-            new PriorityBlockingQueue<Runnable>(11, new PriorityTaskComparator()),
+            new PriorityBlockingQueue<Runnable>(PRIORITY_QUEUE_INITIAL_CAPACITY, new PriorityTaskComparator()),
             threadFactory
         );
     }

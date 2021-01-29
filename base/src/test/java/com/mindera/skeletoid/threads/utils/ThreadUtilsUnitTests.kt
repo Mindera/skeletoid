@@ -6,7 +6,7 @@ import org.junit.Test
 class ThreadUtilsUnitTests {
 
     companion object {
-        private const val REGEX = "^\\[T# .*] $"
+        private const val THREAD_NAME_REGEX = "^\\[T# .*] $"
     }
 
     @Test
@@ -14,13 +14,13 @@ class ThreadUtilsUnitTests {
         val threadName = "[T# main] "
         val otherThreadName = "T# main"
         val yetAnotherThreadName = "[T# main]"
-        Assert.assertTrue(threadName.contains(REGEX.toRegex()))
-        Assert.assertFalse(otherThreadName.contains(REGEX.toRegex()))
-        Assert.assertFalse(yetAnotherThreadName.contains(REGEX.toRegex()))
+        Assert.assertTrue(threadName.contains(THREAD_NAME_REGEX.toRegex()))
+        Assert.assertFalse(otherThreadName.contains(THREAD_NAME_REGEX.toRegex()))
+        Assert.assertFalse(yetAnotherThreadName.contains(THREAD_NAME_REGEX.toRegex()))
     }
 
     @Test
     fun `test thread name`() {
-        Assert.assertTrue(ThreadUtils.currentThreadName.contains(REGEX.toRegex()))
+        Assert.assertTrue(ThreadUtils.currentThreadName.contains(THREAD_NAME_REGEX.toRegex()))
     }
 }
