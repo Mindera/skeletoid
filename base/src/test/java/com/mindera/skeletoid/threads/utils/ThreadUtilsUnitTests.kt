@@ -1,6 +1,5 @@
 package com.mindera.skeletoid.threads.utils
 
-import com.mindera.skeletoid.threads.utils.ThreadUtils.currentThreadName
 import org.junit.Assert
 import org.junit.Test
 
@@ -11,7 +10,7 @@ class ThreadUtilsUnitTests {
     }
 
     @Test
-    fun testRegex() {
+    fun `test regex`() {
         val threadName = "[T# main] "
         val otherThreadName = "T# main"
         val yetAnotherThreadName = "[T# main]"
@@ -21,7 +20,7 @@ class ThreadUtilsUnitTests {
     }
 
     @Test
-    fun testThreadName() {
-        Assert.assertTrue(currentThreadName.contains(REGEX.toRegex()))
+    fun `test thread name`() {
+        Assert.assertTrue(ThreadUtils.currentThreadName.contains(REGEX.toRegex()))
     }
 }

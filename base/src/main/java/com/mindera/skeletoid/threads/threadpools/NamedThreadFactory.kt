@@ -23,8 +23,7 @@ open class NamedThreadFactory internal constructor(threadPoolName: String, maxFa
     private val threadPoolNumber = AtomicInteger(0)
     private val namePrefix: String
     private val maxFactoryThreads: Int
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    val threads: Queue<Thread>
+    @VisibleForTesting val threads: Queue<Thread>
 
     companion object {
         private const val LOG_TAG = "NamedThreadFactory"

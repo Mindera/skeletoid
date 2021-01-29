@@ -1,5 +1,6 @@
 package com.mindera.skeletoid.kt.extensions.utils
 
+import android.os.Build
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -7,7 +8,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE)
+@Config(sdk = [Build.VERSION_CODES.O_MR1])
 class CurrencyFormatterTest {
 
     @Test(expected = NumberFormatException::class)
