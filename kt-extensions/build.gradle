@@ -38,17 +38,20 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+        unitTests.all {
+            // All the usual Gradle options.
+            testLogging {
+                events "failed"
+                exceptionFormat "full"
+            }
+        }
     }
 }
 
 dependencies {
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-
     implementation ("androidx.vectordrawable:vectordrawable-animated:$vectorDrawableVersion")
-
     implementation ("androidx.legacy:legacy-support-core-utils:$androidLegacyVersion")
-
     implementation ("androidx.appcompat:appcompat:$appcompatVersion")
 
     testImplementation "junit:junit:$junitVersion"

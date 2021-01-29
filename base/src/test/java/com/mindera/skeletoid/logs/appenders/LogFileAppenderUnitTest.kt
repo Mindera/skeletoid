@@ -2,6 +2,7 @@ package com.mindera.skeletoid.logs.appenders
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.core.content.FileProvider
 import androidx.test.core.app.ApplicationProvider
 import com.mindera.skeletoid.generic.AndroidUtils
@@ -32,7 +33,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE)
+@Config(sdk = [Build.VERSION_CODES.O_MR1])
 @PowerMockIgnore("org.mockito.*", "org.robolectric.*", "android.*")
 @PrepareForTest(FileProvider::class, Intent::class, AndroidUtils::class)
 class LogFileAppenderUnitTest {

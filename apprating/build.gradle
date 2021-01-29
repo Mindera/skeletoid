@@ -41,12 +41,12 @@ dependencies {
     implementation project(path: ':base')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$rootProject.kotlinVersion"
-    implementation "androidx.fragment:fragment:$rootProject.androidxFragmentVersion"
+    implementation "androidx.fragment:fragment-ktx:$rootProject.androidxFragmentVersion"
 
-    //WorkManager
+    // WorkManager
     implementation("androidx.work:work-runtime-ktx:$rootProject.workManagerVersion")
 
-    //Tests
+    // Tests
     testImplementation "org.jetbrains.kotlin:kotlin-test:$rootProject.kotlinVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
