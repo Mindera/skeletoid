@@ -7,13 +7,13 @@ class CollectionTest {
 
     @Test
     fun `test nullIfEmpty with non empty collection`() {
-        val collection = listOf("One", "Two", "Three")
+        val collection = setOf("One", "Two", "Three")
         Assert.assertNotNull(collection.nullIfEmpty())
     }
 
     @Test
     fun `test nullIfEmpty with empty collection`() {
-        val collection = listOf<String>()
+        val collection = setOf<String>()
         Assert.assertNull(collection.nullIfEmpty())
     }
 }
