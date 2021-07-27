@@ -141,10 +141,20 @@ class FbAppenderUnitTest {
     fun testTrackPageHit() {
         val activity = Activity()
         val screenName = "screenName"
+        val screenClass = "ScreenActivity"
 
         appender.trackPageHit(activity, screenName, null)
 
         verify(firebaseAnalytics).setCurrentScreen(activity, screenName, null)
+
+        val screenTrackPayload = Bundle().apply {
+            putString(FirebaseAnalytics.Param.SCREEN_CLASS, screenClass)
+            putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
+        }
+
+        appender.trackPageHit(screenClass, screenName)
+        verify(firebaseAnalytics)?.logEvent(eq(screenName), bundleArgumentCaptor.capture())
+        assertEquals(screenTrackPayload.toString(), bundleArgumentCaptor.value.toString())
     }
 
     @Test
@@ -152,10 +162,20 @@ class FbAppenderUnitTest {
         val activity = Activity()
         val screenName = "screenName"
         val screenClassOverride = "com.mindera.skeletoid.ScreenName"
+        val screenClass = "ScreenActivity"
 
         appender.trackPageHit(activity, screenName, screenClassOverride)
 
         verify(firebaseAnalytics).setCurrentScreen(activity, screenName, screenClassOverride)
+
+        val screenTrackPayload = Bundle().apply {
+            putString(FirebaseAnalytics.Param.SCREEN_CLASS, screenClass)
+            putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
+        }
+
+        appender.trackPageHit(screenClass, screenName)
+        verify(firebaseAnalytics)?.logEvent(eq(screenName), bundleArgumentCaptor.capture())
+        assertEquals(screenTrackPayload.toString(), bundleArgumentCaptor.value.toString())
     }
 
     @Test
@@ -163,9 +183,11 @@ class FbAppenderUnitTest {
         val activity = Activity()
         val screenName = "screenName"
         val screenClassOverride = "com.mindera.skeletoid.ScreenName"
+        val screenClass = "ScreenActivity"
 
         appender.disableAppender()
         appender.trackPageHit(activity, screenName, screenClassOverride)
+        appender.trackPageHit(screenClass, screenName)
 
         verifyNoMoreInteractions(firebaseAnalytics)
     }

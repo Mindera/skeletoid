@@ -53,6 +53,17 @@ interface IAnalyticsAppender {
     )
 
     /**
+     * Track app page hit manually
+     *
+     * @param screenClass         Screen class name
+     * @param screenName          Screen name
+     */
+    fun trackPageHit(
+        screenClass: String,
+        screenName: String
+    )
+
+    /**
      * Get Analytics id (it should be unique within AnalyticsAppenders)
      */
     val analyticsId: String
