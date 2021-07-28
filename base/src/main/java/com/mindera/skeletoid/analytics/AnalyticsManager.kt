@@ -86,6 +86,12 @@ class AnalyticsManager internal constructor() : IAnalyticsManager {
         }
     }
 
+    override fun trackPageHit(screenClass: String, screenName: String) {
+        for (appender in analyticsAppenders.values) {
+            appender.trackPageHit(screenClass, screenName)
+        }
+    }
+
     override fun setUserID(userID: String) {
         for (appender in analyticsAppenders.values) {
             appender.setUserId(userID)

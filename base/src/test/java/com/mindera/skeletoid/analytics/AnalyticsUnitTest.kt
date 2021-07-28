@@ -212,6 +212,14 @@ class AnalyticsUnitTest {
             .trackPageHit(activity, "test", "screen class")
         Mockito.verify(appenderC, Mockito.times(1))
             .trackPageHit(activity, "test", "screen class")
+
+        Analytics.trackPageHit("test", "screen class")
+        Mockito.verify(appenderA, Mockito.times(1))
+            .trackPageHit("test", "screen class")
+        Mockito.verify(appenderB, Mockito.times(1))
+            .trackPageHit("test", "screen class")
+        Mockito.verify(appenderC, Mockito.times(1))
+            .trackPageHit("test", "screen class")
     }
 
     @Test
