@@ -24,10 +24,7 @@ interface IAnalyticsManager {
      * @param context      Context
      * @param analyticsIds Log ids of each of the analytics enabled by the order sent
      */
-    fun removeAppenders(
-        context: Context,
-        analyticsIds: Set<String>
-    )
+    fun removeAppenders(context: Context, analyticsIds: Set<String>)
 
     /**
      * Disable all analytics appenders

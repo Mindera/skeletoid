@@ -16,10 +16,7 @@ object Analytics {
      * @param context            Context app
      * @param analyticsAppenders The analytics appenders to be started
      */
-    fun init(
-        context: Context,
-        analyticsAppenders: List<IAnalyticsAppender> = emptyList()
-    ): Set<String> {
+    fun init(context: Context, analyticsAppenders: List<IAnalyticsAppender> = emptyList()): Set<String> {
         return getInstance().addAppenders(context, analyticsAppenders)
     }
 
@@ -47,10 +44,7 @@ object Analytics {
      * @param analyticsAppenders Analytics appenders to enable
      * @return Ids of the analytics appenders enabled by their order
      */
-    fun addAppenders(
-        context: Context,
-        analyticsAppenders: List<IAnalyticsAppender>
-    ): Set<String> {
+    fun addAppenders(context: Context, analyticsAppenders: List<IAnalyticsAppender>): Set<String> {
         return instance?.addAppenders(context, analyticsAppenders)
             ?: throw UninitializedPropertyAccessException("Please call init() before using")
     }
@@ -81,10 +75,7 @@ object Analytics {
      * @param eventName        Event name
      * @param analyticsPayload Generic analytics payload
      */
-    fun trackEvent(
-        eventName: String,
-        analyticsPayload: Map<String, Any>
-    ) {
+    fun trackEvent(eventName: String, analyticsPayload: Map<String, Any>) {
         instance?.trackEvent(eventName, analyticsPayload)
     }
 
@@ -105,11 +96,7 @@ object Analytics {
      * @param screenName          Name of screen
      * @param screenClassOverride Screen name class override
      */
-    fun trackPageHit(
-        activity: Activity,
-        screenName: String,
-        screenClassOverride: String? = null
-    ) {
+    fun trackPageHit(activity: Activity, screenName: String, screenClassOverride: String? = null) {
         instance?.trackPageHit(activity, screenName, screenClassOverride)
     }
 
@@ -119,10 +106,7 @@ object Analytics {
      * @param screenClass         Screen name class override
      * @param screenName          Name of screen
      */
-    fun trackPageHit(
-        screenClass: String,
-        screenName: String
-    ) {
+    fun trackPageHit(screenClass: String, screenName: String) {
         instance?.trackPageHit(screenClass, screenName)
     }
 
