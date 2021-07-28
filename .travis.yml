@@ -61,6 +61,3 @@ script:
   # https://medium.com/@azizbekian/setup-jacoco-sonarqube-in-multimodule-multiflavor-kotlin-android-project-d8e7b27aed36
   # this still might be useful in some cases to look at
 
-jdk: openjdk11
-
-
