@@ -185,6 +185,15 @@ class AnalyticsManagerUnitTest {
             .trackPageHit(activity = activity, screenName = "test", screenClassOverride = "screen class")
         Mockito.verify(appenderC, Mockito.times(1))
             .trackPageHit(activity = activity, screenName = "test", screenClassOverride = "screen class")
+
+
+        analyticsManager.trackPageHit(screenName = "test", screenClass = "screen class")
+        Mockito.verify(appenderA, Mockito.times(1))
+            .trackPageHit(screenName = "test", screenClass = "screen class")
+        Mockito.verify(appenderB, Mockito.times(1))
+            .trackPageHit(screenName = "test", screenClass = "screen class")
+        Mockito.verify(appenderC, Mockito.times(1))
+            .trackPageHit(screenName = "test", screenClass = "screen class")
     }
 
     @Test

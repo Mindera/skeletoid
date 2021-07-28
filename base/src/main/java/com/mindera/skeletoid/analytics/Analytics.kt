@@ -114,6 +114,19 @@ object Analytics {
     }
 
     /**
+     * Track Page Hits - Analytics generic method to track page hits
+     *
+     * @param screenClass         Screen name class override
+     * @param screenName          Name of screen
+     */
+    fun trackPageHit(
+        screenClass: String,
+        screenName: String
+    ) {
+        instance?.trackPageHit(screenClass, screenName)
+    }
+
+    /**
      * Sets the user ID
      *
      * @param userID ID of the user

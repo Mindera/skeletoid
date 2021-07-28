@@ -16,10 +16,7 @@ interface IAnalyticsManager {
      * @param analyticsAppenders Log appenders to enable
      * @return Ids of the logs enabled by their order
      */
-    fun addAppenders(
-        context: Context,
-        analyticsAppenders: List<IAnalyticsAppender>
-    ): Set<String>
+    fun addAppenders(context: Context, analyticsAppenders: List<IAnalyticsAppender>): Set<String>
 
     /**
      * Disable analytics appenders
@@ -43,10 +40,7 @@ interface IAnalyticsManager {
      * @param eventName        Event name
      * @param analyticsPayload Generic analytics payload
      */
-    fun trackEvent(
-        eventName: String,
-        analyticsPayload: Map<String, Any>
-    )
+    fun trackEvent(eventName: String, analyticsPayload: Map<String, Any>)
 
     /**
      * Track app event
@@ -63,11 +57,15 @@ interface IAnalyticsManager {
      * @param screenName          Screen name
      * @param screenClassOverride Screen class override name
      */
-    fun trackPageHit(
-        activity: Activity,
-        screenName: String,
-        screenClassOverride: String? = null
-    )
+    fun trackPageHit(activity: Activity, screenName: String, screenClassOverride: String? = null)
+
+    /**
+     * Track app page hit manually
+     *
+     * @param screenClass         Screen class name
+     * @param screenName          Screen name
+     */
+    fun trackPageHit(screenClass: String, screenName: String)
 
     /**
      * Sets the user ID
