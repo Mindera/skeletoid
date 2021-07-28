@@ -64,17 +64,20 @@ class GaAppender(private val configurationFileId: Int) : IAnalyticsAppender {
         }
     }
 
-    override fun trackPageHit(activity: Activity, screenName: String, screenClassOverride: String?) {
+    override fun trackPageHit(screenClass: String, screenName: String) {
         if (tracker == null) {
             LOG.e(LOG_TAG, "trackPageHit failed: tracker is null")
             return
         }
 
         tracker?.run {
-            // Should we do something with screenClassOverride?
             setScreenName(screenName)
             send(HitBuilders.ScreenViewBuilder().build())
         }
+    }
+
+    override fun trackPageHit(activity: Activity, screenName: String, screenClassOverride: String?) {
+        trackPageHit(screenName, screenClassOverride.orEmpty())
     }
 
     private fun parsePayload(analyticsPayload: Map<String, Any>): Map<String, String> {

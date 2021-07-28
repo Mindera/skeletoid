@@ -26,10 +26,7 @@ interface IAnalyticsAppender {
      * @param eventName        Event name
      * @param analyticsPayload Generic analytics payload
      */
-    fun trackEvent(
-        eventName: String,
-        analyticsPayload: Map<String, Any>
-    )
+    fun trackEvent(eventName: String, analyticsPayload: Map<String, Any>)
 
     /**
      * Track app event
@@ -46,11 +43,15 @@ interface IAnalyticsAppender {
      * @param screenName          Screen name
      * @param screenClassOverride Screen class override name
      */
-    fun trackPageHit(
-        activity: Activity,
-        screenName: String,
-        screenClassOverride: String?
-    )
+    fun trackPageHit(activity: Activity, screenName: String, screenClassOverride: String?)
+
+    /**
+     * Track app page hit manually
+     *
+     * @param screenClass         Screen class name
+     * @param screenName          Screen name
+     */
+    fun trackPageHit(screenClass: String, screenName: String)
 
     /**
      * Get Analytics id (it should be unique within AnalyticsAppenders)

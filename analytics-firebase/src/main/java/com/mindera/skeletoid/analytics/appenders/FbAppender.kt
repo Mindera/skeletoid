@@ -44,6 +44,11 @@ class FbAppender : IAnalyticsAppender {
         firebaseAnalytics?.logEvent(eventName, analyticsPayload)
     }
 
+    @Deprecated(
+        message = "This method is deprecated in newer firebase versions.",
+        replaceWith = ReplaceWith("trackPageHit(screenClass = yourScreenClass, screenName = screenName)"),
+        level = DeprecationLevel.WARNING
+    )
     override fun trackPageHit(activity: Activity, screenName: String, screenClassOverride: String?) {
         if (firebaseAnalytics == null) {
             LOG.e(LOG_TAG, "trackPageHit failed: firebaseAnalytics is null")
@@ -51,6 +56,20 @@ class FbAppender : IAnalyticsAppender {
         }
 
         firebaseAnalytics?.setCurrentScreen(activity, screenName, screenClassOverride)
+    }
+
+    override fun trackPageHit(screenClass: String, screenName: String) {
+        if (firebaseAnalytics == null) {
+            LOG.e(LOG_TAG, "trackPageHit failed: firebaseAnalytics is null")
+            return
+        }
+
+        val parameters = mapOf(
+            FirebaseAnalytics.Param.SCREEN_CLASS to screenClass,
+            FirebaseAnalytics.Param.SCREEN_NAME to screenName
+        )
+
+        firebaseAnalytics?.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, mapToBundle(parameters))
     }
 
     override fun setUserId(userId: String) {
