@@ -72,7 +72,7 @@ class FbAppender : IAnalyticsAppender {
         firebaseAnalytics?.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, mapToBundle(parameters))
     }
 
-    override fun setUserId(userId: String) {
+    override fun setUserId(userId: String?) {
         if (firebaseAnalytics == null) {
             LOG.e(LOG_TAG, "setUserId failed: firebaseAnalytics is null")
             return

@@ -115,7 +115,7 @@ object Analytics {
      *
      * @param userID ID of the user
      */
-    fun setUserID(userID: String) {
+    fun setUserID(userID: String?) {
         instance?.setUserID(userID)
     }
 

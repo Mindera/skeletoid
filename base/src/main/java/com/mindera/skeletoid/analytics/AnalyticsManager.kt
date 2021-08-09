@@ -92,7 +92,7 @@ class AnalyticsManager internal constructor() : IAnalyticsManager {
         }
     }
 
-    override fun setUserID(userID: String) {
+    override fun setUserID(userID: String?) {
         for (appender in analyticsAppenders.values) {
             appender.setUserId(userID)
         }
