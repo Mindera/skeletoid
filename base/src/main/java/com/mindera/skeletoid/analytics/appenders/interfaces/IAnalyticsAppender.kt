@@ -63,7 +63,7 @@ interface IAnalyticsAppender {
      *
      * @param userId ID of the user
      */
-    fun setUserId(userId: String)
+    fun setUserId(userId: String?)
 
     /**
      * Sets a custom property of the user

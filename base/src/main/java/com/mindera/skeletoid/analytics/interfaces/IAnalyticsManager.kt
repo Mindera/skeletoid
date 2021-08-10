@@ -69,7 +69,7 @@ interface IAnalyticsManager {
      *
      * @param userID ID of the user
      */
-    fun setUserID(userID: String)
+    fun setUserID(userID: String?)
 
     /**
      * Sets a custom property of the user
