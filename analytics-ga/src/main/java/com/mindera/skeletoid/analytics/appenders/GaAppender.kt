@@ -142,7 +142,7 @@ class GaAppender(private val configurationFileId: Int) : IAnalyticsAppender {
 
     override val analyticsId: String = "GoogleAnalytics"
 
-    override fun setUserId(userId: String) {
+    override fun setUserId(userId: String?) {
         tracker?.setClientId(userId)
     }
 
