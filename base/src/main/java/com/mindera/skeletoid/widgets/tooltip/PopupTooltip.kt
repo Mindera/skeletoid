@@ -22,47 +22,48 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StyleRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 
 class PopupTooltip(
-        //Required parameters
-        private var anchorView: View,
-        private var message: CharSequence,
-        @LayoutRes private var layout: Int,
-        @IdRes private var textViewId: Int,
-        @IdRes private var tooltipBackgroundId: Int,
-        //Tooltip layout
-        private var elevation: Int = DEFAULT_ELEVATION,
-        private var popupWidth: Int = TOOLTIP_WIDTH,
-        //Tooltip behaviour
-        private var indefinite: Boolean = false,
-        private var showDuration: Long = 3500L,
-        private var verticalMargin: Int = 0,
-        private var horizontalMargin: Int = 0,
-        private var horizontalMarginClipped: Int = 0,
-        private var verticalMarginClipped: Int = 0,
-        private var insideTouchDismissible: Boolean = true,
-        private var outsideTouchDismissible: Boolean = true,
-        private var respectScreenBounds: Boolean = false,
-        private var modal: Boolean = true,
-        @StyleRes private var animation: Int? = null,
-        //Tooltip arrow
-        private var arrowWidth: Int = ARROW_WIDTH,
-        private var arrowHeight: Int = ARROW_HEIGHT,
-        private var arrow: Boolean = false,
-        @DrawableRes private var arrowDrawable: Int? = null,
-        @ColorRes private var arrowStrokeColor: Int = android.R.color.white,
-        @IdRes private var arrowBackgroundId: Int? = null,
-        @IdRes private var arrowStrokeId: Int? = null
+    private var anchorView: View,
+    private var message: CharSequence,
+    @LayoutRes private var layout: Int,
+    @IdRes private var textViewId: Int,
+    @IdRes private var tooltipBackgroundId: Int
 ) : PopupWindow() {
 
+    /**
+     * The possible orientation for the tooltip in relation to the [anchorView].
+     * Currently it can only be displayed on top or below a view.
+     */
+    enum class TooltipGravity { TOP, BOTTOM, BOTTOM_RIGHT }
+
+    private var elevation: Int = DEFAULT_ELEVATION
+    private var popupWidth: Int = TOOLTIP_WIDTH
+    private var popupHeight: Int = TOOLTIP_HEIGHT
+    private var tooltipGravity: TooltipGravity = TooltipGravity.TOP
+
+    private var indefinite: Boolean = false
+    private var showDuration: Long = 3500L
+    private var verticalMargin: Int = 0
+    private var horizontalMargin: Int = 0
+    private var horizontalMarginClipped: Int = 0
+    private var verticalMarginClipped: Int = 0
+    private var insideTouchDismissible: Boolean = true
+    private var outsideTouchDismissible: Boolean = true
+    private var modal: Boolean = true
+    @StyleRes private var animation: Int? = null
+
+    private var arrowWidth: Int = ARROW_WIDTH
+    private var arrowHeight: Int = ARROW_HEIGHT
+    private var arrow: Boolean = false
+    @DrawableRes private var arrowDrawable: Int? = null
+    @ColorRes private var arrowStrokeColor: Int = android.R.color.white
+    @IdRes private var arrowBackgroundId: Int? = null
+    @IdRes private var arrowStrokeId: Int? = null
+
     companion object {
-
-        /**
-         * The LOGGING TAG. Epic.
-         */
-        const val TAG = "PopupTooltip"
-
         /**
          * Saves a reference to our currently displayed tooltip. This is here so we can control when
          * we dismiss/show it.
@@ -74,7 +75,7 @@ class PopupTooltip(
          * This assumes the popup will have two lines of text with the text sizes
          * specified in [layout].
          */
-        const val ESTIMATED_HEIGHT_DIPS = 46
+        const val TOOLTIP_HEIGHT = 46
 
         /**
          * The default width value of the tooltip if none is specified, in dips (density-independent pixels).
@@ -218,18 +219,20 @@ class PopupTooltip(
     fun modal(isModal: Boolean) = apply { this.modal = isModal }
 
     /**
-     * Sets clip to children flag.
-     */
-    @Deprecated("This is sort of useless, since the widget handles this own its own. However, if it helps you in your use case, the option is here.")
-    fun respectScreenBounds(clipToChildren: Boolean) = apply { this.respectScreenBounds = clipToChildren }
-
-    /**
      * The tooltip width to be displayed in dips (Density Independent Pixels).
      * 250dp seems to be a good roundabout value.
      *
      * @param width - the tooltip width in dips.
      */
     fun layoutWidth(width: Int) = apply { this.popupWidth = width }
+
+    /**
+     * The tooltip height to be displayed in dips (Density Independent Pixels).
+     * 46dp seems to be a good roundabout value for two lines.
+     *
+     * @param height - the tooltip height in dips.
+     */
+    fun layoutHeight(height: Int) = apply { this.popupHeight = height }
 
     /**
      * Defines a custom layout for this tooltip.
@@ -266,6 +269,13 @@ class PopupTooltip(
     fun arrowWidth(width: Int) = apply { this.arrowHeight = width }
 
     /**
+     * Defines a new orientation in relation to the [anchorView]
+     *
+     * @param tooltipGravity - one of the possible [TooltipGravity] parameters
+     */
+    fun orientation(tooltipGravity: TooltipGravity) = apply { this.tooltipGravity = tooltipGravity }
+
+    /**
      * Displays the tooltip
      */
     fun show() = setupTooltip(anchorView, message)
@@ -296,7 +306,7 @@ class PopupTooltip(
         view.getLocationOnScreen(screenPos)
         view.getWindowVisibleDisplayFrame(displayFrame)
 
-        val estimatedTooltipHeight = getValueInPixels(ESTIMATED_HEIGHT_DIPS, context)
+        val estimatedTooltipHeight = getValueInPixels(popupHeight, context)
         val tooltipArrowHeight = getValueInPixels(arrowHeight, context).toInt()
         val tooltipArrowWidth = getValueInPixels(arrowWidth, context)
 
@@ -319,16 +329,17 @@ class PopupTooltip(
 
         setupTooltipBehaviour(context, layout, tooltipWidth)
 
-        val x: Float = screenPos[0] - tooltipWidth / 2f - getValueInPixels(horizontalMargin, context).toInt() + anchorView.width / 2f
-        val y: Float = screenPos[1] - estimatedTooltipHeight - getValueInPixels(verticalMargin, context).toInt() - (if (arrow) tooltipArrowHeight else 0)
-
         //Handle arrow
-        if (arrow) setupArrow(layout, context, tooltipArrowWidth, screenPos[0])
+        if (arrow) {
+            setupArrow(layout, context, tooltipArrowWidth, screenPos[0], tooltipWidth)
+        }
 
         //Handle timed dismiss
         if (!indefinite) {
             handler.postDelayed({ clearTooltip() }, showDuration)
         }
+
+        val (x, y) = calculateXYPosition(screenPos, tooltipWidth, estimatedTooltipHeight, tooltipArrowHeight, context)
 
         showTooltipAtLocation(x, y, displayFrame.top, screenPos[0], tooltipWidth, context)
     }
@@ -337,32 +348,42 @@ class PopupTooltip(
      * If the arrow flag is set to true, this method enables the arrow and places it at the
      * required place, at the top center of the anchor view.
      */
-    private fun setupArrow(layout: View, context: Context, tooltipArrowWidth: Float, anchorViewAbsoluteX: Int) {
-        if (arrowBackgroundId != null && arrowStrokeId != null) {
-            val arrow = layout.findViewById<ImageView>(arrowBackgroundId ?: 0)
-            val stroke = layout.findViewById<ImageView>(arrowStrokeId ?: 0)
-            val elevation = getValueInPixels(elevation, context)
+    private fun setupArrow(layout: View, context: Context, tooltipArrowWidth: Float, anchorViewAbsoluteX: Int, tooltipWidth: Int) {
+        val arrow = layout.findViewById<ImageView>(arrowBackgroundId ?: View.NO_ID)
+        val stroke = layout.findViewById<ImageView>(arrowStrokeId ?: View.NO_ID)
+        val elevation = getValueInPixels(elevation, context)
 
-            arrowDrawable?.let {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    arrow.setImageDrawable(context.getDrawable(it))
-                    arrow.elevation = elevation
-                    stroke.setImageDrawable(context.getDrawable(it))
+        if (arrow != null && arrowDrawable != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                arrow.setImageDrawable(AppCompatResources.getDrawable(context, arrowDrawable!!))
+                arrow.elevation = elevation
+                arrow.visibility = View.VISIBLE
+
+                if (stroke != null) {
+                    stroke.setImageDrawable(AppCompatResources.getDrawable(context, arrowDrawable!!))
                     stroke.elevation = elevation
+
+                    stroke.setColorFilter(arrowStrokeColor)
+                    stroke.visibility = View.VISIBLE
                 }
             }
-
-            arrow.visibility = View.VISIBLE
-            stroke.setColorFilter(arrowStrokeColor)
-            stroke.visibility = View.VISIBLE
 
             arrow.post {
                 val arrowScreenPositions = IntArray(2)
                 arrow.getLocationOnScreen(arrowScreenPositions)
 
-                val arrowAbsoluteX: Float = anchorViewAbsoluteX + anchorView.width / 2f - arrowScreenPositions[0].toFloat() - tooltipArrowWidth / 2f
+                val arrowAbsoluteX: Float =  if (tooltipGravity == TooltipGravity.BOTTOM_RIGHT) {
+                    anchorViewAbsoluteX + anchorView.width / 2f - arrowScreenPositions[0].toFloat() - tooltipArrowWidth
+                } else {
+                    anchorViewAbsoluteX + anchorView.width / 2f - arrowScreenPositions[0].toFloat() - tooltipArrowWidth / 2f
+                }
+
+
                 arrow.x = arrowAbsoluteX
-                stroke.x = arrowAbsoluteX
+
+                if (stroke != null) {
+                    stroke.x = arrowAbsoluteX
+                }
             }
         }
     }
@@ -441,15 +462,19 @@ class PopupTooltip(
         windowManager.defaultDisplay.getMetrics(displayMetrics)
 
         val screenWidth = displayMetrics.widthPixels
-        val tooltipMaxWidth = anchorXScreenPos + anchorView.width / 2f + tooltipWidth / 2f
 
         var auxX = x.toInt()
         var auxY = y.toInt()
 
         //If the tooltip exceeds maxX clamp it to the screen with the horizontal margin.
-        if (tooltipMaxWidth >= screenWidth) {
-            auxX = screenWidth - tooltipWidth - getValueInPixels(horizontalMargin, context).toInt() - getValueInPixels(horizontalMarginClipped, context).toInt()
+        if (tooltipGravity != TooltipGravity.BOTTOM_RIGHT) {
+            val tooltipMaxWidth = anchorXScreenPos + anchorView.width / 2f + tooltipWidth / 2f
+
+            if (tooltipMaxWidth >= screenWidth) {
+                auxX = screenWidth - tooltipWidth - getValueInPixels(horizontalMargin, context).toInt() - getValueInPixels(horizontalMarginClipped, context).toInt()
+            }
         }
+
         //If the tooltip is drawn out of the screen from the left side clamp it to the screen with the horizontal margin.
         if (anchorXScreenPos - anchorView.width / 2f - tooltipWidth / 2f <= 0f) {
             auxX = getValueInPixels(horizontalMargin, context).toInt() + getValueInPixels(horizontalMarginClipped, context).toInt()
@@ -462,5 +487,35 @@ class PopupTooltip(
 
         //If the tooltip exceeds the screen bounds, clip it to the end of the screen.
         tooltip?.showAtLocation(anchorView, GRAVITY, auxX, auxY)
+    }
+
+    private fun calculateXYPosition(
+        screenPos: IntArray,
+        tooltipWidth: Int,
+        estimatedTooltipHeight: Float,
+        tooltipArrowHeight: Int,
+        context: Context
+    ): Pair<Float, Float> {
+
+        return when(tooltipGravity) {
+            TooltipGravity.TOP -> {
+                Pair(
+                    screenPos[0] - tooltipWidth / 2f - getValueInPixels(horizontalMargin, context).toInt() + anchorView.width / 2f,
+                    screenPos[1] - estimatedTooltipHeight - getValueInPixels(verticalMargin, context).toInt() - (if (arrow) tooltipArrowHeight else 0)
+                )
+            }
+            TooltipGravity.BOTTOM -> {
+                Pair(
+                    screenPos[0] - tooltipWidth / 2f - getValueInPixels(horizontalMargin, context).toInt() + anchorView.width / 2f,
+                    screenPos[1] + anchorView.height / 2f + getValueInPixels(verticalMargin, context).toInt() + (if (arrow) tooltipArrowHeight else 0)
+                )
+            }
+            TooltipGravity.BOTTOM_RIGHT -> {
+                Pair(
+                    screenPos[0] - tooltipWidth + anchorView.width - getValueInPixels(horizontalMargin, context),
+                    screenPos[1] + anchorView.height / 2f + getValueInPixels(verticalMargin, context).toInt() + (if (arrow) tooltipArrowHeight else 0)
+                )
+            }
+        }
     }
 }
