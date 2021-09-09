@@ -132,7 +132,7 @@ class PopupTooltip(
     /**
      * Allows the usage of custom animations to show/hide the tooltip.
      */
-    @StyleRes private var animationStyle: Int? = null,
+    @StyleRes private var animationStyleResource: Int? = null,
 ) {
 
     companion object {
@@ -465,7 +465,7 @@ class PopupTooltip(
             setOnDismissListener { tooltip = null }
 
             //Show animation
-            animationStyle?.let { animationStyle = it }
+            animationStyleResource?.let { animationStyle = it }
 
             //Allow to draw outside of the screen.
             isClippingEnabled = true
