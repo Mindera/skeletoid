@@ -8,6 +8,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import com.mindera.skeletoid.widgets.tooltip.PopupTooltip.Companion.Coordinates
 import com.mindera.skeletoid.widgets.tooltip.PopupTooltip.Companion.TooltipGravity
 import com.mindera.skeletoid.widgets.tooltip.PopupTooltip.Companion.getValueInPixels
 
@@ -49,7 +50,7 @@ class PopupTooltipPositionDelegate {
         horizontalMargin: Int,
         verticalMargin: Int,
         context: Context
-    ): PopupTooltip.Coordinates {
+    ): Coordinates {
 
         val tooltipArrowHeight = arrow?.let { getValueInPixels(it.arrowHeight, context) } ?: 0f
 
@@ -77,7 +78,7 @@ class PopupTooltipPositionDelegate {
             }
         }
 
-        return PopupTooltip.Coordinates(x, y)
+        return Coordinates(x, y)
     }
 
     /**
@@ -96,7 +97,7 @@ class PopupTooltipPositionDelegate {
         verticalMargin: Int,
         verticalMarginClipped: Int,
         context: Context
-    ): PopupTooltip.Coordinates {
+    ): Coordinates {
         val displayMetrics = DisplayMetrics()
         val windowManager = ContextCompat.getSystemService(context, WindowManager::class.java) as WindowManager
         windowManager.defaultDisplay.getMetrics(displayMetrics)
@@ -129,7 +130,7 @@ class PopupTooltipPositionDelegate {
                     getValueInPixels(verticalMarginClipped, context)
         }
 
-        return PopupTooltip.Coordinates(auxX, auxY)
+        return Coordinates(auxX, auxY)
     }
 
 }
