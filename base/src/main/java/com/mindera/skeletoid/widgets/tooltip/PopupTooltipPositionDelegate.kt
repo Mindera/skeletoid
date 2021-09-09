@@ -83,7 +83,8 @@ class PopupTooltipPositionDelegate {
     }
 
     /**
-     * Shows the tooltip at a specific place with the pre-defined Gravity in the companion object.
+     * Calculates the X and Y final position, basically by checking if the x and y coordinates previously calculated on
+     * [calculateTooltipInitialPosition] are or not out of bounds and clamping it to the screen.
      */
     fun calculateTooltipFinalPosition(
         x: Float,
