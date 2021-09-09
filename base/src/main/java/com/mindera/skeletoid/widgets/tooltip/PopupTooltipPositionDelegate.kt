@@ -8,6 +8,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import com.mindera.skeletoid.widgets.tooltip.PopupTooltip.Companion.ArrowData
 import com.mindera.skeletoid.widgets.tooltip.PopupTooltip.Companion.Coordinates
 import com.mindera.skeletoid.widgets.tooltip.PopupTooltip.Companion.TooltipGravity
 import com.mindera.skeletoid.widgets.tooltip.PopupTooltip.Companion.getValueInPixels
@@ -45,7 +46,7 @@ class PopupTooltipPositionDelegate {
         tooltipWidth: Int,
         estimatedTooltipHeight: Float,
         anchorView: View,
-        arrow: PopupTooltip.ArrowData?,
+        arrow: ArrowData?,
         tooltipGravity: TooltipGravity,
         horizontalMargin: Int,
         verticalMargin: Int,
