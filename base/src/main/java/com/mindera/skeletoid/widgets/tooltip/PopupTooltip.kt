@@ -55,84 +55,84 @@ class PopupTooltip(
     /**
      * Defines a custom elevation for all the tooltip components, in dips (Density Independent Pixels).
      */
-    private var elevation: Int = DEFAULT_ELEVATION,
+    private val elevation: Int = DEFAULT_ELEVATION,
 
     /**
      * The tooltip width to be displayed in dips (Density Independent Pixels).
      * 250dp seems to be a good roundabout value.
      */
-    private var popupWidth: Int = TOOLTIP_WIDTH,
+    private val popupWidth: Int = TOOLTIP_WIDTH,
 
     /**
      * The tooltip height to be displayed in dips (Density Independent Pixels).
      * 46dp seems to be a good roundabout value for two lines.
      */
-    private var popupHeight: Int = TOOLTIP_HEIGHT,
+    private val popupHeight: Int = TOOLTIP_HEIGHT,
 
     /**
      * Defines a new gravity in relation to the [anchorView]
      */
-    private var tooltipGravity: TooltipGravity = TooltipGravity.TOP,
+    private val tooltipGravity: TooltipGravity = TooltipGravity.TOP,
 
     /**
      * If false the tooltip will dismiss after a certain amount of time. Else, it will remain there
      * until clicked again.
      */
-    private var indefinite: Boolean = false,
+    private val indefinite: Boolean = false,
 
     /**
      * If the tooltip is definite, specify the time the tooltip should remain visible.
      */
-    private var showDuration: Long = 3500L,
+    private val showDuration: Long = 3500L,
 
     /**
      * The vertical offset from the anchorview to the tooltip in dips.
      */
-    private var verticalMargin: Int = 0,
+    private val verticalMargin: Int = 0,
 
     /**
      * The horizontal offset from the edges of the screen.
      */
-    private var horizontalMargin: Int = 0,
+    private val horizontalMargin: Int = 0,
 
     /**
      * The horizontal offset from the edges of the screen to the tooltip when the bounds
      * of the tooltip exceed the bounds of the screen.
      */
-    private var horizontalMarginClipped: Int = 0,
+    private val horizontalMarginClipped: Int = 0,
 
     /**
      * The vertical offset from the anchor view to the tooltip when the bounds of the tooltip exceed
      * the bounds of the screen.
      */
-    private var verticalMarginClipped: Int = 0,
+    private val verticalMarginClipped: Int = 0,
 
     /**
      * Enables or disables dismiss on inside touch.
      */
-    private var insideTouchDismissible: Boolean = true,
+    private val insideTouchDismissible: Boolean = true,
 
     /**
      * Enables or disables dismiss on outside touch.
      */
-    private var outsideTouchDismissible: Boolean = true,
+    private val outsideTouchDismissible: Boolean = true,
 
     /**
      * Defines the popup window as focusable. Set this to false if you want the view
      * to be click through. Although this messes up with the inside/outside touch flags, so use
      * this carefully.
      */
-    private var modal: Boolean = true,
+    private val modal: Boolean = true,
 
     /**
      * Creates the arrow to show pointing to the [anchorView] according to our [gravity]
      */
-    private var arrow: ArrowData? = null,
+    private val arrow: ArrowData? = null,
 
     /**
      * Allows the usage of custom animations to show/hide the tooltip.
      */
-    @StyleRes private var animationStyleResource: Int? = null,
+    @StyleRes private val animationStyleResource: Int? = null,
 ) {
 
     companion object {
