@@ -2,7 +2,6 @@
 
 package com.mindera.skeletoid.widgets.tooltip
 
-import android.content.Context
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.WindowManager
@@ -13,7 +12,7 @@ import com.mindera.skeletoid.widgets.tooltip.PopupTooltip.ArrowData
 import com.mindera.skeletoid.widgets.tooltip.PopupTooltip.Companion.Coordinates
 import com.mindera.skeletoid.widgets.tooltip.PopupTooltip.TooltipGravity
 
-class PopupUtils {
+class TooltipUtils {
 
     /**
      * Calculates the position of the arrow in relation to the tooltip. It's X and Y coordinates are associated with the
@@ -22,12 +21,11 @@ class PopupUtils {
     fun calculateArrowXPosition(
         tooltipArrow: ImageView,
         gravity: TooltipGravity,
-        context: Context,
         arrowWidth: Int,
         anchorViewAbsoluteX: Int,
         anchorViewWidth: Int
     ): Float {
-        val tooltipArrowWidth = getValueInPixels(arrowWidth, context)
+        val tooltipArrowWidth = getValueInPixels(arrowWidth, tooltipArrow.context)
 
         val arrowScreenPositions = IntArray(2)
         tooltipArrow.getLocationOnScreen(arrowScreenPositions)
@@ -49,10 +47,9 @@ class PopupUtils {
         arrow: ArrowData?,
         tooltipGravity: TooltipGravity,
         horizontalMargin: Int,
-        verticalMargin: Int,
-        context: Context
+        verticalMargin: Int
     ): Coordinates {
-
+        val context = anchorView.context
         val tooltipArrowHeight = arrow?.let { getValueInPixels(it.arrowHeight, context) } ?: 0f
 
         val x = when (tooltipGravity) {
@@ -97,9 +94,9 @@ class PopupUtils {
         horizontalMargin: Int,
         horizontalMarginClipped: Int,
         verticalMargin: Int,
-        verticalMarginClipped: Int,
-        context: Context
+        verticalMarginClipped: Int
     ): Coordinates {
+        val context = anchorView.context
         val displayMetrics = DisplayMetrics()
         val windowManager = ContextCompat.getSystemService(context, WindowManager::class.java) as WindowManager
         windowManager.defaultDisplay.getMetrics(displayMetrics)
