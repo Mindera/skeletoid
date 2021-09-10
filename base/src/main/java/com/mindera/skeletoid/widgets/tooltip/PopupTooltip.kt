@@ -25,232 +25,141 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.StyleRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import com.mindera.skeletoid.generic.UIUtils.getValueInPixels
 
+/**
+ * @constructor Primary constructor for the tooltip view.
+ *
+ * @property anchorView The view to anchor the tooltip to.
+ *
+ * @property message The message to display on the tooltip
+ *
+ * @property layoutRes The layout resource that contains the tooltip..layout
+ *
+ * @property messageViewResId The resource id equivalent to the text view that contains the text of our tooltip
+ *
+ * @property backgroundViewResId The resource id equivalent to the root/background view of our tooltip.
+ *
+ * @property elevation Defines a custom elevation for all the tooltip components, in dips (Density Independent Pixels).
+ *
+ * @property popupWidth The tooltip width to be displayed in dips (Density Independent Pixels).
+ * 250dp seems to be a good roundabout value.
+ *
+ * @property popupHeight The tooltip height to be displayed in dips (Density Independent Pixels).
+ * 46dp seems to be a good roundabout value for two lines.
+ *
+ * @property tooltipGravity Defines a new gravity in relation to the [anchorView]
+ *
+ * @property indefinite If false the tooltip will dismiss after a certain amount of time. Else, it will remain there
+ * until clicked again.
+ *
+ * @property showDuration  If the tooltip is definite, specify the time the tooltip should remain visible.
+ *
+ * @property verticalMargin The vertical offset from the anchorview to the tooltip in dips.
+ *
+ * @property horizontalMargin The horizontal offset from the edges of the screen.
+ *
+ * @property horizontalMarginClipped The horizontal offset from the edges of the screen to the tooltip when the bounds
+ * of the tooltip exceed the bounds of the screen.
+ *
+ * @property verticalMarginClipped The vertical offset from the anchor view to the tooltip when the bounds of the tooltip exceed
+ * the bounds of the screen.
+ *
+ * @property insideTouchDismissible Enables or disables dismiss on inside touch.
+ *
+ * @property outsideTouchDismissible Enables or disables dismiss on outside touch.
+ *
+ * @property modal Defines the popup window as focusable. Set this to false if you want the view
+ * to be click through. Although this messes up with the inside/outside touch flags, so use
+ * this carefully.
+ *
+ * @property arrow Creates the arrow to show pointing to the [anchorView] according to our [gravity]
+ *
+ * @property animationStyleResource Allows the usage of custom animations to show/hide the tooltip.
+ */
 class PopupTooltip(
-    /**
-     * The view to anchor the tooltip to.
-     */
     private val anchorView: View,
-
-    /**
-     * The message to display on the tooltip.
-     */
     private val message: CharSequence,
-
-    /**
-     * The layout resource that contains the tooltip..layout.
-     */
     @LayoutRes private val layoutRes: Int,
-
-    /**
-     * The resource id equivalent to the text view that contains the text of our tooltip
-     */
     @IdRes private val messageViewResId: Int,
-
-    /**
-     * The resource id equivalent to the root/background view of our tooltip.
-     */
     @IdRes private val backgroundViewResId: Int,
-
-    /**
-     * Defines a custom elevation for all the tooltip components, in dips (Density Independent Pixels).
-     */
     private val elevation: Int = DEFAULT_ELEVATION,
-
-    /**
-     * The tooltip width to be displayed in dips (Density Independent Pixels).
-     * 250dp seems to be a good roundabout value.
-     */
-    private val popupWidth: Int = TOOLTIP_WIDTH,
-
-    /**
-     * The tooltip height to be displayed in dips (Density Independent Pixels).
-     * 46dp seems to be a good roundabout value for two lines.
-     */
-    private val popupHeight: Int = TOOLTIP_HEIGHT,
-
-    /**
-     * Defines a new gravity in relation to the [anchorView]
-     */
+    private val popupWidth: Int = DEFAULT_TOOLTIP_WIDTH,
+    private val popupHeight: Int = DEFAULT_TOOLTIP_HEIGHT,
     private val tooltipGravity: TooltipGravity = TooltipGravity.TOP,
-
-    /**
-     * If false the tooltip will dismiss after a certain amount of time. Else, it will remain there
-     * until clicked again.
-     */
     private val indefinite: Boolean = false,
-
-    /**
-     * If the tooltip is definite, specify the time the tooltip should remain visible.
-     */
     private val showDuration: Long = 3500L,
-
-    /**
-     * The vertical offset from the anchorview to the tooltip in dips.
-     */
     private val verticalMargin: Int = 0,
-
-    /**
-     * The horizontal offset from the edges of the screen.
-     */
     private val horizontalMargin: Int = 0,
-
-    /**
-     * The horizontal offset from the edges of the screen to the tooltip when the bounds
-     * of the tooltip exceed the bounds of the screen.
-     */
     private val horizontalMarginClipped: Int = 0,
-
-    /**
-     * The vertical offset from the anchor view to the tooltip when the bounds of the tooltip exceed
-     * the bounds of the screen.
-     */
     private val verticalMarginClipped: Int = 0,
-
-    /**
-     * Enables or disables dismiss on inside touch.
-     */
     private val insideTouchDismissible: Boolean = true,
-
-    /**
-     * Enables or disables dismiss on outside touch.
-     */
     private val outsideTouchDismissible: Boolean = true,
-
-    /**
-     * Defines the popup window as focusable. Set this to false if you want the view
-     * to be click through. Although this messes up with the inside/outside touch flags, so use
-     * this carefully.
-     */
     private val modal: Boolean = true,
-
-    /**
-     * Creates the arrow to show pointing to the [anchorView] according to our [gravity]
-     */
     private val arrow: ArrowData? = null,
-
-    /**
-     * Allows the usage of custom animations to show/hide the tooltip.
-     */
     @StyleRes private val animationStyleResource: Int? = null,
 ) {
 
     companion object {
-        /**
-         * Simple class to hold named x and y values.
-         */
+        private const val DEFAULT_TOOLTIP_HEIGHT = 46
+        private const val DEFAULT_TOOLTIP_WIDTH = 250
+        private const val DEFAULT_ARROW_WIDTH = 10
+        private const val DEFAULT_ARROW_HEIGHT = 10
+        private const val DEFAULT_ELEVATION = 5
+        private const val GRAVITY = Gravity.NO_GRAVITY
+
         data class Coordinates(val x: Float, val y: Float)
+    }
 
-        /**
-         * Simple holder class for the arrow data if we intend to place an arrow on our tooltip.
-         */
-        data class ArrowData(
-            /**
-             * The width of our arrow drawable.
-             */
-            val arrowWidth: Int = ARROW_WIDTH,
+    /**
+     * The possible orientation for the tooltip in relation to the [anchorView].
+     * Currently it can only be displayed on top or below a view.
+     */
+    enum class TooltipGravity { TOP, BOTTOM, BOTTOM_RIGHT }
 
-            /**
-             * The height of our arrow drawable.
-             */
-            val arrowHeight: Int = ARROW_HEIGHT,
+    /**
+     * @constructor Constructor for our arrow that will be displayed pointing at the [anchorView]
+     *
+     * @property arrowWidth The width of our arrow drawable.
+     * @property arrowHeight The height of our arrow drawable.
+     * @property arrowDrawableResId The drawable resource that contains the image/shape of our arrow.
+     * @property arrowStrokeColorResId The color resource of our stroke around the arrow, IF we define an [arrowStrokeViewResId]
+     * @property tooltipArrowResId The tooltip layout equivalent of the arrow view resource id.
+     * @property arrowStrokeViewResId The tooltip layout equivalent of the arrow stroke view resource id.
+     */
+    data class ArrowData(
+        val arrowWidth: Int = DEFAULT_ARROW_WIDTH,
+        val arrowHeight: Int = DEFAULT_ARROW_HEIGHT,
+        @DrawableRes val arrowDrawableResId: Int,
+        @ColorRes val arrowStrokeColorResId: Int = android.R.color.white,
+        @IdRes val tooltipArrowResId: Int,
+        @IdRes val arrowStrokeViewResId: Int? = null,
+    )
 
-            /**
-             * The drawable resource that contains the image/shape of our arrow.
-             */
-            @DrawableRes val arrowDrawableResId: Int,
+    /**
+     * Delegate that handles the X,Y coordinates of the tooltip and handles the error/edge cases, e.g x,y coordinates
+     * exceed the max size of the screen, etc.
+     */
+    private val positionDelegate = PopupUtils()
 
-            /**
-             * The color resource of our stroke around the arrow, IF we define an [arrowStrokeViewResId]
-             */
-            @ColorRes val arrowStrokeColorResId: Int = android.R.color.white,
+    /**
+     * Saves a reference to our currently displayed tooltip. This is here so we can control when
+     * we dismiss/show it.
+     */
+    private var tooltip: PopupWindow? = null
 
-            /**
-             * The tooltip layout equivalent of the arrow view resource id.
-             */
-            @IdRes val tooltipArrowResId: Int,
+    /**
+     * Sets the tooltip as null after showDuration amount of time. This is only used
+     * when we set the tooltip as definite.
+     */
+    private val handler = Handler(Looper.getMainLooper())
 
-            /**
-             * The tooltip layout equivalent of the arrow stroke view resource id.
-             */
-            @IdRes val arrowStrokeViewResId: Int? = null
-        )
-
-        /**
-         * Delegate that handles the X,Y coordinates of the tooltip and handles the error/edge cases, e.g x,y coordinates
-         * exceed the max size of the screen, etc.
-         */
-        private val positionDelegate = PopupTooltipPositionDelegate()
-
-        /**
-         * Saves a reference to our currently displayed tooltip. This is here so we can control when
-         * we dismiss/show it.
-         */
-        private var tooltip: PopupWindow? = null
-
-        /**
-         * The possible orientation for the tooltip in relation to the [anchorView].
-         * Currently it can only be displayed on top or below a view.
-         */
-        enum class TooltipGravity { TOP, BOTTOM, BOTTOM_RIGHT }
-
-        /**
-         * The estimated height of our popup in dips (density-independent pixels).
-         * This assumes the popup will have two lines of text with the text sizes
-         * specified in [layout].
-         */
-        const val TOOLTIP_HEIGHT = 46
-
-        /**
-         * The default width value of the tooltip if none is specified, in dips (density-independent pixels).
-         */
-        const val TOOLTIP_WIDTH = 250
-
-        /**
-         * The default width value of the tooltip arrow if none is specified, in dips (density-independent pixels).
-         */
-        const val ARROW_WIDTH = 10
-
-        /**
-         * The default height value of the tooltip arrow if none is specified, in dips (density-independent pixels).
-         */
-        const val ARROW_HEIGHT = 10
-
-        /**
-         * The default elevation of the tooltip, in dips (density-independent pixels).
-         */
-        const val DEFAULT_ELEVATION = 5
-
-        /**
-         * At the moment this is hardcoded here. In the future the idea is for this
-         * to be changeable.
-         */
-        const val GRAVITY = Gravity.NO_GRAVITY
-
-        /**
-         * Sets the tooltip as null after showDuration amount of time. This is only used
-         * when we set the tooltip as definite.
-         */
-        private val handler = Handler(Looper.getMainLooper())
-
-        /**
-         * Clears the current reference to the tooltip and dismisses if it is present.
-         */
-        private fun PopupWindow.dismissIfShowing() {
-            if (isShowing) dismiss()
-        }
-
-        fun clearTooltip() {
-            tooltip?.dismissIfShowing()
-            tooltip = null
-        }
-
-        /**
-         * Given a value in dips, gets the amount of pixels that equates to in the given context.
-         */
-        fun getValueInPixels(valueInDips: Int, context: Context): Float {
-            return (valueInDips * context.resources.displayMetrics.density)
-        }
+    /**
+     * Clears the tooltip if it's showing and removes it's reference.
+     */
+    fun clearTooltip() {
+        tooltip?.dismissIfShowing()
+        tooltip = null
     }
 
     /**
@@ -268,7 +177,6 @@ class PopupTooltip(
     fun show() {
         showTooltip(anchorView, message)
     }
-
 
     /**
      * Internal helper class to show the tooltip.
@@ -365,7 +273,7 @@ class PopupTooltip(
         arrow: ArrowData,
         layout: View,
         context: Context,
-        anchorViewAbsoluteX: Int
+        anchorViewAbsoluteX: Int,
     ) {
         val stroke = layout.findViewById<ImageView>(arrow.arrowStrokeViewResId ?: View.NO_ID)
         val tooltipArrow = layout.findViewById<ImageView>(arrow.tooltipArrowResId)
@@ -470,5 +378,9 @@ class PopupTooltip(
             //Allow to draw outside of the screen.
             isClippingEnabled = true
         }
+    }
+
+    private fun PopupWindow.dismissIfShowing() {
+        if (isShowing) dismiss()
     }
 }

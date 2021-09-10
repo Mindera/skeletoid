@@ -8,12 +8,12 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
-import com.mindera.skeletoid.widgets.tooltip.PopupTooltip.Companion.ArrowData
+import com.mindera.skeletoid.generic.UIUtils.getValueInPixels
+import com.mindera.skeletoid.widgets.tooltip.PopupTooltip.ArrowData
 import com.mindera.skeletoid.widgets.tooltip.PopupTooltip.Companion.Coordinates
-import com.mindera.skeletoid.widgets.tooltip.PopupTooltip.Companion.TooltipGravity
-import com.mindera.skeletoid.widgets.tooltip.PopupTooltip.Companion.getValueInPixels
+import com.mindera.skeletoid.widgets.tooltip.PopupTooltip.TooltipGravity
 
-class PopupTooltipPositionDelegate {
+class PopupUtils {
 
     /**
      * Calculates the position of the arrow in relation to the tooltip. It's X and Y coordinates are associated with the
