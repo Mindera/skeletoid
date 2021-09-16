@@ -171,6 +171,14 @@ class PopupTooltip(
     fun touchDelegateTouchAreaIncreaseAmount(increaseAmount: Int) =
         apply { setupTouchDelegate(anchorView, increaseAmount, anchorView.context) }
 
+
+    /**
+     * Returns our tooltip object as a popup window. Might be useful to check if it's showing or other checks.
+     *
+     * @return the [PopupWindow] object that we create to show the PopupTooltip
+     */
+    fun getTooltipAsPopupWindow() = tooltip
+
     /**
      * Displays the tooltip
      */
