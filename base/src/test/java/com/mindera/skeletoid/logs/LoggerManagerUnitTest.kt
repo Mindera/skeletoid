@@ -58,7 +58,7 @@ class LoggerManagerUnitTest {
     @Test
     fun testAddAppendersEmpty() {
         val loggerManager = LoggerManager(packageName)
-        val appendersIds = loggerManager.addAppenders(context, ArrayList())
+        val appendersIds = loggerManager.addAppenders(this, context, ArrayList())
         Assert.assertNotNull(appendersIds)
         Assert.assertEquals(0, appendersIds.size)
     }
@@ -73,7 +73,7 @@ class LoggerManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        val appendersIds = loggerManager.addAppenders(context, appenders)
+        val appendersIds = loggerManager.addAppenders(this, context, appenders)
         Mockito.verify(appenderA, Mockito.times(1)).enableAppender(context)
         Mockito.verify(appenderB, Mockito.times(1)).enableAppender(context)
         Mockito.verify(appenderC, Mockito.times(1)).enableAppender(context)
@@ -94,7 +94,7 @@ class LoggerManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB1)
         appenders.add(appenderB2)
-        val appendersIds = loggerManager.addAppenders(context, appenders)
+        val appendersIds = loggerManager.addAppenders(this, context, appenders)
         Assert.assertNotNull(appendersIds)
         Assert.assertEquals(2, appendersIds.size)
         Assert.assertTrue(appendersIds.contains("A"))
@@ -118,7 +118,7 @@ class LoggerManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        val appendersIds = loggerManager.addAppenders(context, appenders)
+        val appendersIds = loggerManager.addAppenders(this, context, appenders)
         loggerManager.removeAppenders(context, appendersIds)
         Mockito.verify(appenderA, Mockito.times(1)).disableAppender()
         Mockito.verify(appenderB, Mockito.times(1)).disableAppender()
@@ -137,7 +137,7 @@ class LoggerManagerUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         appendersId.add("A")
-        loggerManager.addAppenders(context, appenders)
+        loggerManager.addAppenders(this, context, appenders)
         loggerManager.removeAppenders(context, HashSet(appendersId))
         Mockito.verify(appenderA, Mockito.times(1)).disableAppender()
     }
@@ -152,7 +152,7 @@ class LoggerManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        loggerManager.addAppenders(context, appenders)
+        loggerManager.addAppenders(this, context, appenders)
         loggerManager.removeAllAppenders()
         Mockito.verify(appenderA, Mockito.times(1)).disableAppender()
         Mockito.verify(appenderB, Mockito.times(1)).disableAppender()
@@ -169,12 +169,12 @@ class LoggerManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.DEBUG, null, TEXT)
+        loggerManager.addAppenders(this, context, appenders)
+        loggerManager.log(this, TAG, PRIORITY.DEBUG, null, TEXT)
         val log = String.format(
             LOG_FORMAT_4ARGS,
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
@@ -193,12 +193,12 @@ class LoggerManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.ERROR, null, TEXT)
+        loggerManager.addAppenders(this, context, appenders)
+        loggerManager.log(this, TAG, PRIORITY.ERROR, null, TEXT)
         val log = String.format(
             LOG_FORMAT_4ARGS,
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
@@ -217,12 +217,12 @@ class LoggerManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.WARN, null, TEXT)
+        loggerManager.addAppenders(this, context, appenders)
+        loggerManager.log(this, TAG, PRIORITY.WARN, null, TEXT)
         val log = String.format(
             LOG_FORMAT_4ARGS,
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
@@ -241,12 +241,12 @@ class LoggerManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.FATAL, null, TEXT)
+        loggerManager.addAppenders(this, context, appenders)
+        loggerManager.log(this, TAG, PRIORITY.FATAL, null, TEXT)
         val log = String.format(
             LOG_FORMAT_4ARGS,
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
@@ -265,12 +265,12 @@ class LoggerManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.INFO, null, TEXT)
+        loggerManager.addAppenders(this, context, appenders)
+        loggerManager.log(this, TAG, PRIORITY.INFO, null, TEXT)
         val log = String.format(
             LOG_FORMAT_4ARGS,
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
@@ -289,12 +289,12 @@ class LoggerManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.VERBOSE, null, TEXT)
+        loggerManager.addAppenders(this, context, appenders)
+        loggerManager.log(this, TAG, PRIORITY.VERBOSE, null, TEXT)
         val log = String.format(
             LOG_FORMAT_4ARGS,
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
@@ -317,12 +317,12 @@ class LoggerManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.DEBUG, throwable, TEXT)
+        loggerManager.addAppenders(this, context, appenders)
+        loggerManager.log(this, TAG, PRIORITY.DEBUG, throwable, TEXT)
         val log = String.format(
             LOG_FORMAT_4ARGS,
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
@@ -345,12 +345,12 @@ class LoggerManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.ERROR, throwable, TEXT)
+        loggerManager.addAppenders(this, context, appenders)
+        loggerManager.log(this, TAG, PRIORITY.ERROR, throwable, TEXT)
         val log = String.format(
             LOG_FORMAT_4ARGS,
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
@@ -373,12 +373,12 @@ class LoggerManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.WARN, throwable, TEXT)
+        loggerManager.addAppenders(this, context, appenders)
+        loggerManager.log(this, TAG, PRIORITY.WARN, throwable, TEXT)
         val log = String.format(
             LOG_FORMAT_4ARGS,
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
@@ -401,12 +401,12 @@ class LoggerManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.FATAL, throwable, TEXT)
+        loggerManager.addAppenders(this, context, appenders)
+        loggerManager.log(this, TAG, PRIORITY.FATAL, throwable, TEXT)
         val log = String.format(
             LOG_FORMAT_4ARGS,
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
@@ -429,12 +429,12 @@ class LoggerManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.INFO, throwable, TEXT)
+        loggerManager.addAppenders(this, context, appenders)
+        loggerManager.log(this, TAG, PRIORITY.INFO, throwable, TEXT)
         val log = String.format(
             LOG_FORMAT_4ARGS,
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
@@ -457,12 +457,12 @@ class LoggerManagerUnitTest {
         appenders.add(appenderA)
         appenders.add(appenderB)
         appenders.add(appenderC)
-        loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.VERBOSE, throwable, TEXT)
+        loggerManager.addAppenders(this, context, appenders)
+        loggerManager.log(this, TAG, PRIORITY.VERBOSE, throwable, TEXT)
         val log = String.format(
             LOG_FORMAT_4ARGS,
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
             getLogString(TEXT)
         )
@@ -479,8 +479,8 @@ class LoggerManagerUnitTest {
         val appenders: List<ILogAppender> = ArrayList()
         val spyAppenders = Mockito.spy(appenders)
         val loggerManager = LoggerManager(packageName)
-        loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.VERBOSE, null, TEXT)
+        loggerManager.addAppenders(this, context, appenders)
+        loggerManager.log(this, TAG, PRIORITY.VERBOSE, null, TEXT)
         Mockito.verify(spyAppenders, Mockito.times(0)).listIterator()
     }
 
@@ -489,8 +489,8 @@ class LoggerManagerUnitTest {
         val appenders: List<ILogAppender> = ArrayList()
         val spyAppenders = Mockito.spy(appenders)
         val loggerManager = LoggerManager(packageName)
-        loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.VERBOSE, Throwable(), TEXT)
+        loggerManager.addAppenders(this, context, appenders)
+        loggerManager.log(this, TAG, PRIORITY.VERBOSE, Throwable(), TEXT)
         Mockito.verify(spyAppenders, Mockito.times(0)).listIterator()
     }
 

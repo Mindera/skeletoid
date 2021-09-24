@@ -55,6 +55,7 @@ internal class LoggerManager : ILoggerManager {
      * Enables or disables logging to console/logcat.
      */
     override fun addAppenders(
+        invokingClass: Any,
         context: Context,
         logAppenders: List<ILogAppender>
     ): Set<String> {
@@ -62,7 +63,8 @@ internal class LoggerManager : ILoggerManager {
         for (logAppender in logAppenders) {
             val loggerId = logAppender.loggerId
             if (this.logAppenders.containsKey(loggerId)) {
-                log(LOG_TAG, PRIORITY.ERROR, null, "Replacing Log Appender with ID: $loggerId")
+                log(invokingClass,
+                    LOG_TAG, PRIORITY.ERROR, null, "Replacing Log Appender with ID: $loggerId")
                 val oldLogAppender = this.logAppenders.remove(loggerId)
                 oldLogAppender!!.disableAppender()
             }
@@ -119,6 +121,7 @@ internal class LoggerManager : ILoggerManager {
     }
 
     override fun log(
+        invokingClass: Any,
         tag: String,
         priority: PRIORITY,
         t: Throwable?,
@@ -128,7 +131,7 @@ internal class LoggerManager : ILoggerManager {
             val log = String.format(
                 LOG_FORMAT_4ARGS,
                 tag,
-                LogAppenderUtils.getObjectHash(tag),
+                LogAppenderUtils.getObjectHash(invokingClass),
                 ThreadUtils.currentThreadName,
                 LogAppenderUtils.getLogString(*text)
             )

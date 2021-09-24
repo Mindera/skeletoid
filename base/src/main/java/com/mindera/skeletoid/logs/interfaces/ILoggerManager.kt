@@ -18,6 +18,7 @@ interface ILoggerManager {
      * @param text     Log text
      */
     fun log(
+        invokingClass: Any,
         tag: String,
         priority: PRIORITY,
         t: Throwable? = null,
@@ -39,6 +40,7 @@ interface ILoggerManager {
      * @return Ids of the logs enabled by their order
      */
     fun addAppenders(
+        invokingClass: Any,
         context: Context,
         logAppenders: List<ILogAppender>
     ): Set<String>

@@ -47,13 +47,14 @@ object LOG {
     @JvmStatic
     @Synchronized
     fun init(
+        invokingClass: Any,
         context: Context,
         packageName: String? = null,
         logAppenders: List<ILogAppender> = emptyList()
     ): Set<String> {
         val logger = getInstance(context, packageName)
         logger.removeAllAppenders()
-        return logger.addAppenders(context, logAppenders)
+        return logger.addAppenders(invokingClass, context, logAppenders)
     }
 
     /**
@@ -75,10 +76,11 @@ object LOG {
      */
     @JvmStatic
     fun addAppenders(
+        invokingClass: Any,
         context: Context,
         logAppenders: List<ILogAppender>
     ): Set<String> {
-        return instance?.addAppenders(context, logAppenders)
+        return instance?.addAppenders(invokingClass, context, logAppenders)
             ?: throw UninitializedPropertyAccessException("Please call init() before using")
     }
 
@@ -129,8 +131,8 @@ object LOG {
      * @param text List of strings
      */
     @JvmStatic
-    fun d(tag: String, vararg text: String) {
-        instance?.log(tag, PRIORITY.DEBUG, null, *text)
+    fun d(invokingClass: Any, tag: String, vararg text: String) {
+        instance?.log(invokingClass, tag, PRIORITY.DEBUG, null, *text)
     }
 
     /**
@@ -140,8 +142,8 @@ object LOG {
      * @param text List of strings
      */
     @JvmStatic
-    fun e(tag: String, vararg text: String) {
-        instance?.log(tag, PRIORITY.ERROR, null, *text)
+    fun e(invokingClass: Any, tag: String, vararg text: String) {
+        instance?.log(invokingClass, tag, PRIORITY.ERROR, null, *text)
     }
 
     /**
@@ -151,8 +153,8 @@ object LOG {
      * @param text List of strings
      */
     @JvmStatic
-    fun v(tag: String, vararg text: String) {
-        instance?.log(tag, PRIORITY.VERBOSE, null, *text)
+    fun v(invokingClass: Any, tag: String, vararg text: String) {
+        instance?.log(invokingClass, tag, PRIORITY.VERBOSE, null, *text)
     }
 
     /**
@@ -162,8 +164,8 @@ object LOG {
      * @param text List of strings
      */
     @JvmStatic
-    fun i(tag: String, vararg text: String) {
-        instance?.log(tag, PRIORITY.INFO, null, *text)
+    fun i(invokingClass: Any, tag: String, vararg text: String) {
+        instance?.log(invokingClass, tag, PRIORITY.INFO, null, *text)
     }
 
     /**
@@ -173,8 +175,8 @@ object LOG {
      * @param text List of strings
      */
     @JvmStatic
-    fun w(tag: String, vararg text: String) {
-        instance?.log(tag, PRIORITY.WARN, null, *text)
+    fun w(invokingClass: Any, tag: String, vararg text: String) {
+        instance?.log(invokingClass, tag, PRIORITY.WARN, null, *text)
     }
 
     /**
@@ -184,8 +186,8 @@ object LOG {
      * @param text List of strings
      */
     @JvmStatic
-    fun wtf(tag: String, vararg text: String) {
-        instance?.log(tag, PRIORITY.FATAL, null, *text)
+    fun wtf(invokingClass: Any, tag: String, vararg text: String) {
+        instance?.log(invokingClass, tag, PRIORITY.FATAL, null, *text)
     }
 
     /**
@@ -196,8 +198,8 @@ object LOG {
      * @param text List of strings
      */
     @JvmStatic
-    fun d(tag: String, t: Throwable, vararg text: String) {
-        instance?.log(tag, PRIORITY.DEBUG, t, *text)
+    fun d(invokingClass: Any, tag: String, t: Throwable, vararg text: String) {
+        instance?.log(invokingClass, tag, PRIORITY.DEBUG, t, *text)
     }
 
     /**
@@ -208,8 +210,8 @@ object LOG {
      * @param text List of strings
      */
     @JvmStatic
-    fun e(tag: String, t: Throwable, vararg text: String) {
-        instance?.log(tag, PRIORITY.ERROR, t, *text)
+    fun e(invokingClass: Any, tag: String, t: Throwable, vararg text: String) {
+        instance?.log(invokingClass, tag, PRIORITY.ERROR, t, *text)
     }
 
     /**
@@ -220,8 +222,8 @@ object LOG {
      * @param text List of strings
      */
     @JvmStatic
-    fun v(tag: String, t: Throwable, vararg text: String) {
-        instance?.log(tag, PRIORITY.VERBOSE, t, *text)
+    fun v(invokingClass: Any, tag: String, t: Throwable, vararg text: String) {
+        instance?.log(invokingClass, tag, PRIORITY.VERBOSE, t, *text)
     }
 
     /**
@@ -232,8 +234,8 @@ object LOG {
      * @param text List of strings
      */
     @JvmStatic
-    fun i(tag: String, t: Throwable, vararg text: String) {
-        instance?.log(tag, PRIORITY.INFO, t, *text)
+    fun i(invokingClass: Any, tag: String, t: Throwable, vararg text: String) {
+        instance?.log(invokingClass, tag, PRIORITY.INFO, t, *text)
     }
 
     /**
@@ -244,8 +246,8 @@ object LOG {
      * @param text List of strings
      */
     @JvmStatic
-    fun w(tag: String, t: Throwable, vararg text: String) {
-        instance?.log(tag, PRIORITY.WARN, t, *text)
+    fun w(invokingClass: Any, tag: String, t: Throwable, vararg text: String) {
+        instance?.log(invokingClass, tag, PRIORITY.WARN, t, *text)
     }
 
     /**
@@ -256,7 +258,7 @@ object LOG {
      * @param text List of strings
      */
     @JvmStatic
-    fun wtf(tag: String, t: Throwable, vararg text: String) {
-        instance?.log(tag, PRIORITY.FATAL, t, *text)
+    fun wtf(invokingClass: Any, tag: String, t: Throwable, vararg text: String) {
+        instance?.log(invokingClass, tag, PRIORITY.FATAL, t, *text)
     }
 }
