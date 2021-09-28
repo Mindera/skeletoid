@@ -55,7 +55,7 @@ internal class LoggerManager : ILoggerManager {
      * Enables or disables logging to console/logcat.
      */
     override fun addAppenders(
-        invokingClass: Any,
+        invokingClass: Any?,
         context: Context,
         logAppenders: List<ILogAppender>
     ): Set<String> {
@@ -121,7 +121,7 @@ internal class LoggerManager : ILoggerManager {
     }
 
     override fun log(
-        invokingClass: Any,
+        invokingClass: Any?,
         tag: String,
         priority: PRIORITY,
         t: Throwable?,
