@@ -2,7 +2,7 @@
 An utils library for Android Applications made at Mindera.
 
 ### Building and releasing!
-[![Build Status](https://travis-ci.org/Mindera/skeletoid.svg)](https://travis-ci.org/Mindera/skeletoid)
+[![Build Status](https://travis-ci.com/Mindera/skeletoid.svg)](https://travis-ci.com/Mindera/skeletoid)
 [![Release](https://jitpack.io/v/mindera/skeletoid.svg)](https://jitpack.io/#mindera/skeletoid)
 
 ### Say "AAA":
