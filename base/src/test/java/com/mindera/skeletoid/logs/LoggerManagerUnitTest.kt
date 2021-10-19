@@ -179,7 +179,7 @@ class LoggerManagerUnitTest {
             ThreadUtils.currentThreadName,
         ).joinToString(separator = " ")
 
-        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(TEXT))
+        val log = String.format(LOG_FORMAT, headers, getLogString(TEXT))
 
         Mockito.verify(appenderA, Mockito.times(1)).log(PRIORITY.DEBUG, null, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(PRIORITY.DEBUG, null, log)
@@ -204,7 +204,7 @@ class LoggerManagerUnitTest {
             ThreadUtils.currentThreadName,
         ).joinToString(separator = " ")
 
-        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(TEXT))
+        val log = String.format(LOG_FORMAT, headers, getLogString(TEXT))
         Mockito.verify(appenderA, Mockito.times(1)).log(PRIORITY.ERROR, null, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(PRIORITY.ERROR, null, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(PRIORITY.ERROR, null, log)
@@ -228,7 +228,7 @@ class LoggerManagerUnitTest {
             ThreadUtils.currentThreadName,
         ).joinToString(separator = " ")
 
-        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(TEXT))
+        val log = String.format(LOG_FORMAT, headers, getLogString(TEXT))
         Mockito.verify(appenderA, Mockito.times(1)).log(PRIORITY.WARN, null, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(PRIORITY.WARN, null, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(PRIORITY.WARN, null, log)
@@ -252,7 +252,7 @@ class LoggerManagerUnitTest {
             ThreadUtils.currentThreadName,
         ).joinToString(separator = " ")
 
-        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(TEXT))
+        val log = String.format(LOG_FORMAT, headers, getLogString(TEXT))
         Mockito.verify(appenderA, Mockito.times(1)).log(PRIORITY.FATAL, null, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(PRIORITY.FATAL, null, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(PRIORITY.FATAL, null, log)
@@ -276,7 +276,7 @@ class LoggerManagerUnitTest {
             ThreadUtils.currentThreadName,
         ).joinToString(separator = " ")
 
-        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(TEXT))
+        val log = String.format(LOG_FORMAT, headers, getLogString(TEXT))
         Mockito.verify(appenderA, Mockito.times(1)).log(PRIORITY.INFO, null, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(PRIORITY.INFO, null, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(PRIORITY.INFO, null, log)

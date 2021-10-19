@@ -47,14 +47,13 @@ object LOG {
     @JvmStatic
     @Synchronized
     fun init(
-        invokingClass: Any,
         context: Context,
         packageName: String? = null,
         logAppenders: List<ILogAppender> = emptyList()
     ): Set<String> {
         val logger = getInstance(context, packageName)
         logger.removeAllAppenders()
-        return logger.addAppenders(invokingClass, context, logAppenders)
+        return logger.addAppenders(context, logAppenders)
     }
 
     /**
@@ -76,11 +75,10 @@ object LOG {
      */
     @JvmStatic
     fun addAppenders(
-        invokingClass: Any,
         context: Context,
         logAppenders: List<ILogAppender>
     ): Set<String> {
-        return instance?.addAppenders(invokingClass, context, logAppenders)
+        return instance?.addAppenders(context, logAppenders)
             ?: throw UninitializedPropertyAccessException("Please call init() before using")
     }
 
