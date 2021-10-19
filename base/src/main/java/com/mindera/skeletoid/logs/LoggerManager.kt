@@ -23,9 +23,11 @@ internal class LoggerManager : ILoggerManager {
         /**
          * Log format
          */
-        const val LOG_FORMAT_4ARGS = "%s %s %s | %s"
-
+        const val LOG_FORMAT = "%s | %s"
     }
+
+
+
     /**
      * Application TAG for logs
      */
@@ -55,7 +57,6 @@ internal class LoggerManager : ILoggerManager {
      * Enables or disables logging to console/logcat.
      */
     override fun addAppenders(
-        invokingClass: Any?,
         context: Context,
         logAppenders: List<ILogAppender>
     ): Set<String> {
@@ -63,10 +64,9 @@ internal class LoggerManager : ILoggerManager {
         for (logAppender in logAppenders) {
             val loggerId = logAppender.loggerId
             if (this.logAppenders.containsKey(loggerId)) {
-                log(invokingClass,
+                log(null,
                     LOG_TAG, PRIORITY.ERROR, null, "Replacing Log Appender with ID: $loggerId")
-                val oldLogAppender = this.logAppenders.remove(loggerId)
-                oldLogAppender!!.disableAppender()
+                this.logAppenders.remove(loggerId)?.disableAppender()
             }
             logAppender.enableAppender(context)
             appenderIds.add(loggerId)
@@ -127,15 +127,16 @@ internal class LoggerManager : ILoggerManager {
         t: Throwable?,
         vararg text: String
     ) {
-        if(logAppenders.isNotEmpty()) {
-            val log = String.format(
-                LOG_FORMAT_4ARGS,
-                tag,
-                LogAppenderUtils.getObjectHash(invokingClass),
-                ThreadUtils.currentThreadName,
-                LogAppenderUtils.getLogString(*text)
-            )
-            pushLogToAppenders(priority, t, log)
-        }
+        if (logAppenders.isEmpty()) return
+
+        val headers = listOfNotNull(
+            tag,
+            LogAppenderUtils.getObjectHash(invokingClass),
+            ThreadUtils.currentThreadName,
+        ).joinToString(separator = " ")
+
+        val log = String.format(LOG_FORMAT, headers, LogAppenderUtils.getLogString(*text))
+
+        pushLogToAppenders(priority, t, log)
     }
 }

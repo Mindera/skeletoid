@@ -40,7 +40,6 @@ interface ILoggerManager {
      * @return Ids of the logs enabled by their order
      */
     fun addAppenders(
-        invokingClass: Any? = null,
         context: Context,
         logAppenders: List<ILogAppender>
     ): Set<String>
