@@ -38,7 +38,7 @@ import java.util.HashSet
 class LOGUnitTest {
 
     companion object {
-        private const val LOG_FORMAT_4ARGS = LoggerManager.LOG_FORMAT_4ARGS
+        private const val LOG_FORMAT = LoggerManager.LOG_FORMAT
         private const val TAG = "TAG"
         private const val TEXT = "Text"
         private const val packageName = "my.package.name"
@@ -85,7 +85,7 @@ class LOGUnitTest {
 
     @Test
     fun testInitWithContextAndPackageName() {
-        init(context, packageName)
+        init( context, packageName)
         Assert.assertTrue(isInitialized)
     }
 
@@ -134,16 +134,18 @@ class LOGUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         init(context, packageName, appenders)
-        d(TAG, TEXT)
+        d(this, TAG, TEXT)
 
         //This is ugly.. but I don't see another way.
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(
+            TEXT
+        ))
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.DEBUG, null, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(LOG.PRIORITY.DEBUG, null, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(LOG.PRIORITY.DEBUG, null, log)
@@ -159,16 +161,18 @@ class LOGUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         init(context, packageName, appenders)
-        e(TAG, TEXT)
+        e(this, TAG, TEXT)
 
         //This is ugly.. but I don't see another way.
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(
+            TEXT
+        ))
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.ERROR, null, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(LOG.PRIORITY.ERROR, null, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(LOG.PRIORITY.ERROR, null, log)
@@ -184,16 +188,18 @@ class LOGUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         init(context, packageName, appenders)
-        w(TAG, TEXT)
+        w(this, TAG, TEXT)
 
         //This is ugly.. but I don't see another way.
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(
+            TEXT
+        ))
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.WARN, null, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(LOG.PRIORITY.WARN, null, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(LOG.PRIORITY.WARN, null, log)
@@ -209,15 +215,17 @@ class LOGUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         //This is ugly.. but I don't see another way.
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(
+            TEXT
+        ))
         init(context, packageName, appenders)
-        wtf(TAG, TEXT)
+        wtf(this, TAG, TEXT)
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.FATAL, null, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(LOG.PRIORITY.FATAL, null, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(LOG.PRIORITY.FATAL, null, log)
@@ -233,15 +241,17 @@ class LOGUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         //This is ugly.. but I don't see another way.
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(
+            TEXT
+        ))
         init(context, packageName, appenders)
-        i(TAG, TEXT)
+        i(this, TAG, TEXT)
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.INFO, null, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(LOG.PRIORITY.INFO, null, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(LOG.PRIORITY.INFO, null, log)
@@ -253,16 +263,18 @@ class LOGUnitTest {
         val appenderA = mockAppender("A")
         appenders.add(appenderA)
         //This is ugly.. but I don't see another way.
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(
+            TEXT
+        ))
         init(context, packageName, appenders)
         deinit()
-        d(TAG, TEXT)
+        d(this, TAG, TEXT)
         Mockito.verify(appenderA, Mockito.times(0)).log(LOG.PRIORITY.DEBUG, null, log)
     }
 
@@ -272,16 +284,18 @@ class LOGUnitTest {
         val appenderA = mockAppender("A")
         appenders.add(appenderA)
         //This is ugly.. but I don't see another way.
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(
+            TEXT
+        ))
         init(context, packageName, appenders)
         deinit()
-        e(TAG, TEXT)
+        e(this, TAG, TEXT)
         Mockito.verify(appenderA, Mockito.times(0)).log(LOG.PRIORITY.ERROR, null, log)
     }
 
@@ -291,16 +305,18 @@ class LOGUnitTest {
         val appenderA = mockAppender("A")
         appenders.add(appenderA)
         //This is ugly.. but I don't see another way.
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(
+            TEXT
+        ))
         init(context, packageName, appenders)
         deinit()
-        w(TAG, TEXT)
+        w(this, TAG, TEXT)
         Mockito.verify(appenderA, Mockito.times(0)).log(LOG.PRIORITY.WARN, null, log)
     }
 
@@ -310,16 +326,18 @@ class LOGUnitTest {
         val appenderA = mockAppender("A")
         appenders.add(appenderA)
         //This is ugly.. but I don't see another way.
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(
+            TEXT
+        ))
         init(context, packageName, appenders)
         deinit()
-        wtf(TAG, TEXT)
+        wtf(this, TAG, TEXT)
         Mockito.verify(appenderA, Mockito.times(0)).log(LOG.PRIORITY.FATAL, null, log)
     }
 
@@ -329,16 +347,18 @@ class LOGUnitTest {
         val appenderA = mockAppender("A")
         appenders.add(appenderA)
         //This is ugly.. but I don't see another way.
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(
+            TEXT
+        ))
         init(context, packageName, appenders)
         deinit()
-        i(TAG, TEXT)
+        i(this, TAG, TEXT)
         Mockito.verify(appenderA, Mockito.times(0)).log(LOG.PRIORITY.INFO, null, log)
     }
 
@@ -353,15 +373,17 @@ class LOGUnitTest {
         appenders.add(appenderC)
         init(context, packageName, appenders)
         val e = Exception()
-        d(TAG, e, TEXT)
+        d(this, TAG, e, TEXT)
         //This is ugly.. but I don't see another way.
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(
+            TEXT
+        ))
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.DEBUG, e, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(LOG.PRIORITY.DEBUG, e, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(LOG.PRIORITY.DEBUG, e, log)
@@ -378,15 +400,17 @@ class LOGUnitTest {
         appenders.add(appenderC)
         init(context, packageName, appenders)
         val e = Exception()
-        e(TAG, e, TEXT)
+        e(this, TAG, e, TEXT)
         //This is ugly.. but I don't see another way.
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(
+            TEXT
+        ))
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.ERROR, e, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(LOG.PRIORITY.ERROR, e, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(LOG.PRIORITY.ERROR, e, log)
@@ -403,15 +427,17 @@ class LOGUnitTest {
         appenders.add(appenderC)
         init(context, packageName, appenders)
         val e = Exception()
-        w(TAG, e, TEXT)
+        w(this, TAG, e, TEXT)
         //This is ugly.. but I don't see another way.
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(
+            TEXT
+        ))
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.WARN, e, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(LOG.PRIORITY.WARN, e, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(LOG.PRIORITY.WARN, e, log)
@@ -428,15 +454,17 @@ class LOGUnitTest {
         appenders.add(appenderC)
         init(context, packageName, appenders)
         val e = Exception()
-        wtf(TAG, e, TEXT)
+        wtf(this, TAG, e, TEXT)
         //This is ugly.. but I don't see another way.
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(
+            TEXT
+        ))
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.FATAL, e, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(LOG.PRIORITY.FATAL, e, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(LOG.PRIORITY.FATAL, e, log)
@@ -453,15 +481,17 @@ class LOGUnitTest {
         appenders.add(appenderC)
         init(context, packageName, appenders)
         val e = Exception()
-        i(TAG, e, TEXT)
+        i(this, TAG, e, TEXT)
         //This is ugly.. but I don't see another way.
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(
+            TEXT
+        ))
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.INFO, e, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(LOG.PRIORITY.INFO, e, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(LOG.PRIORITY.INFO, e, log)
@@ -478,15 +508,17 @@ class LOGUnitTest {
         appenders.add(appenderC)
         init(context, packageName, appenders)
         val e = Exception()
-        v(TAG, e, TEXT)
+        v(this, TAG, e, TEXT)
         //This is ugly.. but I don't see another way.
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(
+            TEXT
+        ))
         Mockito.verify(appenderA, Mockito.times(1)).log(LOG.PRIORITY.VERBOSE, e, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(LOG.PRIORITY.VERBOSE, e, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(LOG.PRIORITY.VERBOSE, e, log)
@@ -502,15 +534,17 @@ class LOGUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         init(context, packageName, appenders)
-        v(TAG, TEXT)
+        v(this, TAG, TEXT)
         //This is ugly.. but I don't see another way.
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(
+            TEXT
+        ))
         Mockito.verify(appenderA, Mockito.times(1))
             .log(LOG.PRIORITY.VERBOSE, null, log)
         Mockito.verify(appenderB, Mockito.times(1))

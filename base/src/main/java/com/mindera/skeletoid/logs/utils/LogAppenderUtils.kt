@@ -70,15 +70,14 @@ object LogAppenderUtils {
      * @return The hashcode of the object in a printable string
      */
     @JvmStatic
-    fun getObjectHash(any: Any): String {
-        return run {
+    fun getObjectHash(obj: Any?): String? =
+        obj?.let {
             val stringBuilder = StringBuilder()
             stringBuilder.append("[")
-            stringBuilder.append(any.javaClass.simpleName)
+            stringBuilder.append(obj.javaClass.simpleName)
             stringBuilder.append("#")
-            stringBuilder.append(any.hashCode())
+            stringBuilder.append(obj.hashCode())
             stringBuilder.append("] ")
             stringBuilder.toString()
         }
-    }
 }

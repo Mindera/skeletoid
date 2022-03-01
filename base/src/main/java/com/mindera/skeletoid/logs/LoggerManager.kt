@@ -23,9 +23,11 @@ internal class LoggerManager : ILoggerManager {
         /**
          * Log format
          */
-        const val LOG_FORMAT_4ARGS = "%s %s %s | %s"
-
+        const val LOG_FORMAT = "%s | %s"
     }
+
+
+
     /**
      * Application TAG for logs
      */
@@ -62,9 +64,9 @@ internal class LoggerManager : ILoggerManager {
         for (logAppender in logAppenders) {
             val loggerId = logAppender.loggerId
             if (this.logAppenders.containsKey(loggerId)) {
-                log(LOG_TAG, PRIORITY.ERROR, null, "Replacing Log Appender with ID: $loggerId")
-                val oldLogAppender = this.logAppenders.remove(loggerId)
-                oldLogAppender!!.disableAppender()
+                log(null,
+                    LOG_TAG, PRIORITY.ERROR, null, "Replacing Log Appender with ID: $loggerId")
+                this.logAppenders.remove(loggerId)?.disableAppender()
             }
             logAppender.enableAppender(context)
             appenderIds.add(loggerId)
@@ -119,20 +121,22 @@ internal class LoggerManager : ILoggerManager {
     }
 
     override fun log(
+        invokingClass: Any?,
         tag: String,
         priority: PRIORITY,
         t: Throwable?,
         vararg text: String
     ) {
-        if(logAppenders.isNotEmpty()) {
-            val log = String.format(
-                LOG_FORMAT_4ARGS,
-                tag,
-                LogAppenderUtils.getObjectHash(tag),
-                ThreadUtils.currentThreadName,
-                LogAppenderUtils.getLogString(*text)
-            )
-            pushLogToAppenders(priority, t, log)
-        }
+        if (logAppenders.isEmpty()) return
+
+        val headers = listOfNotNull(
+            tag,
+            LogAppenderUtils.getObjectHash(invokingClass),
+            ThreadUtils.currentThreadName,
+        ).joinToString(separator = " ")
+
+        val log = String.format(LOG_FORMAT, headers, LogAppenderUtils.getLogString(*text))
+
+        pushLogToAppenders(priority, t, log)
     }
 }

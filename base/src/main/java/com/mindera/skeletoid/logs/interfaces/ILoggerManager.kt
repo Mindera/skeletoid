@@ -18,6 +18,7 @@ interface ILoggerManager {
      * @param text     Log text
      */
     fun log(
+        invokingClass: Any? = null,
         tag: String,
         priority: PRIORITY,
         t: Throwable? = null,

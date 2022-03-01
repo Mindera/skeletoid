@@ -5,6 +5,7 @@ import com.mindera.skeletoid.generic.AndroidUtils
 import com.mindera.skeletoid.generic.AndroidUtils.getApplicationPackage
 import com.mindera.skeletoid.logs.LOG.PRIORITY
 import com.mindera.skeletoid.logs.appenders.interfaces.ILogAppender
+import com.mindera.skeletoid.logs.utils.LogAppenderUtils
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils.getLogString
 import com.mindera.skeletoid.logs.utils.LogAppenderUtils.getObjectHash
 import com.mindera.skeletoid.threads.utils.ThreadUtils
@@ -26,7 +27,7 @@ import java.util.HashSet
 @PrepareForTest(AndroidUtils::class)
 class LoggerManagerUnitTest {
     companion object {
-        private const val LOG_FORMAT_4ARGS = LoggerManager.LOG_FORMAT_4ARGS
+        private const val LOG_FORMAT = LoggerManager.LOG_FORMAT
 
         private const val TAG = "TAG"
         private const val TEXT = "Text"
@@ -170,14 +171,16 @@ class LoggerManagerUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.DEBUG, null, TEXT)
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        loggerManager.log(this, TAG, PRIORITY.DEBUG, null, TEXT)
+
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LOG_FORMAT, headers, getLogString(TEXT))
+
         Mockito.verify(appenderA, Mockito.times(1)).log(PRIORITY.DEBUG, null, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(PRIORITY.DEBUG, null, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(PRIORITY.DEBUG, null, log)
@@ -194,14 +197,14 @@ class LoggerManagerUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.ERROR, null, TEXT)
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        loggerManager.log(this, TAG, PRIORITY.ERROR, null, TEXT)
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LOG_FORMAT, headers, getLogString(TEXT))
         Mockito.verify(appenderA, Mockito.times(1)).log(PRIORITY.ERROR, null, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(PRIORITY.ERROR, null, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(PRIORITY.ERROR, null, log)
@@ -218,14 +221,14 @@ class LoggerManagerUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.WARN, null, TEXT)
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        loggerManager.log(this, TAG, PRIORITY.WARN, null, TEXT)
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LOG_FORMAT, headers, getLogString(TEXT))
         Mockito.verify(appenderA, Mockito.times(1)).log(PRIORITY.WARN, null, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(PRIORITY.WARN, null, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(PRIORITY.WARN, null, log)
@@ -242,14 +245,14 @@ class LoggerManagerUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.FATAL, null, TEXT)
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        loggerManager.log(this, TAG, PRIORITY.FATAL, null, TEXT)
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LOG_FORMAT, headers, getLogString(TEXT))
         Mockito.verify(appenderA, Mockito.times(1)).log(PRIORITY.FATAL, null, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(PRIORITY.FATAL, null, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(PRIORITY.FATAL, null, log)
@@ -266,14 +269,14 @@ class LoggerManagerUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.INFO, null, TEXT)
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        loggerManager.log(this, TAG, PRIORITY.INFO, null, TEXT)
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LOG_FORMAT, headers, getLogString(TEXT))
         Mockito.verify(appenderA, Mockito.times(1)).log(PRIORITY.INFO, null, log)
         Mockito.verify(appenderB, Mockito.times(1)).log(PRIORITY.INFO, null, log)
         Mockito.verify(appenderC, Mockito.times(1)).log(PRIORITY.INFO, null, log)
@@ -290,14 +293,14 @@ class LoggerManagerUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.VERBOSE, null, TEXT)
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        loggerManager.log(this, TAG, PRIORITY.VERBOSE, null, TEXT)
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(TEXT))
         Mockito.verify(appenderA, Mockito.times(1))
             .log(PRIORITY.VERBOSE, null, log)
         Mockito.verify(appenderB, Mockito.times(1))
@@ -318,14 +321,14 @@ class LoggerManagerUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.DEBUG, throwable, TEXT)
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        loggerManager.log(this, TAG, PRIORITY.DEBUG, throwable, TEXT)
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(TEXT))
         Mockito.verify(appenderA, Mockito.times(1))
             .log(PRIORITY.DEBUG, throwable, log)
         Mockito.verify(appenderB, Mockito.times(1))
@@ -346,14 +349,14 @@ class LoggerManagerUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.ERROR, throwable, TEXT)
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        loggerManager.log(this, TAG, PRIORITY.ERROR, throwable, TEXT)
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(TEXT))
         Mockito.verify(appenderA, Mockito.times(1))
             .log(PRIORITY.ERROR, throwable, log)
         Mockito.verify(appenderB, Mockito.times(1))
@@ -374,14 +377,14 @@ class LoggerManagerUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.WARN, throwable, TEXT)
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        loggerManager.log(this, TAG, PRIORITY.WARN, throwable, TEXT)
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(TEXT))
         Mockito.verify(appenderA, Mockito.times(1))
             .log(PRIORITY.WARN, throwable, log)
         Mockito.verify(appenderB, Mockito.times(1))
@@ -402,14 +405,14 @@ class LoggerManagerUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.FATAL, throwable, TEXT)
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        loggerManager.log(this, TAG, PRIORITY.FATAL, throwable, TEXT)
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(TEXT))
         Mockito.verify(appenderA, Mockito.times(1))
             .log(PRIORITY.FATAL, throwable, log)
         Mockito.verify(appenderB, Mockito.times(1))
@@ -430,14 +433,14 @@ class LoggerManagerUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.INFO, throwable, TEXT)
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        loggerManager.log(this, TAG, PRIORITY.INFO, throwable, TEXT)
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(TEXT))
         Mockito.verify(appenderA, Mockito.times(1))
             .log(PRIORITY.INFO, throwable, log)
         Mockito.verify(appenderB, Mockito.times(1))
@@ -458,14 +461,14 @@ class LoggerManagerUnitTest {
         appenders.add(appenderB)
         appenders.add(appenderC)
         loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.VERBOSE, throwable, TEXT)
-        val log = String.format(
-            LOG_FORMAT_4ARGS,
+        loggerManager.log(this, TAG, PRIORITY.VERBOSE, throwable, TEXT)
+        val headers = listOfNotNull(
             TAG,
-            getObjectHash(TAG),
+            getObjectHash(this),
             ThreadUtils.currentThreadName,
-            getLogString(TEXT)
-        )
+        ).joinToString(separator = " ")
+
+        val log = String.format(LoggerManager.LOG_FORMAT, headers, getLogString(TEXT))
         Mockito.verify(appenderA, Mockito.times(1))
             .log(PRIORITY.VERBOSE, throwable, log)
         Mockito.verify(appenderB, Mockito.times(1))
@@ -480,7 +483,7 @@ class LoggerManagerUnitTest {
         val spyAppenders = Mockito.spy(appenders)
         val loggerManager = LoggerManager(packageName)
         loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.VERBOSE, null, TEXT)
+        loggerManager.log(this, TAG, PRIORITY.VERBOSE, null, TEXT)
         Mockito.verify(spyAppenders, Mockito.times(0)).listIterator()
     }
 
@@ -490,7 +493,7 @@ class LoggerManagerUnitTest {
         val spyAppenders = Mockito.spy(appenders)
         val loggerManager = LoggerManager(packageName)
         loggerManager.addAppenders(context, appenders)
-        loggerManager.log(TAG, PRIORITY.VERBOSE, Throwable(), TEXT)
+        loggerManager.log(this, TAG, PRIORITY.VERBOSE, Throwable(), TEXT)
         Mockito.verify(spyAppenders, Mockito.times(0)).listIterator()
     }
 
