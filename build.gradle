@@ -48,8 +48,8 @@ ext {
     annotationVersion = '1.1.0'
 
     //Firebase
-    firebaseAnalyticsVersion = '19.0.0'
-    firebasePerfVersion = '19.0.8'
+    firebaseAnalyticsVersion = '21.5.0'
+    firebasePerfVersion = '20.5.0'
 
     //Play Services
     playServicesAnalytics = '17.0.0'
